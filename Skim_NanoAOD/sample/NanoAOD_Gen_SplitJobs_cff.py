@@ -1,0 +1,7 @@
+Samples_2016 = {'TTGamma_Dilepton_Pt100': 1, 'TTGamma_SingleLept_Pt200': 1, 'TT_tyty_M1200': 1, 'TT_tytg_M1200': 1, 'TTGamma_Hadronic_Pt200': 1, 'TTGamma_Hadronic_Pt100': 1, 'TTGamma_Hadronic': 2, 'TT_tgtg_M1200': 1, 'TTGamma_SingleLept': 3, 'TT_tgtg_M800': 1, 'TTGamma_Dilepton_Pt200': 1, 'TT_tyty_M800': 1, 'TTbarPowheg_Semilept': 21, 'TTbarPowheg_Hadronic': 15, 'TTGamma_Dilepton': 1, 'TTbarPowheg_Dilepton': 13, 'TTGamma_SingleLept_Pt100': 1, 'TT_tytg_M800': 1} 
+AllJobs_2016 = 67 
+Samples_2017 = {'TTGamma_Dilepton_Pt100': 1, 'TTGamma_SingleLept_Pt200': 1, 'TT_tyty_M1200': 1, 'TT_tytg_M1200': 1, 'TTGamma_Hadronic_Pt200': 1, 'TTGamma_Hadronic_Pt100': 1, 'TTGamma_Hadronic': 2, 'TT_tgtg_M1200': 1, 'TTGamma_SingleLept': 3, 'TT_tgtg_M800': 1, 'TTGamma_Dilepton_Pt200': 1, 'TT_tyty_M800': 1, 'TTbarPowheg_Semilept': 21, 'TTbarPowheg_Hadronic': 15, 'TTGamma_Dilepton': 1, 'TTbarPowheg_Dilepton': 13, 'TTGamma_SingleLept_Pt100': 1, 'TT_tytg_M800': 1} 
+AllJobs_2017 = 67 
+Samples_2018 = {'TTGamma_Dilepton_Pt100': 1, 'TTGamma_SingleLept_Pt200': 1, 'TT_tyty_M1200': 1, 'TT_tytg_M1200': 1, 'TTGamma_Hadronic_Pt200': 1, 'TTGamma_Hadronic_Pt100': 1, 'TTGamma_Hadronic': 2, 'TT_tgtg_M1200': 1, 'TTGamma_SingleLept': 3, 'TT_tgtg_M800': 1, 'TTGamma_Dilepton_Pt200': 1, 'TT_tyty_M800': 1, 'TTbarPowheg_Semilept': 21, 'TTbarPowheg_Hadronic': 15, 'TTGamma_Dilepton': 1, 'TTbarPowheg_Dilepton': 13, 'TTGamma_SingleLept_Pt100': 1, 'TT_tytg_M800': 1} 
+AllJobs_2018 = 67 
+AllJobs_AllYears = 201 
