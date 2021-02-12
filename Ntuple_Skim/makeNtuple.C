@@ -455,6 +455,8 @@ makeNtuple::makeNtuple(int ac, char** av)
     cout << outputFileName << endl;
     TFile *outputFile = new TFile(outputFileName.c_str(),"recreate");
     outputTree = new TTree("AnalysisTree","AnalysisTree");
+    //outputTree->SetAutoFlush(1000000000);
+    //outputTree->SetAutoSave(10000000000);//Save to disk after 1000 GB
 
     if (saveCutflow) {
 	evtPick->init_cutflow_files(outputFileName);
@@ -1654,8 +1656,8 @@ void makeNtuple::FillEvent(std::string year)
     topEvent.SetLepton(lepVector);
     topEvent.SetMET(METVector);
     
+    /*
     topEvent.Calculate();
-
     if (topEvent.GoodCombination()){
 	bhad = jetVectors[topEvent.getBHad()];
 	blep = jetVectors[topEvent.getBLep()];
@@ -1681,7 +1683,6 @@ void makeNtuple::FillEvent(std::string year)
     _TopLep_mass = ( blep + lepVector + METVector ).M();
     _TopLep_charge = lepCharge;
     _TopTop_mass = (bhad + Wj1 + Wj2 + blep + lepVector + METVector).M();
-
 	_MassCuts = ( _Mt_blgammaMET > 180 &&
 		      _Mt_lgammaMET > 90 && 
 		      _M_bjj > 160 && 
@@ -1690,6 +1691,24 @@ void makeNtuple::FillEvent(std::string year)
 		      _M_jj < 90 &&
 		      _nPho > 0);
 	
+    }
+    */
+    topEvent.Calculate_tgtg();
+    if (topEvent.GoodCombination_tgtg()){
+	bhad = jetVectors[topEvent.getBHad()];
+	blep = jetVectors[topEvent.getBLep()];
+	Wj1 = jetVectors[topEvent.getJ1()];
+	Wj2 = jetVectors[topEvent.getJ2()];
+	gj1 = jetVectors[topEvent.getJ3()];
+	gj2 = jetVectors[topEvent.getJ4()];
+	_chi2 = topEvent.getChi2_tgtg();
+	METVector.SetPz(topEvent.getNuPz());
+	_M_jj  = ( Wj1 + Wj2 ).M();
+    _TopHad_mass = ( bhad + Wj1 + Wj2 ).M();
+    _TopLep_mass = ( blep + lepVector + METVector ).M();
+    _TopStarHad_mass = ( bhad + Wj1 + Wj2 + gj1).M();
+    _TopStarLep_mass = ( blep + lepVector + METVector + gj2).M();
+    _tgtg_mass = (bhad + Wj1 + Wj2 + gj1 + blep + lepVector + METVector + gj2).M();
     }
     
     ljetVectors.clear();

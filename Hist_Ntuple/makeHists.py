@@ -175,6 +175,7 @@ if channel=="Mu":
     if sample=="QCD":
         sample = "QCDMu"
     outFileFullDir = outFileMainDir+"/%s/%s/Mu"%(year,ttbarDecayMode)
+    #extraCuts            = "(passPresel_Mu && %s && chi2<300)*"%(bothJetSel)
     extraCuts            = "(passPresel_Mu && %s)*"%(bothJetSel)
 
 elif channel=="Ele":
@@ -184,25 +185,6 @@ elif channel=="Ele":
         sample = "QCDEle"
     outFileFullDir = outFileMainDir+"/%s/%s/Ele"%(year,ttbarDecayMode)
     extraCuts            = "(passPresel_Ele && %s)*"%(bothJetSel)
-
-elif channel=="QCDMu":
-    if sample=="Data":
-        sample = "DataMu"
-    if sample=="QCD":
-        sample = "QCDMu"
-    outFileFullDir = outFileMainDir+"/%s/%s/Mu"%(year,ttbarDecayMode)
-    nJets, nBJets, nJetSel, nBJetSel, bothJetSel = getJetMultiCut(controlRegion, True)
-    extraCuts            = "(passPresel_Mu && muPFRelIso<0.3 && %s)*"%(bothJetSel)
-
-elif channel=="QCDEle":
-    if sample=="Data":
-        sample = "DataEle"
-    if sample=="QCD":
-        sample = "QCDEle"
-    nJets, nBJets, nJetSel, nBJetSel, bothJetSel = getJetMultiCut(controlRegion, True)
-    outFileFullDir = outFileMainDir+"/%s/%s/Ele"%(year,ttbarDecayMode)
-    toPrint("Full Path of Hist", outFileFullDir)
-    extraCuts                 = "(passPresel_Ele && elePFRelIso>0.01 && %s)*"%(bothJetSel)
 else:
     print "Unknown final state, options are Mu and Ele"
     sys.exit()

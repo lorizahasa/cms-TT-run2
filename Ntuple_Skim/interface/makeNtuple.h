@@ -202,6 +202,9 @@ class makeNtuple {
     Float_t         _TopLep_phi;
     Float_t         _TopLep_mass;
     Float_t         _TopLep_charge;
+    Float_t         _TopStarLep_mass;
+    Float_t         _TopStarHad_mass;
+    Float_t         _tgtg_mass;
 
     Float_t         _chi2;
 
@@ -468,6 +471,8 @@ class makeNtuple {
     TLorentzVector blep;
     TLorentzVector Wj1;
     TLorentzVector Wj2;
+    TLorentzVector gj1;
+    TLorentzVector gj2;
 
     /* std::vector<bool> isBjet; */
     /* std::vector<int> b_ind; */
@@ -644,6 +649,9 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("TopLep_eta"                 , &_TopLep_eta                  );
     outputTree->Branch("TopLep_phi"                 , &_TopLep_phi                  );
     outputTree->Branch("TopLep_mass"                , &_TopLep_mass                 );
+    outputTree->Branch("TopStarLep_mass"            , &_TopStarLep_mass                 );
+    outputTree->Branch("TopStarHad_mass"            , &_TopStarHad_mass                 );
+    outputTree->Branch("tgtg_mass"                , &_tgtg_mass                 );
     outputTree->Branch("TopLep_charge"              , &_TopLep_charge               );
 
     outputTree->Branch("chi2"                       , &_chi2               );
@@ -872,6 +880,9 @@ void makeNtuple::InitVariables()
     _TopLep_eta      = -9999;
     _TopLep_phi      = -9999;
     _TopLep_mass     = -9999;
+    _TopStarLep_mass     = -9999;
+    _TopStarHad_mass     = -9999;
+    _tgtg_mass     = -9999;
     _TopLep_charge   = -9999;
 
     _chi2   = -9999;
