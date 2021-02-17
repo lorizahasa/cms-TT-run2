@@ -448,7 +448,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 	outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/QCDcr_");
     }
     if (saveCutflow) {
-	outputFileName.replace(outputFileName.find("Ntuple"),14, "Cutflow");
+	//outputFileName.replace(outputFileName.find("Ntuple"),14, "Cutflow");
     }
 
     cout << av[3] << " " << sampleType << " " << systematicType << endl;
@@ -1132,7 +1132,7 @@ void makeNtuple::FillEvent(std::string year)
 	_muEta.push_back(tree->muEta_[muInd]);
 	_muPFRelIso.push_back(tree->muPFRelIso_[muInd]);
 
-	lepVector.SetPtEtaPhiM(tree->muPt_[muInd],
+	muVector.SetPtEtaPhiM(tree->muPt_[muInd],
 			       tree->muEta_[muInd],
 			       tree->muPhi_[muInd],
 			       tree->muMass_[muInd]);
@@ -1141,7 +1141,6 @@ void makeNtuple::FillEvent(std::string year)
 	
     if (dileptonsample){
 	if (_nMu==2) {
-
 	    int muInd1 = selector->Muons.at(0);
 	    int muInd2 = selector->Muons.at(1);
 
@@ -1605,19 +1604,20 @@ void makeNtuple::FillEvent(std::string year)
 
     
     // // // Calculate MET z
-    // metZ.SetLepton(lepVector);
-
-    // METVector.SetPtEtaPhiM(tree->MET_pt_,
-    // 			   0.,
-    // 			   tree->MET_phi_,
-    // 			   0.);
+     metZ.SetLepton(muVector);
+    METVector.SetPtEtaPhiM(tree->MET_pt_,
+    			   0.,
+    			   tree->MET_phi_,
+    			   0.);
+     metZ.SetMET(METVector);
+    //std::cout<<METVector.E()<<"\t"<<METVector.Px()<<"\t"<<METVector.Py()<<"\t"<<METVector.Pz()<<"\t"<<METVector.M()<<std::endl;
+    //std::cout<<muVector.E()<<"\t"<<muVector.Px()<<"\t"<<muVector.Py()<<"\t"<<muVector.Pz()<<"\t"<<muVector.M()<<std::endl;
 	
-    // metZ.SetMET(METVector);
 
     //Calculate transverse mass variables
     //W transverse mass		
 
-    _WtransMass = TMath::Sqrt(2*lepVector.Pt()*tree->MET_pt_*( 1.0 - TMath::Cos( lepVector.DeltaPhi(METVector))));
+    _WtransMass = TMath::Sqrt(2*muVector.Pt()*tree->MET_pt_*( 1.0 - TMath::Cos( muVector.DeltaPhi(METVector))));
 
 
     // TLorentzVector tempLep;
@@ -1653,7 +1653,7 @@ void makeNtuple::FillEvent(std::string year)
     topEvent.SetJetResVector(jetResolutionVectors);
     topEvent.SetBtagVector(jetBtagVectors);
 
-    topEvent.SetLepton(lepVector);
+    topEvent.SetLepton(muVector);
     topEvent.SetMET(METVector);
     
     /*
@@ -1667,8 +1667,8 @@ void makeNtuple::FillEvent(std::string year)
 
 	_chi2 = topEvent.getChi2();
 
-	_Mt_blgammaMET = TMath::Sqrt( pow(TMath::Sqrt( pow( (blep + lepVector + phoVector).Pt(),2) + pow( (blep + lepVector + phoVector).M(),2) ) + METVector.Pt(), 2) - pow((blep + lepVector + phoVector + METVector ).Pt(),2) );
-	_Mt_lgammaMET = TMath::Sqrt( pow(TMath::Sqrt( pow( (lepVector + phoVector).Pt(),2) + pow( (lepVector + phoVector).M(),2) ) + METVector.Pt(), 2) - pow((lepVector + phoVector + METVector ).Pt(),2) );
+	_Mt_blgammaMET = TMath::Sqrt( pow(TMath::Sqrt( pow( (blep + muVector + phoVector).Pt(),2) + pow( (blep + muVector + phoVector).M(),2) ) + METVector.Pt(), 2) - pow((blep + muVector + phoVector + METVector ).Pt(),2) );
+	_Mt_lgammaMET = TMath::Sqrt( pow(TMath::Sqrt( pow( (muVector + phoVector).Pt(),2) + pow( (muVector + phoVector).M(),2) ) + METVector.Pt(), 2) - pow((muVector + phoVector + METVector ).Pt(),2) );
 	_M_bjj = ( bhad + Wj1 + Wj2 ).M();
 	_M_bjjgamma = ( bhad + Wj1 + Wj2 + phoVector).M();
 	_M_jj  = ( Wj1 + Wj2 ).M();
@@ -1677,12 +1677,12 @@ void makeNtuple::FillEvent(std::string year)
     _TopHad_eta = ( bhad + Wj1 + Wj2 ).Eta();
     _TopHad_phi = ( bhad + Wj1 + Wj2 ).Phi();
     _TopHad_mass = ( bhad + Wj1 + Wj2 ).M();
-    _TopLep_pt = ( blep + lepVector + METVector ).Pt();
-    _TopLep_eta = ( blep + lepVector + METVector ).Eta();
-    _TopLep_phi = ( blep + lepVector + METVector ).Phi();
-    _TopLep_mass = ( blep + lepVector + METVector ).M();
+    _TopLep_pt = ( blep + muVector + METVector ).Pt();
+    _TopLep_eta = ( blep + muVector + METVector ).Eta();
+    _TopLep_phi = ( blep + muVector + METVector ).Phi();
+    _TopLep_mass = ( blep + muVector + METVector ).M();
     _TopLep_charge = lepCharge;
-    _TopTop_mass = (bhad + Wj1 + Wj2 + blep + lepVector + METVector).M();
+    _TopTop_mass = (bhad + Wj1 + Wj2 + blep + muVector + METVector).M();
 	_MassCuts = ( _Mt_blgammaMET > 180 &&
 		      _Mt_lgammaMET > 90 && 
 		      _M_bjj > 160 && 
@@ -1701,14 +1701,20 @@ void makeNtuple::FillEvent(std::string year)
 	Wj2 = jetVectors[topEvent.getJ2()];
 	gj1 = jetVectors[topEvent.getJ3()];
 	gj2 = jetVectors[topEvent.getJ4()];
+    //std::cout<<topEvent.getBHad()<<"\t"<<topEvent.getBLep()<<"\t"<<topEvent.getJ1()<<"\t"<<topEvent.getJ2()<<"\t"<<topEvent.getJ3()<<"\t"<<topEvent.getJ4()<<std::endl;
 	_chi2 = topEvent.getChi2_tgtg();
 	METVector.SetPz(topEvent.getNuPz());
+    double _met_pz = topEvent.getNuPz(); 
+    double new_met_E = sqrt(_met_px*_met_px + _met_py*_met_py + _met_pz*_met_pz); 
+    METVector.SetE(new_met_E);
+
 	_M_jj  = ( Wj1 + Wj2 ).M();
-    _TopHad_mass = ( bhad + Wj1 + Wj2 ).M();
-    _TopLep_mass = ( blep + lepVector + METVector ).M();
+	_TopHad_mass = ( bhad + Wj1 + Wj2 ).M();
+	_TopLep_mass = ( blep + muVector + METVector ).M();
     _TopStarHad_mass = ( bhad + Wj1 + Wj2 + gj1).M();
-    _TopStarLep_mass = ( blep + lepVector + METVector + gj2).M();
-    _tgtg_mass = (bhad + Wj1 + Wj2 + gj1 + blep + lepVector + METVector + gj2).M();
+    _TopStarLep_mass = ( blep + muVector + METVector + gj2).M();
+    _TopStar_mass = (_TopStarLep_mass + _TopStarHad_mass)/2;
+    _tgtg_mass = (bhad + Wj1 + Wj2 + gj1 + blep + muVector + METVector + gj2).M();
     }
     
     ljetVectors.clear();

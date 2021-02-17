@@ -35,12 +35,25 @@ double TopEventCombinatorics::topChiSq_tgtg(TLorentzVector j1, double sigma_j1,
 				       TLorentzVector bl, double sigma_bl,
 				       double nu_pz_hypo){
     met.SetPz(nu_pz_hypo);
+    double _met_px = met.Px();
+    double _met_py = met.Py();
+    double new_met_E = sqrt(_met_px*_met_px + _met_py*_met_py + nu_pz_hypo*nu_pz_hypo);
+    met.SetE(new_met_E);
+
     //https://arxiv.org/pdf/1711.10949.pdf
     double sigma2_tHad = 34.0*34.0; 
     double sigma2_WHad = 24.0*24.0;
     double sigma2_tLep = 30.0*30.0;
-    double sigma2_tstar = 230.0*230.0;
-    double c = pow( (bh + j1 + j2).M() - mTop,2)/sigma2_tHad + pow( (j1 + j2).M() - mW,2)/sigma2_WHad + pow( (bl + lepton + met).M() - mTop,2)/sigma2_tLep + pow( (bh + j1 + j2 + j4).M() - (bl + lepton + met + j4).M(),2)/sigma2_tstar;
+    double sigma2_tstar = 233.0*233.0;
+    double term1 = pow( (j1 + j2).M() - mW,2)/sigma2_WHad;
+    double term2 = pow( (bh + j1 + j2).M() - mTop,2)/sigma2_tHad;
+    //std::cout<<met.E()<<"\t"<<met.Px()<<"\t"<<met.Py()<<"\t"<<met.Pz()<<"\t"<<met.M()<<std::endl;
+    double term3 = pow( (bl + lepton + met).M() - mTop,2)/sigma2_tLep;
+    //double term4 = pow( (bh + j1 + j2 + j3).M() - (bl + lepton + met + j4).M(),2)/sigma2_tstar;
+    double term4 = pow( (bh + j1 + j2 + j3).M() - 800, 2)/sigma2_tstar;
+    double term5 = pow( (bl + lepton + met + j4).M() - 800,2)/sigma2_tstar;
+    //double c = term1 + term2  + term2  + term4 ;
+    double c = term1 + term2  + term2  + term4 + term5 ;
     return c;
 
 }
@@ -128,6 +141,7 @@ int TopEventCombinatorics::Calculate_tgtg(){
 	for (unsigned int i =0; i < jets.size(); i++) bJetsList.push_back(i);
     } else {
 	for (unsigned int i =0; i < jets.size(); i++){
+        //std::cout<<"btag[i]"<<btag[i]<<", btagThresh = "<<btagThresh<<std::endl;
 	    if (btag[i] > btagThresh) bJetsList.push_back(i);
 	}
 	if (bJetsList.size() < nBjetSize){
@@ -144,10 +158,13 @@ int TopEventCombinatorics::Calculate_tgtg(){
     double _nu_pz_2 = metZ.getOther();
     nu_pz_List.push_back(_nu_pz_1);
     if (_nu_pz_1!=_nu_pz_2) nu_pz_List.push_back(_nu_pz_2);
-
     chi2_tgtg = 9.e9;
     double comboChi2 = 9.e9;
+    //chi2_tgtg = 500.0;
+    //double comboChi2 = 500.0;
 
+    //std::cout<<"nJets = "<<jets.size()<<std::endl;
+    //std::cout<<"nBJets = "<<bJetsList.size()<<std::endl;
     for (const auto& i_bhad : bJetsList){
 	for (const auto& i_blep : bJetsList){
 	    if (i_bhad==i_blep) continue;
@@ -169,6 +186,7 @@ int TopEventCombinatorics::Calculate_tgtg(){
 						    jets.at(i_bhad), jetsRes.at(i_bhad),
 						    jets.at(i_blep), jetsRes.at(i_blep),
 						    test_nu_pz);
+            //std::cout<<"comboChi2 = "<<comboChi2<<std::endl;
 			if (comboChi2 < chi2_tgtg){
 			    chi2_tgtg = comboChi2;
 			    blep_idx = i_blep;

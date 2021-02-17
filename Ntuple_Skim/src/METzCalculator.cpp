@@ -14,10 +14,9 @@ METzCalculator::~METzCalculator() {
 }
 
 /// member functions
-double
-METzCalculator::Calculate(int type) {
+double METzCalculator::Calculate(int type) {
 
-	double M_W  = 80.4;
+	    double M_W  = 80.4;
         double M_mu =  leptonMass_;
         double emu = lepton_.E();
         double pxmu = lepton_.Px();
@@ -26,13 +25,12 @@ METzCalculator::Calculate(int type) {
         double pxnu = MET_.Px();
         double pynu = MET_.Py();
         double pznu = 0.;
-	otherSol_ = 0.;
+	    otherSol_ = 0.;
 		
         double a = M_W*M_W - M_mu*M_mu + 2.0*pxmu*pxnu + 2.0*pymu*pynu;
         double A = 4.0*(emu*emu - pzmu*pzmu);
         double B = -4.0*a*pzmu;
         double C = 4.0*emu*emu*(pxnu*pxnu + pynu*pynu) - a*a;
-
         double tmproot = B*B - 4.0*A*C;
 
         if (tmproot<0) {
@@ -89,6 +87,5 @@ METzCalculator::Calculate(int type) {
 
         //Particle neutrino;
         //neutrino.setP4( LorentzVector(pxnu, pynu, pznu, TMath::Sqrt(pxnu*pxnu + pynu*pynu + pznu*pznu ))) ;
-
         return pznu;
 }

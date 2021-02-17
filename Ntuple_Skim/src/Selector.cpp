@@ -53,7 +53,8 @@ Selector::Selector(){
 
     // muons
     mu_Pt_cut = 30;
-    mu_Eta_tight = 2.4;
+    //mu_Eta_tight = 2.4;
+    mu_Eta_tight = 2.1;
     mu_RelIso_tight = 0.15;
 
     mu_PtLoose_cut = 15.0;

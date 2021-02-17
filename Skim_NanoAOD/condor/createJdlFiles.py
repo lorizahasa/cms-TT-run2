@@ -4,7 +4,8 @@ import sys
 
 #IMPORT MODULES FROM OTHER DIR
 sys.path.insert(0, os.getcwd().replace("condor","sample"))
-from NanoAOD_Gen_SplitJobs_cff import Samples_2016, Samples_2017, Samples_2018 
+#from NanoAOD_Gen_SplitJobs_cff import Samples_2016, Samples_2017, Samples_2018 
+from NanoAOD_Gen_SplitJobs_cff import Samples_2016
 
 if not os.path.exists("tmpSub/log"):
     os.makedirs("tmpSub/log")
@@ -28,7 +29,8 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #Create jdl files
 #----------------------------------------
 subFile = open('tmpSub/condorSubmit.sh','w')
-for year in [2016,2017,2018]:
+#for year in [2016,2017,2018]:
+for year in [2016]:
     sampleList = eval("Samples_%i"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
     jdlFile = open('tmpSub/%s'%jdlName,'w')

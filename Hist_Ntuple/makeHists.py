@@ -175,8 +175,9 @@ if channel=="Mu":
     if sample=="QCD":
         sample = "QCDMu"
     outFileFullDir = outFileMainDir+"/%s/%s/Mu"%(year,ttbarDecayMode)
-    #extraCuts            = "(passPresel_Mu && %s && chi2<300)*"%(bothJetSel)
-    extraCuts            = "(passPresel_Mu && %s)*"%(bothJetSel)
+    extraCuts            = "(passPresel_Mu && %s && chi2<50)*"%(bothJetSel)
+    #extraCuts            = "(passPresel_Mu && %s)*"%(bothJetSel)
+    #extraCuts            = ""
 
 elif channel=="Ele":
     if sample=="Data":
@@ -190,7 +191,7 @@ else:
     sys.exit()
 
 weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,MuEff,EleEff,Q2,Pdf,isr,fsr,btagWeight)
-#weights = "evtWeight"
+#weights = "%s*%s"%(evtWeight,Pileup)
 toPrint("Extra cuts ", extraCuts)
 toPrint("Final event weight ", weights)
 
