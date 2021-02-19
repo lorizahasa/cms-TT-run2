@@ -26,6 +26,8 @@ def getBaseHists(fileDict, hName, CR):
             if sample=="Data":
                 hPath = "data_obs/Base/CR/%s/%s"%(CR, hName)
         print hPath
+        print fileDict[sample]
+        print hPath
         hist = fileDict[sample].Get(hPath)
         hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
         if sample=="Data":
@@ -37,7 +39,8 @@ def getBaseHists(fileDict, hName, CR):
         else:
             bkgHists.append(hist)
     #return dataHist, bkgHists, qcdMCHist, qcdDDHist
-    return dataHist, bkgHists, qcdMCHist
+    #return dataHist, bkgHists, qcdMCHist
+    return dataHist, bkgHists
 
 def getSystHists(fileDict, hName, CR, level):
     '''
@@ -177,7 +180,8 @@ def decoLegend(legend, nCol, textSize):
     legend.SetTextAlign(12);
     return legend
 
-def getLegend(dataHist, bkgHists, uncGraph):
+#def getLegend(dataHist, bkgHists, uncGraph):
+def getLegend(dataHist, bkgHists):
     '''
     The background hists are sorted in the
     decending order of the event yield. That
@@ -192,7 +196,7 @@ def getLegend(dataHist, bkgHists, uncGraph):
     for bkgHist in bkgHists:
         legendName = Samples[bkgHist.GetName().split("_")[0]][2] 
         legend.AddEntry(bkgHist, legendName, "F")
-    legend.AddEntry(uncGraph, "Pre-fit unc.","F");
+    #legend.AddEntry(uncGraph, "Pre-fit unc.","F");
     return legend
 
 #-----------------------------------------
@@ -224,7 +228,7 @@ def sortHists(hAllBkgs, isReverse):
 #----------------------------------------------------------
 #Jet selection naming: a3j_e2b = atleast 3 jet, out of which 2 are b jets: nJet >= 3, nBJet ==2
 def formatCRString(controlRegion="tight_a4j_e0b"):
-    allJetSel = "jets >=4, b jets >=2"
+    allJetSel = "jets >=6, b jets = 2"
     if not controlRegion=="":
     	splitCR = controlRegion.split("_")
     	jetCut  = splitCR[1].strip()

@@ -49,11 +49,11 @@ double TopEventCombinatorics::topChiSq_tgtg(TLorentzVector j1, double sigma_j1,
     double term2 = pow( (bh + j1 + j2).M() - mTop,2)/sigma2_tHad;
     //std::cout<<met.E()<<"\t"<<met.Px()<<"\t"<<met.Py()<<"\t"<<met.Pz()<<"\t"<<met.M()<<std::endl;
     double term3 = pow( (bl + lepton + met).M() - mTop,2)/sigma2_tLep;
-    //double term4 = pow( (bh + j1 + j2 + j3).M() - (bl + lepton + met + j4).M(),2)/sigma2_tstar;
-    double term4 = pow( (bh + j1 + j2 + j3).M() - 800, 2)/sigma2_tstar;
-    double term5 = pow( (bl + lepton + met + j4).M() - 800,2)/sigma2_tstar;
-    //double c = term1 + term2  + term2  + term4 ;
-    double c = term1 + term2  + term2  + term4 + term5 ;
+    double term4 = pow( (bh + j1 + j2 + j3).M() - (bl + lepton + met + j4).M(),2)/sigma2_tstar;
+    //double term4 = pow( (bh + j1 + j2 + j3).M() - 800, 2)/sigma2_tstar;
+    //double term5 = pow( (bl + lepton + met + j4).M() - 800,2)/sigma2_tstar;
+    double c = term1 + term2  + term2  + term4 ;
+    //double c = term1 + term2  + term2  + term4 + term5 ;
     return c;
 
 }
@@ -172,10 +172,10 @@ int TopEventCombinatorics::Calculate_tgtg(){
 		if (i_bhad==i_j1 || i_blep==i_j1) continue; //skip if i_j1 is already used as a bjet
 		for (unsigned int i_j2=i_j1+1; i_j2<jets.size(); i_j2++){
 		    if (i_bhad==i_j2 || i_blep==i_j2) continue; //skip if i_j2 is already used as a bjet
-		for (unsigned int i_j3=i_j2+1; i_j3<jets.size(); i_j3++){
-		    if (i_bhad==i_j3 || i_blep==i_j3) continue; //skip if i_j3 is already used as a bjet
-		for (unsigned int i_j4=i_j3+1; i_j4<jets.size(); i_j4++){
-		    if (i_bhad==i_j4 || i_blep==i_j4) continue; //skip if i_j4 is already used as a bjet
+		for (unsigned int i_j3=0; i_j3<jets.size(); i_j3++){
+		    if (i_bhad==i_j3 || i_blep==i_j3 || i_j3==i_j1 || i_j3==i_j2) continue; 
+		for (unsigned int i_j4=0; i_j4<jets.size(); i_j4++){
+		    if (i_bhad==i_j4 || i_blep==i_j4 || i_j4==i_j1 || i_j4==i_j2 || i_j4==i_j3) continue; 
 		    //loop over nu_pz solutions
 		    for (const auto& test_nu_pz: nu_pz_List){
 
@@ -186,7 +186,7 @@ int TopEventCombinatorics::Calculate_tgtg(){
 						    jets.at(i_bhad), jetsRes.at(i_bhad),
 						    jets.at(i_blep), jetsRes.at(i_blep),
 						    test_nu_pz);
-            //std::cout<<"comboChi2 = "<<comboChi2<<std::endl;
+            //std::cout<<i_bhad<<"\t"<<i_blep<<"\t"<<i_j1<<"\t"<<i_j2<<"\t"<<i_j3<<"\t"<<i_j4<<"\t"<<comboChi2<<std::endl;
 			if (comboChi2 < chi2_tgtg){
 			    chi2_tgtg = comboChi2;
 			    blep_idx = i_blep;

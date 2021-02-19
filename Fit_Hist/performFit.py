@@ -18,6 +18,8 @@ parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type=
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
+parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
+                     help="Specify the mass of charged Higgs")
 parser.add_option("--isComb","--isComb",dest="isComb", default=False, action="store_true",
 		  help="combine datacards")
 parser.add_option("--combYear", dest="combYear",default=["2016"], action="append",
@@ -26,7 +28,7 @@ parser.add_option("--combChannel", dest="combChannel",default=["Mu","Ele"],actio
           help="channels to be combined" )
 parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
                      help="which control selection and region")
-parser.add_option("--hist", "--hist", dest="hName", default="phosel_M3",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="presel_TopStar_mass",type='str', 
                      help="which histogram to be used for making datacard")
 parser.add_option("--isT2W","--isT2W",dest="isT2W", default=False, action="store_true",
 		  help="create text2workspace datacards")
@@ -34,23 +36,23 @@ parser.add_option("--isFD","--isFD",dest="isFD", default=False, action="store_tr
 		  help="run FitDiabnostics")
 parser.add_option("--isImpact","--isImpact",dest="isImpact", default=False, action="store_true",
 		  help="run impacts")
+parser.add_option("--isLimit","--isLimit",dest="isLimit", default=False, action="store_true",
+		  help="run impacts")
 parser.add_option("--isCM","--isCM",dest="isCM", default=False, action="store_true",
 		  help="make plot of covariance matrix")
 parser.add_option("--isTP","--isTP",dest="isTP", default=False, action="store_true",
 		  help="generate toys")
 parser.add_option("--isPlotTP","--isPlotTP",dest="isPlotTP", default=False, action="store_true",
 		  help="plot generated toys")
-parser.add_option("--isCount","--isCount",dest="isCount", default=False, action="store_true",
-		  help="")
 (options, args) = parser.parse_args()
 year            = options.year
 decayMode       = options.decayMode
 channel         = options.channel
+mass            = options.mass
 CR              = options.CR
 hName           = options.hName
 combYear        = options.combYear[0].split(",")
 combChannel     = options.combChannel[0].split(",")
-isCount         = options.isCount
 print combChannel
 combChannel = ["Mu","Ele"]
 
@@ -59,6 +61,7 @@ isComb          = options.isComb
 isT2W 			= options.isT2W
 isFD            = options.isFD
 isImpact        = options.isImpact
+isLimit        = options.isLimit
 isCM            = options.isCM
 isTP            = options.isTP
 isPlotTP        = options.isPlotTP
@@ -75,19 +78,14 @@ rateParamKey = "rateParam"
 #For separate datacards
 #----------------------------------------
 dirDC = "DirectoryOfDataCard"
-if isCount:
-    shapeOrCount = "CountBased"
-else:
-    shapeOrCount = "ShapeBased"
-
 def getDataCard(year, decayMode, channel, CR, hName):
     global dirDC
     if CR=="":
-        name  = "DC_%s_%s_%s_%s_%s_SR"%(year, decayMode, channel, shapeOrCount, hName)
-        dirDC = "%s/Fit/%s/%s/%s/%s/%s/SR"%(condorHistDir, year, decayMode, channel, shapeOrCount, hName)
+        name  = "DC_%s_%s_%s_%s_SR_mH%s"%(year, decayMode, channel, hName, mass)
+        dirDC = "%s/Fit_Hist/%s/%s/%s/%s/SR/mH%s"%(condorCBADir, year, decayMode, channel, hName, mass)
     else:
-        name  = "DC_%s_%s_%s_%s_%s_CR_%s"%(year, decayMode, channel, shapeOrCount, hName, CR)
-        dirDC = "%s/Fit/%s/%s/%s/%s/%s/CR/%s"%(condorHistDir, year, decayMode, channel, shapeOrCount, hName, CR)
+        name  = "DC_%s_%s_%s_%s_%s_CR_%s_mH%s"%(year, decayMode, channel, hName, mass, CR)
+        dirDC = "%s/Fit_Hist/%s/%s/%s/%s/CR/%s/mH%s"%(condorCBADir, year, decayMode, channel, hName, mass, CR)
     pathDC   = jsonData[name][0]
     global rateParamKey
     rateParamKey = name.replace("DC","RP")
@@ -111,11 +109,11 @@ if isComb:
     combYText  = ''.join([str(y) for y in combYear])
     combChText = ''.join([str(ch) for ch in combChannel]) 
     if CR=="":
-        dirDC        = "%s/Fit/Combined/%s_%s/%s/SR"%(condorHistDir, combYText, combChText, shapeOrCount)
-        rateParamKey = "RP_Comb_%s_%s_%s_SR"%(combYText, combChText, shapeOrCount)
+        dirDC        = "%s/Fit/Combined/%s_%s/SR"%(condorCBADir, combYText, combChText, shapeOrCount)
+        rateParamKey = "RP_Comb_%s_%s_SR"%(combYText, combChText, shapeOrCount)
     else:
-        dirDC        = "%s/Fit/Combined/%s_%s/%s/CR/%s"%(condorHistDir, combYText, combChText, shapeOrCount, CR)
-        rateParamKey = "RP_Comb_%s_%s_%s_CR_%s"%(combYText, combChText, shapeOrCount, CR)
+        dirDC        = "%s/Fit/Combined/%s_%s/CR/%s"%(condorCBADir, combYText, combChText,  CR)
+        rateParamKey = "RP_Comb_%s_%s_CR_%s"%(combYText, combChText,  CR)
     if not os.path.exists(dirDC):
         os.makedirs(dirDC)
     pathDC  = "%s/Datacard_Comb.txt"%(dirDC)
@@ -124,11 +122,12 @@ if isComb:
     print pathDC
 else:
     pathDC = getDataCard(year, decayMode, channel, CR, hName)
-    pathT2W = "%s/Text2W_Cat.root"%(dirDC) 
+    pathT2W = "%s/Text2W_Inc.root"%(dirDC) 
     print pathDC
 
 if isT2W:
-	runCmd("text2workspace.py %s -o %s"%(pathDC, pathT2W))
+        #runCmd("text2workspace.py %s -o %s -P HiggsAnalysis.CombinedLimit.ChargedHiggs:brChargedHiggs"%(pathDC, pathT2W))
+        runCmd("text2workspace.py %s -o %s"%(pathDC, pathT2W))
         print pathT2W
 
 #-----------------------------------------
@@ -165,6 +164,12 @@ if isFD:
 
 if isTP:
     runCmd("combine -M FitDiagnostics %s --name TP -t -1 --out %s --seed=314159 --plots --saveNLL --rMin=-5 --rMax=5 --setParameterRanges nonPromptSF=-10,10 --expectSignal=1 -t 500 -v3 --skipBOnlyFit --trackParameters r,BTagSF_b,BTagSF_l,EleEff,MuEff,PhoEff,lumi_13TeV,ZGSF,TTbarSF,OtherSF,WGSF,nonPromptSF &"%(pathT2W, dirDC))
+    print dirDC
+
+if isLimit:
+    #https://github.com/cms-analysis/CombineHarvester/blob/master/docs/Limits.md
+    #runCmd("combine --rAbsAcc 0.000001 %s -M AsymptoticLimits --mass %s --name _hcs_run2"%(pathT2W, mass))
+    runCmd("combineTool.py -d %s -M AsymptoticLimits --mass %s -n _hcs_run2 --run blind --there --parallel 4 "%(pathT2W, mass))
     print dirDC
 
 #-----------------------------------------

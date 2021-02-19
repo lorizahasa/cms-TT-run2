@@ -1,11 +1,11 @@
 import ROOT as rt
 #-----------------------------------------------------------------
-condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-hcs-run2/CBA_RecoNtuple/Hist_Ntuple"
+condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple"
 #-----------------------------------------------------------------
-Year 	      =	["2016", "2017", "2018"]
-#Year 	      =	["2016"]
-Channel 	  =	["Mu", "Ele"]
-#Channel 	  =	["Mu"]
+#Year 	      =	["2016", "2017", "2018"]
+Year 	      =	["2016"]
+#Channel 	  =	["Mu", "Ele"]
+Channel 	  =	["Mu"]
 #Decay 	  =	["Semilep", "Dilep"]
 Decay 	  =	["Semilep"]
 Systematics   =	["PU","MuEff","BTagSF_b","BTagSF_l","EleEff","Q2","Pdf","isr","fsr"]
@@ -16,11 +16,12 @@ ControlRegion = []
 #ControlRegion=["tight_a4j_a1b", "veryTight_a4j_a2b", "tight_a4j_e0b", "looseCR_a2j_e1b", "looseCR_a2j_a0b", "looseCR_a2j_e0b", "looseCR_e3j_a2b", "looseCR_e3j_e0b", "looseCR_e2j_e1b", "looseCR_e2j_e0j", "looseCR_e2j_e2b", "looseCR_e3j_e1b"]
 isMC = True
 isData = True
-SamplesSyst = ['Diboson', 'TTV', 'Wjets', 'TTbar', 'ZJets', 'SingleTop', 'QCD']
+#SamplesSyst = ['Diboson', 'TTV', 'Wjets', 'TTbar', 'ZJets', 'SingleTop', 'QCD']
+SamplesSyst = ['TTbar', 'SingleTop']
 
-Signal = {"HplusM100"   : [[""],
+Signal = {"TT_tgtg_M800"   : [[""],
                           rt.kOrange,
-                          "mH+ = 100 GeV",
+                          "mT* = 800 GeV",
                           isMC
                           ]
                           }
@@ -29,34 +30,9 @@ Samples = {"TTbar"     : [[""],
                           "t#bar{t}",
                           isMC
                           ],
-           "Wjets"     : [[""],
-                          rt.kCyan-3,
-                          "W + jets",
-                          isMC
-                          ],
-           "ZJets"     : [[""],
-                          rt.kCyan-5,
-                          "Z + jets",
-                          isMC
-                          ],
-           "Diboson"   : [[""],
-                          rt.kCyan-7,
-                          "VV",
-                          isMC
-                          ],
            "SingleTop" : [[""],
                           rt.kOrange-3,
                           "Single t",
-                          isMC
-                          ],
-           "TTV"       : [[""],
-                          rt.kRed-7,
-                          "ttV",
-                          isMC
-                          ],
-           "QCD"    : [[""],
-                          rt.kGreen,
-                          "QCD MC",
                           isMC
                           ],
            "Data"   : [[""],

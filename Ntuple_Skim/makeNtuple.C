@@ -1701,6 +1701,7 @@ void makeNtuple::FillEvent(std::string year)
 	Wj2 = jetVectors[topEvent.getJ2()];
 	gj1 = jetVectors[topEvent.getJ3()];
 	gj2 = jetVectors[topEvent.getJ4()];
+    //std::cout<<"---------------------"<<std::endl;
     //std::cout<<topEvent.getBHad()<<"\t"<<topEvent.getBLep()<<"\t"<<topEvent.getJ1()<<"\t"<<topEvent.getJ2()<<"\t"<<topEvent.getJ3()<<"\t"<<topEvent.getJ4()<<std::endl;
 	_chi2 = topEvent.getChi2_tgtg();
 	METVector.SetPz(topEvent.getNuPz());

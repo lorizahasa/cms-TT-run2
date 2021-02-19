@@ -21,7 +21,7 @@ void initCrossSections(){
     crossSections["TT_tgtg_M1300"]  =  {0.0261, 0.0261, 0.0261};
     crossSections["TT_tgtg_M1400"]  =  {0.0131, 0.0131, 0.0131};
     crossSections["TT_tgtg_M1500"]  =  {0.00677, 0.00677, 0.00677};
-    crossSections["TT_tgtg_M1500"]  =  {0.00359, 0.00359, 0.00359};
+    crossSections["TT_tgtg_M1600"]  =  {0.00359, 0.00359, 0.00359};
 
     crossSections["TTbarPowheg"]    =  {831.76, 831.76, 831.76};  //ttbar NNLO (http://inspirehep.net/search?p=find+eprint+1112.5675)
 

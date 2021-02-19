@@ -34,7 +34,11 @@ allPlotList = [
 "presel_TopStarLep_mass",
 "presel_TopStar_mass",
 "presel_chi2",
-"presel_tgtg_mass"
+"presel_tgtg_mass",
+"presel_Njet",      
+"presel_muPt",      
+"presel_muEta",     
+"presel_nVtx",      
 ]
 
 '''

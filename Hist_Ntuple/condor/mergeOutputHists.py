@@ -41,8 +41,8 @@ outHistFullDir = "%s/%s"%(condorHistDir, outHistSubDir)
 runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%outHistFullDir)
 
 if channel in ["mu", "Mu", "MU", "mU"]:
-    Samples.remove("QCDEle")
-    Samples.remove("DataEle")
+    #Samples.remove("QCDEle")
+    #Samples.remove("DataEle")
     for sampleMu in Samples:
         haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(outHistFullDir, sampleMu)
         haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'%s_.*root\'`"%( inHistFullDir, sampleMu)

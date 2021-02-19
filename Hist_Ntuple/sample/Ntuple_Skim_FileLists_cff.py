@@ -4,7 +4,7 @@ TT_tgtg_M1300_2016 = ['TT_tgtg_M1300_2016_Ntuple.root']
 
 TT_tytg_M1200_2016 = ['TT_tytg_M1200_2016_Ntuple.root']
 
-TT_tgtg_M1600_2016 = []
+TT_tgtg_M1600_2016 = ['TT_tgtg_M1600_2016_Ntuple.root']
 
 ST_tW_channel_2016 = ['ST_tW_channel_2016_Ntuple_1of2.root', 'ST_tW_channel_2016_Ntuple_2of2.root']
 

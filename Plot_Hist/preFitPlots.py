@@ -27,7 +27,7 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
                      help="which control selection and region")
-parser.add_option("--plot", dest="plotList",action="append",default=["presel_M3"], help="Add plots" )
+parser.add_option("--plot", dest="plotList",action="append",default=["presel_muPt"], help="Add plots" )
 parser.add_option("--morePlots","--MorePlots",dest="makeMorePlots",action="store_true",default=False,
                      help="Make larger list of kinematic distributions" )
 parser.add_option("--allPlots","--allPlots",dest="makeAllPlots",action="store_true",default=False,
@@ -78,7 +78,7 @@ if plotList is None:
 #-----------------------------------------
 #Make a plot for one histogram
 #----------------------------------------
-def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio):
+def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
     '''
     We first draw stacked histograms then data then unc band.
     The ratio of data and background is drawn next in a separate
@@ -100,7 +100,8 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio):
 
     #Get nominal histograms
     #dataHist, bkgHists, qcdMCHist, qcdDDHist = getBaseHists(fileDict, hName, CR)
-    dataHist, bkgHists, qcdMCHist = getBaseHists(fileDict, hName, CR)
+    #dataHist, bkgHists, qcdMCHist = getBaseHists(fileDict, hName, CR)
+    dataHist, bkgHists = getBaseHists(fileDict, hName, CR)
     hSumOtherBkg = bkgHists[0].Clone("hSumOtherBkg")
     hSumOtherBkg.Reset()
     hAllBkgs = bkgHists
@@ -159,10 +160,11 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio):
             hDiffDown.Add(hDiff)
 
     #Get unc band for the top plot
-    uncGraphTop = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,False)
-    uncGraphTop.SetFillColor(2);
-    uncGraphTop.SetFillStyle(3001);
-    uncGraphTop.Draw(" E2 same ");
+    if isUnc:
+        uncGraphTop = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,False)
+        uncGraphTop.SetFillColor(2);
+        uncGraphTop.SetFillStyle(3001);
+        uncGraphTop.Draw(" E2 same ");
     
     #Draw data
     decoHist(dataHist[0], xTitle, yTitle, Samples["Data"][1])
@@ -172,7 +174,8 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio):
 
     #Draw legend
     hForLegend = sortHists(hAllBkgs, True)
-    plotLegend = getLegend(dataHist, hForLegend, uncGraphTop)
+    #plotLegend = getLegend(dataHist, hForLegend, uncGraphTop)
+    plotLegend = getLegend(dataHist, hForLegend)
     plotLegend.Draw()
 
     #Draw CMS, Lumi, channel
@@ -210,17 +213,19 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio):
         hRatio.Divide(hSumAllBkg)
         decoHistRatio(hRatio, xTitle, "Obs./Exp.", 1)
         hRatio.Draw()
-        uncGraphRatio = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,True)
-        uncGraphRatio.SetFillColor(2);
-        uncGraphRatio.SetFillStyle(3001);
-        uncGraphRatio.Draw("E2same");
+        if isUnc:
+            uncGraphRatio = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,True)
+            uncGraphRatio.SetFillColor(2);
+            uncGraphRatio.SetFillStyle(3001);
+            uncGraphRatio.Draw("E2same");
         baseLine = TF1("baseLine","1", -100, 2000);
         #baseLine.SetLineColor(kRed+1);
         baseLine.SetLineColor(3);
         baseLine.Draw("SAME");
         hRatio.Draw("same")
     #canvas.SaveAs("%s/%s.pdf"%(outPlotFullDir, hName))
-    canvas.SaveAs("%s/%s_%s_%s.png"%(outPlotFullDir, hName, year, channel))
+    #canvas.SaveAs("%s/%s_%s_%s.pdf"%(outPlotFullDir, hName, year, channel))
+    canvas.SaveAs("PlotFromHist/pdf/%s_%s_%s.pdf"%(hName, year, channel))
 
 #-----------------------------------------
 #Finally make the plot for each histogram
@@ -228,9 +233,10 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio):
 for hName in plotList:
     isQCDMC  = False
     isData   = True
-    isLog    = True
+    isLog    = False
     isRatio  = True
+    isUnc    = False
     if hName not in histograms.keys():
         print "hist name = %s, is not found"%hName
         sys.exit()
-    makePlot(hName, CR, isQCDMC,  isData, isLog, isRatio)
+    makePlot(hName, CR, isQCDMC,  isData, isLog, isRatio, isUnc)
