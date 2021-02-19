@@ -460,6 +460,7 @@ class makeNtuple {
     std::vector<TLorentzVector> ljetVectors;
     std::vector<TLorentzVector> bjetVectors;
     std::vector<TLorentzVector> jetVectors;
+    std::vector<TLorentzVector> phoVectors;
 
     float lepCharge;
 

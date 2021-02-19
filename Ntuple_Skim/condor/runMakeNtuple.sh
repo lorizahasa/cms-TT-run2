@@ -43,7 +43,8 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-condorOutDir=/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim
+#condorOutDir=/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim
+condorOutDir=/store/user/rverma/Output/cms-TT-run2/tytg/Ntuple_Skim
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else

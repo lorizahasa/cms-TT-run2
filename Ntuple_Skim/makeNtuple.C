@@ -1208,7 +1208,7 @@ void makeNtuple::FillEvent(std::string year)
     _nPhoEndcap=0.;
 
     int parentPID = -1;
-
+    phoVectors.clear();
     if (tree->event_==eventNum) {
 	cout <<"Photon Info" << endl; 
     }
@@ -1219,7 +1219,7 @@ void makeNtuple::FillEvent(std::string year)
 			       tree->phoEta_[phoInd],
 			       tree->phoPhi_[phoInd],
 			       0.0);
-
+    phoVectors.push_back(phoVector);
 	_phoEt.push_back(tree->phoEt_[phoInd]);
 	_phoEta.push_back(tree->phoEta_[phoInd]);
 	_phoPhi.push_back(tree->phoPhi_[phoInd]);
@@ -1692,7 +1692,6 @@ void makeNtuple::FillEvent(std::string year)
 		      _nPho > 0);
 	
     }
-    */
     topEvent.Calculate_tgtg();
     if (topEvent.GoodCombination_tgtg()){
 	bhad = jetVectors[topEvent.getBHad()];
@@ -1704,6 +1703,37 @@ void makeNtuple::FillEvent(std::string year)
     //std::cout<<"---------------------"<<std::endl;
     //std::cout<<topEvent.getBHad()<<"\t"<<topEvent.getBLep()<<"\t"<<topEvent.getJ1()<<"\t"<<topEvent.getJ2()<<"\t"<<topEvent.getJ3()<<"\t"<<topEvent.getJ4()<<std::endl;
 	_chi2 = topEvent.getChi2_tgtg();
+	METVector.SetPz(topEvent.getNuPz());
+    double _met_pz = topEvent.getNuPz(); 
+    double new_met_E = sqrt(_met_px*_met_px + _met_py*_met_py + _met_pz*_met_pz); 
+    METVector.SetE(new_met_E);
+
+	_M_jj  = ( Wj1 + Wj2 ).M();
+	_TopHad_mass = ( bhad + Wj1 + Wj2 ).M();
+	_TopLep_mass = ( blep + muVector + METVector ).M();
+    _TopStarHad_mass = ( bhad + Wj1 + Wj2 + gj1).M();
+    _TopStarLep_mass = ( blep + muVector + METVector + gj2).M();
+    _TopStar_mass = (_TopStarLep_mass + _TopStarHad_mass)/2;
+    _tgtg_mass = (bhad + Wj1 + Wj2 + gj1 + blep + muVector + METVector + gj2).M();
+    }
+    */
+    topEvent.SetPhotonVector(phoVectors);
+    topEvent.Calculate_tytg();
+    if (topEvent.GoodCombination_tytg()){
+	bhad = jetVectors[topEvent.getBHad()];
+	blep = jetVectors[topEvent.getBLep()];
+	Wj1 = jetVectors[topEvent.getJ1()];
+	Wj2 = jetVectors[topEvent.getJ2()];
+    if (topEvent.getPhotonSide()){ //photon is on leptonic side
+	    gj1 = jetVectors[topEvent.getJ3()];
+	    gj2 = jetVectors[topEvent.getPho()];
+    }else{ //photon is on hadronic side
+	    gj2 = jetVectors[topEvent.getJ3()];
+	    gj1 = jetVectors[topEvent.getPho()];
+    }
+    //std::cout<<"---------------------"<<std::endl;
+    std::cout<<topEvent.getBHad()<<"\t"<<topEvent.getBLep()<<"\t"<<topEvent.getJ1()<<"\t"<<topEvent.getJ2()<<"\t"<<topEvent.getJ3()<<"\t"<<topEvent.getJ4()<<std::endl;
+	_chi2 = topEvent.getChi2_tytg();
 	METVector.SetPz(topEvent.getNuPz());
     double _met_pz = topEvent.getNuPz(); 
     double new_met_E = sqrt(_met_px*_met_px + _met_py*_met_py + _met_pz*_met_pz); 

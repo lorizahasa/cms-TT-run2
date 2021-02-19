@@ -28,6 +28,9 @@ class TopEventCombinatorics{
 	blep_idx = 0;
 	j1_idx = 0;
 	j2_idx = 0;
+    j3_idx = 0;
+    j4_idx = 0;
+    pho_idx =0;
     }
 	
     void SetMtop(double mTop_){ mTop = mTop_;}
@@ -37,6 +40,7 @@ class TopEventCombinatorics{
     void SetJetResVector(std::vector<double> jetres_){ jetsRes = jetres_;}
     void SetBtagVector(std::vector<double> jetsTag_){ btag = jetsTag_;}
 
+    void SetPhotonVector(std::vector<TLorentzVector> photons_){ photons = photons_;}
     void SetLepton(TLorentzVector lepton_){ lepton = lepton_; metZ.SetLepton(lepton_);}
     void SetMET(TLorentzVector met_){ met = met_; metZ.SetMET(met_);}
 
@@ -54,19 +58,24 @@ class TopEventCombinatorics{
     unsigned int getJ2(){ return j2_idx; }
     unsigned int getJ3(){ return j3_idx; }
     unsigned int getJ4(){ return j4_idx; }
+    unsigned int getPho(){ return pho_idx; }
+    bool getPhotonSide(){ return photonIsLeptonSide; }
     double getNuPz(){ return nu_pz; }
 	
     double getChi2(){ return chi2; }
     double getChi2_tgtg(){ return chi2_tgtg; }
+    double getChi2_tytg(){ return chi2_tytg; }
 
     bool GoodCombination(){ return goodCombo; }
     bool GoodCombination_tgtg(){ return goodCombo_tgtg; }
+    bool GoodCombination_tytg(){ return goodCombo_tytg; }
 
     void ClearVectors(){
 	jets.clear();
     }
     int Calculate();
     int Calculate_tgtg();
+    int Calculate_tytg();
 
 
 
@@ -75,6 +84,7 @@ class TopEventCombinatorics{
     double mW;
     double chi2;
     double chi2_tgtg;
+    double chi2_tytg;
 
     double topChiSq(TLorentzVector j1, double sigma_j1,
 		    TLorentzVector j2, double sigma_j2,
@@ -89,12 +99,20 @@ class TopEventCombinatorics{
 		    TLorentzVector bh, double sigma_bh,
 		    TLorentzVector bl, double sigma_bl,
 		    double nu_pz_hypo);
+    double topChiSq_tytg(TLorentzVector j1,
+		    TLorentzVector j2,
+		    TLorentzVector j3,
+		    TLorentzVector pho,
+		    TLorentzVector bh,
+		    TLorentzVector bl,
+		    double nu_pz_hypo);
     std::vector<TLorentzVector> jets;
     std::vector<double> jetsRes;
     std::vector<double> btag;
 
     TLorentzVector lepton;
     double leptonRes;
+    std::vector<TLorentzVector> photons;
 
     TLorentzVector met;
     double METRes;
@@ -119,10 +137,13 @@ class TopEventCombinatorics{
     int j2_idx;
     int j3_idx;
     int j4_idx;
+    int pho_idx;
+    int photonIsLeptonSide;
     int nu_pz;
 	
     bool goodCombo;
     bool goodCombo_tgtg;
+    bool goodCombo_tytg;
 
     bool useResolutions;
 
