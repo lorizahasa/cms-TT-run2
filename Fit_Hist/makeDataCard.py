@@ -59,8 +59,8 @@ if not os.path.exists(outFileDir):
 cb = ch.CombineHarvester()
 #cb.SetVerbosity(4)
 #AllBkgs = ["TTbar", "Wjets", "ZJets", "Diboson", "SingleTop", "TTV","QCD"]
-AllBkgs = ["TTbar", "SingleTop"] 
-Signal  = ["TT_tgtg_M%s"%mass]
+AllBkgs = ["TTGamma", "TTbar", "SingleTop"] 
+Signal  = ["TT_tytg_M%s"%mass]
 allMC   = Signal + AllBkgs
 #------------------
 #Add observed data

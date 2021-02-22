@@ -52,7 +52,7 @@ printf "Done Histogramming at ";/bin/date
 #Copy the ouput root files
 #---------------------------------------------
 printf "Copying output files ..."
-condorOutDir=/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple
+condorOutDir=/store/user/rverma/Output/cms-TT-run2/tytg/Hist_Ntuple
 eos root://cmseos.fnal.gov mkdir -p $condorOutDir/$1/$2/$3/
 xrdcp -rf hists/$1/$2/$3/*.root root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/ 
 printf "Done ";/bin/date

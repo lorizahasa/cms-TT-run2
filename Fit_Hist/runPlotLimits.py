@@ -12,21 +12,21 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
     hName = "presel_TopStar_mass"
     dirDC = "%s/Fit_Hist/%s/%s/%s/%s/SR"%(condorCBADir, year, decay, channel, hName)
     nameDC = "mH*/higgsCombine_hcs_run2.AsymptoticLimits.mH*.root" 
-    #runCmd("%s/%s"%(dirDC, nameDC))
+    runCmd("%s/%s"%(dirDC, nameDC))
     print hName
-    ##runCmd("combineTool.py -M CollectLimits %s/%s -o %s/limits.json"%(dirDC, nameDC, dirDC))
+    runCmd("combineTool.py -M CollectLimits %s/%s -o %s/limits.json"%(dirDC, nameDC, dirDC))
     if scaleLimits:
         xss = {}
-        xss["700.0"]   =  4.92
-        xss["800.0"]   =  1.68
-        xss["900.0"]   =  0.636
-        xss["1000.0"]  =  0.262
-        xss["1100.0"]  =  0.116
-        xss["1200.0"]  =  0.0537
-        xss["1300.0"]  =  0.0261
-        xss["1400.0"]  =  0.0131
-        xss["1500.0"]  =  0.00677
-        xss["1600.0"]  =  0.00359
+        xss["700.0"]   = 0.03*4.92
+        xss["800.0"]   = 0.03*1.68
+        xss["900.0"]   = 0.03*0.636
+        xss["1000.0"]  = 0.03*0.262
+        xss["1100.0"]  = 0.03*0.116
+        xss["1200.0"]  = 0.03*0.0537
+        xss["1300.0"]  = 0.03*0.0261
+        xss["1400.0"]  = 0.03*0.0131
+        xss["1500.0"]  = 0.03*0.00677
+        xss["1600.0"]  = 0.03*0.00359
         with open ("%s/limits.json"%dirDC) as old_limit:
             new_limit = json.load(old_limit)
             print "OLD: ", new_limit
@@ -48,7 +48,6 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
     if "Mu" in channel:
         title_left = "#mu + jets"
     out = "limit_%s_%s"%(year, channel)
-    #runCmd("python plotLimits.py --title-left \"%s\" --title-right \"%s\" %s/limits.json -o %s/limits"%(title_left, title_right, dirDC, dirDC))
     if scaleLimits:
         limitFile = "scaled_limits.json"
     else:

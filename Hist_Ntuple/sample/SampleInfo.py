@@ -3,7 +3,7 @@ from Ntuple_Skim_FileLists_cff import *
 #-----------------------------------------
 #INPUT AnalysisNtuples Directory
 #----------------------------------------
-dirBase = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim" 
+dirBase = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/tytg/Ntuple_Skim" 
 dirBaseCR = dirBase
 dirSyst = dirBase
 dirSystCR = dirBase
@@ -38,9 +38,18 @@ def gs(year, s_array):
 
 def getSamples(y):
     samples = {"TT_tyty_M800" : gs(y, ["TT_tyty_M800"]),
-               "TT_tytg_M800" : gs(y, ["TT_tytg_M800"]),  
                "TT_tyty_M1200" : gs(y, ["TT_tyty_M1200"]),  
+
+               "TT_tytg_M700" : gs(y, ["TT_tytg_M700"]),  
+               "TT_tytg_M800" : gs(y, ["TT_tytg_M800"]),  
+               "TT_tytg_M900" : gs(y, ["TT_tytg_M900"]),  
+               "TT_tytg_M1000" : gs(y, ["TT_tytg_M1000"]),  
+               "TT_tytg_M1100" : gs(y, ["TT_tytg_M1100"]),  
                "TT_tytg_M1200" : gs(y, ["TT_tytg_M1200"]),  
+               "TT_tytg_M1300" : gs(y, ["TT_tytg_M1300"]),  
+               "TT_tytg_M1400" : gs(y, ["TT_tytg_M1400"]),  
+               "TT_tytg_M1500" : gs(y, ["TT_tytg_M1500"]),  
+               "TT_tytg_M1600" : gs(y, ["TT_tytg_M1500"]),  
 
                "TT_tgtg_M700" : gs(y, ["TT_tgtg_M700"]),  
                "TT_tgtg_M800" : gs(y, ["TT_tgtg_M800"]),  

@@ -22,7 +22,7 @@ parser.add_argument(
 parser.add_argument(
     '--y-title', default=None, help="""Title for the y-axis""")
 parser.add_argument(
-    '--limit-on', default='xss #times BR(t^{*}#rightarrow tg)', help="""Shortcut for setting the y-axis label""")
+    '--limit-on', default='xss #times BR(t^{*}#rightarrow ty)', help="""Shortcut for setting the y-axis label""")
 parser.add_argument(
     '--cms-sub', default='Internal', help="""Text below the CMS logo""")
 parser.add_argument(
@@ -156,7 +156,7 @@ if args.logy:
     axis[0].SetMinimum(0.1)  # we'll fix this later
     pads[0].SetLogy(True)
     # axis[0].GetYaxis().SetMoreLogLabels()
-    axis[0].GetYaxis().SetRangeUser(0.01, 100)
+    axis[0].GetYaxis().SetRangeUser(0.01, 100.0)
     # axis[0].SetNdivisions(50005, "X")
 
 y_min, y_max = (plot.GetPadYMin(pads[0]), plot.GetPadYMax(pads[0]))
@@ -209,16 +209,16 @@ plot.DrawTitle(pads[0], args.title_left, 1)
 drawTheory = True
 if drawTheory:
     xss = {}
-    xss["700.0"]   =  4.92
-    xss["800.0"]   =  1.68
-    xss["900.0"]   =  0.636
-    xss["1000.0"]  =  0.262
-    xss["1100.0"]  =  0.116
-    xss["1200.0"]  =  0.0537
-    xss["1300.0"]  =  0.0261
-    xss["1400.0"]  =  0.0131
-    xss["1500.0"]  =  0.00677
-    xss["1600.0"]  =  0.00359
+    xss["700.0"]   = 0.03*4.92
+    xss["800.0"]   = 0.03*1.68
+    xss["900.0"]   = 0.03*0.636
+    xss["1000.0"]  = 0.03*0.262
+    xss["1100.0"]  = 0.03*0.116
+    xss["1200.0"]  = 0.03*0.0537
+    xss["1300.0"]  = 0.03*0.0261
+    xss["1400.0"]  = 0.03*0.0131
+    xss["1500.0"]  = 0.03*0.00677
+    xss["1600.0"]  = 0.03*0.00359
     x, y = array( 'd' ), array( 'd' )
     for key in xss.keys():
         x.append(float(key))

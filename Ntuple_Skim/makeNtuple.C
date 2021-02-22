@@ -1728,11 +1728,11 @@ void makeNtuple::FillEvent(std::string year)
 	    gj1 = jetVectors[topEvent.getJ3()];
 	    gj2 = jetVectors[topEvent.getPho()];
     }else{ //photon is on hadronic side
-	    gj2 = jetVectors[topEvent.getJ3()];
 	    gj1 = jetVectors[topEvent.getPho()];
+	    gj2 = jetVectors[topEvent.getJ3()];
     }
     //std::cout<<"---------------------"<<std::endl;
-    std::cout<<topEvent.getBHad()<<"\t"<<topEvent.getBLep()<<"\t"<<topEvent.getJ1()<<"\t"<<topEvent.getJ2()<<"\t"<<topEvent.getJ3()<<"\t"<<topEvent.getJ4()<<std::endl;
+    //std::cout<<topEvent.getBHad()<<"\t"<<topEvent.getBLep()<<"\t"<<topEvent.getJ1()<<"\t"<<topEvent.getJ2()<<"\t"<<topEvent.getJ3()<<"\t"<<topEvent.getJ4()<<std::endl;
 	_chi2 = topEvent.getChi2_tytg();
 	METVector.SetPz(topEvent.getNuPz());
     double _met_pz = topEvent.getNuPz(); 

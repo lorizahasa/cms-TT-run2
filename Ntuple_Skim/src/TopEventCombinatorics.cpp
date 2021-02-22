@@ -270,8 +270,10 @@ int TopEventCombinatorics::Calculate_tytg(){
     //chi2_tgtg = 500.0;
     //double comboChi2 = 500.0;
 
+    //std::cout<<"---------------"<<std::endl;
     //std::cout<<"nJets = "<<jets.size()<<std::endl;
     //std::cout<<"nBJets = "<<bJetsList.size()<<std::endl;
+    //std::cout<<"nPhoton = "<<photons.size()<<std::endl;
     for (unsigned int i_pho=0; i_pho<photons.size(); i_pho++){
     for (const auto& i_bhad : bJetsList){
 	for (const auto& i_blep : bJetsList){
@@ -293,8 +295,8 @@ int TopEventCombinatorics::Calculate_tytg(){
 						    jets.at(i_blep), 
 						    test_nu_pz);
             //std::cout<<i_bhad<<"\t"<<i_blep<<"\t"<<i_j1<<"\t"<<i_j2<<"\t"<<i_j3<<"\t"<<i_j4<<"\t"<<comboChi2<<std::endl;
-			if (comboChi2 < chi2_tgtg){
-			    chi2_tgtg = comboChi2;
+			if (comboChi2 < chi2_tytg){
+			    chi2_tytg = comboChi2;
 			    blep_idx = i_blep;
 			    bhad_idx = i_bhad;
 			    j1_idx = i_j1;
@@ -313,8 +315,8 @@ int TopEventCombinatorics::Calculate_tytg(){
 						    jets.at(i_blep), 
 						    test_nu_pz);
             //std::cout<<i_bhad<<"\t"<<i_blep<<"\t"<<i_j1<<"\t"<<i_j2<<"\t"<<i_j3<<"\t"<<i_j4<<"\t"<<comboChi2<<std::endl;
-			if (comboChi2 < chi2_tgtg){
-			    chi2_tgtg = comboChi2;
+			if (comboChi2 < chi2_tytg){
+			    chi2_tytg = comboChi2;
 			    blep_idx = i_blep;
 			    bhad_idx = i_bhad;
 			    j1_idx = i_j1;

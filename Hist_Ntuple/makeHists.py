@@ -176,7 +176,8 @@ if channel=="Mu":
         sample = "QCDMu"
     outFileFullDir = outFileMainDir+"/%s/%s/Mu"%(year,ttbarDecayMode)
     #extraCuts            = "(passPresel_Mu && %s && chi2<50)*"%(bothJetSel)
-    extraCuts            = "(passPresel_Mu && %s)*"%(bothJetSel)
+    #extraCuts            = "(passPresel_Mu && %s)*"%(bothJetSel)
+    extraCuts            = "(passPresel_Mu && nPho>=1 && %s)*"%(bothJetSel)
     #extraCuts            = ""
 
 elif channel=="Ele":

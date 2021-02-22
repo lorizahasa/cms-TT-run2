@@ -38,7 +38,8 @@ allPlotList = [
 "presel_Njet",      
 "presel_muPt",      
 "presel_muEta",     
-"presel_nVtx",      
+"presel_MET",       
+"presel_Nbjet",     
 ]
 
 '''

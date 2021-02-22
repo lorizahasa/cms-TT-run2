@@ -1,6 +1,6 @@
 import ROOT as rt
 #-----------------------------------------------------------------
-condorCBADir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2"
+condorCBADir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/tytg"
 condorHistDir = "%s/Hist_Ntuple"%condorCBADir
 #-----------------------------------------------------------------
 #Year 	      =	["2016", "2017", "2018"]

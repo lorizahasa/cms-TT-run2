@@ -1,6 +1,6 @@
 import ROOT as rt
 #-----------------------------------------------------------------
-condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple"
+condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/tytg/Hist_Ntuple"
 #-----------------------------------------------------------------
 #Year 	      =	["2016", "2017", "2018"]
 Year 	      =	["2016"]
@@ -33,6 +33,11 @@ Samples = {"TTbar"     : [[""],
            "SingleTop" : [[""],
                           rt.kOrange-3,
                           "Single t",
+                          isMC
+                          ],
+           "TTGamma" : [[""],
+                          rt.kGreen-3,
+                          "TTgamma",
                           isMC
                           ],
            "Data"   : [[""],
