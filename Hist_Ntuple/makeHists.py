@@ -177,7 +177,7 @@ if channel=="Mu":
     outFileFullDir = outFileMainDir+"/%s/%s/Mu"%(year,ttbarDecayMode)
     #extraCuts            = "(passPresel_Mu && %s && chi2<50)*"%(bothJetSel)
     extraCuts            = "(passPresel_Mu && %s)*"%(bothJetSel)
-    #extraCuts            = ""
+    #extraCuts            = "(passPresel_Mu)*"
 
 elif channel=="Ele":
     if sample=="Data":
@@ -192,6 +192,7 @@ else:
 
 weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,MuEff,EleEff,Q2,Pdf,isr,fsr,btagWeight)
 #weights = "%s*%s"%(evtWeight,Pileup)
+#weights = ""
 toPrint("Extra cuts ", extraCuts)
 toPrint("Final event weight ", weights)
 
