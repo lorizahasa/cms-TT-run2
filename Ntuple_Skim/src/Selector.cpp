@@ -25,7 +25,7 @@ Selector::Selector(){
     veto_lep_jet_dR = 0.4; // remove jets with a lepton closer than this cut level
     veto_pho_jet_dR = 0.1; // remove jets with a photon closer than this cut level
 
-    veto_lep_pho_dR = 0.4; // remove photons with a lepton closer than this cut level
+    vhDict[s].Integral())eto_lep_pho_dR = 0.4; // remove photons with a lepton closer than this cut level
     veto_jet_pho_dR = -1.; // remove photons with a jet closer than this cut level
 
     JERsystLevel  = 1;

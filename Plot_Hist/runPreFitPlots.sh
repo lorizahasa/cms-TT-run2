@@ -1,4 +1,13 @@
-python preFitPlots.py --plot presel_muPt 
-python preFitPlots.py --plot presel_muEta 
-python preFitPlots.py --plot presel_Njet
-
+python preFitPlots.py --plot presel_TopHad_mass
+python preFitPlots.py --plot presel_TopLep_mass
+python preFitPlots.py --plot presel_TopStarHad_mass
+python preFitPlots.py --plot presel_TopStarLep_mass
+python preFitPlots.py --plot presel_TopStar_mass
+python preFitPlots.py --plot presel_chi2
+python preFitPlots.py --plot presel_tgtg_mass
+python preFitPlots.py --plot presel_Njet      
+python preFitPlots.py --plot presel_muPt      
+python preFitPlots.py --plot presel_jetPt      
+python preFitPlots.py --plot presel_muEta     
+python preFitPlots.py --plot presel_MET       
+python preFitPlots.py --plot presel_Nbjet     

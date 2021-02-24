@@ -102,6 +102,14 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
     #dataHist, bkgHists, qcdMCHist, qcdDDHist = getBaseHists(fileDict, hName, CR)
     #dataHist, bkgHists, qcdMCHist = getBaseHists(fileDict, hName, CR)
     dataHist, bkgHists = getBaseHists(fileDict, hName, CR)
+    sigFile = TFile("%s/%s.root"%(inHistFullDir,"TT_tytg_M800"), "read")
+    sigHist = sigFile.Get('%s/Base/SR/%s'%('TT_tytg_M800', hName))
+    sigHist.Scale(18)
+    sigHist.SetLineColor(6)
+    sigHist.SetLineStyle(2)
+    sigHist.SetLineWidth(3) 
+    sigHist.SetFillColor(0)
+
     hSumOtherBkg = bkgHists[0].Clone("hSumOtherBkg")
     hSumOtherBkg.Reset()
     hAllBkgs = bkgHists
@@ -171,18 +179,20 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
     dataHist[0].SetMarkerStyle(20)
     if isData:
         dataHist[0].Draw("EPsame")
+    sigHist.Draw("HISTsame")
 
     #Draw legend
     hForLegend = sortHists(hAllBkgs, True)
     #plotLegend = getLegend(dataHist, hForLegend, uncGraphTop)
     plotLegend = getLegend(dataHist, hForLegend)
+    plotLegend.AddEntry(sigHist, "18 x signal tytg (mT = 800 GeV)", "PL")
     plotLegend.Draw()
 
     #Draw CMS, Lumi, channel
     if channel in ["mu", "Mu", "m"]:
-        chName = "#mu + jets"
+        chName = "1 #mu, 1 #gamma "
     else:
-        chName = "e + jets"
+        chName = "1 e, 1 #gamma "
     crName = formatCRString(CR)
     if CR=="":
         chName = "%s, SR"%chName
@@ -225,16 +235,16 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
         hRatio.Draw("same")
     #canvas.SaveAs("%s/%s.pdf"%(outPlotFullDir, hName))
     #canvas.SaveAs("%s/%s_%s_%s.pdf"%(outPlotFullDir, hName, year, channel))
-    canvas.SaveAs("PlotFromHist/pdf/%s_%s_%s.pdf"%(hName, year, channel))
+    canvas.SaveAs("PlotFromHist/pdf/%s_%s_%s.png"%(hName, year, channel))
 
 #-----------------------------------------
 #Finally make the plot for each histogram
 #----------------------------------------
 for hName in plotList:
     isQCDMC  = False
-    isData   = True
-    isLog    = False
-    isRatio  = True
+    isData   = False
+    isLog    = True
+    isRatio  = False
     isUnc    = False
     if hName not in histograms.keys():
         print "hist name = %s, is not found"%hName

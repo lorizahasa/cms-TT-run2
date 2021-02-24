@@ -25,9 +25,6 @@ def getBaseHists(fileDict, hName, CR):
             hPath = "%s/Base/CR/%s/%s"%(sample, CR, hName)
             if sample=="Data":
                 hPath = "data_obs/Base/CR/%s/%s"%(CR, hName)
-        print hPath
-        print fileDict[sample]
-        print hPath
         hist = fileDict[sample].Get(hPath)
         hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
         if sample=="Data":
@@ -188,7 +185,7 @@ def getLegend(dataHist, bkgHists):
     is the proccess having highest contribution
     comes first.
     '''
-    legend = TLegend(0.45,0.70,0.92,0.88);
+    legend = TLegend(0.45,0.70,0.92,0.80);
     decoLegend(legend, 4, 0.035)
     #legend = TLegend(0.55,0.60,0.92,0.88); for 3 col
     #legend = TLegend(0.70,0.50,0.95,0.88); 
@@ -228,7 +225,7 @@ def sortHists(hAllBkgs, isReverse):
 #----------------------------------------------------------
 #Jet selection naming: a3j_e2b = atleast 3 jet, out of which 2 are b jets: nJet >= 3, nBJet ==2
 def formatCRString(controlRegion="tight_a4j_e0b"):
-    allJetSel = "jets >=6, b jets = 2"
+    allJetSel = "jets >=5, b jets = 2"
     if not controlRegion=="":
     	splitCR = controlRegion.split("_")
     	jetCut  = splitCR[1].strip()

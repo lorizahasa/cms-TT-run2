@@ -8,7 +8,8 @@ Year 	      =	["2016"]
 Channel 	  =	["Mu"]
 #Decay 	  =	["Semilep", "Dilep"]
 Decay 	  =	["Semilep"]
-Systematics   =	["PU","MuEff","BTagSF_b","BTagSF_l","EleEff","Q2","Pdf","isr","fsr"]
+Systematics   =	["PU","MuEff","BTagSF_b","BTagSF_l","EleEff","Q2","Pdf"]
+#Systematics   =	["PU","MuEff","BTagSF_b","BTagSF_l","EleEff","Q2","Pdf","isr","fsr"]
 #Systematics   =	["JER", "JECTotal"]
 #Systematics   =	["PU","Q2"]
 SystLevel     = ["Up", "Down"]
@@ -32,12 +33,12 @@ Samples = {"TTbar"     : [[""],
                           ],
            "SingleTop" : [[""],
                           rt.kOrange-3,
-                          "Single t",
+                          "t",
                           isMC
                           ],
            "TTGamma" : [[""],
                           rt.kGreen-3,
-                          "TTgamma",
+                          "tty",
                           isMC
                           ],
            "Data"   : [[""],

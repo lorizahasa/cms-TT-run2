@@ -17,16 +17,16 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
     runCmd("combineTool.py -M CollectLimits %s/%s -o %s/limits.json"%(dirDC, nameDC, dirDC))
     if scaleLimits:
         xss = {}
-        xss["700.0"]   = 0.03*4.92
-        xss["800.0"]   = 0.03*1.68
-        xss["900.0"]   = 0.03*0.636
-        xss["1000.0"]  = 0.03*0.262
-        xss["1100.0"]  = 0.03*0.116
-        xss["1200.0"]  = 0.03*0.0537
-        xss["1300.0"]  = 0.03*0.0261
-        xss["1400.0"]  = 0.03*0.0131
-        xss["1500.0"]  = 0.03*0.00677
-        xss["1600.0"]  = 0.03*0.00359
+        xss["700.0"]   = 0.03*0.97*2*4.92
+        xss["800.0"]   = 0.03*0.97*2*1.68
+        xss["900.0"]   = 0.03*0.97*2*0.636
+        xss["1000.0"]  = 0.03*0.97*2*0.262
+        xss["1100.0"]  = 0.03*0.97*2*0.116
+        xss["1200.0"]  = 0.03*0.97*2*0.0537
+        xss["1300.0"]  = 0.03*0.97*2*0.0261
+        xss["1400.0"]  = 0.03*0.97*2*0.0131
+        xss["1500.0"]  = 0.03*0.97*2*0.00677
+        xss["1600.0"]  = 0.03*0.97*2*0.00359
         with open ("%s/limits.json"%dirDC) as old_limit:
             new_limit = json.load(old_limit)
             print "OLD: ", new_limit
@@ -46,7 +46,7 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
         title_right = "59.7 fb^{-1} (2018) (13 TeV)"
     title_left = "e + jets"
     if "Mu" in channel:
-        title_left = "#mu + jets"
+        title_left = "1 #mu, 1 #gamma, >=5 jets, == 2 b jets"
     out = "limit_%s_%s"%(year, channel)
     if scaleLimits:
         limitFile = "scaled_limits.json"

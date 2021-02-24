@@ -80,9 +80,8 @@ cb.cp().process(allMC).AddSyst(cb, "BTagSF_l" , "shape",ch.SystMap("era") (["13T
 cb.cp().process(allMC).AddSyst(cb, "PU"       , "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "EleEff"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "MuEff"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
-#cb.cp().process(["HplusM120", "TTbar"]).AddSyst(cb, "Q2" , "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(["HplusM120"]).AddSyst(cb, "isr"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(["HplusM120"]).AddSyst(cb, "fsr"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Pdf"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Q2"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
 #------------------
 #Add rateParam
 #------------------

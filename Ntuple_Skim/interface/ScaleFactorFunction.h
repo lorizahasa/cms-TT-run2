@@ -10,16 +10,16 @@ void initCrossSections(){
     crossSections["TT_tyty_M800"]   =  {1.0, 1.0, 1.0};  
     crossSections["TT_tyty_M1200"]  =  {1.0, 1.0, 1.0};  
 
-    crossSections["TT_tytg_M700"]   =  {0.03*4.92, 4.92, 4.92};
-    crossSections["TT_tytg_M800"]   =  {0.03*1.68, 1.68, 1.68};
-    crossSections["TT_tytg_M900"]   =  {0.03*0.636, 0.636, 0.636};
-    crossSections["TT_tytg_M1000"]  =  {0.03*0.262, 0.262, 0.262};
-    crossSections["TT_tytg_M1100"]  =  {0.03*0.116, 0.116, 0.116};
-    crossSections["TT_tytg_M1200"]  =  {0.03*0.0537, 0.0537, 0.0537};
-    crossSections["TT_tytg_M1300"]  =  {0.03*0.0261, 0.0261, 0.0261};
-    crossSections["TT_tytg_M1400"]  =  {0.03*0.0131, 0.0131, 0.0131};
-    crossSections["TT_tytg_M1500"]  =  {0.03*0.00677, 0.00677, 0.00677};
-    crossSections["TT_tytg_M1600"]  =  {0.03*0.00359, 0.00359, 0.00359};
+    crossSections["TT_tytg_M700"]   =  {0.03*0.97*2*4.92, 4.92, 4.92};
+    crossSections["TT_tytg_M800"]   =  {0.03*0.97*2*1.68, 1.68, 1.68};
+    crossSections["TT_tytg_M900"]   =  {0.03*0.97*2*0.636, 0.636, 0.636};
+    crossSections["TT_tytg_M1000"]  =  {0.03*0.97*2*0.262, 0.262, 0.262};
+    crossSections["TT_tytg_M1100"]  =  {0.03*0.97*2*0.116, 0.116, 0.116};
+    crossSections["TT_tytg_M1200"]  =  {0.03*0.97*2*0.0537, 0.0537, 0.0537};
+    crossSections["TT_tytg_M1300"]  =  {0.03*0.97*2*0.0261, 0.0261, 0.0261};
+    crossSections["TT_tytg_M1400"]  =  {0.03*0.97*2*0.0131, 0.0131, 0.0131};
+    crossSections["TT_tytg_M1500"]  =  {0.03*0.97*2*0.00677, 0.00677, 0.00677};
+    crossSections["TT_tytg_M1600"]  =  {0.03*0.97*2*0.00359, 0.00359, 0.00359};
 
     crossSections["TT_tgtg_M700"]   =  {4.92, 4.92, 4.92};
     crossSections["TT_tgtg_M800"]   =  {1.68, 1.68, 1.68};
