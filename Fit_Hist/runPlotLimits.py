@@ -14,7 +14,7 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
     nameDC = "mH*/higgsCombine_hcs_run2.AsymptoticLimits.mH*.root" 
     #runCmd("%s/%s"%(dirDC, nameDC))
     print hName
-    ##runCmd("combineTool.py -M CollectLimits %s/%s -o %s/limits.json"%(dirDC, nameDC, dirDC))
+    runCmd("combineTool.py -M CollectLimits %s/%s -o %s/limits.json"%(dirDC, nameDC, dirDC))
     if scaleLimits:
         xss = {}
         xss["700.0"]   =  4.92
@@ -46,7 +46,7 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
         title_right = "59.7 fb^{-1} (2018) (13 TeV)"
     title_left = "e + jets"
     if "Mu" in channel:
-        title_left = "#mu + jets"
+        title_left = "1 #mu, >= 6 jets, ==2 b"
     out = "limit_%s_%s"%(year, channel)
     #runCmd("python plotLimits.py --title-left \"%s\" --title-right \"%s\" %s/limits.json -o %s/limits"%(title_left, title_right, dirDC, dirDC))
     if scaleLimits:

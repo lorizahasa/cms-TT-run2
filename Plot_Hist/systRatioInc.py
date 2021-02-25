@@ -30,7 +30,7 @@ parser.add_option("-s", "--sample", dest="sample", default="TTbar",type='str',
 		  help="name of the MC sample" )
 parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
                      help="which control selection and region")
-parser.add_option("--hist", "--hist", dest="hName", default="presel_Njet",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="presel_TopStar_mass",type='str', 
                      help="name of the histogram")
 (options, args) = parser.parse_args()
 year            = options.year
@@ -204,7 +204,7 @@ leg.Draw("same")
 
 #Draw CMS, Lumi, channel
 if channel in ["mu", "Mu", "m"]:
-    chName = "mu + jets"
+    chName = "1 #mu"
 else:
     chName = "e + jets"
 crName = formatCRString(CR)

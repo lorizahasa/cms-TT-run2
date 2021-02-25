@@ -4,6 +4,7 @@ def GetHistogramInfo(extraCuts="(passPresel_Mu && nJet>=4 && nBJet>=2)*", nBJets
     histogramInfo = { 
                       "presel_Njet"                           : ["nJet"      , "presel_Njet"     ,        [16,-0.5,15.5], extraCuts      , "", True],
                       "presel_Nbjet"                          : ["nBJet"     , "presel_Nbjet"    ,        [10,0,10], extraCuts      , "", True],
+                      "presel_jetPt"                           : ["jetPt"      , "presel_jetPt"     ,      [100,0,1000], extraCuts      , "", True],
                       "presel_muPt"                           : ["muPt"      , "presel_muPt"     ,      [100,0,1000], extraCuts      , "", True],
                       "presel_muEta"                          : ["muEta"     , "presel_muEta"    ,   [100,-2.4,2.4], extraCuts      , "", True],
                       "presel_muPhi"                          : ["muPhi"     , "presel_muPhi"    , [100,-3.15,3.15], extraCuts      , "", True],
@@ -20,7 +21,7 @@ def GetHistogramInfo(extraCuts="(passPresel_Mu && nJet>=4 && nBJet>=2)*", nBJets
                       "presel_TopTop_mass"                    : ["TopTop_mass"        ,"presel_TopTop_mass"        ,   [60,0,3000], extraCuts      , "", True],
                       "presel_TopStarHad_mass"                    : ["TopStarHad_mass"        ,"presel_TopStarHad_mass"        ,   [60,0,3000], extraCuts      , "", True],
                       "presel_TopStarLep_mass"                    : ["TopStarLep_mass"        ,"presel_TopStarLep_mass"        ,   [60,0,3000], extraCuts      , "", True],
-                      "presel_TopStar_mass"                    : ["TopStar_mass"        ,"presel_TopStar_mass"        ,   [100,0,3000], extraCuts      , "", True],
+                      "presel_TopStar_mass"                    : ["TopStar_mass"        ,"presel_TopStar_mass"        ,   [60,0,3000], extraCuts      , "", True],
                       "presel_tgtg_mass"                    : ["tgtg_mass"        ,"presel_tgtg_mass"        ,   [60,0,6000], extraCuts      , "", True],
                       "presel_chi2"                           : ["chi2"        ,"presel_chi2"        ,   [200, 0,1000], extraCuts      , "", True],
                       "presel_jetRes"                         : ["jetRes"        ,"presel_jetRes"        ,   [150,0,1.5], extraCuts      , "", True]
@@ -37,8 +38,10 @@ allPlotList = [
 "presel_tgtg_mass",
 "presel_Njet",      
 "presel_muPt",      
+"presel_jetPt",      
 "presel_muEta",     
-"presel_nVtx",      
+"presel_MET",       
+"presel_Nbjet",     
 ]
 
 '''

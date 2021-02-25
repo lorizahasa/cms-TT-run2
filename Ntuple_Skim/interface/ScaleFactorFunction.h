@@ -6,7 +6,6 @@
 std::map<std::string, vector<double> > crossSections;
 
 void initCrossSections(){
-
     crossSections["TT_tyty_M800"]   =  {1.0, 1.0, 1.0};  
     crossSections["TT_tytg_M800"]   =  {1.0, 1.0, 1.0}; 
     crossSections["TT_tyty_M1200"]  =  {1.0, 1.0, 1.0};  

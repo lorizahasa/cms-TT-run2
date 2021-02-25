@@ -25,11 +25,9 @@ def getBaseHists(fileDict, hName, CR):
             hPath = "%s/Base/CR/%s/%s"%(sample, CR, hName)
             if sample=="Data":
                 hPath = "data_obs/Base/CR/%s/%s"%(CR, hName)
-        print hPath
-        print fileDict[sample]
-        print hPath
         hist = fileDict[sample].Get(hPath)
         hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
+        print fileDict[sample]
         if sample=="Data":
             dataHist.append(hist)
         elif sample=="QCD":
@@ -188,7 +186,7 @@ def getLegend(dataHist, bkgHists):
     is the proccess having highest contribution
     comes first.
     '''
-    legend = TLegend(0.45,0.70,0.92,0.88);
+    legend = TLegend(0.45,0.70,0.92,0.80);
     decoLegend(legend, 4, 0.035)
     #legend = TLegend(0.55,0.60,0.92,0.88); for 3 col
     #legend = TLegend(0.70,0.50,0.95,0.88); 

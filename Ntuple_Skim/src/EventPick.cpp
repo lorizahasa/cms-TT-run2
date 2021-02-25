@@ -43,7 +43,7 @@ EventPick::EventPick(std::string titleIn){
     // veto_pho_jet_dR = 0.7;
     // veto_pho_lep_dR = 0.7;
 
-    MET_cut = 0.0;
+    MET_cut = 20.0;
     no_trigger = false;
 
     skimEle = false;
