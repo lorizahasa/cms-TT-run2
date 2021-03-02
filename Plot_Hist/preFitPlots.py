@@ -27,7 +27,7 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
                      help="which control selection and region")
-parser.add_option("--plot", dest="plotList",action="append",default=["presel_muPt"], help="Add plots" )
+parser.add_option("--plot", dest="plotList",action="append",default=["presel_TopStar_mass"], help="Add plots" )
 parser.add_option("--morePlots","--MorePlots",dest="makeMorePlots",action="store_true",default=False,
                      help="Make larger list of kinematic distributions" )
 parser.add_option("--allPlots","--allPlots",dest="makeAllPlots",action="store_true",default=False,

@@ -21,7 +21,7 @@ def GetHistogramInfo(extraCuts="(passPresel_Mu && nJet>=4 && nBJet>=2)*", nBJets
                       "presel_TopTop_mass"                    : ["TopTop_mass"        ,"presel_TopTop_mass"        ,   [60,0,3000], extraCuts      , "", True],
                       "presel_TopStarHad_mass"                    : ["TopStarHad_mass"        ,"presel_TopStarHad_mass"        ,   [60,0,3000], extraCuts      , "", True],
                       "presel_TopStarLep_mass"                    : ["TopStarLep_mass"        ,"presel_TopStarLep_mass"        ,   [60,0,3000], extraCuts      , "", True],
-                      "presel_TopStar_mass"                    : ["TopStar_mass"        ,"presel_TopStar_mass"        ,   [60,0,3000], extraCuts      , "", True],
+                      "presel_TopStar_mass"                    : ["TopStar_mass"        ,"presel_TopStar_mass"        ,   [30,0,3000], extraCuts      , "", True],
                       "presel_tgtg_mass"                    : ["tgtg_mass"        ,"presel_tgtg_mass"        ,   [60,0,6000], extraCuts      , "", True],
                       "presel_chi2"                           : ["chi2"        ,"presel_chi2"        ,   [200, 0,1000], extraCuts      , "", True],
                       "presel_jetRes"                         : ["jetRes"        ,"presel_jetRes"        ,   [150,0,1.5], extraCuts      , "", True]

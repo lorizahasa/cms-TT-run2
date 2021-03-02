@@ -1693,7 +1693,7 @@ void makeNtuple::FillEvent(std::string year)
 	
     }
     */
-    topEvent.Calculate_tgtg();
+    topEvent.Calculate_tgtg(6);
     if (topEvent.GoodCombination_tgtg()){
 	bhad = jetVectors[topEvent.getBHad()];
 	blep = jetVectors[topEvent.getBLep()];

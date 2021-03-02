@@ -126,33 +126,23 @@ int TopEventCombinatorics::Calculate(){
     return 0;
 }
 
-int TopEventCombinatorics::Calculate_tgtg(){
-
+int TopEventCombinatorics::Calculate_tgtg(int nLeadingJets){
     goodCombo_tgtg = false;
-
-    if (jets.size() < 4){
+    if (jets.size() < 6){
 	return -1;
     }
 
     bJetsList.clear();
     nu_pz_List.clear();
 
-    if (nBjetSize==-1){
-	for (unsigned int i =0; i < jets.size(); i++) bJetsList.push_back(i);
-    } else {
-	for (unsigned int i =0; i < jets.size(); i++){
-        //std::cout<<"btag[i]"<<btag[i]<<", btagThresh = "<<btagThresh<<std::endl;
-	    if (btag[i] > btagThresh) bJetsList.push_back(i);
-	}
-	if (bJetsList.size() < nBjetSize){
-	    for (unsigned int i =0; i < jets.size(); i++){
-		if (std::find(bJetsList.begin(), bJetsList.end(), i) == bJetsList.end()){
-		    bJetsList.push_back(i);
-		}
-		if (bJetsList.size()==nBjetSize) break;
-	    }
-	}
+    int nJets = jets.size();
+    if (nLeadingJets != -1 && nLeadingJets < nJets) nJets = nLeadingJets;
+
+    int nBtags = 0;
+    for (unsigned int i = 0; i <nJets; i++){
+        if (btag[i] > btagThresh) nBtags +=1;
     }
+    if (nBtags > 2) nBtags = 2;
 
     double _nu_pz_1 = metZ.Calculate();
     double _nu_pz_2 = metZ.getOther();
@@ -165,46 +155,50 @@ int TopEventCombinatorics::Calculate_tgtg(){
 
     //std::cout<<"nJets = "<<jets.size()<<std::endl;
     //std::cout<<"nBJets = "<<bJetsList.size()<<std::endl;
-    for (const auto& i_bhad : bJetsList){
-	for (const auto& i_blep : bJetsList){
-	    if (i_bhad==i_blep) continue;
-	    for (unsigned int i_j1=0; i_j1<jets.size(); i_j1++){
-		if (i_bhad==i_j1 || i_blep==i_j1) continue; //skip if i_j1 is already used as a bjet
-		for (unsigned int i_j2=i_j1+1; i_j2<jets.size(); i_j2++){
-		    if (i_bhad==i_j2 || i_blep==i_j2) continue; //skip if i_j2 is already used as a bjet
-		for (unsigned int i_j3=0; i_j3<jets.size(); i_j3++){
-		    if (i_bhad==i_j3 || i_blep==i_j3 || i_j3==i_j1 || i_j3==i_j2) continue; 
-		for (unsigned int i_j4=0; i_j4<jets.size(); i_j4++){
-		    if (i_bhad==i_j4 || i_blep==i_j4 || i_j4==i_j1 || i_j4==i_j2 || i_j4==i_j3) continue; 
-		    //loop over nu_pz solutions
-		    for (const auto& test_nu_pz: nu_pz_List){
-
-			double comboChi2 = topChiSq_tgtg(jets.at(i_j1), jetsRes.at(i_j1),
-						    jets.at(i_j2), jetsRes.at(i_j2),
-						    jets.at(i_j3), jetsRes.at(i_j3),
-						    jets.at(i_j4), jetsRes.at(i_j4),
-						    jets.at(i_bhad), jetsRes.at(i_bhad),
-						    jets.at(i_blep), jetsRes.at(i_blep),
-						    test_nu_pz);
-            //std::cout<<i_bhad<<"\t"<<i_blep<<"\t"<<i_j1<<"\t"<<i_j2<<"\t"<<i_j3<<"\t"<<i_j4<<"\t"<<comboChi2<<std::endl;
-			if (comboChi2 < chi2_tgtg){
-			    chi2_tgtg = comboChi2;
-			    blep_idx = i_blep;
-			    bhad_idx = i_bhad;
-			    j1_idx = i_j1;
-			    j2_idx = i_j2;
-			    j3_idx = i_j3;
-			    j4_idx = i_j4;
-			    nu_pz = test_nu_pz;
-			    goodCombo_tgtg = true;
-			}
-		    }
-		}
+    for (unsigned int i_bhad=0; i_bhad<nJets; i_bhad++){
+        int bcandHad_tag = 0;
+        if (btag[i_bhad]>btagThresh) bcandHad_tag = 1;
+        for (unsigned int i_blep=0; i_blep<nJets; i_blep++){
+            if (i_bhad==i_blep) continue;
+            int bcandLep_tag = 0;
+            if (btag[i_blep]>btagThresh) bcandLep_tag = 1;
+            // skip combinations which haven't used all of the btagged jets as b-candidates
+            if ((bcandHad_tag + bcandLep_tag) != nBtags) continue;
+	        for (unsigned int i_j1=0; i_j1<nJets; i_j1++){
+		        if (i_bhad==i_j1 || i_blep==i_j1) continue; //skip if i_j1 is already used as a bjet
+		        for (unsigned int i_j2=i_j1+1; i_j2<nJets; i_j2++){
+		            if (i_bhad==i_j2 || i_blep==i_j2) continue; //skip if i_j2 is already used as a bjet
+		            for (unsigned int i_j3=0; i_j3<nJets; i_j3++){
+		                if (i_bhad==i_j3 || i_blep==i_j3 || i_j3==i_j1 || i_j3==i_j2) continue; 
+		                for (unsigned int i_j4=0; i_j4<nJets; i_j4++){
+		                    if (i_bhad==i_j4 || i_blep==i_j4 || i_j4==i_j1 || i_j4==i_j2 || i_j4==i_j3) continue; 
+		                    //loop over nu_pz solutions
+		                    for (const auto& test_nu_pz: nu_pz_List){
+			                    double comboChi2 = topChiSq_tgtg(jets.at(i_j1), jetsRes.at(i_j1),
+						                                         jets.at(i_j2), jetsRes.at(i_j2),
+						                                         jets.at(i_j3), jetsRes.at(i_j3),
+						                                         jets.at(i_j4), jetsRes.at(i_j4),
+						                                         jets.at(i_bhad), jetsRes.at(i_bhad),
+						                                         jets.at(i_blep), jetsRes.at(i_blep),
+						                                         test_nu_pz);
+                                //std::cout<<i_bhad<<"\t"<<i_blep<<"\t"<<i_j1<<"\t"<<i_j2<<"\t"<<i_j3<<"\t"<<i_j4<<"\t"<<comboChi2<<std::endl;
+			                    if (comboChi2 < chi2_tgtg){
+			                       chi2_tgtg = comboChi2;
+			                       blep_idx = i_blep;
+			                       bhad_idx = i_bhad;
+			                       j1_idx = i_j1;
+			                       j2_idx = i_j2;
+			                       j3_idx = i_j3;
+			                       j4_idx = i_j4;
+			                       nu_pz = test_nu_pz;
+			                       goodCombo_tgtg = true;
+			                    }
+		                    }
+		                }   
+	                }
+                }
+            }
 	    }
-        }
-        }
-	}
     }
-
     return 0;
 }
