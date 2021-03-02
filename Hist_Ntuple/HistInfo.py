@@ -6,6 +6,7 @@ def GetHistogramInfo(extraCuts="(passPresel_Mu && nJet>=4 && nBJet>=2)*", nBJets
                       "presel_Nbjet"                          : ["nBJet"     , "presel_Nbjet"    ,        [10,0,10], extraCuts      , "", True],
                       "presel_jetPt"                           : ["jetPt"      , "presel_jetPt"     ,      [100,0,1000], extraCuts      , "", True],
                       "presel_muPt"                           : ["muPt"      , "presel_muPt"     ,      [100,0,1000], extraCuts      , "", True],
+                      "presel_phoPt"                           : ["phoEt"      , "presel_phoPt"     ,      [100,0,1000], extraCuts      , "", True],
                       "presel_muEta"                          : ["muEta"     , "presel_muEta"    ,   [100,-2.4,2.4], extraCuts      , "", True],
                       "presel_muPhi"                          : ["muPhi"     , "presel_muPhi"    , [100,-3.15,3.15], extraCuts      , "", True],
                       "presel_elePt"                          : ["elePt"     , "presel_elePt"    ,      [100,0,1000], extraCuts      , "", True],
