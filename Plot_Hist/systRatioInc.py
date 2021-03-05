@@ -30,7 +30,7 @@ parser.add_option("-s", "--sample", dest="sample", default="TTbar",type='str',
 		  help="name of the MC sample" )
 parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
                      help="which control selection and region")
-parser.add_option("--hist", "--hist", dest="hName", default="presel_TopStar_mass",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="TopStar_mass",type='str', 
                      help="name of the histogram")
 (options, args) = parser.parse_args()
 year            = options.year
@@ -66,7 +66,7 @@ gPad.SetLeftMargin(0.11);
 #gPad.SetTickx(0);
 #gPad.SetLogy(True);
 gPad.RedrawAxis();
-rootFile = TFile("%s/%s.root"%(inHistFullDir,sample), "read")
+rootFile = TFile("%s/AllInc.root"%(inHistFullDir), "read")
 print rootFile
 #print("%10s %10s %10s %10s, %10s"%("Systematics", "Down", "Base", "Up", "RelativeUnc"))
 print("%10s %22s %22s %22s %10s"%("Syst", "Down", "Base", "Up", "Unc"))

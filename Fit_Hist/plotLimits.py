@@ -156,7 +156,7 @@ if args.logy:
     axis[0].SetMinimum(0.1)  # we'll fix this later
     pads[0].SetLogy(True)
     # axis[0].GetYaxis().SetMoreLogLabels()
-    axis[0].GetYaxis().SetRangeUser(0.01, 100.0)
+    axis[0].GetYaxis().SetRangeUser(0.007, 150.0)
     # axis[0].SetNdivisions(50005, "X")
 
 y_min, y_max = (plot.GetPadYMin(pads[0]), plot.GetPadYMax(pads[0]))

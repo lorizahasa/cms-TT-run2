@@ -27,7 +27,7 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
                      help="which control selection and region")
-parser.add_option("--plot", dest="plotList",action="append",default=["presel_muPt"], help="Add plots" )
+parser.add_option("--plot", dest="plotList",action="append",default=[], help="Add plots" )
 parser.add_option("--morePlots","--MorePlots",dest="makeMorePlots",action="store_true",default=False,
                      help="Make larger list of kinematic distributions" )
 parser.add_option("--allPlots","--allPlots",dest="makeAllPlots",action="store_true",default=False,
@@ -102,13 +102,27 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
     #dataHist, bkgHists, qcdMCHist, qcdDDHist = getBaseHists(fileDict, hName, CR)
     #dataHist, bkgHists, qcdMCHist = getBaseHists(fileDict, hName, CR)
     dataHist, bkgHists = getBaseHists(fileDict, hName, CR)
-    sigFile = TFile("%s/%s.root"%(inHistFullDir,"TT_tytg_M800"), "read")
-    sigHist = sigFile.Get('%s/Base/SR/%s'%('TT_tytg_M800', hName))
-    sigHist.Scale(18)
-    sigHist.SetLineColor(6)
-    sigHist.SetLineStyle(2)
-    sigHist.SetLineWidth(3) 
-    sigHist.SetFillColor(0)
+    sigFileM800 = TFile("%s/%s.root"%(inHistFullDir,"TT_tytg_M800"), "read")
+    if CR=="":
+        sigHistM800 = sigFileM800.Get('%s/Base/SR/%s'%('TT_tytg_M800', hName))
+    else: 
+        sigHistM800 = sigFileM800.Get('%s/Base/CR/%s/%s'%('TT_tytg_M800', CR, hName))
+    sigHistM800.Scale(18)
+    sigHistM800.SetLineColor(6)
+    sigHistM800.SetLineStyle(2)
+    sigHistM800.SetLineWidth(3) 
+    sigHistM800.SetFillColor(0)
+    
+    sigFileM1200 = TFile("%s/%s.root"%(inHistFullDir,"TT_tytg_M1200"), "read")
+    if CR=="":
+        sigHistM1200 = sigFileM1200.Get('%s/Base/SR/%s'%('TT_tytg_M1200', hName))
+    else: 
+        sigHistM1200 = sigFileM1200.Get('%s/Base/CR/%s/%s'%('TT_tytg_M1200', CR, hName))
+    sigHistM1200.Scale(18)
+    sigHistM1200.SetLineColor(45)
+    sigHistM1200.SetLineStyle(2)
+    sigHistM1200.SetLineWidth(3) 
+    sigHistM1200.SetFillColor(0)
 
     hSumOtherBkg = bkgHists[0].Clone("hSumOtherBkg")
     hSumOtherBkg.Reset()
@@ -133,7 +147,7 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
         sampleName = h.GetName().split("_")[0]
         decoHist(h, xTitle, yTitle, Samples[sampleName][1])
         hStack.Add(h)
-    hStack.SetMinimum(1.0)
+    hStack.SetMinimum(0.1)
     if isLog:
         hStack.SetMaximum(100*hStack.GetMaximum())
     else: 
@@ -142,6 +156,7 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
     decoHistStack(hStack, xTitle, yTitle)
 
     #Get histograms for the difference between nominal and syst up/down
+    '''
     hSumOtherBkgUps, hQCDUps = getSystHists(fileDict, hName, CR, "Up")
     hSumOtherBkgDowns, hQCDDowns = getSystHists(fileDict, hName, CR, "Down")
     hDiffUp = hSumOtherBkg.Clone("hDiffUp")
@@ -173,19 +188,21 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
         uncGraphTop.SetFillColor(2);
         uncGraphTop.SetFillStyle(3001);
         uncGraphTop.Draw(" E2 same ");
-    
+    '''
     #Draw data
     decoHist(dataHist[0], xTitle, yTitle, Samples["Data"][1])
     dataHist[0].SetMarkerStyle(20)
     if isData:
         dataHist[0].Draw("EPsame")
-    sigHist.Draw("HISTsame")
+    sigHistM800.Draw("HISTsame")
+    sigHistM1200.Draw("HISTsame")
 
     #Draw legend
     hForLegend = sortHists(hAllBkgs, True)
     #plotLegend = getLegend(dataHist, hForLegend, uncGraphTop)
     plotLegend = getLegend(dataHist, hForLegend)
-    plotLegend.AddEntry(sigHist, "18 x signal tytg (mT = 800 GeV)", "PL")
+    plotLegend.AddEntry(sigHistM800, "18 x m_{T} = 800 GeV", "PL")
+    plotLegend.AddEntry(sigHistM1200, "18 x m_{T} = 1200 GeV", "PL")
     plotLegend.Draw()
 
     #Draw CMS, Lumi, channel
@@ -242,9 +259,9 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
 #----------------------------------------
 for hName in plotList:
     isQCDMC  = False
-    isData   = False
+    isData   = True
     isLog    = True
-    isRatio  = False
+    isRatio  = True
     isUnc    = False
     if hName not in histograms.keys():
         print "hist name = %s, is not found"%hName

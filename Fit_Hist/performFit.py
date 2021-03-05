@@ -28,7 +28,7 @@ parser.add_option("--combChannel", dest="combChannel",default=["Mu","Ele"],actio
           help="channels to be combined" )
 parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
                      help="which control selection and region")
-parser.add_option("--hist", "--hist", dest="hName", default="presel_TopStar_mass",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="TopStar_mass",type='str', 
                      help="which histogram to be used for making datacard")
 parser.add_option("--isT2W","--isT2W",dest="isT2W", default=False, action="store_true",
 		  help="create text2workspace datacards")

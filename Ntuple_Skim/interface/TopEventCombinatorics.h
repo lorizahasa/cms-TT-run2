@@ -74,8 +74,8 @@ class TopEventCombinatorics{
 	jets.clear();
     }
     int Calculate();
-    int Calculate_tgtg();
-    int Calculate_tytg();
+    int Calculate_tgtg(int nLeadingJets);
+    int Calculate_tytg(int nLeadingJets);
 
 
 

@@ -9,10 +9,9 @@ def runCmd(cmd):
     os.system(cmd)
 
 for year, decay, channel in itertools.product(Year, Decay, Channel): 
-    hName = "presel_TopStar_mass"
+    hName = "TopStar_mass"
     dirDC = "%s/Fit_Hist/%s/%s/%s/%s/SR"%(condorCBADir, year, decay, channel, hName)
     nameDC = "mH*/higgsCombine_hcs_run2.AsymptoticLimits.mH*.root" 
-    runCmd("%s/%s"%(dirDC, nameDC))
     print hName
     runCmd("combineTool.py -M CollectLimits %s/%s -o %s/limits.json"%(dirDC, nameDC, dirDC))
     if scaleLimits:

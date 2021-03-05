@@ -1718,7 +1718,7 @@ void makeNtuple::FillEvent(std::string year)
     }
     */
     topEvent.SetPhotonVector(phoVectors);
-    topEvent.Calculate_tytg();
+    topEvent.Calculate_tytg(5);
     if (topEvent.GoodCombination_tytg()){
 	bhad = jetVectors[topEvent.getBHad()];
 	blep = jetVectors[topEvent.getBLep()];

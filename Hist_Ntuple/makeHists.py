@@ -177,7 +177,11 @@ if channel=="Mu":
     outFileFullDir = outFileMainDir+"/%s/%s/Mu"%(year,ttbarDecayMode)
     #extraCuts            = "(passPresel_Mu && %s && chi2<50)*"%(bothJetSel)
     #extraCuts            = "(passPresel_Mu && %s)*"%(bothJetSel)
-    extraCuts            = "(passPresel_Mu && nPho>=1 && phoEt>=100 && %s)*"%(bothJetSel)
+    if controlRegion=="":
+        #extraCuts            = "(passPresel_Mu && nPho>=1 && %s)*"%(bothJetSel)
+        extraCuts            = "(passPresel_Mu && nPho>=1 && phoEt>100 && %s)*"%(bothJetSel)
+    else:
+        extraCuts            = "(passPresel_Mu && nPho>=1 && phoEt<50 && %s)*"%(bothJetSel)
     #extraCuts            = "(passPresel_Mu && nPho>=1 && %s)*"%(bothJetSel)
     #extraCuts            = ""
 
@@ -258,6 +262,7 @@ if not "QCD_DD" in sample:
         if evtWeight[-1]=="*":
             evtWeight= evtWeight[:-1]
         ### Correctly add the photon weights to the plots
+        evtWeight = "%s*%s[0]"%(evtWeight,PhoEff)
         if 'phosel' in hInfo[1]:
             if hInfo[0][:8]=="loosePho":
                 evtWeight = "%s*%s"%(evtWeight,loosePhoEff)

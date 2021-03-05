@@ -19,7 +19,7 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
-parser.add_option("--hist", "--hist", dest="hName", default="presel_TopStar_mass",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="TopStar_mass",type='str', 
                      help="which histogram to be used for making datacard")
 parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
                      help="which control selection and region")
@@ -75,10 +75,14 @@ cb.AddProcesses(["*"],["hcs"],["13TeV"],[channel],AllBkgs,[(-1, hName)], False)
 #Add systematics
 #------------------
 cb.cp().process(allMC).AddSyst(cb, "lumi_$ERA", "lnN",ch.SystMap("era") (["13TeV"], 1.025))
+cb.cp().process(["TTGamma"]).AddSyst(cb, "CMS_norm_tty", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
+cb.cp().process(["TTbar"]).AddSyst(cb, "CMS_norm_tt", "lnN",ch.SystMap("era") (["13TeV"], 1.055))
+cb.cp().process(["SingleTop"]).AddSyst(cb, "CMS_norm_t", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
 cb.cp().process(allMC).AddSyst(cb, "BTagSF_b" , "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "BTagSF_l" , "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "PU"       , "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "EleEff"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "EleEff"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "PhoEff"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "MuEff"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Pdf"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Q2"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))

@@ -185,7 +185,7 @@ def getLegend(dataHist, bkgHists):
     is the proccess having highest contribution
     comes first.
     '''
-    legend = TLegend(0.45,0.70,0.92,0.80);
+    legend = TLegend(0.45,0.70,0.92,0.90);
     decoLegend(legend, 4, 0.035)
     #legend = TLegend(0.55,0.60,0.92,0.88); for 3 col
     #legend = TLegend(0.70,0.50,0.95,0.88); 
