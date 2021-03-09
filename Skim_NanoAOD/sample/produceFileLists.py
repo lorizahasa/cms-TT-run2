@@ -4,8 +4,8 @@ from getFilesFromDisk import getFileList_DAS, getFileList_EOS
 f1 = open("NanoAOD_Gen_FileLists_cff.sh", "w")
 f2 = open("NanoAOD_Gen_SplitJobs_cff.py", "w")
 allJobs = 0
-#for year in [2016,2017,2018]:
-for year in [2016]:
+for year in [2016,2017,2018]:
+#for year in [2016]:
     splitJobs = {}
     print '--------------------------'
     print  year 

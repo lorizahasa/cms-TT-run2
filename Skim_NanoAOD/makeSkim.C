@@ -99,8 +99,8 @@ int main(int ac, char** av){
 	}
 	cout << nJob << " of " << totJob << endl;
  
-	std::string outDirName(av[2]);
-	if( outDirName.find("Data") != std::string::npos){
+	std::string outFileName(av[2]);
+	if( outFileName.find("Data") != std::string::npos){
 	    cout << "IsData" << endl;
 	    isMC = false;
 	}
@@ -163,12 +163,7 @@ int main(int ac, char** av){
 	}
 
 	EventPick* evtPick = new EventPick("nominal");
-
 	evtPick->year = year;
-
-	evtPick->printEvent = eventNum;
-
-
 	auto startClock = std::chrono::high_resolution_clock::now();
 
 	// std::clock_t startClock;
@@ -176,12 +171,12 @@ int main(int ac, char** av){
 	// startClock = clock();
 
 	if (nJob>0 && totJob>0){
-	    pos = outDirName.find(".root");
-	    outDirName = outDirName.substr(0,pos) + "_" + checkJobs + ".root";
-	    cout << "new output file name: "<< outDirName << endl;
+	    pos = outFileName.find(".root");
+	    outFileName = outFileName.substr(0,pos) + "_" + checkJobs + ".root";
+	    cout << "new output file name: "<< outFileName << endl;
 	}
 
-	TFile* outFile = TFile::Open( outDirName.c_str() ,"RECREATE","",207 );
+	TFile* outFile = TFile::Open( outFileName.c_str() ,"RECREATE","",207 );
 	TTree* newTree = tree->chain->CloneTree(0);
 	newTree->SetCacheSize(50*1024*1024);
 
@@ -189,7 +184,7 @@ int main(int ac, char** av){
 
 	std::cout << "Sample has "<<nEntr << " entries" << std::endl;
 
-	if( outDirName.find("Test") != std::string::npos || outDirName.find("test") != std::string::npos || outDirName.find("TEST") != std::string::npos){
+	if( outFileName.find("Test") != std::string::npos || outFileName.find("test") != std::string::npos || outFileName.find("TEST") != std::string::npos){
 	    std::cout << "-------------------------------------------------------------------------" << std::endl;
 	    std::cout << "Since this is a Test (based on output name) only running on 10,000 events" << std::endl;
 	    std::cout << "-------------------------------------------------------------------------" << std::endl;
@@ -221,28 +216,18 @@ int main(int ac, char** av){
 	if (eventsPerJob >5000000){ dumpFreq = 1000000; }
 	
 
-
 	TH1F* hPU_        = new TH1F("hPU",        "number of pileup",      200,  0, 200);
 	TH1F* hPUTrue_    = new TH1F("hPUTrue",    "number of true pilepu", 200, 0, 200);
-
 	TH1D* hEvents_    = new TH1D("hEvents",    "number of events (+/- event weight)",      3,  -1.5, 1.5);
-
 	for(Long64_t entry= startEntry; entry < endEntry; entry++){
 		if(entry%dumpFreq == 0) {
             //if(entry>1000) break;
-			// duration =  ( clock() - startClock ) / (double) CLOCKS_PER_SEC;
-			// std::cout << "processing entry " << entry << " out of " << nEntr << " : " << duration << " seconds since last progress" << std::endl;
-			// startClock = clock();
-
 			std::cout << "processing entry " << entry << " out of " << endEntry << " : " 
 				  << std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count()
 				  << " seconds since last progress" << std::endl;
-
 			startClock = std::chrono::high_resolution_clock::now();			
 		}
 		tree->GetEntry(entry);
-		
-		hPU_->Fill(tree->nPU_, tree->genWeight_);
 		hPUTrue_->Fill(tree->nPUTrue_, tree->genWeight_);
 		if (isMC) {
 		    hEvents_->Fill(tree->genWeight_/abs(tree->genWeight_));
@@ -252,10 +237,9 @@ int main(int ac, char** av){
 		    hEvents_->Fill(1.);
 		    hEvents_->Fill(0.);
 		}
-
 		evtPick->process_event(tree);
-
 		if( evtPick->passSkim || passAll){
+		hPU_->Fill(tree->nPU_, tree->genWeight_);
 			newTree->Fill();
 		}
 	}
@@ -265,15 +249,15 @@ int main(int ac, char** av){
 	hPUTrue_->Write();
 	hEvents_->Write();
 
-        TNamed gitCommit("Git_Commit", VERSION);
-        TNamed gitTime("Git_Commit_Time", COMMITTIME);
-        TNamed gitBranch("Git_Branch", BRANCH);
-        TNamed gitStatus("Git_Status", STATUS);
+    TNamed gitCommit("Git_Commit", VERSION);
+    TNamed gitTime("Git_Commit_Time", COMMITTIME);
+    TNamed gitBranch("Git_Branch", BRANCH);
+    TNamed gitStatus("Git_Status", STATUS);
 
-        gitCommit.Write();
-        gitTime.Write();
-        gitBranch.Write();
-        gitStatus.Write();
+    gitCommit.Write();
+    gitTime.Write();
+    gitBranch.Write();
+    gitStatus.Write();
     
 	outFile->Close();
 
