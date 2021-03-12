@@ -3,7 +3,7 @@ from Ntuple_Skim_FileLists_cff import *
 #-----------------------------------------
 #INPUT AnalysisNtuples Directory
 #----------------------------------------
-dirBase = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/tytg/Ntuple_Skim" 
+dirBase = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim" 
 dirBaseCR = dirBase
 dirSyst = dirBase
 dirSystCR = dirBase
@@ -37,43 +37,29 @@ def gs(year, s_array):
     return sample
 
 def getSamples(y):
-    samples = {"TT_tyty_M800" : gs(y, ["TT_tyty_M800"]),
-               "TT_tyty_M1200" : gs(y, ["TT_tyty_M1200"]),  
-
+    samples = {
                "TT_tytg_M700" : gs(y, ["TT_tytg_M700"]),  
                "TT_tytg_M800" : gs(y, ["TT_tytg_M800"]),  
                "TT_tytg_M900" : gs(y, ["TT_tytg_M900"]),  
                "TT_tytg_M1000" : gs(y, ["TT_tytg_M1000"]),  
-               "TT_tytg_M1100" : gs(y, ["TT_tytg_M1100"]),  
+               #"TT_tytg_M1100" : gs(y, ["TT_tytg_M1100"]),  
                "TT_tytg_M1200" : gs(y, ["TT_tytg_M1200"]),  
                "TT_tytg_M1300" : gs(y, ["TT_tytg_M1300"]),  
                "TT_tytg_M1400" : gs(y, ["TT_tytg_M1400"]),  
                "TT_tytg_M1500" : gs(y, ["TT_tytg_M1500"]),  
                "TT_tytg_M1600" : gs(y, ["TT_tytg_M1500"]),  
-
-               "TT_tgtg_M700" : gs(y, ["TT_tgtg_M700"]),  
-               "TT_tgtg_M800" : gs(y, ["TT_tgtg_M800"]),  
-               "TT_tgtg_M900" : gs(y, ["TT_tgtg_M900"]),  
-               "TT_tgtg_M1000" : gs(y, ["TT_tgtg_M1000"]),  
-               "TT_tgtg_M1100" : gs(y, ["TT_tgtg_M1100"]),  
-               "TT_tgtg_M1200" : gs(y, ["TT_tgtg_M1200"]),  
-               "TT_tgtg_M1300" : gs(y, ["TT_tgtg_M1300"]),  
-               "TT_tgtg_M1400" : gs(y, ["TT_tgtg_M1400"]),  
-               "TT_tgtg_M1500" : gs(y, ["TT_tgtg_M1500"]),  
-               "TT_tgtg_M1600" : gs(y, ["TT_tgtg_M1500"]),  
-               
                "SingleTop" : gs(y, ["ST_tbarW_channel" , 
                    "ST_s_channel", 
                    "ST_t_channel" , 
                    "ST_tbar_channel", 
                    "ST_tW_channel"]),  
-
-               "TTbar" : gs(y, ["TTbarPowheg"]) , 
-               #"TTbar" : gs(y, ["TTbarPowheg_Hadronic" , 
-               #    "TTbarPowheg_Dilepton" , 
-               #    "TTbarPowheg_Semilept"]),
+               "TTbar" : gs(y, ["TTbarPowheg_Hadronic" , 
+                   "TTbarPowheg_Dilepton" , 
+                   "TTbarPowheg_Semilept"]),
                "TTGamma": gs(y, ['TTGamma_Dilepton', 'TTGamma_Hadronic', 'TTGamma_SingleLept']),
-               "DataMu" : gs(y, dataAllMu[y])
+               "TGJets": gs(y, ['TGJets']),
+               "DataMu" : gs(y, dataAllMu[y]),
+               "DataEle" : gs(y, dataAllEle[y])
                }
     return samples
 

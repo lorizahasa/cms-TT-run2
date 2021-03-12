@@ -175,14 +175,11 @@ if channel=="Mu":
     if sample=="QCD":
         sample = "QCDMu"
     outFileFullDir = outFileMainDir+"/%s/%s/Mu"%(year,ttbarDecayMode)
-    #extraCuts            = "(passPresel_Mu && %s && chi2<50)*"%(bothJetSel)
-    #extraCuts            = "(passPresel_Mu && %s)*"%(bothJetSel)
     if controlRegion=="":
-        #extraCuts            = "(passPresel_Mu && nPho>=1 && %s)*"%(bothJetSel)
-        extraCuts            = "(passPresel_Mu && nPho>=1 && phoEt>100 && %s)*"%(bothJetSel)
+        #extraCuts            = "(passPresel_Mu && nPho>=1 && phoEt>100 && %s)*"%(bothJetSel)
+        extraCuts            = "(passPresel_Mu && nPho>=1 && %s)*"%(bothJetSel)
     else:
-        extraCuts            = "(passPresel_Mu && nPho>=1 && phoEt<50 && %s)*"%(bothJetSel)
-    #extraCuts            = "(passPresel_Mu && nPho>=1 && %s)*"%(bothJetSel)
+        extraCuts            = "(passPresel_Mu && nPho>=1 && %s)*"%(bothJetSel)
     #extraCuts            = ""
 
 elif channel=="Ele":
@@ -191,13 +188,17 @@ elif channel=="Ele":
     if sample=="QCD":
         sample = "QCDEle"
     outFileFullDir = outFileMainDir+"/%s/%s/Ele"%(year,ttbarDecayMode)
-    extraCuts            = "(passPresel_Ele && %s)*"%(bothJetSel)
+    if controlRegion=="":
+        #extraCuts            = "(passPresel_Ele && nPho>=1 && phoEt>100 && %s)*"%(bothJetSel)
+        extraCuts            = "(passPresel_Ele && nPho>=1 && %s)*"%(bothJetSel)
+    else:
+        extraCuts            = "(passPresel_Ele && nPho>=1 && %s)*"%(bothJetSel)
 else:
     print "Unknown final state, options are Mu and Ele"
     sys.exit()
 
 weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,MuEff,EleEff,Q2,Pdf,isr,fsr,btagWeight)
-#weights = "%s*%s"%(evtWeight,Pileup)
+#weights = "%s"%(evtWeight)
 toPrint("Extra cuts ", extraCuts)
 toPrint("Final event weight ", weights)
 

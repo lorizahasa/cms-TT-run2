@@ -174,7 +174,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchStatus("GenJet_mass",1);
         // weight
         chain->SetBranchStatus("Generator_weight",1);
-        chain->SetBranchStatus("Generator_weight",&genWeight_);
+        chain->SetBranchAddress("Generator_weight",&genWeight_);
         chain->SetBranchStatus("nLHEScaleWeight",1);
         chain->SetBranchStatus("LHEScaleWeight",1);
         chain->SetBranchStatus("nLHEPdfWeight",1);

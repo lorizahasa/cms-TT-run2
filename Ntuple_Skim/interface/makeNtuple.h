@@ -422,6 +422,23 @@ class makeNtuple {
     std::vector<float>   _fwdJetPhi;
     std::vector<float>   _fwdJetMass;
 
+    Int_t                _nFatJet;
+    std::vector<float>   _fatJetPt;
+    std::vector<float>   _fatJetEta;
+    std::vector<float>   _fatJetPhi;
+    std::vector<float>   _fatJetMass;
+    std::vector<float>   _fatJetMassSoftDrop;
+    std::vector<float>   _fatJetBtagDeepB;
+    std::vector<float>   _fatJetDeepTagT;
+    std::vector<float>   _fatJetDeepTagW;
+    std::vector<float>   _fatJetDeepTagMDT;
+    std::vector<float>   _fatJetDeepTagMDW;
+    std::vector<float>   _fatJetEleIdx;
+    std::vector<float>   _fatJetMuIdx;
+    std::vector<int>     _fatJetGenJetAK8Idx;
+    std::vector<int>     _fatJetHadFlvr;
+    std::vector<int>     _fatJetID;
+
     Int_t                _nGenPart;
     std::vector<float>   _genPt;
     std::vector<float>   _genEta;
@@ -788,6 +805,21 @@ void makeNtuple::InitBranches(){
     /* 	outputTree->Branch("jetGenPhi"                   , &_jetGenPhi                  ); */
     /* }		 */
 
+    outputTree->Branch("nFatJet", &_nFatJet);
+    outputTree->Branch("FatJet_pt", &_fatJetPt);
+    outputTree->Branch("FatJet_eta", &_fatJetEta);
+    outputTree->Branch("FatJet_phi", &_fatJetPhi);
+    outputTree->Branch("FatJet_mass", &_fatJetMass);
+    outputTree->Branch("FatJet_msoftdrop", &_fatJetMassSoftDrop);
+    outputTree->Branch("FatJet_jetId", &_fatJetID);
+    outputTree->Branch("FatJet_btagDeepB", &_fatJetBtagDeepB);
+    outputTree->Branch("FatJet_deepTagMD_TvsQCD", &_fatJetDeepTagMDT);
+    outputTree->Branch("FatJet_deepTagMD_WvsQCD", &_fatJetDeepTagMDW);
+    outputTree->Branch("FatJet_deepTag_TvsQCD", &_fatJetDeepTagT);
+    outputTree->Branch("FatJet_deepTag_WvsQCD", &_fatJetDeepTagW);
+    outputTree->Branch("FatJet_hadronFlavour", &_fatJetHadFlvr);
+    outputTree->Branch("FatJet_electronIdx3SJ", &_fatJetEleIdx);
+    outputTree->Branch("FatJet_muonIdx3SJ", &_fatJetMuIdx);
 
     outputTree->Branch("fwdJetPt"                       , &_fwdJetPt                      );
     outputTree->Branch("fwdJetEta"                      , &_fwdJetEta                     );
@@ -905,6 +937,7 @@ void makeNtuple::InitVariables()
     _nEleLoose           = -9999;
     _nJet            = -9999;  
     _nfwdJet         =-9999;  
+    _nFatJet         =-9999;  
     _nBJet           = -9999;    
 
     _nGenPart        = -9999;
@@ -1109,6 +1142,21 @@ void makeNtuple::InitVariables()
     _fwdJetEta.clear();
     _fwdJetPhi.clear();
     _fwdJetMass.clear();
+    _fatJetPt.clear();
+    _fatJetEta.clear();
+    _fatJetPhi.clear();
+    _fatJetMass.clear();
+    _fatJetMassSoftDrop.clear();
+    _fatJetBtagDeepB.clear();
+    _fatJetDeepTagT.clear();
+    _fatJetDeepTagW.clear();
+    _fatJetDeepTagMDT.clear();
+    _fatJetDeepTagMDW.clear();
+    _fatJetEleIdx.clear();
+    _fatJetMuIdx.clear();
+    _fatJetGenJetAK8Idx.clear();
+    _fatJetHadFlvr.clear();
+    _fatJetID.clear();
 
 
     /* _jetPartonID.clear(); */

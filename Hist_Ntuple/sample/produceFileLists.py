@@ -4,13 +4,13 @@ import subprocess
 
 #IMPORT MODULES FROM OTHER DIR
 sys.path.insert(0, os.getcwd().replace("Hist_Ntuple/sample","Skim_NanoAOD/sample"))
-#from NanoAOD_Gen_SplitJobs_cff import Samples_2016, Samples_2017, Samples_2018
-from NanoAOD_Gen_SplitJobs_cff import Samples_2016
-eosDir = "/store/user/rverma/Output/cms-TT-run2/tytg/Ntuple_Skim" 
+from NanoAOD_Gen_SplitJobs_cff import Samples_2016, Samples_2017, Samples_2018
+#from NanoAOD_Gen_SplitJobs_cff import Samples_2016
+eosDir = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim" 
 #for year in [2016]:
 skimFiles = open('Ntuple_Skim_FileLists_cff.py','w')
-#for year in [2016,2017,2018]:
-for year in [2016]:
+for year in [2016,2017,2018]:
+#for year in [2016]:
     print  "------------: %s :-----------"%year 
     print  "Sub\t  Done\t Diff\t Sample"
     missingJobs = {}

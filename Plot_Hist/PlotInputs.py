@@ -1,11 +1,11 @@
 import ROOT as rt
 #-----------------------------------------------------------------
-condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/tytg/Hist_Ntuple"
+condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2"
 #-----------------------------------------------------------------
-#Year 	      =	["2016", "2017", "2018"]
-Year 	      =	["2016"]
-#Channel 	  =	["Mu", "Ele"]
-Channel 	  =	["Mu"]
+Year 	      =	["2016", "2017", "2018"]
+#Year 	      =	["2017"]
+Channel 	  =	["Mu", "Ele"]
+#Channel 	  =	["Mu"]
 #Decay 	  =	["Semilep", "Dilep"]
 Decay 	  =	["Semilep"]
 Systematics   =	["PU","MuEff", "BTagSF_b","BTagSF_l","PhoEff","Q2","Pdf"]
@@ -27,23 +27,30 @@ Signal = {"TT_tgtg_M800"   : [[""],
                           ]
                           }
 Samples = {"TTbar"     : [[""],
-                          rt.kRed+1,
+                          rt.kRed,
                           "t#bar{t}",
                           isMC
                           ],
            "SingleTop" : [[""],
-                          rt.kOrange-3,
+                          rt.kOrange,
                           "t",
                           isMC
                           ],
            "TTGamma" : [[""],
-                          rt.kGreen-3,
+                          rt.kGreen,
                           "tty",
                           isMC
                           ],
+           #"TTGJets" : [[""],
+           #               rt.kYellow-3,
+           #               "ty",
+           #               isMC
+           #               ],
            "Data"   : [[""],
                           rt.kBlack,
                           "Data",
                           isData
                           ],
            }
+
+plotList = ["muPt", "muEta"]

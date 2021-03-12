@@ -1090,6 +1090,7 @@ void makeNtuple::FillEvent(std::string year)
     
     _nJet            = selector->Jets.size();
     _nfwdJet         = selector->FwdJets.size();
+    _nFatJet         = selector->FatJets.size();
     _nBJet           = selector->bJets.size();
 
     _nGenPart        = tree->nGenPart_;
@@ -1534,6 +1535,26 @@ void makeNtuple::FillEvent(std::string year)
     jetVectors.clear();
     jetResolutionVectors.clear();
     jetBtagVectors.clear();
+    for (int i_fatJet = 0; i_fatJet <_nFatJet; i_fatJet++){
+        int fatJetInd = selector->FatJets.at(i_fatJet);
+        //std::cout<<tree->fatJetPt_[fatJetInd]<<std::endl;
+        _fatJetPt.push_back(          tree->fatJetPt_[fatJetInd]);
+        _fatJetEta.push_back(         tree->fatJetEta_[fatJetInd]);
+        _fatJetPhi.push_back(         tree->fatJetPhi_[fatJetInd]);
+        _fatJetMass.push_back(        tree->fatJetMass_[fatJetInd]);
+        _fatJetMassSoftDrop.push_back(tree->fatJetMassSoftDrop_[fatJetInd]);
+        _fatJetBtagDeepB.push_back(   tree->fatJetBtagDeepB_[fatJetInd]);
+        _fatJetDeepTagT.push_back(    tree->fatJetDeepTagT_[fatJetInd]);
+        _fatJetDeepTagW.push_back(    tree->fatJetDeepTagW_[fatJetInd]);
+        _fatJetDeepTagMDT.push_back(  tree->fatJetDeepTagMDT_[fatJetInd]);
+        _fatJetDeepTagMDW.push_back(  tree->fatJetDeepTagMDW_[fatJetInd]);
+        _fatJetEleIdx.push_back(      tree->fatJetEleIdx_[fatJetInd]);
+        _fatJetMuIdx.push_back(       tree->fatJetMuIdx_[fatJetInd]);
+        _fatJetGenJetAK8Idx.push_back(tree->fatJetGenJetAK8Idx_[fatJetInd]);
+        _fatJetHadFlvr.push_back(     tree->fatJetHadFlvr_[fatJetInd]);
+        _fatJetID.push_back(          tree->fatJetID_[fatJetInd]);
+    
+    }
 
     for (int i_jet = 0; i_jet <_nJet; i_jet++){
 		

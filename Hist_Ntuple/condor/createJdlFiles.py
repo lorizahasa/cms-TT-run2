@@ -31,14 +31,12 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
     jdlFile = open('tmpSub/%s'%jdlName,'w')
     jdlFile.write('Executable =  runMakeHists.sh \n')
     jdlFile.write(common_command)
-    '''
     if channel=="Mu": 
-        Samples.remove("QCDEle")
+        #Samples.remove("QCDEle")
         Samples.remove("DataEle")
     else: 
-        Samples.remove("QCDMu")
+        #Samples.remove("QCDMu")
         Samples.remove("DataMu")
-    '''
     #Create for Base, Signal region
     for sample in Samples:
         run_command =  \
@@ -72,9 +70,9 @@ queue 1\n\n' %(year, decay, channel, sample, syst, level, cr)
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
     if channel=="Mu": 
-        Samples.append("QCDEle")
+        #Samples.append("QCDEle")
         Samples.append("DataEle")
     else: 
-        Samples.append("QCDMu")
+        #Samples.append("QCDMu")
         Samples.append("DataMu")
 subFile.close()

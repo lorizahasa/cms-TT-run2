@@ -121,7 +121,8 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 				tree->L1_SingleIsoEG36_ ||
 				tree->L1_SingleIsoEG38_);
 	
-	Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_ && allSingleEGL1or) || no_trigger;
+	//Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_ && allSingleEGL1or) || no_trigger;
+	Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_) || no_trigger;
 
     }
     if (year=="2018"){

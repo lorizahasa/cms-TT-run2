@@ -1,5 +1,6 @@
 NanoAOD_Gen
 Plot_Hist/PlotFromHist
+Plot_Hist/tex
 *.root
 */*.root
 

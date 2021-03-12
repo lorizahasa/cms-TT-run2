@@ -2,7 +2,6 @@ from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGrap
 import os
 import sys
 from optparse import OptionParser
-from PlotInfo import *
 from PlotFunc import *
 from PlotInputs import *
 from PlotCMSLumi import *
@@ -27,11 +26,7 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
                      help="which control selection and region")
-parser.add_option("--plot", dest="plotList",action="append",default=[], help="Add plots" )
-parser.add_option("--morePlots","--MorePlots",dest="makeMorePlots",action="store_true",default=False,
-                     help="Make larger list of kinematic distributions" )
-parser.add_option("--allPlots","--allPlots",dest="makeAllPlots",action="store_true",default=False,
-                     help="Make plots of all distributions" )
+parser.add_option("--plot", dest="hName",default="muPt", help="Add plots" )
 parser.add_option("--isQCDMC","--qcdMC",dest="isQCDMC", default=False, action="store_true",
 		  help="")
 (options, args) = parser.parse_args()
@@ -39,18 +34,16 @@ year            = options.year
 decayMode  = options.decayMode
 channel         = options.channel
 CR   = options.CR
-plotList        = options.plotList
+hName        = options.hName
 isQCDMC        = options.isQCDMC
-makeMorePlots   = options.makeMorePlots
-makeAllPlots    = options.makeAllPlots
 
 #-----------------------------------------
 #Path of the I/O histrograms/plots
 #----------------------------------------
-inHistSubDir = "%s/%s/%s/Merged"%(year, decayMode, channel)
+inHistSubDir = "/Hist_Ntuple/%s/%s/%s/Merged"%(year, decayMode, channel)
 inHistFullDir = "%s/%s"%(condorHistDir, inHistSubDir)
 if CR=="":
-    outPlotSubDir = "Plot_Hist/%s/%s/%s/SR"%(year, decayMode, channel)
+    outPlotSubDir = "/Plot_Hist/%s/%s/%s/SR"%(year, decayMode, channel)
 else:
     outPlotSubDir = "Plot_Hist/%s/%s/%s/CR/%s"%(year, decayMode, channel, CR)
 outPlotFullDir = "%s/%s"%(condorHistDir, outPlotSubDir)
@@ -62,19 +55,7 @@ for sample in Samples.keys():
     fileName = "%s/%s.root"%(inHistFullDir,sample)
     fileDict[sample] = TFile(fileName, "read")
 
-#-----------------------------------------
-#Hists to be stacked/plotted
-#----------------------------------------
 gROOT.SetBatch(True)
-if plotList is None:
-    if makeMorePlots:
-        plotList = basePlotList 
-    elif makeAllPlots:
-        plotList = histograms.keys()
-        plotList.sort()
-    else:
-        plotList = otherPlotList
-    
 #-----------------------------------------
 #Make a plot for one histogram
 #----------------------------------------
@@ -138,14 +119,25 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
     #    hSumAllBkg.Add(qcdDDHist[0])
     #    hAllBkgs.append(qcdDDHist[0])
 
+    lumi_13TeV = "35.9 fb^{-1}"
+    col_depth = 0
+    if "16" in year:
+        lumi_13TeV = "35.9 fb^{-1} (2016)"
+        col_depth = -3
+    if "17" in year:
+        lumi_13TeV = "41.5 fb^{-1} (2017)"
+        col_depth = -2
+    if "18" in year:
+        lumi_13TeV = "59.7 fb^{-1} (2018)"
+        col_depth = -1
     #Stack nominal hists
-    xTitle = histograms[hName][0]
-    yTitle = histograms[hName][1]
+    xTitle = hName
+    yTitle = "Events"
     hStack = THStack(hName,hName)
     hForStack = sortHists(hAllBkgs, False)
     for h in hForStack: 
         sampleName = h.GetName().split("_")[0]
-        decoHist(h, xTitle, yTitle, Samples[sampleName][1])
+        decoHist(h, xTitle, yTitle, Samples[sampleName][1]+col_depth)
         hStack.Add(h)
     hStack.SetMinimum(0.1)
     if isLog:
@@ -218,13 +210,6 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
     chCRName = "#splitline{#font[42]{%s}}{#font[42]{%s}}"%(chName, crName)
     extraText   = "#splitline{Preliminary}{%s}"%chCRName
     #CMS_lumi(canvas, iPeriod, iPosX, extraText)
-    lumi_13TeV = "35.9 fb^{-1}"
-    if "16" in year:
-        lumi_13TeV = "35.9 fb^{-1} (2016)"
-    if "17" in year:
-        lumi_13TeV = "41.5 fb^{-1} (2017)"
-    if "18" in year:
-        lumi_13TeV = "59.7 fb^{-1} (2018)"
     CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
 
     #Draw the ratio of data and all background
@@ -251,19 +236,15 @@ def makePlot(hName, CR, isQCDMC, isData, isLog, isRatio, isUnc):
         baseLine.Draw("SAME");
         hRatio.Draw("same")
     #canvas.SaveAs("%s/%s.pdf"%(outPlotFullDir, hName))
-    #canvas.SaveAs("%s/%s_%s_%s.pdf"%(outPlotFullDir, hName, year, channel))
-    canvas.SaveAs("PlotFromHist/pdf/%s_%s_%s.png"%(hName, year, channel))
+    canvas.SaveAs("%s/%s_%s_%s.pdf"%(outPlotFullDir, hName, year, channel))
+    #canvas.SaveAs("PlotFromHist/pdf/%s_%s_%s.png"%(hName, year, channel))
 
 #-----------------------------------------
 #Finally make the plot for each histogram
 #----------------------------------------
-for hName in plotList:
-    isQCDMC  = False
-    isData   = True
-    isLog    = True
-    isRatio  = True
-    isUnc    = False
-    if hName not in histograms.keys():
-        print "hist name = %s, is not found"%hName
-        sys.exit()
-    makePlot(hName, CR, isQCDMC,  isData, isLog, isRatio, isUnc)
+isQCDMC  = False
+isData   = True
+isLog    = True
+isRatio  = True
+isUnc    = False
+makePlot(hName, CR, isQCDMC,  isData, isLog, isRatio, isUnc)

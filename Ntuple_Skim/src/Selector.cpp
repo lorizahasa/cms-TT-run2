@@ -114,6 +114,7 @@ void Selector::process_objects(EventTree* inp_tree){
 
     //cout << "before selector jets" << endl;
     filter_jets();
+    filter_fatjets();
 
     //cout << "before photon jet dr" << endl;
     // // add in the DR(photon,jet), removing photons with jet < 0.4 away, needs to be done after the jet selection
@@ -142,6 +143,7 @@ void Selector::clear_vectors(){
     MuonsNoIso.clear();
     Jets.clear();
     FwdJets.clear();
+    FatJets.clear();
     bJets.clear();
 	
     MuRelIso_corr.clear();
@@ -647,6 +649,29 @@ void Selector::filter_jets(){
     // }
 }
 
+void Selector::filter_fatjets(){
+    if (tree->event_==printEvent){
+        cout << "Found Event Staring Fat Jets" << endl;
+    }
+
+    for(int jetInd = 0; jetInd < tree->nFatJet_; ++jetInd){
+        double pt = tree->fatJetPt_[jetInd];
+        double eta = tree->fatJetEta_[jetInd];
+        double phi = tree->fatJetPhi_[jetInd];
+        //https://cms-nanoaod-integration.web.cern.ch/integration/master-102X/mc102X_doc.html
+        //for 2016: id = 0, 1, 3 (1=loose, 2=tight, 3=tightLepVeto)
+        //for 2017,18, id = 0, 2, 6
+        Int_t id   = tree->fatJetID_[jetInd];
+        bool isId  = id >=1 || id >=2;
+        bool jetPresel = (pt >= jet_Pt_cut &&
+                          TMath::Abs(eta) <= jet_Eta_cut && isId
+                          );
+        if (jetPresel){
+            FatJets.push_back(jetInd);
+        }
+    }
+
+}
 
 bool Selector::passEleID(int eleInd, int cutVal, bool doRelisoCut){
 
@@ -679,91 +704,6 @@ bool Selector::passEleID(int eleInd, int cutVal, bool doRelisoCut){
     return passID;
 
 }
-
-
-    // double pt = tree->elePt_->at(eleInd);
-    // double eta = TMath::Abs(tree->eleSCEta_->at(eleInd));
-
-    // double PFrelIso_corr = tree->elePFRelIso_->at(eleInd);
-
-    // bool SIEIECut      = (eta < 1.47) ? (tree->eleSIEIE_->at(eleInd) < 0.00998) : (tree->eleSIEIE_->at(eleInd) < 0.0292);
-    // bool dEtaCut       = (eta < 1.47) ? (tree->eledEtaseedAtVtx_->at(eleInd)		< 0.00308) : (tree->eledEtaseedAtVtx_->at(eleInd)		 < 0.00605);
-// 	bool dPhiCut       = (eta < 1.47) ? (tree->eledPhiAtVtx_->at(eleInd)			< 0.0816 ) : (tree->eledPhiAtVtx_->at(eleInd)			 < 0.0394 );
-// 	bool HoverECut     = (eta < 1.47) ? (tree->eleHoverE_->at(eleInd)			    < 0.0414 ) : (tree->eleHoverE_->at(eleInd)			     < 0.0641 );
-// 	bool RelIsoCut     = (eta < 1.47) ? (PFrelIso_corr							    < 0.0588 ) : (PFrelIso_corr							     < 0.0571 );
-// 	bool overEoverPCut = (eta < 1.47) ? (TMath::Abs(tree->eleEoverPInv_->at(eleInd))< 0.0129 ) : (TMath::Abs(tree->eleEoverPInv_->at(eleInd))< 0.0129 );
-// 	bool MissHitsCut   = (eta < 1.47) ? (tree->eleMissHits_->at(eleInd)             <= 1     ) : (tree->eleMissHits_->at(eleInd)             <= 1     );
-// 	bool ConvVetoCut   = tree->eleConvVeto_->at(eleInd);
-		
-//     bool passTightID = SIEIECut && dEtaCut && dPhiCut && HoverECut && (doRelisoCut ? RelIsoCut : true) && overEoverPCut && MissHitsCut && ConvVetoCut;
-	
-// 	return true;
-
-// }
-
-// bool Selector::passEleVetoID(int eleInd, bool doRelisoCut){
-
-// 	double pt = tree->elePt_->at(eleInd);
-//     double eta = TMath::Abs(tree->eleSCEta_->at(eleInd));
-
-// 	double rho = tree->rho_;
-// 	double ea = electronEA[egammaRegion(eta)];
-
-
-// 	// EA subtraction
-// 	double PFrelIso_corr = ( tree->elePFChIso_->at(eleInd) + 
-// 							 max(0.0, tree->elePFNeuIso_->at(eleInd) + 
-// 								 tree->elePFPhoIso_->at(eleInd) -
-// 								 rho*ea
-// 								 )
-// 							 ) / pt;
-
-// 	bool SIEIECut      = (eta < 1.47) ? (tree->eleSigmaIEtaIEtaFull5x5_->at(eleInd) < 0.0115 ) : (tree->eleSigmaIEtaIEtaFull5x5_->at(eleInd) < 0.037);
-// 	bool dEtaCut       = (eta < 1.47) ? (tree->eledEtaseedAtVtx_->at(eleInd)		< 0.00749) : (tree->eledEtaseedAtVtx_->at(eleInd)		 < 0.00895);
-// 	bool dPhiCut       = (eta < 1.47) ? (tree->eledPhiAtVtx_->at(eleInd)			< 0.228  ) : (tree->eledPhiAtVtx_->at(eleInd)			 < 0.213);
-// 	bool HoverECut     = (eta < 1.47) ? (tree->eleHoverE_->at(eleInd)			    < 0.356  ) : (tree->eleHoverE_->at(eleInd)			     < 0.211 );
-// 	bool RelIsoCut     = (eta < 1.47) ? (PFrelIso_corr							    < 0.175  ) : (PFrelIso_corr							     < 0.159 );
-// 	bool overEoverPCut = (eta < 1.47) ? (TMath::Abs(tree->eleEoverPInv_->at(eleInd))< 0.299  ) : (TMath::Abs(tree->eleEoverPInv_->at(eleInd))< 0.15  );
-// 	bool MissHitsCut   = (eta < 1.47) ? (tree->eleMissHits_->at(eleInd)             <= 2     ) : (tree->eleMissHits_->at(eleInd)             <= 3     );
-// 	bool ConvVetoCut   = tree->eleConvVeto_->at(eleInd);
-		
-//     bool passTightID = SIEIECut && dEtaCut && dPhiCut && HoverECut && (doRelisoCut ? RelIsoCut : true) && overEoverPCut && MissHitsCut && ConvVetoCut;
-	
-// 	return true;
-
-// }
-
-// bool Selector::passPhoMediumID(int phoInd, bool cutHoverE, bool cutSIEIE, bool cutIso){
-
-// 	double pt = tree->phoEt_->at(phoInd);
-//     double eta = TMath::Abs(tree->phoSCEta_->at(phoInd));
-//     bool passMediumID = false;
-
-// 	double rhoCorrPFChIso  = max(0.0, tree->phoPFChIso_->at(phoInd)  - phoEffArea03ChHad(eta) *tree->rho_);
-// 	double rhoCorrPFNeuIso = max(0.0, tree->phoPFNeuIso_->at(phoInd) - phoEffArea03NeuHad(eta)*tree->rho_);
-// 	double rhoCorrPFPhoIso = max(0.0, tree->phoPFPhoIso_->at(phoInd) - phoEffArea03Pho(eta)   *tree->rho_);
-	
-//     if (eta < 1.47){
-// 		if ((!cutHoverE || tree->phoHoverE_->at(phoInd)                < 0.0396  ) &&
-// 			(!cutSIEIE  || tree->phoSigmaIEtaIEtaFull5x5_->at(phoInd)  < 0.01022 ) &&
-// 			(!cutIso    || (rhoCorrPFChIso                              < 0.441 &&
-// 							rhoCorrPFNeuIso                             < 2.725+0.0148*pt+0.000017*pt*pt &&
-// 							rhoCorrPFPhoIso                             < 2.571+0.0047*pt))){
-// 			passMediumID = true;
-// 		}
-//     } else {
-// 		if ((!cutHoverE || tree->phoHoverE_->at(phoInd)                < 0.0219  ) &&
-// 			(!cutSIEIE  || tree->phoSigmaIEtaIEtaFull5x5_->at(phoInd)  < 0.03001 ) &&
-// 			(!cutIso    || (rhoCorrPFChIso                              < 0.442 &&
-// 							rhoCorrPFNeuIso                             < 1.715+0.0163*pt+0.000014*pt*pt &&
-// 							rhoCorrPFPhoIso                             < 3.863+0.0034*pt))){
-// 			passMediumID = true;
-// 		}
-//     }
-//     return passMediumID;
-// }
-
-
 
 Selector::~Selector(){
 }
