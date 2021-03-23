@@ -13,7 +13,6 @@ parser.add_option("--isMerge","--isMerge", dest="mergeHistos",action="store_true
 isCheck = options.checkStatus
 isMerge = options.mergeHistos
 
-
 def runCmd(cmd):
     print "\n\033[01;32m Excecuting: %s \033[00m"%cmd
     os.system(cmd)

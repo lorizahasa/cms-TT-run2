@@ -35,7 +35,6 @@ EventPick::EventPick(std::string titleIn){
     NlooseMuVeto_le = 0;
     NlooseEleVeto_le = 0;
 
-
     // These dR cuts are all done at selection level now
     // assign cut values
     //	veto_jet_dR = 0.1;
@@ -44,8 +43,6 @@ EventPick::EventPick(std::string titleIn){
     // veto_pho_lep_dR = 0.7;
 
     MET_cut = 0.0;
-    no_trigger = false;
-
     skimEle = false;
     skimMu = false;
 
@@ -70,28 +67,16 @@ EventPick::~EventPick(){
 }
 
 void EventPick::process_event(EventTree* tree, Selector* selector, double weight){
-
-    //	clear_vectors();
-    passSkim = false;
-    passPresel_ele = false;
-    passPresel_mu = false;
-    passAll_ele = false;
-    passAll_mu = false;
-
-    if (tree->event_==printEvent){
-	cout << "Found Event Number " << printEvent << endl;
-    }
-    bool Pass_trigger_mu  = false;
-    bool Pass_trigger_ele = false;
-
+    //Triggers
+    bool passTriggerMu  = false;
+    bool passTriggerEle = false;
     if (year=="2016") {
-	Pass_trigger_mu = (tree->HLT_IsoMu24_ || tree->HLT_IsoTkMu24_  ) || no_trigger;
-	Pass_trigger_ele = tree->HLT_Ele27_WPTight_Gsf_ || no_trigger;
+	    passTriggerMu = (tree->HLT_Mu50_ || tree->HLT_TkMu50_); 
+        passTriggerEle = tree->HLT_Ele27_WPTight_Gsf_ ||tree->HLT_Photon175_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_;
     }
     if (year=="2017"){
-	Pass_trigger_mu = (tree->HLT_IsoMu27_) || no_trigger;
-
-	bool allSingleEGL1or = (tree->L1_SingleEG24_ ||
+	    passTriggerMu = (tree->HLT_Mu50_ || tree->HLT_OldMu100_ || tree->HLT_TkMu100_);
+	    bool allSingleEGL1or = (tree->L1_SingleEG24_ ||
 				tree->L1_SingleEG26_ ||
 				tree->L1_SingleEG30_ ||
 				tree->L1_SingleEG32_ ||
@@ -120,57 +105,44 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 				tree->L1_SingleIsoEG34_ ||
 				tree->L1_SingleIsoEG36_ ||
 				tree->L1_SingleIsoEG38_);
-	
-	//Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_ && allSingleEGL1or) || no_trigger;
-	Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_) || no_trigger;
+        passTriggerEle = (tree->HLT_Ele35_WPTight_Gsf_ ||tree->HLT_Photon200_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_) && allSingleEGL1or;
 
     }
     if (year=="2018"){
-	Pass_trigger_mu = (tree->HLT_IsoMu24_) || no_trigger;
-	Pass_trigger_ele = tree->HLT_Ele32_WPTight_Gsf_ || no_trigger;
+	    passTriggerMu = (tree->HLT_Mu50_ || tree->HLT_OldMu100_ || tree->HLT_TkMu100_);
+        passTriggerEle = tree->HLT_Ele32_WPTight_Gsf_ ||tree->HLT_Photon200_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_;
     }
 
-    bool filters = (tree->Flag_goodVertices_ &&
+    //Filters
+    bool passFilter = (tree->Flag_goodVertices_ &&
 		    tree->Flag_globalSuperTightHalo2016Filter_ &&
 		    tree->Flag_HBHENoiseFilter_ &&
 		    tree->Flag_HBHENoiseIsoFilter_ &&
 		    tree->Flag_EcalDeadCellTriggerPrimitiveFilter_ &&
 		    tree->Flag_BadPFMuonFilter_ );
 
-    if (year=="2017" || year=="2018"){ filters = filters && tree->Flag_ecalBadCalibFilterV2_ ;}
-
-    //comment out following two line when no filter is needed
+    if (year=="2017" || year=="2018"){ passFilter = passFilter && tree->Flag_ecalBadCalibFilterV2_ ;}
     if(applyMetFilter){
-	Pass_trigger_mu = Pass_trigger_mu && filters ;
-	Pass_trigger_ele = Pass_trigger_ele && filters ;
+	    passTriggerMu = passTriggerMu && passFilter ;
+	    passTriggerEle = passTriggerEle && passFilter ;
     }
 
-    string run_lumi_event = to_string(tree->run_)+","+to_string(tree->lumis_)+","+to_string(tree->event_)+"\n";
-
-    if (saveCutflows) {
-	cutFlow_ele->Fill(0.0); // Input events
-	cutFlow_mu->Fill(0.0); // Input events
-	cutFlowWeight_ele->Fill(0.0,weight);
-	cutFlowWeight_mu->Fill(0.0,weight);
-	// dump_input_ele << run_lumi_event;
-	// dump_input_mu << run_lumi_event;
-    }
-
-    if (tree->event_==printEvent){
-	cout << "TriggerMu "<< Pass_trigger_mu << endl;
-	cout << "TriggerEle "<< Pass_trigger_ele << endl;
-    }
-    // Pass_trigger_mu = Pass_trigger_mu || Pass_trigger_ele;
-    // Pass_trigger_ele = Pass_trigger_mu || Pass_trigger_ele;
-
-    passPresel_mu  = true;
-    passPresel_ele = true;
-
+    //Primary Vertex
     bool isPVGood = (tree->pvNDOF_>4 &&
 		     sqrt(tree->pvX_ * tree->pvX_ + tree->pvY_ * tree->pvY_)<=2. &&
 		     abs(tree->pvZ_) <= 24.);
 
+
+    passSkim = false;
+    passAllEle = false;
+    passAllMu = false;
+    passPreselMu  = true;
+    passPreselEle = true;
+
     if (tree->event_==printEvent){
+	    cout << "Found Event Number " << printEvent << endl;
+	    cout << "TriggerMu "<< passTriggerMu << endl;
+	    cout << "TriggerEle "<< passTriggerEle << endl;
     	cout << "PV "<< isPVGood << endl;
     	cout << "    ndof="<<tree->pvNDOF_ << "   (>4)" << endl;
     	cout << "    pX="<<tree->pvX_ <<  "   (<2)" << endl;
@@ -179,21 +151,30 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     }
 
     // Cut events that fail mu trigger
-    if( passPresel_mu &&  (Pass_trigger_mu)) {
+    string run_lumi_event = to_string(tree->run_)+","+to_string(tree->lumis_)+","+to_string(tree->event_)+"\n";
+    if (saveCutflows) {
+	cutFlow_ele->Fill(0.0); // Input events
+	cutFlow_mu->Fill(0.0); // Input events
+	cutFlowWeight_ele->Fill(0.0,weight);
+	cutFlowWeight_mu->Fill(0.0,weight);
+	// dump_input_ele << run_lumi_event;
+	// dump_input_mu << run_lumi_event;
+    }
+    if( passPreselMu &&  (passTriggerMu)) {
 	if (saveCutflows) {cutFlow_mu->Fill(1); cutFlowWeight_mu->Fill(1,weight); dump_trigger_mu << run_lumi_event;}
     }
-    else { passPresel_mu = false;}
-    if( passPresel_mu && isPVGood) { if (saveCutflows) {cutFlow_mu->Fill(2); cutFlowWeight_mu->Fill(2,weight); } }
-    else { passPresel_mu = false;}
+    else { passPreselMu = false;}
+    if( passPreselMu && isPVGood) { if (saveCutflows) {cutFlow_mu->Fill(2); cutFlowWeight_mu->Fill(2,weight); } }
+    else { passPreselMu = false;}
 
     // Cut events that fail ele trigger
-    if( passPresel_ele &&  (Pass_trigger_ele)) { if (saveCutflows) {cutFlow_ele->Fill(1); cutFlowWeight_ele->Fill(1,weight); dump_trigger_ele << run_lumi_event;}}
-    else { passPresel_ele = false;}
-    if( passPresel_ele && isPVGood) { if (saveCutflows) {cutFlow_ele->Fill(2); cutFlowWeight_ele->Fill(2,weight);} }
-    else { passPresel_ele = false; }
+    if( passPreselEle &&  (passTriggerEle)) { if (saveCutflows) {cutFlow_ele->Fill(1); cutFlowWeight_ele->Fill(1,weight); dump_trigger_ele << run_lumi_event;}}
+    else { passPreselEle = false;}
+    if( passPreselEle && isPVGood) { if (saveCutflows) {cutFlow_ele->Fill(2); cutFlowWeight_ele->Fill(2,weight);} }
+    else { passPreselEle = false; }
 
 
-    if ( passPresel_ele || passPresel_mu ) {
+    if ( passPreselEle || passPreselMu ) {
 	selector->process_objects(tree);
     }
     else {
@@ -215,12 +196,12 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 
     // Cut on events with ==1 muon, no loose muons, no loose or tight electrons
     if (!QCDselect){
-	if( passPresel_mu && selector->Muons.size() == Nmu_eq){
+	if( passPreselMu && selector->Muons.size() == Nmu_eq){
 	    if (Nmu_eq==2) {
 		int idx_mu1 = selector->Muons.at(0);
 		int idx_mu2 = selector->Muons.at(1);
 		if(tree->muCharge_[idx_mu1]*tree->muCharge_[idx_mu2] ==1){
-		    passPresel_mu = false;
+		    passPreselMu = false;
 		}
 		TLorentzVector mu1;
 		TLorentzVector mu2;
@@ -240,46 +221,39 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 		}
  
 		if ( abs((mu1 + mu2).M() - 91.1876) > 10 ){
-		    passPresel_mu = false;
+		    passPreselMu = false;
 		}
 	    }
 	    if (saveCutflows){cutFlow_mu->Fill(3); cutFlowWeight_mu->Fill(3,weight); }
 	}
-	else { passPresel_mu = false;}
+	else { passPreselMu = false;}
 
-	if( passPresel_mu && selector->MuonsLoose.size() <=  NlooseMuVeto_le ) { if (saveCutflows) {cutFlow_mu->Fill(4); cutFlowWeight_mu->Fill(4,weight); } }
-	else { passPresel_mu = false;}
-	if( passPresel_mu && (selector->ElectronsLoose.size() + selector->Electrons.size() ) <=  NlooseEleVeto_le ) {if (saveCutflows) {cutFlow_mu->Fill(5); cutFlowWeight_mu->Fill(5,weight);  dump_lepton_mu << run_lumi_event;} }
-	else { passPresel_mu = false;}
+	if( passPreselMu && selector->MuonsLoose.size() <=  NlooseMuVeto_le ) { if (saveCutflows) {cutFlow_mu->Fill(4); cutFlowWeight_mu->Fill(4,weight); } }
+	else { passPreselMu = false;}
+	if( passPreselMu && (selector->ElectronsLoose.size() + selector->Electrons.size() ) <=  NlooseEleVeto_le ) {if (saveCutflows) {cutFlow_mu->Fill(5); cutFlowWeight_mu->Fill(5,weight);  dump_lepton_mu << run_lumi_event;} }
+	else { passPreselMu = false;}
     }
     else{
-	if( passPresel_mu && selector->Muons.size() == 1){
+	if( passPreselMu && selector->Muons.size() == 1){
             if (saveCutflows){cutFlow_mu->Fill(3); cutFlowWeight_mu->Fill(3,weight); }
         }
-        else { passPresel_mu = false;}
+        else { passPreselMu = false;}
 
-        // if( passPresel_mu && selector->MuonsNoIso.size() == 1 ) {
-	//     if (saveCutflows) {cutFlow_mu->Fill(4); cutFlowWeight_mu->Fill(4,weight); } }
-        // else { passPresel_mu = false;}
-        // if( passPresel_mu && (selector->ElectronsNoIso.size() ) == 0 ) {
-	//     if (saveCutflows) {cutFlow_mu->Fill(5); cutFlowWeight_mu->Fill(5,weight);} }
-        // else { passPresel_mu = false;}
-//aloke : looselepveto in QCDCR
-	if( passPresel_mu && selector->MuonsLoose.size() <=  NlooseMuVeto_le ) { if (saveCutflows) {cutFlow_mu->Fill(4); cutFlowWeight_mu->Fill(4,weight);} }
-	else { passPresel_mu = false;}
-	if( passPresel_mu && (selector->ElectronsLoose.size() + selector->Electrons.size() ) <=  NlooseEleVeto_le ) {if (saveCutflows) {cutFlow_mu->Fill(5); cutFlowWeight_mu->Fill(5,weight);  dump_lepton_mu << run_lumi_event;} }
-	else { passPresel_mu = false;}
+	if( passPreselMu && selector->MuonsLoose.size() <=  NlooseMuVeto_le ) { if (saveCutflows) {cutFlow_mu->Fill(4); cutFlowWeight_mu->Fill(4,weight);} }
+	else { passPreselMu = false;}
+	if( passPreselMu && (selector->ElectronsLoose.size() + selector->Electrons.size() ) <=  NlooseEleVeto_le ) {if (saveCutflows) {cutFlow_mu->Fill(5); cutFlowWeight_mu->Fill(5,weight);  dump_lepton_mu << run_lumi_event;} }
+	else { passPreselMu = false;}
     }
 
 
     // Cut on events with ==1 muon, no loose muons, no loose or tight electrons
     if (!QCDselect) {
-	if( passPresel_ele && selector->Electrons.size() == Nele_eq) {
+	if( passPreselEle && selector->Electrons.size() == Nele_eq) {
 	    if (Nele_eq==2) {
 		int idx_ele1 = selector->Electrons.at(0);
 		int idx_ele2 = selector->Electrons.at(1);
 		if((tree->eleCharge_[idx_ele1])*(tree->eleCharge_[idx_ele2]) == 1){
-		    passPresel_ele = false;
+		    passPreselEle = false;
 		}
 		TLorentzVector ele1;
 		TLorentzVector ele2;
@@ -299,45 +273,45 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 		}
  
 		if ( abs((ele1 + ele2).M() - 91.1876) > 10 ){
-		    passPresel_ele = false;
+		    passPreselEle = false;
 		}
 	    }
 	    if (saveCutflows) {cutFlow_ele->Fill(3); cutFlowWeight_ele->Fill(3,weight);}
 	}
-	else { passPresel_ele = false;}
+	else { passPreselEle = false;}
 
-	if( passPresel_ele && selector->ElectronsLoose.size() <=  NlooseEleVeto_le ) { if (saveCutflows) {cutFlow_ele->Fill(4); cutFlowWeight_ele->Fill(4,weight);}}
-	else { passPresel_ele = false;}
+	if( passPreselEle && selector->ElectronsLoose.size() <=  NlooseEleVeto_le ) { if (saveCutflows) {cutFlow_ele->Fill(4); cutFlowWeight_ele->Fill(4,weight);}}
+	else { passPreselEle = false;}
 
-	if( passPresel_ele && (selector->MuonsLoose.size() + selector->Muons.size() ) <=  NlooseMuVeto_le ) { if (saveCutflows) {cutFlow_ele->Fill(5); cutFlowWeight_ele->Fill(5,weight);  dump_lepton_ele << run_lumi_event;}}
-	else { passPresel_ele = false;}
+	if( passPreselEle && (selector->MuonsLoose.size() + selector->Muons.size() ) <=  NlooseMuVeto_le ) { if (saveCutflows) {cutFlow_ele->Fill(5); cutFlowWeight_ele->Fill(5,weight);  dump_lepton_ele << run_lumi_event;}}
+	else { passPreselEle = false;}
     }
     else {
-	if( passPresel_ele && selector->Electrons.size() == 1){
+	if( passPreselEle && selector->Electrons.size() == 1){
             if (saveCutflows){cutFlow_ele->Fill(3); cutFlowWeight_ele->Fill(3,weight); }
         }
-	else { passPresel_ele = false;}
+	else { passPreselEle = false;}
 
-        // if( passPresel_ele && selector->ElectronsNoIso.size() == 1 ) {
+        // if( passPreselEle && selector->ElectronsNoIso.size() == 1 ) {
 	//     if (saveCutflows) {cutFlow_ele->Fill(4); cutFlowWeight_ele->Fill(4,weight); } }
-        // else { passPresel_ele = false;}
-        // if( passPresel_ele && (selector->MuonsNoIso.size() ) == 0 ) {
+        // else { passPreselEle = false;}
+        // if( passPreselEle && (selector->MuonsNoIso.size() ) == 0 ) {
 	//     if (saveCutflows) {cutFlow_ele->Fill(5); cutFlowWeight_ele->Fill(5,weight);} }
-        // else { passPresel_ele = false;}
+        // else { passPreselEle = false;}
 //aloke ; loose lepton veto in QCDCR too
 
-	if( passPresel_ele && selector->ElectronsLoose.size() <=  NlooseEleVeto_le ) { if (saveCutflows) {cutFlow_ele->Fill(4); cutFlowWeight_ele->Fill(4,weight);}}
-	else { passPresel_ele = false;}
-	if( passPresel_ele && (selector->MuonsLoose.size() + selector->Muons.size() ) <=  NlooseMuVeto_le ) { if (saveCutflows) {cutFlow_ele->Fill(5); cutFlowWeight_ele->Fill(5,weight);  dump_lepton_ele << run_lumi_event;}}
-	else { passPresel_ele = false;}
+	if( passPreselEle && selector->ElectronsLoose.size() <=  NlooseEleVeto_le ) { if (saveCutflows) {cutFlow_ele->Fill(4); cutFlowWeight_ele->Fill(4,weight);}}
+	else { passPreselEle = false;}
+	if( passPreselEle && (selector->MuonsLoose.size() + selector->Muons.size() ) <=  NlooseMuVeto_le ) { if (saveCutflows) {cutFlow_ele->Fill(5); cutFlowWeight_ele->Fill(5,weight);  dump_lepton_ele << run_lumi_event;}}
+	else { passPreselEle = false;}
     }
 
     // split skim into ele and mu
-    if ( (skimEle && passPresel_ele) || (skimMu && passPresel_mu) && selector->Jets.size() >= SkimNjet_ge && selector->bJets.size() >= SkimNBjet_ge ){ passSkim = true; }
+    if ( (skimEle && passPreselEle) || (skimMu && passPreselMu) && selector->Jets.size() >= SkimNjet_ge && selector->bJets.size() >= SkimNBjet_ge ){ passSkim = true; }
 
     if (tree->event_==printEvent){
-	cout << "PassLepMu  "<< passPresel_mu << endl;
-	cout << "PassLepEle "<< passPresel_ele << endl;
+	cout << "PassLepMu  "<< passPreselMu << endl;
+	cout << "PassLepEle "<< passPreselEle << endl;
     }
 
 
@@ -345,7 +319,7 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     // Implemented in this way (with a loop) to check for numbers failing each level of cut < Njet cut, and filling cutflow histo
     // cutflow histo will not be filled for bins where the cut is > Njet_ge (ex, if cut is at 3, Njets>=4 bin is left empty)
     for (int ijetCut = 1; ijetCut <= Njet_ge; ijetCut++){
-	if(passPresel_ele && selector->Jets.size() >= ijetCut ) {
+	if(passPreselEle && selector->Jets.size() >= ijetCut ) {
 	    if (saveCutflows) {
 		cutFlow_ele->Fill(5+ijetCut);
 		cutFlowWeight_ele->Fill(5+ijetCut,weight);
@@ -354,14 +328,14 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 		if (ijetCut==3){ dump_threeJet_ele << run_lumi_event; }
 		if (ijetCut==4){ dump_fourJet_ele << run_lumi_event; }
 	    }}
-	else passPresel_ele = false;
+	else passPreselEle = false;
     }
 
     // NJet cuts for muons
     // Implemented in this way (with a loop) to check for numbers failing each level of cut < Njet cut, and filling cutflow histo
     // cutflow histo will not be filled for bins where the cut is > Njet_ge (ex, if cut is at 3, Njet>=4 bin is left empty)
     for (int ijetCut = 1; ijetCut <= Njet_ge; ijetCut++){
-	if(passPresel_mu && selector->Jets.size() >= ijetCut ) {
+	if(passPreselMu && selector->Jets.size() >= ijetCut ) {
 	    if (saveCutflows) {
 		cutFlow_mu->Fill(5+ijetCut); cutFlowWeight_mu->Fill(5+ijetCut,weight);
 		if (ijetCut==1){ dump_oneJet_mu << run_lumi_event; }
@@ -370,18 +344,18 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 		if (ijetCut==4){ dump_fourJet_mu << run_lumi_event; }
 	    }
 	}
-	else passPresel_mu = false;
+	else passPreselMu = false;
     }
     if (tree->event_==printEvent){
-	cout << "PassJetMu  "<< passPresel_mu << endl;
-	cout << "PassJetEle "<< passPresel_ele << endl;
+	cout << "PassJetMu  "<< passPreselMu << endl;
+	cout << "PassJetEle "<< passPreselEle << endl;
     }
 
 
     // Nbtag cuts for electrons
     if (!ZeroBExclusive){
 	for (int ibjetCut = 1; ibjetCut <= NBjet_ge; ibjetCut++){
-            if(passPresel_ele && selector->bJets.size() >= ibjetCut ) {
+            if(passPreselEle && selector->bJets.size() >= ibjetCut ) {
 		if (saveCutflows ) {
 		    cutFlow_ele->Fill(9+ibjetCut);
 		    cutFlowWeight_ele->Fill(9+ibjetCut,weight);
@@ -389,72 +363,72 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
 		}
 	    }
             else{
-		passPresel_ele = false;
+		passPreselEle = false;
 	    }
 	}
     } else {
-	if(passPresel_ele && selector->bJets.size() !=0) passPresel_ele = false;
+	if(passPreselEle && selector->bJets.size() !=0) passPreselEle = false;
     }
 
 
     // Nbtag cuts for muons
     if (!ZeroBExclusive){
 	for (int ibjetCut = 1; ibjetCut <= NBjet_ge; ibjetCut++){
-            if(passPresel_mu  && selector->bJets.size() >= ibjetCut ) {
+            if(passPreselMu  && selector->bJets.size() >= ibjetCut ) {
 		if (saveCutflows) {
 		    cutFlow_mu->Fill(9+ibjetCut);
 		    cutFlowWeight_mu->Fill(9+ibjetCut,weight);
 		    if (ibjetCut==1){ dump_btag_mu << run_lumi_event; }
 		}
 	    }
-            else  passPresel_mu = false;
+            else  passPreselMu = false;
 	}
     } else {
-	if(passPresel_mu && selector->bJets.size() !=0) passPresel_mu = false;
+	if(passPreselMu && selector->bJets.size() !=0) passPreselMu = false;
     }
 
     if (tree->event_==printEvent){
-	cout << "PassBMu  "<< passPresel_mu << endl;
-	cout << "PassBEle "<< passPresel_ele << endl;
+	cout << "PassBMu  "<< passPreselMu << endl;
+	cout << "PassBEle "<< passPreselEle << endl;
     }
 
     // MET cut for electrons
-    if(passPresel_ele && tree->MET_pt_ >= MET_cut) { if (saveCutflows) {cutFlow_ele->Fill(12); cutFlowWeight_ele->Fill(12,weight);}}
-    else passPresel_ele = false;
+    if(passPreselEle && tree->MET_pt_ >= MET_cut) { if (saveCutflows) {cutFlow_ele->Fill(12); cutFlowWeight_ele->Fill(12,weight);}}
+    else passPreselEle = false;
 
     // MET cut for muons
-    if(passPresel_mu && tree->MET_pt_ >= MET_cut) { if (saveCutflows) {cutFlow_mu->Fill(12); cutFlowWeight_mu->Fill(12,weight);}}
-    else passPresel_mu = false;
+    if(passPreselMu && tree->MET_pt_ >= MET_cut) { if (saveCutflows) {cutFlow_mu->Fill(12); cutFlowWeight_mu->Fill(12,weight);}}
+    else passPreselMu = false;
 
 
 
     // Photon cut for electrons
-    if(passPresel_ele  && selector->Photons.size() == Npho_eq) {  
-	passAll_ele = true;
+    if(passPreselEle  && selector->Photons.size() == Npho_eq) {  
+	passAllEle = true;
 	if (saveCutflows) {cutFlow_ele->Fill(13); cutFlowWeight_ele->Fill(13,weight);  dump_photon_ele << run_lumi_event;}
     }
-    else passAll_ele = false ; 
+    else passAllEle = false ; 
 
 
     // Photon cut for muons
-    if(passPresel_mu && selector->Photons.size() == Npho_eq) { 
-	passAll_mu = true;
+    if(passPreselMu && selector->Photons.size() == Npho_eq) { 
+	passAllMu = true;
 	if (saveCutflows) {cutFlow_mu->Fill(13); cutFlowWeight_mu->Fill(13,weight); dump_photon_mu << run_lumi_event;}
     }
-    else passAll_mu = false ; 
+    else passAllMu = false ; 
     
     if (loosePhotonVeto){
 	// Loose photon cut for electrons
-	if(passAll_ele && selector->LoosePhotons.size() == Npho_eq) {
+	if(passAllEle && selector->LoosePhotons.size() == Npho_eq) {
 	    if (saveCutflows) {cutFlow_ele->Fill(14); cutFlowWeight_ele->Fill(14,weight);  dump_loosePhoton_ele << run_lumi_event;}
 	}
-	else passAll_ele = false;
+	else passAllEle = false;
     
 	// Loose photon cut for muons
-	if(passAll_mu && selector->LoosePhotons.size() == Npho_eq) {
+	if(passAllMu && selector->LoosePhotons.size() == Npho_eq) {
 	    if (saveCutflows) {cutFlow_mu->Fill(14); cutFlowWeight_mu->Fill(14,weight);  dump_loosePhoton_mu << run_lumi_event;}
 	}
-	else passAll_mu = false;
+	else passAllMu = false;
     }    
     
 }
@@ -613,46 +587,3 @@ void EventPick::close_cutflow_files(){
     dump_photon_PU_mu.close();
     
 }
-
-
-
-
-
-
-
-
-
-
-
-// void EventPick::clear_vectors(){
-// 	Electrons.clear();
-// 	ElectronsLoose.clear();
-// 	ElectronsMedium.clear();
-// 	Muons.clear();
-// 	MuonsLoose.clear();
-// 	Jets.clear();
-// 	bJets.clear();
-// 	Photons.clear();
-// 	LoosePhotons.clear();
-// 	PhotonsPresel.clear();
-// 	PhoPassChHadIso.clear();
-// 	PhoPassPhoIso.clear();
-// 	PhoPassSih.clear();
-// }
-
-// double EventPick::dR_jet_ele(int jetInd, int eleInd){
-// 	return dR(tree->jetEta_->at(jetInd), tree->jetPhi_->at(jetInd), tree->eleSCEta_->at(eleInd), tree->elePhi_->at(eleInd));
-// }
-// double EventPick::dR_jet_mu(int jetInd, int muInd){
-// 	return dR(tree->jetEta_->at(jetInd), tree->jetPhi_->at(jetInd), tree->muEta_->at(muInd), tree->muPhi_->at(muInd));
-// }
-// double EventPick::dR_jet_pho(int jetInd, int phoInd){
-// 	return dR(tree->jetEta_->at(jetInd), tree->jetPhi_->at(jetInd), tree->phoSCEta_->at(phoInd), tree->phoPhi_->at(phoInd));
-// }
-// double EventPick::dR_ele_pho(int eleInd, int phoInd){
-// 	return dR(tree->eleSCEta_->at(eleInd), tree->elePhi_->at(eleInd), tree->phoSCEta_->at(phoInd), tree->phoPhi_->at(phoInd));
-// }
-// double EventPick::dR_mu_pho(int muInd, int phoInd){
-// 	return dR(tree->muEta_->at(muInd), tree->muPhi_->at(muInd), tree->phoSCEta_->at(phoInd), tree->phoPhi_->at(phoInd));
-// }
-

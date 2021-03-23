@@ -38,17 +38,18 @@ inHistSubDir = "%s/%s/%s"%(year, decay, channel)
 inHistFullDir = "%s/%s"%(condorHistDir, inHistSubDir)
 outHistSubDir = "%s/%s/%s/Merged"%(year, decay, channel)
 outHistFullDir = "%s/%s"%(condorHistDir, outHistSubDir)
+runCmd("eos root://cmseos.fnal.gov rm -r %s"%outHistFullDir)
 runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%outHistFullDir)
 
 if channel in ["mu", "Mu", "MU", "mU"]:
-    #Samples.remove("QCDEle")
+    Samples.remove("QCDEle")
     Samples.remove("DataEle")
     for sampleMu in Samples:
         haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(outHistFullDir, sampleMu)
         haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'%s_.*root\'`"%( inHistFullDir, sampleMu)
         runCmd("hadd -f %s %s"%(haddOut, haddIn))
 else:
-    #Samples.remove("QCDMu")
+    Samples.remove("QCDMu")
     Samples.remove("DataMu")
     for sampleEle in Samples:
         haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(outHistFullDir, sampleEle)

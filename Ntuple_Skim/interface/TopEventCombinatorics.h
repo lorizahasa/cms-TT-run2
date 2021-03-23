@@ -37,6 +37,7 @@ class TopEventCombinatorics{
     void SetMW(double mW_){ mW = mW_;}
 
     void SetJetVector(std::vector<TLorentzVector> jets_){ jets = jets_;}
+    void SetFatJetVector(std::vector<TLorentzVector> fatJets_){ fatJets = fatJets_;}
     void SetJetResVector(std::vector<double> jetres_){ jetsRes = jetres_;}
     void SetBtagVector(std::vector<double> jetsTag_){ btag = jetsTag_;}
 
@@ -58,6 +59,7 @@ class TopEventCombinatorics{
     unsigned int getJ2(){ return j2_idx; }
     unsigned int getJ3(){ return j3_idx; }
     unsigned int getJ4(){ return j4_idx; }
+    unsigned int getFatJet(){ return fatJet_idx; }
     unsigned int getPho(){ return pho_idx; }
     bool getPhotonSide(){ return photonIsLeptonSide; }
     double getNuPz(){ return nu_pz; }
@@ -65,10 +67,12 @@ class TopEventCombinatorics{
     double getChi2(){ return chi2; }
     double getChi2_tgtg(){ return chi2_tgtg; }
     double getChi2_tytg(){ return chi2_tytg; }
+    double getChi2_tytg_fat(){ return chi2_tytg_fat; }
 
     bool GoodCombination(){ return goodCombo; }
     bool GoodCombination_tgtg(){ return goodCombo_tgtg; }
     bool GoodCombination_tytg(){ return goodCombo_tytg; }
+    bool GoodCombination_tytg_fat(){ return goodCombo_tytg_fat; }
 
     void ClearVectors(){
 	jets.clear();
@@ -76,6 +80,7 @@ class TopEventCombinatorics{
     int Calculate();
     int Calculate_tgtg(int nLeadingJets);
     int Calculate_tytg(int nLeadingJets);
+    int Calculate_tytg_fat(int nLeadingJets);
 
 
 
@@ -85,6 +90,7 @@ class TopEventCombinatorics{
     double chi2;
     double chi2_tgtg;
     double chi2_tytg;
+    double chi2_tytg_fat;
 
     double topChiSq(TLorentzVector j1, double sigma_j1,
 		    TLorentzVector j2, double sigma_j2,
@@ -106,7 +112,13 @@ class TopEventCombinatorics{
 		    TLorentzVector bh,
 		    TLorentzVector bl,
 		    double nu_pz_hypo);
+    double topChiSq_tytg_fat(TLorentzVector fatJet,
+		    TLorentzVector j3,
+		    TLorentzVector pho,
+		    TLorentzVector bl,
+		    double nu_pz_hypo);
     std::vector<TLorentzVector> jets;
+    std::vector<TLorentzVector> fatJets;
     std::vector<double> jetsRes;
     std::vector<double> btag;
 
@@ -137,6 +149,7 @@ class TopEventCombinatorics{
     int j2_idx;
     int j3_idx;
     int j4_idx;
+    int fatJet_idx;
     int pho_idx;
     int photonIsLeptonSide;
     int nu_pz;
@@ -144,6 +157,7 @@ class TopEventCombinatorics{
     bool goodCombo;
     bool goodCombo_tgtg;
     bool goodCombo_tytg;
+    bool goodCombo_tytg_fat;
 
     bool useResolutions;
 

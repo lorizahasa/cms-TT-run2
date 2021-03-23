@@ -2,12 +2,14 @@ import itertools
 import os
 from HistInputs import *
 
-if not os.path.exists("tmpSub/log"):
+if os.path.exists("tmpSub"):
+	os.system("rm -r tmpSub")
+else:
     os.makedirs("tmpSub/log")
 condorLogDir = "log"
 tarFile = "tmpSub/Hist_Ntuple.tar.gz"
-if os.path.exists(tarFile):
-	os.system("rm %s"%tarFile)
+if os.path.exists("../hists"):
+    os.system("rm -r ../hists")
 os.system("tar -zcvf %s ../../Hist_Ntuple --exclude condor"%tarFile)
 os.system("cp runMakeHists.sh tmpSub/")
 common_command = \
@@ -32,47 +34,32 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
     jdlFile.write('Executable =  runMakeHists.sh \n')
     jdlFile.write(common_command)
     if channel=="Mu": 
-        #Samples.remove("QCDEle")
+        Samples.remove("QCDEle")
         Samples.remove("DataEle")
     else: 
-        #Samples.remove("QCDMu")
+        Samples.remove("QCDMu")
         Samples.remove("DataMu")
-    #Create for Base, Signal region
-    for sample in Samples:
-        run_command =  \
-		'arguments  = %s %s %s %s \n\
-queue 1\n\n' %(year, decay, channel, sample)
-	jdlFile.write(run_command)
-    
     #Create for Base, Control region
-    for sample, cr in itertools.product(Samples, ControlRegion):
+    for sample, ps in itertools.product(Samples, PhaseSpace):
         run_command =  \
 		'arguments  = %s %s %s %s %s \n\
-queue 1\n\n' %(year, decay, channel, sample, cr)
+queue 1\n\n' %(year, decay, channel, sample, ps)
 	jdlFile.write(run_command)
-	
-    #Create for Syst, Signal region
-    for sample, syst, level in itertools.product(Samples, Systematics, SystLevel):
-        run_command =  \
-		'arguments  = %s %s %s %s %s %s \n\
-queue 1\n\n' %(year, decay, channel, sample, syst, level)
-        if not sample in ["DataMu", "DataEle", "QCD_DD"]:
-            jdlFile.write(run_command)
     
     #Create for Syst, Control region
-    for sample, syst, level, cr in itertools.product(Samples, Systematics, SystLevel, ControlRegion):
+    for sample, syst, level, ps in itertools.product(Samples, Systematics, SystLevel, PhaseSpace):
         run_command =  \
 		'arguments  = %s %s %s %s %s %s %s \n\
-queue 1\n\n' %(year, decay, channel, sample, syst, level, cr)
+queue 1\n\n' %(year, decay, channel, sample, syst, level, ps)
         if not sample in ["DataMu", "DataEle", "QCD_DD"]:
             jdlFile.write(run_command)
 	#print "condor_submit jdl/%s"%jdlFile
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
     if channel=="Mu": 
-        #Samples.append("QCDEle")
+        Samples.append("QCDEle")
         Samples.append("DataEle")
     else: 
-        #Samples.append("QCDMu")
+        Samples.append("QCDMu")
         Samples.append("DataMu")
 subFile.close()

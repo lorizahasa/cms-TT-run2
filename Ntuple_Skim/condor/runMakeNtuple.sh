@@ -29,7 +29,8 @@ job=$3
 nJobTotal=$4
 varname=${sample}_FileList_${year}
 cd sample
-source Skim_NanoAOD_FileLists_cff.sh 
+#source Skim_NanoAOD_FileLists_cff.sh 
+source Skim_NanoAOD_FileLists_cff_danny.sh 
 cd -
 if [ -z $job ] ; then
     jobNum=""

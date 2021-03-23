@@ -23,28 +23,18 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-if [ $# -eq 4 ] 
+#Run for Base
+if [ $# -eq 5 ] 
 then
-    python makeHists.py -y $1 -d $2 -c $3 -s $4 --allPlots
-
-#Run for Base, Control region
-elif [ $# -eq 5 ] 
-then
-    python makeHists.py -y $1 -d $2 -c $3 -s $4 --cr $5 --allPlots
-
-#Run for Syst, Signal region
-elif [ $# -eq 6 ] 
-then
-    python makeHists.py -y $1 -d $2 -c $3 -s $4 --syst $5 --level $6 --allPlots
-
-#Run for Syst, Control region
+    python makeHists.py -y $1 -d $2 -c $3 -s $4 --ps $5 --allPlots
+#Run for Syst
 elif [ $# -eq 7 ] 
 then
-    python makeHists.py -y $1 -d $2 -c $3 -s $4 --syst $5 --level $6 --cr $7 --allPlots
+    python makeHists.py -y $1 -d $2 -c $3 -s $4 --syst $5 --level $6 --ps $7 --allPlots
 
 #For over/under flow of arguments
 else
-    echo "The number of command line areguments should be >=4 and <=7"
+    echo "The number of command line areguments should be 5 or 7" 
 fi
 printf "Done Histogramming at ";/bin/date
 

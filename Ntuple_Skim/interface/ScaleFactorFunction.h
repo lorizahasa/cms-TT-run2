@@ -6,16 +6,28 @@
 std::map<std::string, vector<double> > crossSections;
 
 void initCrossSections(){
-    crossSections["TT_tytg_M700"]   =  {0.03*0.97*2*4.92, 4.92, 4.92};
-    crossSections["TT_tytg_M800"]   =  {0.03*0.97*2*1.68, 1.68, 1.68};
-    crossSections["TT_tytg_M900"]   =  {0.03*0.97*2*0.636, 0.636, 0.636};
-    crossSections["TT_tytg_M1000"]  =  {0.03*0.97*2*0.262, 0.262, 0.262};
-    crossSections["TT_tytg_M1100"]  =  {0.03*0.97*2*0.116, 0.116, 0.116};
-    crossSections["TT_tytg_M1200"]  =  {0.03*0.97*2*0.0537, 0.0537, 0.0537};
-    crossSections["TT_tytg_M1300"]  =  {0.03*0.97*2*0.0261, 0.0261, 0.0261};
-    crossSections["TT_tytg_M1400"]  =  {0.03*0.97*2*0.0131, 0.0131, 0.0131};
-    crossSections["TT_tytg_M1500"]  =  {0.03*0.97*2*0.00677, 0.00677, 0.00677};
-    crossSections["TT_tytg_M1600"]  =  {0.03*0.97*2*0.00359, 0.00359, 0.00359};
+    double br = 0.03*0.97*2;
+    crossSections["TT_tytg_M700"]   =  {br*4.92,    br*4.92,    br*4.92};
+    crossSections["TT_tytg_M800"]   =  {br*1.68,    br*1.68,    br*1.68};
+    crossSections["TT_tytg_M900"]   =  {br*0.636,   br*0.636,   br*0.636};
+    crossSections["TT_tytg_M1000"]  =  {br*0.262,   br*0.262,   br*0.262};
+    crossSections["TT_tytg_M1100"]  =  {br*0.116,   br*0.116,   br*0.116};
+    crossSections["TT_tytg_M1200"]  =  {br*0.0537,  br*0.0537,  br*0.0537};
+    crossSections["TT_tytg_M1300"]  =  {br*0.0261,  br*0.0261,  br*0.0261};
+    crossSections["TT_tytg_M1400"]  =  {br*0.0131,  br*0.0131,  br*0.0131};
+    crossSections["TT_tytg_M1500"]  =  {br*0.00677, br*0.00677, br*0.00677};
+    crossSections["TT_tytg_M1600"]  =  {br*0.00359, br*0.00359, br*0.00359};
+
+    crossSections["TstarTstarToTgammaTgluon_M700"]   =  {br*4.92,    br*4.92,    br*4.92};
+    crossSections["TstarTstarToTgammaTgluon_M800"]   =  {br*1.68,    br*1.68,    br*1.68};
+    crossSections["TstarTstarToTgammaTgluon_M900"]   =  {br*0.636,   br*0.636,   br*0.636};
+    crossSections["TstarTstarToTgammaTgluon_M1000"]  =  {br*0.262,   br*0.262,   br*0.262};
+    crossSections["TstarTstarToTgammaTgluon_M1100"]  =  {br*0.116,   br*0.116,   br*0.116};
+    crossSections["TstarTstarToTgammaTgluon_M1200"]  =  {br*0.0537,  br*0.0537,  br*0.0537};
+    crossSections["TstarTstarToTgammaTgluon_M1300"]  =  {br*0.0261,  br*0.0261,  br*0.0261};
+    crossSections["TstarTstarToTgammaTgluon_M1400"]  =  {br*0.0131,  br*0.0131,  br*0.0131};
+    crossSections["TstarTstarToTgammaTgluon_M1500"]  =  {br*0.00677, br*0.00677, br*0.00677};
+    crossSections["TstarTstarToTgammaTgluon_M1600"]  =  {br*0.00359, br*0.00359, br*0.00359};
 
     crossSections["TTbarPowheg"]    =  {831.76, 831.76, 831.76};  
     //ttbar NNLO (http://inspirehep.net/search?p=find+eprint+1112.5675)

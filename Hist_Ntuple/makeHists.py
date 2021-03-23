@@ -23,7 +23,7 @@ parser.add_option("--level", "--level", dest="level", default="",type='str',
                      help="Specify up/down of systematic")
 parser.add_option("--syst", "--systematic", dest="systematic", default="Base",type='str',
                      help="Specify which systematic to run on")
-parser.add_option("--cr", "--controlRegion", dest="controlRegion", default="",type='str', 
+parser.add_option("--ps", "--phaseSpace", dest="phaseSpace", default="Boosted_SR",type='str', 
                      help="which control selection and region such as Tight, VeryTight, Tight0b, looseCR2e1, looseCRe2g1")
 parser.add_option("--plot", dest="plotList",action="append",
                      help="Add plots" )
@@ -35,7 +35,7 @@ ttbarDecayMode = options.ttbarDecayMode
 channel = options.channel
 sample = options.sample
 level =options.level
-controlRegion = options.controlRegion
+phaseSpace = options.phaseSpace
 makeAllPlots = options.makeAllPlots
 toPrint("Running for Year, Channel, Sample", "%s, %s, %s"%(year, channel, sample))
 print parser.parse_args()
@@ -48,9 +48,6 @@ ntupleDirBase       = "%s/%s"%(dirBase,      year)
 ntupleDirBaseCR     = "%s/%s"%(dirBaseCR,    year)
 ntupleDirSyst       = "%s/%s"%(dirSyst,      year)
 ntupleDirSystCR     = "%s/%s"%(dirSystCR,    year)
-if "Di" in ttbarDecayMode:
-    ntupleDirBase  = "%s/%s"%(dirBaseDilep, year)
-    ntupleDirSyst       = "%s/%s"%(dirSystDilep,year)
 analysisNtupleLocation = ntupleDirBase
 
 #-----------------------------------------
@@ -60,27 +57,26 @@ outFileMainDir = "./hists"
 gROOT.SetBatch(True)
 nJets = 3
 isQCD = False
-evtWeight ="evtWeight"
-Pileup ="PUweight"
-MuEff = "muEffWeight"
-EleEff= "eleEffWeight"
+evtWeight ="Weight_lumi"
+Pileup ="Weight_pu"
+MuEff = "Weight_mu"
+EleEff= "Weight_ele"
 Q2 = 1.0 
 Pdf = 1.0
 #Pdf = "pdfWeight"
-prefire ="prefireSF"
+prefire ="Weight_prefire"
 isr = 1.
 fsr = 1.
-btagWeight="btagWeight_1a"
-PhoEff= "phoEffWeight"
-loosePhoEff= "loosePhoEffWeight"
-histDirInFile = "%s/Base"%sample
+btagWeight="Weight_btag_1a"
+PhoEff= "Weight_pho"
+histDirInFile = "%s/%s/Base"%(sample, phaseSpace)
 variation = "Base"
 if "Data" in sample:
-    histDirInFile = "data_obs/Base"
+    histDirInFile = "data_obs/%s/Base"%(phaseSpace)
 if "QCD%s"%channel in sample:
-    histDirInFile = "QCD/Base"
+    histDirInFile = "QCD/%s/Base"%(phaseSpace)
 
-nJets, nBJets, nJetSel, nBJetSel, bothJetSel = getJetMultiCut(controlRegion, False)
+nJets, nBJets, nJetSel, nBJetSel, bothJetSel = getJetMultiCut(phaseSpace)
 
 #-----------------------------------------
 #For Systematics
@@ -93,73 +89,66 @@ if level in ["up", "UP", "uP", "Up"]:
 else:
 	level = "Down"
 if not syst=="Base":
-    histDirInFile = "%s/%s%s"%(sample,syst,level) 
+    histDirInFile = "%s/%s/%s%s"%(sample, phaseSpace, syst,level) 
     if "QCD%s"%channel in sample:
-        histDirInFile = "QCD/%s%s"%(syst, level)
+        histDirInFile = "QCD/%s/%s%s"%(phaseSpace, syst, level)
     variation = "%s%s"%(syst,level) 
     toPrint("Running for systematics", syst+level)
     if syst=="PU":
         if levelUp:
-            Pileup = "PUweight_Up"
+            Pileup = "Weight_pu_up"
         else:
-            Pileup = "PUweight_Do"
+            Pileup = "Weight_pu_down"
     elif 'Q2' in syst:
         if levelUp:
-            Q2="q2weight_Up"
+            Q2="Weight_q2_up"
         else:
-            Q2="q2weight_Do"
+            Q2="Weight_q2_down"
     elif 'Pdf' in syst:
-    	if syst=="Pdf":
-    	    if levelUp:
-    	    	Pdf="pdfweight_Up"
-    	    else:
-    	    	Pdf="pdfweight_Do"
+    	if levelUp:
+    		Pdf="Weight_pdf_up"
     	else:
-    	    if type(eval(syst[3:]))==type(int()):
-    	    	pdfNumber = eval(syst[3:])
-    	    	Pdf="pdfSystWeight[%i]/pdfWeight"%(pdfNumber-1)
+    		Pdf="Weight_pdf_down"
     elif 'MuEff' in syst:
         if levelUp:
-            MuEff = "muEffWeight_Up"
+            MuEff = "Weight_mu_up"
         else:
-            MuEff = "muEffWeight_Do"
+            MuEff = "Weight_mu_down" 
     elif 'EleEff' in syst:
         if levelUp:
-            EleEff = "eleEffWeight_Up"
+            EleEff = "Weight_ele_up"
         else:
-            EleEff = "eleEffWeight_Do"
+            EleEff = "Weight_ele_down"
     elif 'PhoEff' in syst:
         if levelUp:
-            PhoEff = "phoEffWeight_Up"
-            loosePhoEff = "loosePhoEffWeight_Up"
+            PhoEff = "Weight_pho_up"
         else:
-            PhoEff = "phoEffWeight_Do"
-            loosePhoEff = "loosePhoEffWeight_Do"
+            PhoEff = "Weight_pho_down"
     elif 'fsr' in syst:
     	if levelUp:
-    	    fsr = "FSRweight_Up"
+    	    fsr = "Weight_fsr_up"
     	else:
-    	    fsr = "FSRweight_Do"
+    	    fsr = "Weight_fsr_down"
     elif 'isr' in syst:
     	if levelUp:
-    	    isr = "ISRweight_Up"
+    	    isr = "Weight_isr_up"
     	else:
-    	    isr = "ISRweight_Do"
+    	    isr = "Weight_isr_down"
     elif 'prefireEcal' in syst:
 	if levelUp:
-	    prefire = "prefireSF_Up"
+	    prefire = "Weight_prefire_up"
 	else:
-	    prefire = "prefireSF_Do"
+	    prefire = "Weight_prefire_down"
     elif 'BTagSF_b' in syst:
         if levelUp:
-			btagWeight = "btagWeight_1a_b_Up"
+			btagWeight = "Weight_btag_1a_b_up"
         else:
-			btagWeight = "btagWeight_1a_b_Do"
+			btagWeight = "Weight_btag_1a_b_down"
     elif 'BTagSF_l' in syst:
         if levelUp:
-			btagWeight = "btagWeight_1a_l_Up"
+			btagWeight = "Weight_btag_1a_l_up"
         else:
-			btagWeight = "btagWeight_1a_l_Do"
+			btagWeight = "Weight_btag_1a_l_down" 
     else:
     	if  levelUp:
             analysisNtupleLocation = ntupleDirSyst
@@ -175,12 +164,17 @@ if channel=="Mu":
     if sample=="QCD":
         sample = "QCDMu"
     outFileFullDir = outFileMainDir+"/%s/%s/Mu"%(year,ttbarDecayMode)
-    if controlRegion=="":
-        #extraCuts            = "(passPresel_Mu && nPho>=1 && phoEt>100 && %s)*"%(bothJetSel)
-        extraCuts            = "(passPresel_Mu && nPho>=1 && %s)*"%(bothJetSel)
-    else:
-        extraCuts            = "(passPresel_Mu && nPho>=1 && %s)*"%(bothJetSel)
-    #extraCuts            = ""
+    extraCuts            = "(Event_pass_presel_mu && Photon_size >=1 && "
+    if "Boosted" in phaseSpace:
+        if "SR" in phaseSpace:
+            extraCuts += "FatJet_size >=1 && Photon_et>100 && %s)*"%(bothJetSel)
+        if "CR" in phaseSpace:
+            extraCuts += "FatJet_size >=1 && Photon_et > 20 && Photon_et < 50 && %s)*"%(bothJetSel)
+    if "Resolved" in phaseSpace:
+        if "SR" in phaseSpace:
+            extraCuts += "FatJet_size ==0 && Photon_et>100 && %s)*"%(bothJetSel)
+        if "CR" in phaseSpace:
+            extraCuts += "FatJet_size ==0 && Photon_et > 20 && Photon_et < 50 && %s)*"%(bothJetSel)
 
 elif channel=="Ele":
     if sample=="Data":
@@ -188,11 +182,17 @@ elif channel=="Ele":
     if sample=="QCD":
         sample = "QCDEle"
     outFileFullDir = outFileMainDir+"/%s/%s/Ele"%(year,ttbarDecayMode)
-    if controlRegion=="":
-        #extraCuts            = "(passPresel_Ele && nPho>=1 && phoEt>100 && %s)*"%(bothJetSel)
-        extraCuts            = "(passPresel_Ele && nPho>=1 && %s)*"%(bothJetSel)
-    else:
-        extraCuts            = "(passPresel_Ele && nPho>=1 && %s)*"%(bothJetSel)
+    extraCuts            = "(Event_pass_presel_ele && Photon_size >=1 && "
+    if "Boosted" in phaseSpace:
+        if "SR" in phaseSpace:
+            extraCuts += "FatJet_size >=1 && Photon_et>100 && %s)*"%(bothJetSel)
+        if "CR" in phaseSpace:
+            extraCuts += "FatJet_size >=1 && Photon_et > 20 && Photon_et < 50 && %s)*"%(bothJetSel)
+    if "Resolved" in phaseSpace:
+        if "SR" in phaseSpace:
+            extraCuts += "FatJet_size ==0 && Photon_et>100 && %s)*"%(bothJetSel)
+        if "CR" in phaseSpace:
+            extraCuts += "FatJet_size ==0 && Photon_et > 20 && Photon_et < 50 && %s)*"%(bothJetSel)
 else:
     print "Unknown final state, options are Mu and Ele"
     sys.exit()
@@ -225,90 +225,50 @@ if not allHistsDefined:
 # Fill histograms
 #----------------------------------------
 histograms=[]
-if not "QCD_DD" in sample:
-    if not sample in samples:
-        print "Sample isn't in list"
-        print samples.keys()
-        sys.exit()
-    tree = TChain("AnalysisTree")
-    fileList = samples[sample]
-    for fileName in fileList:
-        if "Dilep" in ttbarDecayMode:
-            fullPath = "%s/Dilep_%s"%(analysisNtupleLocation, fileName)
-            if "JE" in syst and levelUp:
-                fullPath = "%s/Dilep_%s_up_%s"%(analysisNtupleLocation, syst, fileName)
-            if "JE" in syst and not levelUp: 
-                fullPath = "%s/Dilep_%s_down_%s"%(analysisNtupleLocation, syst, fileName)
-        else:
-            fullPath = "%s/%s"%(analysisNtupleLocation, fileName)
-            if "JE" in syst and levelUp:
-                fullPath = "%s/%s_up_%s"%(analysisNtupleLocation, syst, fileName)
-            if "JE" in syst and not levelUp: 
-                fullPath = "%s/%s_down_%s"%(analysisNtupleLocation, syst, fileName)
-        print fullPath
-        tree.Add("%s/%s"%(analysisNtupleLocation,fileName))
-    print "Number of events:", tree.GetEntries()
-    for index, hist in enumerate(histogramsToMake, start=1):
-        hInfo = histogramInfo[hist]
-        if ('Data' in sample or isQCD) and not hInfo[5]: continue
-        toPrint("%s/%s: Filling the histogram"%(index, len(histogramsToMake)), hInfo[1])
-        evtWeight = ""
-        histograms.append(TH1F("%s"%(hInfo[1]),"%s"%(hInfo[1]),hInfo[2][0],hInfo[2][1],hInfo[2][2]))
-        if hInfo[4]=="":
-            evtWeight = "%s%s"%(hInfo[3],weights)
-        else:
-            evtWeight = hInfo[4]
-        if "Data" in sample:
-            evtWeight = "%s%s"%(hInfo[3],weights)
-        if evtWeight[-1]=="*":
-            evtWeight= evtWeight[:-1]
-        ### Correctly add the photon weights to the plots
-        evtWeight = "%s*%s[0]"%(evtWeight,PhoEff)
-        if 'phosel' in hInfo[1]:
-            if hInfo[0][:8]=="loosePho":
-                evtWeight = "%s*%s"%(evtWeight,loosePhoEff)
-            elif hInfo[0][:3]=="pho":
-                evtWeight = "%s*%s"%(evtWeight,PhoEff)
-            else:
-                evtWeight = "%s*%s[0]"%(evtWeight,PhoEff)
-        print evtWeight
-        print hInfo[0]
-        print hInfo[1]
-        tree.Draw("%s>>%s"%(hInfo[0],hInfo[1]),evtWeight, "goff")
+if not sample in samples:
+    print "Sample isn't in list"
+    print samples.keys()
+    sys.exit()
+tree = TChain("AnalysisTree")
+fileList = samples[sample]
+for fileName in fileList:
+    fullPath = "%s/%s"%(analysisNtupleLocation, fileName)
+    if "JE" in syst and levelUp:
+        fullPath = "%s/%s_up_%s"%(analysisNtupleLocation, syst, fileName)
+    if "JE" in syst and not levelUp: 
+        fullPath = "%s/%s_down_%s"%(analysisNtupleLocation, syst, fileName)
+    print fullPath
+    tree.Add("%s/%s"%(analysisNtupleLocation,fileName))
+print "Number of events:", tree.GetEntries()
+for index, hist in enumerate(histogramsToMake, start=1):
+    hInfo = histogramInfo[hist]
+    if ('Data' in sample or isQCD) and not hInfo[5]: continue
+    toPrint("%s/%s: Filling the histogram"%(index, len(histogramsToMake)), hInfo[1])
+    evtWeight = ""
+    histograms.append(TH1F("%s"%(hInfo[1]),"%s"%(hInfo[1]),hInfo[2][0],hInfo[2][1],hInfo[2][2]))
+    if hInfo[4]=="":
+        evtWeight = "%s%s"%(hInfo[3],weights)
+    else:
+        evtWeight = hInfo[4]
+    if "Data" in sample:
+        evtWeight = "%s%s"%(hInfo[3],weights)
+    if evtWeight[-1]=="*":
+        evtWeight= evtWeight[:-1]
+    ### Correctly add the photon weights to the plots
+    evtWeight = "%s*%s[0]"%(evtWeight,PhoEff)
+    print evtWeight
+    print hInfo[0]
+    print hInfo[1]
+    tree.Draw("%s>>%s"%(hInfo[0],hInfo[1]),evtWeight, "goff")
 
 #-----------------------------------------
 #Final output Linux and ROOT directories
 #----------------------------------------
 if not os.path.exists(outFileFullDir):
     os.makedirs(outFileFullDir)
-outFileFullPath = "%s/%s_%s_SR.root"%(outFileFullDir, sample, variation)
-if not controlRegion =="":
-    outFileFullPath = "%s/%s_%s_CR_%s.root"%(outFileFullDir, sample, variation, controlRegion)
+outFileFullPath = "%s/%s_%s_%s.root"%(outFileFullDir, sample, phaseSpace, variation)
 outputFile = TFile(outFileFullPath,"update")
-if not controlRegion =="":
-    histDirInFile  = "%s/CR/%s"%(histDirInFile,  controlRegion)
-else:
-    histDirInFile  = "%s/SR"%histDirInFile 
 toPrint ("The histogram directory inside the root file is", histDirInFile) 
-
-
-#-----------------------------------------
-# QCD in SR = TF * (data - nonQCDBkg from CR)
-#----------------------------------------
-qcdTFDirInFile = "%s/TF"%histDirInFile
-qcdShapeDirInFile = "%s/Shape"%histDirInFile
-transferFactor = 1.0
-if sample =="QCD_DD" and "Semi" in ttbarDecayMode:
-        toPrint("Determining QCD Transfer factor from CR", "")
-	#transferFactor = getQCDTransFact(year, channel, nBJets, outputFile, qcdTFDirInFile)
-	print "Transfer factor = ", transferFactor
-        for hist in histogramsToMake:
-            if not histogramInfo[hist][5]: continue
-            toPrint("Determining QCD shape from CR", "")
-	    dataMinusOtherBkg = getShapeFromCR(year, channel, nJetSel, nBJets, histogramInfo[hist], outputFile, qcdShapeDirInFile)
-            histograms.append(dataMinusOtherBkg)
-	    print histogramInfo[hist][1]
-            histograms[-1].Scale(transferFactor)
 
 #-----------------------------------
 # Write final histograms in the file

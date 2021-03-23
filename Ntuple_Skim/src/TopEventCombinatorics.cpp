@@ -82,6 +82,27 @@ double TopEventCombinatorics::topChiSq_tytg(TLorentzVector j1,
     return c;
 
 }
+double TopEventCombinatorics::topChiSq_tytg_fat(TLorentzVector fatJet, 
+				       TLorentzVector j3, 
+				       TLorentzVector pho, 
+				       TLorentzVector bl, 
+				       double nu_pz_hypo){
+    met.SetPz(nu_pz_hypo);
+    double _met_px = met.Px();
+    double _met_py = met.Py();
+    double new_met_E = sqrt(_met_px*_met_px + _met_py*_met_py + nu_pz_hypo*nu_pz_hypo);
+    met.SetE(new_met_E);
+    //https://arxiv.org/pdf/1711.10949.pdf
+    double sigma2_tHad = 34.0*34.0; 
+    double sigma2_WHad = 24.0*24.0;
+    double sigma2_tLep = 30.0*30.0;
+    double sigma2_tstar = 233.0*233.0;
+    double chi2_hadTop = pow( fatJet.M() - mTop,2)/sigma2_tHad;
+    double chi2_lepTop = pow( (bl + lepton + met).M() - mTop,2)/sigma2_tLep;
+    double chi2_TT  = pow( (fatJet + j3).M() - (bl + lepton + met + pho).M(),2)/sigma2_tstar;
+    double chi2_all = chi2_hadTop + chi2_lepTop + chi2_TT;
+    return chi2_all;
+}
 int TopEventCombinatorics::Calculate(){
 
     goodCombo = false;
@@ -324,6 +345,78 @@ int TopEventCombinatorics::Calculate_tytg(int nLeadingJets){
                 }
             }
 	    }
+    }
+    return 0;
+}
+int TopEventCombinatorics::Calculate_tytg_fat(int nLeadingJets){
+    goodCombo_tytg_fat = false;
+    if (jets.size() < 2){
+    return -1;
+    }
+    bJetsList.clear();
+    nu_pz_List.clear();
+    int nJets = jets.size();
+    if (nLeadingJets != -1 && nLeadingJets < nJets) nJets = nLeadingJets;
+    int nFatJets = 1; //only first leading fat jet in the chi2
+    int nBtags = 0;
+    for (unsigned int i = 0; i <nJets; i++){
+        if (btag[i] > btagThresh) nBtags +=1;
+    }
+    if (nBtags > 1) nBtags = 1;
+
+    double _nu_pz_1 = metZ.Calculate();
+    double _nu_pz_2 = metZ.getOther();
+    nu_pz_List.push_back(_nu_pz_1);
+    if (_nu_pz_1!=_nu_pz_2) nu_pz_List.push_back(_nu_pz_2);
+    chi2_tytg_fat = 9.e9;
+    double comboChi2 = 9.e9;
+    for (unsigned int i_pho=0; i_pho<photons.size(); i_pho++){
+        for (unsigned int i_blep=0; i_blep<nJets; i_blep++){
+            int bcandLep_tag = 0;
+            if (btag[i_blep]>btagThresh) bcandLep_tag = 1;
+            // skip combinations which haven't used all of the btagged jets as b-candidates
+            if (bcandLep_tag != nBtags) continue;
+		    for (unsigned int i_fatJet=0; i_fatJet<nFatJets; i_fatJet++){
+		        for (unsigned int i_j3=0; i_j3<nJets; i_j3++){
+		            if (i_blep==i_j3) continue; 
+		            //loop over nu_pz solutions
+		            for (const auto& test_nu_pz: nu_pz_List){
+		                double comboChi2 = topChiSq_tytg_fat(fatJets.at(i_fatJet), 
+		                			    jets.at(i_j3), 
+		                			    photons.at(i_pho), 
+		                			    jets.at(i_blep), 
+		                			    test_nu_pz);
+                        //std::cout<<i_bhad<<"\t"<<i_blep<<"\t"<<i_j1<<"\t"<<i_j2<<"\t"<<i_j3<<"\t"<<i_j4<<"\t"<<comboChi2<<std::endl;
+		                if (comboChi2 < chi2_tytg_fat){
+		                    chi2_tytg_fat = comboChi2;
+		                    blep_idx = i_blep;
+		                    fatJet_idx = i_fatJet;
+		                    j3_idx = i_j3;
+                            pho_idx = i_pho;
+		                    nu_pz = test_nu_pz;
+                            photonIsLeptonSide=true;
+		                    goodCombo_tytg_fat = true;
+		                }
+		                comboChi2 = topChiSq_tytg_fat(fatJets.at(i_fatJet), 
+		                			    photons.at(i_pho), 
+		                			    jets.at(i_j3), 
+		                			    jets.at(i_blep), 
+		                			    test_nu_pz);
+                        //std::cout<<i_bhad<<"\t"<<i_blep<<"\t"<<i_j1<<"\t"<<i_j2<<"\t"<<i_j3<<"\t"<<i_j4<<"\t"<<comboChi2<<std::endl;
+		                if (comboChi2 < chi2_tytg_fat){
+		                    chi2_tytg_fat = comboChi2;
+		                    blep_idx = i_blep;
+		                    fatJet_idx = i_fatJet;
+		                    j3_idx = i_j3;
+                            pho_idx = i_pho;
+		                    nu_pz = test_nu_pz;
+                            photonIsLeptonSide=false;
+		                    goodCombo_tytg_fat = true;
+		                }
+		            }
+		        }
+	        }
+        }
     }
     return 0;
 }

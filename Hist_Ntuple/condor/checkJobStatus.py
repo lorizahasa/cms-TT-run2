@@ -37,29 +37,16 @@ if channel=="Mu":
 else: 
     Samples.remove("QCDMu")
     Samples.remove("DataMu")
-#Create for Base, Signal region
-for sample in Samples:
-    rootFile = "%s_Base_SR.root"%sample
-    arguments = "%s %s %s %s"%(year, decay, channel, sample)
-    submittedDict[rootFile] = arguments 
-
-#Create for Base, Control region
-for sample, cr in itertools.product(Samples, ControlRegion):
-    rootFile = "%s_Base_CR_%s.root"%(sample, cr)
-    arguments = "%s %s %s %s %s"%(year, decay, channel, sample, cr)
+#Create for Base
+for sample, ps in itertools.product(Samples, PhaseSpace):
+    rootFile = "%s_%s_Base.root"%(sample, ps)
+    arguments = "%s %s %s %s %s"%(year, decay, channel, sample, ps)
     submittedDict[rootFile] = arguments
 
-#Create for Syst, Signal region
-for sample, syst, level in itertools.product(Samples, Systematics, SystLevel):
-    rootFile = "%s_%s%s_SR.root"%(sample, syst, level)
-    arguments = "%s %s %s %s %s %s"%(year, decay, channel, sample, syst, level)
-    if not sample in ["DataMu", "DataEle", "QCD_DD"]:
-        submittedDict[rootFile] = arguments
-
-#Create for Syst, Control region
-for sample, syst, level, cr in itertools.product(Samples, Systematics, SystLevel, ControlRegion):
-    rootFile = "%s_%s%s_CR_%s.root"%(sample, syst, level, cr)
-    arguments = "%s %s %s %s %s %s %s"%(year, decay, channel, sample, syst, level, cr)
+#Create for Syst
+for sample, syst, level, ps in itertools.product(Samples, Systematics, SystLevel, PhaseSpace):
+    rootFile = "%s_%s_%s%s.root"%(sample, ps, syst, level)
+    arguments = "%s %s %s %s %s %s %s"%(year, decay, channel, sample, syst, level, ps)
     if not sample in ["DataMu", "DataEle", "QCD_DD"]:
         submittedDict[rootFile] = arguments
 

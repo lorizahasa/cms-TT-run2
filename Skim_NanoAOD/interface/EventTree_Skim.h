@@ -33,9 +33,12 @@ class EventTree{
     Bool_t  HLT_IsoMu24_;
     Bool_t  HLT_IsoTkMu24_;
     Bool_t  HLT_IsoMu27_;
+    Bool_t  HLT_Mu50_;
     Bool_t  HLT_Ele27_WPTight_Gsf_;
     Bool_t  HLT_Ele32_WPTight_Gsf_;
     Bool_t  HLT_Ele35_WPTight_Gsf_;
+    Bool_t  HLT_Ele115_CaloIdVT_GsfTrkIdT_;
+    Bool_t  HLT_Photon175_;
     Bool_t  HLT_Ele32_WPTight_Gsf_L1DoubleEG_;
     
     Bool_t   Flag_goodVertices_ ;
@@ -45,6 +48,5 @@ class EventTree{
     Bool_t   Flag_EcalDeadCellTriggerPrimitiveFilter_ ;
     Bool_t   Flag_BadPFMuonFilter_ ;
     Bool_t   Flag_ecalBadCalibFilterV2_ ;
-    Float_t  rho_;
 };
 #endif

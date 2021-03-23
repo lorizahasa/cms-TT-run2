@@ -1,77 +1,69 @@
 from ROOT import TLegend, TGraphAsymmErrors
 from PlotInputs import *
 import numpy as np
+import sys
 #-----------------------------------------
 #Get historgams from the root files 
 #-----------------------------------------
-def getBaseHists(fileDict, hName, CR):
-    '''
-    Get nomninal histograms from all samples
-    in form of an array. Since we make a 
-    choice betweeen MC and DD QCD, we store 
-    these histogs separately. Note that data
-    and qcd arrays has only one element.
-    '''
+def getDataHists(fileDict, hName, CR):
     dataHist     = []
-    bkgHists     = []
-    qcdMCHist    = []
-    #qcdDDHist    = []
-    for sample in Samples.keys():
-        if CR=="":
-            hPath = "%s/Base/SR/%s"%(sample, hName)
-            if sample=="Data":
-                hPath = "data_obs/Base/SR/%s"%(hName)
-        else: 
-            hPath = "%s/Base/CR/%s/%s"%(sample, CR, hName)
-            if sample=="Data":
-                hPath = "data_obs/Base/CR/%s/%s"%(CR, hName)
-        print fileDict[sample]
-        print hPath
-        hist = fileDict[sample].Get(hPath)
-        hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
-        if sample=="Data":
-            dataHist.append(hist)
-        elif sample=="QCD":
-            qcdMCHist.append(hist)
-        #elif sample=="QCD_DD":
-            #qcdDDHist.append(hist)
-        else:
-            bkgHists.append(hist)
-    #return dataHist, bkgHists, qcdMCHist, qcdDDHist
-    #return dataHist, bkgHists, qcdMCHist
-    return dataHist, bkgHists
+    for sample in SampleData.keys():
+        hPath = "data_obs/%s/Base/%s"%(CR, hName)
+        try:
+            hist = fileDict[sample].Get(hPath)
+            hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
+        except Exception:
+            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(fileDict[sample], hPath))
+            sys.exit()
+        dataHist.append(hist)
+    return dataHist
 
-def getSystHists(fileDict, hName, CR, level):
-    '''
-    It will return an array where sum of all 
-    non-QCD background for a different syst
-    is stored. For QCD MC, we make another
-    array containg hists for all syst.
-    It can return for up or down variation
-    of the syst.
-    '''
-    hSumOtherBkgs = []
-    hQCD    = []
+def getBkgBaseHists(fileDict, hName, CR):
+    bkgHists     = []
+    for sample in SampleBkg.keys():
+        hPath = "%s/%s/Base/%s"%(sample, CR, hName)
+        try:
+            hist = fileDict[sample].Get(hPath)
+            hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
+        except Exception:
+            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(fileDict[sample], hPath))
+            sys.exit()
+        bkgHists.append(hist)
+    return bkgHists
+
+def getSigBaseHists(fileDict, hName, CR):
+    sigHists     = []
+    for sample in SampleSignal.keys():
+        hPath = "%s/%s/Base/%s"%(sample, CR, hName)
+        try:
+            hist = fileDict[sample].Get(hPath)
+            hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
+        except Exception:
+            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(fileDict[sample], hPath))
+            sys.exit()
+        sigHists.append(hist)
+    return sigHists
+
+def getBkgSystHists(fileDict, hName, CR, level):
+    hSumBkgs = []
     for syst in Systematics:
         hBkg = []
-        for sample in SamplesSyst:
-            if CR=="":
-                hPath = "%s/%s%s/SR/%s"%(sample, syst, level, hName)
-            else: 
-                hPath = "%s/%s%s/CR/%s/%s"%(sample, syst, level, CR, hName)
-            hist = fileDict[sample].Get(hPath)
-            hist = hist.Clone("%s_%s%s_%s_%s"%(sample,syst,level,hName,CR))
-            if sample=="QCD":
-                hQCD.append(hist)
-            else:
-                hBkg.append(hist)
-        #Sum non QCD background for a given syst
-        hSum = hist.Clone("hSumOtherBkgs_%s%s_%s_%s"%(syst,level,hName,CR))
+        for sample in SampleSyst:
+            hPath = "%s/%s/%s%s/%s"%(sample, syst, level, CR, hName)
+            try:
+                hist = fileDict[sample].Get(hPath)
+                hist = hist.Clone("%s_%s/%s%s_%s"%(sample, CR, syst,level,hName))
+            except Exception:
+                print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(fileDict[sample], hPath))
+                sys.exit()
+            hBkg.append(hist)
+            hSum.Add(h)
+        hSum = hist.Clone("hSumBkgs_%s_%s%s_%s"%(CR, syst,level,hName))
         hSum.Reset()
         for h in hBkg:
             hSum.Add(h)
-        hSumOtherBkgs.append(hSum)
-    return hSumOtherBkgs, hQCD
+        hSumBkgs.append(hSum)
+    return hSumBkgs
 
 #-----------------------------------------
 #Decorate a histogram
@@ -80,14 +72,25 @@ def decoHist(hist, xTit, yTit, color):
     hist.GetXaxis().SetTitle(xTit);
     hist.GetYaxis().SetTitle(yTit);
     hist.SetFillColor(color);
-
-def decoHistStack(hist, xTit, yTit):
-    #hist.GetXaxis().SetTitle(xTit);
+    hist.GetXaxis().SetTitle(xTit);
     hist.GetYaxis().SetTitle(yTit)
-    #hist.GetYaxis().CenterTitle()
-    hist.GetYaxis().SetTitleOffset(1.15)
-    hist.GetYaxis().SetTitleSize(0.055);
-    hist.GetXaxis().SetTitleSize(0.11);
+    hist.GetYaxis().CenterTitle()
+    hist.GetXaxis().SetTitleOffset(1.0)
+    hist.GetYaxis().SetTitleOffset(1.0)
+    hist.GetXaxis().SetTitleSize(0.05);
+    hist.GetYaxis().SetTitleSize(0.05);
+    hist.GetXaxis().SetTitleSize(0.05);
+    hist.GetYaxis().SetTitleSize(0.05);
+
+def decoHistSig(hist, xTit, yTit, color):
+    hist.GetXaxis().SetTitle(xTit);
+    hist.GetYaxis().SetTitle(yTit);
+    hist.SetFillColor(color);
+    hist.Scale(18)
+    hist.SetLineColor(color)
+    hist.SetLineStyle(2)
+    hist.SetLineWidth(3) 
+    hist.SetFillColor(0)
 
 def decoHistRatio(hist, xTit, yTit, color):
     #hist.SetFillColor(color);
@@ -179,25 +182,6 @@ def decoLegend(legend, nCol, textSize):
     legend.SetTextAlign(12);
     return legend
 
-#def getLegend(dataHist, bkgHists, uncGraph):
-def getLegend(dataHist, bkgHists):
-    '''
-    The background hists are sorted in the
-    decending order of the event yield. That
-    is the proccess having highest contribution
-    comes first.
-    '''
-    #legend = TLegend(0.45,0.70,0.92,0.90);
-    #legend = TLegend(0.55,0.60,0.92,0.88); for 3 col
-    legend = TLegend(0.70,0.60,0.95,0.88); 
-    decoLegend(legend, 4, 0.035)
-    legend.AddEntry(dataHist[0], Samples["Data"][2], "PEL")
-    for bkgHist in bkgHists:
-        legendName = Samples[bkgHist.GetName().split("_")[0]][2] 
-        legend.AddEntry(bkgHist, legendName, "F")
-    #legend.AddEntry(uncGraph, "Pre-fit unc.","F");
-    return legend
-
 #-----------------------------------------
 #Sort histograms w.r.t to the event yield
 #-----------------------------------------
@@ -226,25 +210,16 @@ def sortHists(hAllBkgs, isReverse):
 #Reformat jet multiplicity string 
 #----------------------------------------------------------
 #Jet selection naming: a3j_e2b = atleast 3 jet, out of which 2 are b jets: nJet >= 3, nBJet ==2
-def formatCRString(controlRegion="tight_a4j_e0b"):
-    #allJetSel = "jets >=5, b jets = 2"
-    allJetSel = "jets ==3, b jets >= 1"
-    if not controlRegion=="":
-    	splitCR = controlRegion.split("_")
-    	jetCut  = splitCR[1].strip()
-    	bJetCut = splitCR[2].strip()
-    	#For total jets 
-    	operationJet, numberJet = jetCut[0].strip(), jetCut[1].strip()
-    	expresssionJet = "=="
-    	if operationJet=="a": 
-    	    expresssionJet=">="
-    	newJetCut = "jets %s%s"%(expresssionJet, numberJet)
-    	#For b jets
-    	operationBJet, numberBJet = bJetCut[0].strip(), bJetCut[1].strip()
-    	expresssionBJet = "=="
-    	if(operationBJet=="a"): 
-    	    expresssionBJet=">="
-    	newBJetCut = "b jets %s%s"%(expresssionBJet, numberBJet)
-    	#Combine the two selection
-        allJetSel = "%s, %s"%(newJetCut, newBJetCut) 
+def formatCRString(ps="Boosted/SR"):
+    allJetSel = "jets >=5, b jets = 2"
+    if "Boosted" in ps:
+        if "SR" in ps:
+            allJetSel = " N_{jets} #geq 2, N_{jets}^{b} #geq 1, N_{jets}^{fat} #geq 1, p_{T}^{#gamma} > 100"
+        if "CR" in ps:
+            allJetSel = " N_{jets} #geq 2, N_{jets}^{b} #geq 1, N_{jets}^{fat} #geq 1, 20 < p_{T}^{#gamma} < 50"
+    if "Resolved" in ps:
+        if "SR" in ps:
+            allJetSel = " N_{jets} #geq 5, N_{jets}^{b} #geq 2, N_{jets}^{fat} =0, p_{T}^{#gamma} > 100"
+        if "CR" in ps:
+            allJetSel = " N_{jets} #geq 5, N_{jets}^{b} #geq 2, N_{jets}^{fat} =0, 20 < p_{T}^{#gamma} < 50"
     return allJetSel

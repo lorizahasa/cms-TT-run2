@@ -41,8 +41,6 @@ class EventTree{
 
     Int_t    nVtx_;
     Int_t    nGoodVtx_;
-    
-
     Float_t    pvNDOF_;
     Float_t    pvX_;
     Float_t    pvY_;
@@ -51,9 +49,7 @@ class EventTree{
     
 
     // genParticle
-    
     UInt_t    nGenPart_;
-    
     Float_t   GenPart_pt_[300];
     Float_t   GenPart_eta_[300];
     Float_t   GenPart_phi_[300];
@@ -63,9 +59,7 @@ class EventTree{
     Int_t     GenPart_status_[300];
     Int_t     GenPart_statusFlags_[300];
     
-    
     UInt_t    nGenJet_;
-    
     Float_t   GenJet_pt_[100];
     Float_t   GenJet_eta_[100];
     Float_t   GenJet_phi_[100];
@@ -74,15 +68,12 @@ class EventTree{
     // PU
     Int_t    nPU_;  
     Float_t  nPUTrue_;  
-    
     Float_t  MET_pt_;
     Float_t  MET_phi_;
-    
     Float_t  GenMET_pt_;
     Float_t  GenMET_phi_;
 
     // Electron
-
     UInt_t          nEle_;
     Float_t         elePhi_[20];
     Float_t         elePt_[20];
@@ -90,23 +81,13 @@ class EventTree{
     Float_t         eleDeltaEtaSC_[20];
     Int_t           eleCharge_[20];
     Float_t         eleMass_[20];
-    Float_t         elePFRelIso_[20];
-    Float_t         elePFRelChIso_[20];
-    Int_t           eleIDcutbased_[20];
+    Float_t         eleMiniPFRelIso_[20];
+    Bool_t          eleMVAFall17V2noIso_WP90_[20];
+    Bool_t          eleMVAFall17V2noIso_WPL_[20];
     Float_t         eleD0_[20];
     Float_t         eleDz_[20];
-    Float_t         eleSIEIE_[20];
-
-    Int_t           eleVidWPBitmap_[20];
-    Float_t         eleEcalSumEtDr03_[20];
-    Float_t         eleHcalSumEtDr03_[20];
-    Float_t         eleTrkSumPtDr03_[20];
-
-    Int_t           elePhoIdx_[20];
-
 
     // Photon
-    
     UInt_t          nPho_;
     Float_t         phoEt_[15];
     Float_t         phoEta_[15];
@@ -115,7 +96,7 @@ class EventTree{
     Bool_t          phoIsEE_[15];
     Float_t         phoPFRelIso_[15];
     Float_t         phoPFRelChIso_[15];
-    Int_t          phoIDcutbased_[15];
+    Int_t           phoIDcutbased_[15];
     Int_t           phoVidWPBitmap_[15];
     Bool_t           phoPixelSeed_[15];
     Bool_t           phoEleVeto_[15];
@@ -142,17 +123,13 @@ class EventTree{
     Float_t         muEta_[15];
     Int_t           muCharge_[15];
     Float_t         muMass_[15];
-    Float_t         muPFRelIso_[15];
-    Bool_t          muMediumId_[15];
+    Float_t         muMiniPFRelIso_[15];
     Bool_t          muTightId_[15];
     Bool_t          muIsPFMuon_[15];
     Bool_t          muIsGlobal_[15];
     Bool_t          muIsTracker_[15];
 
-
-
     // Jet
-
     UInt_t          nJet_;
     Float_t         jetPt_[200];
     Float_t         jetEta_[200];
@@ -170,7 +147,8 @@ class EventTree{
     Float_t         jetneEmEF_[200];
     Int_t           jetHadFlvr_[200];
     Int_t           jetGenJetIdx_[200];
-
+    
+    //fat jets
     UInt_t          nFatJet_;
     Float_t         fatJetPt_[200];
     Float_t         fatJetEta_[200];
@@ -187,34 +165,20 @@ class EventTree{
     Float_t         fatJetEleIdx_[200];
     Float_t         fatJetMuIdx_[200];
     Int_t           fatJetGenJetAK8Idx_[200];
-    Float_t  rho_;
 
-
-    Bool_t   HLT_Ele32_eta2p1_WPTight_Gsf_;
-    Bool_t   HLT_IsoMu24_;
-    Bool_t   HLT_IsoTkMu24_;
-    Bool_t   HLT_Ele32_WPTight_Gsf_L1DoubleEG_;
-    Bool_t   HLT_IsoMu24_eta2p1_;
-    Bool_t   HLT_IsoMu27_;
-
-    Bool_t   HLT_Ele105_CaloIdVT_GsfTrkIdT_;
-    Bool_t   HLT_Ele115_CaloIdVT_GsfTrkIdT_;
-    Bool_t   HLT_DoubleEle25_CaloIdL_MW_;
-    Bool_t   HLT_Photon175_;
-    Bool_t   HLT_Photon200_;
+    //Muon trigger
+    Bool_t   HLT_Mu50_;
+    Bool_t   HLT_TkMu50_;
+    Bool_t   HLT_OldMu100_;
+    Bool_t   HLT_TkMu100_;
 
     Bool_t   HLT_Ele27_WPTight_Gsf_;
-    Bool_t   HLT_Ele32_WPTight_Gsf_;
     Bool_t   HLT_Ele35_WPTight_Gsf_;
-    Bool_t   HLT_Ele38_WPTight_Gsf_;
-
-    Bool_t   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_;
-    Bool_t   HLT_Mu23_TrkIsoVVL_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_;
-    Bool_t   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_;
-    Bool_t   HLT_Mu8_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_;
-    Bool_t   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_;
-    Bool_t   HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_;
-
+    Bool_t   HLT_Ele32_WPTight_Gsf_;
+    Bool_t   HLT_Ele115_CaloIdVT_GsfTrkIdT_;
+    Bool_t   HLT_Photon175_;
+    Bool_t   HLT_Photon200_;
+    
     Bool_t   L1_SingleEG24_;
     Bool_t   L1_SingleEG26_;
     Bool_t   L1_SingleEG30_;
@@ -245,8 +209,6 @@ class EventTree{
     Bool_t   L1_SingleIsoEG36_;
     Bool_t   L1_SingleIsoEG38_;
 
-
-    
     Bool_t   Flag_goodVertices_ ;
     Bool_t   Flag_globalSuperTightHalo2016Filter_ ;
     Bool_t   Flag_HBHENoiseFilter_ ;
@@ -254,6 +216,7 @@ class EventTree{
     Bool_t   Flag_EcalDeadCellTriggerPrimitiveFilter_ ;
     Bool_t   Flag_BadPFMuonFilter_ ;
     Bool_t   Flag_ecalBadCalibFilterV2_ ;
+    Float_t  rho_;
     
 
 };
