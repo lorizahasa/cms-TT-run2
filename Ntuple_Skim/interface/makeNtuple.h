@@ -510,6 +510,7 @@ void makeNtuple::InitBranches(){
     }
 	
     if (!tree->isData_ && !isSystematicRun){
+        /*
 	    outputTree->Branch("Gen_part_size"  	  , &_nGenPart ); 
 	    outputTree->Branch("Gen_pt"	  , &_genPt	 );
 	    outputTree->Branch("Gen_eta"	  , &_genEta	 ); 
@@ -525,6 +526,7 @@ void makeNtuple::InitBranches(){
 	    outputTree->Branch("Gen_jet_eta"	, &_genJetEta	 ); 
 	    outputTree->Branch("Gen_jet_phi"	, &_genJetPhi	 ); 
 	    outputTree->Branch("Gen_jet_mass"	, &_genJetMass	 ); 
+        */
 	    outputTree->Branch("Gen_met", &_genMET ); 
     }
 }

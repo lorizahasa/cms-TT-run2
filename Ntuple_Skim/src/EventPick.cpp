@@ -75,7 +75,7 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
         passTriggerEle = tree->HLT_Ele27_WPTight_Gsf_ ||tree->HLT_Photon175_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_;
     }
     if (year=="2017"){
-	    passTriggerMu = (tree->HLT_Mu50_ || tree->HLT_OldMu100_ || tree->HLT_TkMu100_);
+	    passTriggerMu = (tree->HLT_Mu50_ || tree->HLT_TkMu50_);
 	    bool allSingleEGL1or = (tree->L1_SingleEG24_ ||
 				tree->L1_SingleEG26_ ||
 				tree->L1_SingleEG30_ ||

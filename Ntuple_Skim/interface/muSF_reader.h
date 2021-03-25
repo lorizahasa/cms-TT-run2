@@ -187,21 +187,15 @@ std::vector<double> MuonSF::getMuSF(double pt, double eta, int systLevel, int ye
 
     double id_SF_value = idHist->GetBinContent(idX, idY);
     double id_SF_error = idHist->GetBinError(idX, idY);
-
     double id_SF = id_SF_value + (systLevel-1)*id_SF_error;
 
     double iso_SF_value = isoHist->GetBinContent(idX, idY);
     double iso_SF_error = isoHist->GetBinError(idX, idY);
-
     double iso_SF = iso_SF_value + (systLevel-1)*iso_SF_error;
-
 
     double trig_SF_value = trigHist->GetBinContent(trigX, trigY);
     double trig_SF_error = trigHist->GetBinError(trigX, trigY);
-
     double trig_SF = trig_SF_value + (systLevel-1)*trig_SF_error;
-
-    //    double muEffSF=id_SF*iso_SF*trig_SF;
     std::vector<double> muSF {id_SF*iso_SF*trig_SF, id_SF, iso_SF, trig_SF};
 
     if (verbose) { 

@@ -10,13 +10,13 @@ import numpy as np
 
 from optparse import OptionParser
 parser =OptionParser()
-parser.add_option("--ps", "--phaseSpace", dest="phaseSpace", default="Boosted/SR",type='str', 
+parser.add_option("--ps", "--phaseSpace", dest="phaseSpace", default="Resolved/CR",type='str', 
                      help="which control selection and region")
 (options, args) = parser.parse_args()
 phaseSpace = options.phaseSpace
 
 os.system("mkdir -p tex")
-texFile = open("tex/preFitPlot.tex", "w")
+texFile = open("tex/preFitPlot_%s.tex"%phaseSpace, "w")
 #texFile.write("\documentclass{article}\n")
 #texFile.write("\usepackage{graphicx}\n")
 #texFile.write("\usepackage{subfigure}\n")
@@ -31,7 +31,7 @@ for plot in allPlotList:
                 continue
             if "Ele" in c and "Mu" in plot:
                 continue
-            #os.system("python preFitPlots.py %s"%args1)
+            os.system("python preFitPlots.py %s"%args1)
             plotDir  = "%s/Plot_Hist/%s/%s/%s/%s"%(condorHistDir, y, d, c, phaseSpace)
             plotName  = "%s_%s_%s"%(plot, y, c)
             plotPath = "%s/%s.pdf"%(plotDir, plotName)

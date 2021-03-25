@@ -305,15 +305,18 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Photon_isScEtaEE",1);
     chain->SetBranchAddress("Photon_isScEtaEE", &phoIsEE_);
 
+	chain->SetBranchStatus("Photon_cutBased",1);
+	chain->SetBranchAddress("Photon_cutBased", &phoIDcutbased_);
+    /*
     if (year=="2016"){
 	chain->SetBranchStatus("Photon_cutBased",1);
 	chain->SetBranchAddress("Photon_cutBased", &phoIDcutbased_);
     }
     if (year=="2017" || year=="2018"){
-	chain->SetBranchStatus("Photon_cutBasedBitmap",1);
+	chain->SetBranchStatus("Photon_cutBasedBitmap",1);//these does not exist
 	chain->SetBranchAddress("Photon_cutBasedBitmap", &phoIDcutbased_);
     }
-	
+	*/
     chain->SetBranchStatus("Photon_pfRelIso03_all",1);
     chain->SetBranchAddress("Photon_pfRelIso03_all", &phoPFRelIso_);
 

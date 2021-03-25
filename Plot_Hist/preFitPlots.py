@@ -24,7 +24,7 @@ parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type=
                      help="Specify which decayMode moded of ttbar Semilep or DiLep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("--ps", "--phaseSpace", dest="phaseSpace", default="Resolved/CR",type='str', 
+parser.add_option("--ps", "--phaseSpace", dest="phaseSpace", default="Resolved_CR",type='str', 
                      help="which control selection and region")
 parser.add_option("--plot", dest="hName",default="Muon_pt", help="Add plots" )
 (options, args) = parser.parse_args()
@@ -207,8 +207,11 @@ def makePlot(hName, phaseSpace, isSig, isData, isLog, isRatio, isUnc):
 #Finally make the plot for each histogram
 #----------------------------------------
 isData   = True
-isSig    = True
 isRatio  = True
+if "SR" in phaseSpace:
+    isData  = False
+    isRatio = False
+isSig    = True
 isUnc    = False
 isLog    = True
 makePlot(hName, phaseSpace, isSig,  isData, isLog, isRatio, isUnc)

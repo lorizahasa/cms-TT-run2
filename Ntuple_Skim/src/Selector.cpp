@@ -156,7 +156,7 @@ void Selector::filter_photons(){
         bool isEB = tree->phoIsEB_[phoInd];
         bool isEE = tree->phoIsEE_[phoInd];
         uint photonID = tree->phoIDcutbased_[phoInd];
-        bool passMediumPhotonID = photonID >= 2; // 0 - Loose, 1 - Medium, 2 - Tight
+        bool passMediumPhotonID = photonID >= 2; //0:fail, 1:loose, 2:medium, 3:tight 
         double phoPFRelIso = tree->phoPFRelIso_[phoInd];
         double phoPFRelChIso = tree->phoPFRelChIso_[phoInd];
         bool passDR_lep_pho = true;

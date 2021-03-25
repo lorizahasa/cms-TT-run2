@@ -496,11 +496,11 @@ makeNtuple::makeNtuple(int ac, char** av)
 
 	muSFa = new MuonSF("weight/MuEleGammaSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ID.root",  "NUM_TightID_DEN_TrackerMuons_pt_abseta",
 			   "weight/MuEleGammaSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ISO.root", "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
-			   "weight/MuEleGammaSF/mu2018/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_BeforeMuonHLTUpdate.root", "Mu50_PtEtaBins/abseta_pt_ratio");
+			   "weight/MuEleGammaSF/mu2018/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_BeforeMuonHLTUpdate.root", "Mu50_OR_OldMu100_OR_TkMu100_PtEtaBins/abseta_pt_ratio");
 	
 	muSFb = new MuonSF("weight/MuEleGammaSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ID.root",  "NUM_TightID_DEN_TrackerMuons_pt_abseta",
 			   "weight/MuEleGammaSF/mu2018/EfficienciesStudies_2018_rootfiles_RunABCD_SF_ISO.root", "NUM_TightRelIso_DEN_TightIDandIPCut_pt_abseta",
-			   "weight/MuEleGammaSF/mu2018/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_AfterMuonHLTUpdate.root", "Mu50_PtEtaBins/abseta_pt_ratio");
+			   "weight/MuEleGammaSF/mu2018/EfficienciesStudies_2018_trigger_EfficienciesAndSF_2018Data_AfterMuonHLTUpdate.root", "Mu50_OR_OldMu100_OR_TkMu100_PtEtaBins/abseta_pt_ratio");
 
 	eleSF = new ElectronSF("weight/MuEleGammaSF/ele2018/2018_ElectronTight.root",
 			       "weight/MuEleGammaSF/ele2018/egammaEffi.txt_EGM2D_updatedAll.root",
@@ -544,23 +544,15 @@ makeNtuple::makeNtuple(int ac, char** av)
 	}
     }
 
-
     for(Long64_t entry=entryStart; entry<entryStop; entry++){
 	if(entry%dumpFreq == 0){
-	    // duration =  ( clock() - startClock ) / (double) CLOCKS_PER_SEC;
-	    // std::cout << "processing entry " << entry << " out of " << nEntr << " : " << duration << " seconds since last progress" << std::endl;
-	    // startClock = clock();
-
 	    std::cout << "processing entry " << entry << " out of " << nEntr << " : " 
 		      << std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count()
 		      << " seconds since last progress" << std::endl;
-	    
 	    startClock = std::chrono::high_resolution_clock::now();			
-
 	}
 	//  cout << entry << endl;
 	tree->GetEntry(entry);
-
 	if( isMC && doOverlapInvert_TTG){
 	    //if (!overlapRemovalTT(tree, tree->event_==eventNum)){	
 	    if (!overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){
@@ -699,8 +691,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 
 	if ( evtPick->passPreselEle || evtPick->passPreselMu || saveAllEntries) {
 	    if (saveCutflow && !(evtPick->passAllEle || evtPick->passAllMu) ) continue;
-
-
 	    InitVariables();
 	   // FillEvent(year);
 	    FillEvent(year); //HEM test
@@ -726,68 +716,37 @@ makeNtuple::makeNtuple(int ac, char** av)
 		    vector<double> muWeights;
 		    vector<double> muWeights_Do;
 		    vector<double> muWeights_Up;    
-
 		    int muInd_ = selector->Muons.at(0);
-
 		    if (year=="2016"){
-			vector<double> muWeights_a    = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2016, tree->event_==eventNum);
-			vector<double> muWeights_b    = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2016, tree->event_==eventNum);
-
-			vector<double> muWeights_a_Do = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2016);
-			vector<double> muWeights_b_Do = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2016);
-
-			vector<double> muWeights_a_Up = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2016);
-			vector<double> muWeights_b_Up = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2016);
-
-			for (int _i=0; _i < muWeights_a.size(); _i++){
-			    muWeights.push_back( muWeights_a.at(_i) * 19.695422959/35.921875595 + 
-						 muWeights_b.at(_i) * 16.226452636/35.921875595);
-
-			    muWeights_Do.push_back( muWeights_a_Do.at(_i) * 19.695422959/35.921875595 + 
-						    muWeights_b_Do.at(_i) * 16.226452636/35.921875595);
-
-			    muWeights_Up.push_back( muWeights_a_Up.at(_i) * 19.695422959/35.921875595 + 
-						    muWeights_b_Up.at(_i) * 16.226452636/35.921875595);
-
-			}
+		        vector<double> muWeights_a    = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2016, tree->event_==eventNum);
+		        vector<double> muWeights_b    = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2016, tree->event_==eventNum);
+		        vector<double> muWeights_a_Do = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2016);
+		        vector<double> muWeights_b_Do = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2016);
+		        vector<double> muWeights_a_Up = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2016);
+		        vector<double> muWeights_b_Up = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2016);
+			    for (int _i=0; _i < muWeights_a.size(); _i++){
+			        muWeights.push_back( muWeights_a.at(_i) * 19.695422959/35.921875595 + muWeights_b.at(_i) * 16.226452636/35.921875595);
+			        muWeights_Do.push_back( muWeights_a_Do.at(_i) * 19.695422959/35.921875595 + muWeights_b_Do.at(_i) * 16.226452636/35.921875595);
+			        muWeights_Up.push_back( muWeights_a_Up.at(_i) * 19.695422959/35.921875595 + muWeights_b_Up.at(_i) * 16.226452636/35.921875595);
+			    }
 		    }
 		    if (year=="2017"){    
 		        muWeights    = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2017, tree->event_==eventNum);
-			muWeights_Do = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2017);
-			muWeights_Up = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2017);
+			    muWeights_Do = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2017);
+			    muWeights_Up = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2017);
 		    }
-                    if(year=="2018"){
-                        vector<double> muWeights_a    = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2018, tree->event_==eventNum);
-                        vector<double> muWeights_b    = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2018, tree->event_==eventNum);
-
-                        vector<double> muWeights_a_Do = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2018);
-			vector<double> muWeights_b_Do = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2018);
-
-                        vector<double> muWeights_a_Up = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2018);
-			vector<double> muWeights_b_Up = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2018);
-
-                        for (int _i=0; _i < muWeights_a.size(); _i++){
-                            muWeights.push_back( muWeights_a.at(_i) * 8.950818835/59.740565202 +
-                                                 muWeights_b.at(_i) * 50.789746366/59.740565202);
-
-                            muWeights_Do.push_back( muWeights_a_Do.at(_i) * 8.950818835/59.740565202 +
-                                                    muWeights_b_Do.at(_i) * 50.789746366/59.740565202);
-
-                            muWeights_Up.push_back( muWeights_a_Up.at(_i) * 8.950818835/59.740565202 +
-                                                    muWeights_b_Up.at(_i) * 50.789746366/59.740565202);
-
-			}
-
-
-			// _muEffWeight    = (muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2018) * 8.950818835/59.688059536 + 
-			// 		   muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2018) * 50.737240701/59.688059536);
-
-			// _muEffWeight_Do = (muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2018) * 8.950818835/59.688059536 + 
-			// 		   muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2018) * 50.737240701/59.688059536);
-
-			// _muEffWeight_Up = (muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2018) * 8.950818835/59.688059536 + 
-			// 		   muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2018) * 50.737240701/59.688059536);
-			
+            if(year=="2018"){
+                vector<double> muWeights_a    = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2018, tree->event_==eventNum);
+                vector<double> muWeights_b    = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2018, tree->event_==eventNum);
+                vector<double> muWeights_a_Do = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2018);
+		        vector<double> muWeights_b_Do = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2018);
+                vector<double> muWeights_a_Up = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2018);
+		        vector<double> muWeights_b_Up = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2018);
+                for (int _i=0; _i < muWeights_a.size(); _i++){
+                    muWeights.push_back( muWeights_a.at(_i) * 8.950818835/59.740565202 + muWeights_b.at(_i) * 50.789746366/59.740565202);
+                    muWeights_Do.push_back( muWeights_a_Do.at(_i) * 8.950818835/59.740565202 + muWeights_b_Do.at(_i) * 50.789746366/59.740565202);
+                    muWeights_Up.push_back( muWeights_a_Up.at(_i) * 8.950818835/59.740565202 + muWeights_b_Up.at(_i) * 50.789746366/59.740565202);
+			    }
 		    }
 		    _muEffWeight    = muWeights.at(0);
 		    _muEffWeight_Up = muWeights_Up.at(0);
@@ -1007,42 +966,42 @@ void makeNtuple::FillEvent(std::string year)
     //TODO
     //        _pdfWeight       = tree->pdfWeight_;	
     double ht = 0.0;
-    ht += tree->MET_pt_;
-    for( int i_jet = 0; i_jet < _nJet; i_jet++)
-	ht += tree->jetPt_[i_jet];
+    for( int i_jet = 0; i_jet < _nJet; i_jet++){
+	    ht += tree->jetPt_[i_jet];
+    }
     _HT = ht; 
 
     double lt = 0.0;
     for (int i_ele = 0; i_ele <_nEle; i_ele++){
-	int eleInd = selector->Electrons.at(i_ele);
-	_elePt.push_back(tree->elePt_[eleInd]);
-	_elePhi.push_back(tree->elePhi_[eleInd]);
-	_eleEta.push_back(tree->eleEta_[eleInd]);
-	_eleSCEta.push_back(tree->eleEta_[eleInd] + tree->eleDeltaEtaSC_[eleInd]);
-	_elePFRelIso.push_back(tree->eleMiniPFRelIso_[eleInd]);
-	lepVector.SetPtEtaPhiM(tree->elePt_[eleInd],
-			       tree->eleEta_[eleInd],
-			       tree->elePhi_[eleInd],
-			       tree->eleMass_[eleInd]);
-	lepCharge=tree->eleCharge_[eleInd];
-    lt += tree->elePt_[eleInd];
+        int eleInd = selector->Electrons.at(i_ele);
+        _elePt.push_back(tree->elePt_[eleInd]);
+        _elePhi.push_back(tree->elePhi_[eleInd]);
+        _eleEta.push_back(tree->eleEta_[eleInd]);
+        _eleSCEta.push_back(tree->eleEta_[eleInd] + tree->eleDeltaEtaSC_[eleInd]);
+        _elePFRelIso.push_back(tree->eleMiniPFRelIso_[eleInd]);
+        lepVector.SetPtEtaPhiM(tree->elePt_[eleInd],
+        		       tree->eleEta_[eleInd],
+        		       tree->elePhi_[eleInd],
+        		       tree->eleMass_[eleInd]);
+        lepCharge=tree->eleCharge_[eleInd];
+        lt += tree->elePt_[eleInd];
     }
 
     for (int i_mu = 0; i_mu <_nMu; i_mu++){
-	int muInd = selector->Muons.at(i_mu);
-	_muPt.push_back(tree->muPt_[muInd]);
-	_muPhi.push_back(tree->muPhi_[muInd]);
-	_muEta.push_back(tree->muEta_[muInd]);
-	_muPFRelIso.push_back(tree->muMiniPFRelIso_[muInd]);
-
-	lepVector.SetPtEtaPhiM(tree->muPt_[muInd],
-			       tree->muEta_[muInd],
-			       tree->muPhi_[muInd],
-			       tree->muMass_[muInd]);
-	lepCharge=tree->muCharge_[muInd];
-    lt += tree->muPt_[muInd];
+        int muInd = selector->Muons.at(i_mu);
+        _muPt.push_back(tree->muPt_[muInd]);
+        _muPhi.push_back(tree->muPhi_[muInd]);
+        _muEta.push_back(tree->muEta_[muInd]);
+        _muPFRelIso.push_back(tree->muMiniPFRelIso_[muInd]);
+        
+        lepVector.SetPtEtaPhiM(tree->muPt_[muInd],
+        		       tree->muEta_[muInd],
+        		       tree->muPhi_[muInd],
+        		       tree->muMass_[muInd]);
+        lepCharge=tree->muCharge_[muInd];
+        lt += tree->muPt_[muInd];
     }
-    _ST = ht + lt;
+    _ST = ht + lt + tree->MET_pt_;
 	
     if (dileptonsample){
 	if (_nMu==2) {
@@ -1077,27 +1036,24 @@ void makeNtuple::FillEvent(std::string year)
     
     //dipho Mass
     if (_nPho>1){
-	//	std::cout<<_nPho<<std::endl;
-	int phoInd1 = selector->Photons.at(0);
-	int phoInd2 = selector->Photons.at(1);
-
-	phoVector1.SetPtEtaPhiM(tree->phoEt_[phoInd1],
-				tree->phoEta_[phoInd1],
-				tree->phoPhi_[phoInd1],
-				0.0);
-	phoVector2.SetPtEtaPhiM(tree->phoEt_[phoInd2],
-				tree->phoEta_[phoInd2],
-				tree->phoPhi_[phoInd2],
-				0.0);
+        //	std::cout<<_nPho<<std::endl;
+        int phoInd1 = selector->Photons.at(0);
+        int phoInd2 = selector->Photons.at(1);
+        
+        phoVector1.SetPtEtaPhiM(tree->phoEt_[phoInd1],
+        			tree->phoEta_[phoInd1],
+        			tree->phoPhi_[phoInd1],
+        			0.0);
+        phoVector2.SetPtEtaPhiM(tree->phoEt_[phoInd2],
+        			tree->phoEta_[phoInd2],
+        			tree->phoPhi_[phoInd2],
+        			0.0);
     }
 	
-
     _passPresel_Ele  = evtPick->passPreselEle;
     _passPresel_Mu   = evtPick->passPreselMu;
     _passAll_Ele     = evtPick->passAllEle;
     _passAll_Mu      = evtPick->passAllMu;
-    
-
     _nPhoBarrel=0.;
     _nPhoEndcap=0.;
 
@@ -1107,99 +1063,87 @@ void makeNtuple::FillEvent(std::string year)
 	cout <<"Photon Info" << endl; 
     }
     for (int i_pho = 0; i_pho <_nPho; i_pho++){
-	int phoInd = selector->Photons.at(i_pho);
-
-	phoVector.SetPtEtaPhiM(tree->phoEt_[phoInd],
-			       tree->phoEta_[phoInd],
-			       tree->phoPhi_[phoInd],
-			       0.0);
-    phoVectors.push_back(phoVector);
-	_phoEt.push_back(tree->phoEt_[phoInd]);
-	_phoEta.push_back(tree->phoEta_[phoInd]);
-	_phoPhi.push_back(tree->phoPhi_[phoInd]);
-	//	_phoSCEta.push_back(tree->phoEta_[phoInd]);
-
-	_phoR9.push_back(tree->phoR9_[phoInd]);		
-	_phoSIEIE.push_back(tree->phoSIEIE_[phoInd]);
-	_phoHoverE.push_back(tree->phoHoverE_[phoInd]);
-
-	_phoIsBarrel.push_back( abs(tree->phoEta_[phoInd])<1.47 );
-
-	_phoPFRelIso.push_back( tree->phoPFRelIso_[phoInd]);
-	_phoPFRelChIso.push_back( tree->phoPFRelChIso_[phoInd]);
-	_phoPFChIso.push_back( tree->phoPFRelChIso_[phoInd] * tree->phoEt_[phoInd]);
-
-	if (abs(tree->phoEta_[phoInd])<1.47){
-	    _nPhoBarrel++;
-	}else{
-	    _nPhoEndcap++;
-	} 
-
-	if (tree->isData_){
-	    _phoEffWeight.push_back(1.);
-	    _phoEffWeight_Do.push_back(1.);
-	    _phoEffWeight_Up.push_back(1.);
-	} else {
-	    vector<double> phoWeights = phoSF->getPhoSF(tree->phoEt_[phoInd],tree->phoEta_[phoInd],1, tree->event_==eventNum);
-	    vector<double> phoWeights_Do = phoSF->getPhoSF(tree->phoEt_[phoInd],tree->phoEta_[phoInd],0, tree->event_==eventNum);
-	    vector<double> phoWeights_Up = phoSF->getPhoSF(tree->phoEt_[phoInd],tree->phoEta_[phoInd],2, tree->event_==eventNum);
-
-	    _phoEffWeight.push_back(phoWeights.at(0));
-	    _phoEffWeight_Do.push_back(phoWeights_Do.at(0));
-	    _phoEffWeight_Up.push_back(phoWeights_Up.at(0));
-
-	    _phoEffWeight_Id.push_back(phoWeights.at(1));
-	    _phoEffWeight_Id_Do.push_back(phoWeights_Do.at(1));
-	    _phoEffWeight_Id_Up.push_back(phoWeights_Up.at(1));
-
-	    _phoEffWeight_eVeto.push_back(phoWeights.at(2));
-	    _phoEffWeight_eVeto_Do.push_back(phoWeights_Do.at(2));
-	    _phoEffWeight_eVeto_Up.push_back(phoWeights_Up.at(2));
-	}
-	_phoMassLepGamma.push_back( (phoVector+lepVector).M() );
-	int phoGenMatchInd = -1.;
-
-	// TODO needs to be reimplemented with NANOAOD
-	if (!tree->isData_){
-	    phoGenMatchInd = tree->phoGenPartIdx_[phoInd];
-	    if (evtPick->saveCutflows){
-		string run_lumi_event = to_string(tree->run_)+","+to_string(tree->lumis_)+","+to_string(tree->event_)+"\n";		
-	    }
-	}
-	
+        int phoInd = selector->Photons.at(i_pho);
+        phoVector.SetPtEtaPhiM(tree->phoEt_[phoInd],
+        		       tree->phoEta_[phoInd],
+        		       tree->phoPhi_[phoInd],
+        		       0.0);
+        phoVectors.push_back(phoVector);
+        _phoEt.push_back(tree->phoEt_[phoInd]);
+        _phoEta.push_back(tree->phoEta_[phoInd]);
+        _phoPhi.push_back(tree->phoPhi_[phoInd]);
+        //	_phoSCEta.push_back(tree->phoEta_[phoInd]);
+        
+        _phoR9.push_back(tree->phoR9_[phoInd]);		
+        _phoSIEIE.push_back(tree->phoSIEIE_[phoInd]);
+        _phoHoverE.push_back(tree->phoHoverE_[phoInd]);
+        _phoIsBarrel.push_back( abs(tree->phoEta_[phoInd])<1.47 );
+        
+        _phoPFRelIso.push_back( tree->phoPFRelIso_[phoInd]);
+        _phoPFRelChIso.push_back( tree->phoPFRelChIso_[phoInd]);
+        _phoPFChIso.push_back( tree->phoPFRelChIso_[phoInd] * tree->phoEt_[phoInd]);
+        
+        if (abs(tree->phoEta_[phoInd])<1.47){
+            _nPhoBarrel++;
+        }else{
+            _nPhoEndcap++;
+        } 
+        if (tree->isData_){
+            _phoEffWeight.push_back(1.);
+            _phoEffWeight_Do.push_back(1.);
+            _phoEffWeight_Up.push_back(1.);
+        } else {
+            vector<double> phoWeights = phoSF->getPhoSF(tree->phoEt_[phoInd],tree->phoEta_[phoInd],1, tree->event_==eventNum);
+            vector<double> phoWeights_Do = phoSF->getPhoSF(tree->phoEt_[phoInd],tree->phoEta_[phoInd],0, tree->event_==eventNum);
+            vector<double> phoWeights_Up = phoSF->getPhoSF(tree->phoEt_[phoInd],tree->phoEta_[phoInd],2, tree->event_==eventNum);
+        
+            _phoEffWeight.push_back(phoWeights.at(0));
+            _phoEffWeight_Do.push_back(phoWeights_Do.at(0));
+            _phoEffWeight_Up.push_back(phoWeights_Up.at(0));
+        
+            _phoEffWeight_Id.push_back(phoWeights.at(1));
+            _phoEffWeight_Id_Do.push_back(phoWeights_Do.at(1));
+            _phoEffWeight_Id_Up.push_back(phoWeights_Up.at(1));
+        
+            _phoEffWeight_eVeto.push_back(phoWeights.at(2));
+            _phoEffWeight_eVeto_Do.push_back(phoWeights_Do.at(2));
+            _phoEffWeight_eVeto_Up.push_back(phoWeights_Up.at(2));
+        }
+        _phoMassLepGamma.push_back( (phoVector+lepVector).M() );
+        int phoGenMatchInd = -1.;
+        
+        // TODO needs to be reimplemented with NANOAOD
+        if (!tree->isData_){
+            phoGenMatchInd = tree->phoGenPartIdx_[phoInd];
+            if (evtPick->saveCutflows){
+        	string run_lumi_event = to_string(tree->run_)+","+to_string(tree->lumis_)+","+to_string(tree->event_)+"\n";		
+            }
+        }
 	_dRPhotonLepton.push_back(phoVector.DeltaR(lepVector));
 	_MPhotonLepton.push_back((phoVector+lepVector).M());
 	_AnglePhotonLepton.push_back(phoVector.Angle(lepVector.Vect())); 
-	
     }
     
-    
     for (int i_pho = 0; i_pho <_nLoosePho; i_pho++){
-	int phoInd = selector->LoosePhotons.at(i_pho);
-	phoVector.SetPtEtaPhiM(tree->phoEt_[phoInd],
-			       tree->phoEta_[phoInd],
-			       tree->phoPhi_[phoInd],
-			       0.0);
-	
-	int phoGenMatchInd = -1.;
-
-	// TODO Reimplement with NANOAOD
-
-	if (!tree->isData_){
-
-	    phoGenMatchInd = tree->phoGenPartIdx_[phoInd];
-	}
-
-	
+        int phoInd = selector->LoosePhotons.at(i_pho);
+        phoVector.SetPtEtaPhiM(tree->phoEt_[phoInd],
+        		       tree->phoEta_[phoInd],
+        		       tree->phoPhi_[phoInd],
+        		       0.0);
+        
+        int phoGenMatchInd = -1.;
+        if (!tree->isData_){
+            phoGenMatchInd = tree->phoGenPartIdx_[phoInd];
+        }
     }
 
     for (int i_pho = 0; i_pho <_nPhoNoID; i_pho++){
-	int phoInd = selector->PhotonsNoID.at(i_pho);
-	phoVector.SetPtEtaPhiM(tree->phoEt_[phoInd],
-			       tree->phoEta_[phoInd],
-			       tree->phoPhi_[phoInd],
-			       0.0);
-	int phoGenMatchInd = -1.;
+        int phoInd = selector->PhotonsNoID.at(i_pho);
+        phoVector.SetPtEtaPhiM(tree->phoEt_[phoInd],
+        		       tree->phoEta_[phoInd],
+        		       tree->phoPhi_[phoInd],
+        		       0.0);
+        int phoGenMatchInd = -1.;
     }
 
     jetVectors.clear();
@@ -1408,9 +1352,7 @@ void makeNtuple::FillEvent(std::string year)
         }
 
     }
-
-    
-    
+    /*
     for (int i_mc = 0; i_mc <_nGenPart; i_mc++){
 	_genPt.push_back(tree->GenPart_pt_[i_mc]);
 	_genPhi.push_back(tree->GenPart_phi_[i_mc]);
@@ -1428,7 +1370,7 @@ void makeNtuple::FillEvent(std::string year)
 	_genJetPhi.push_back(tree->GenJet_phi_[i_genJet]);
 	_genJetMass.push_back(tree->GenJet_mass_[i_genJet]);
     }
-
+    */
 }
 
 // https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopPtReweighting
@@ -1475,16 +1417,13 @@ void makeNtuple::loadBtagEff(string sampleName, string year){
 }				   
 
 float makeNtuple::getBtagSF_1a(string sysType, BTagCalibrationReader reader, bool verbose){
-
     double weight = 1.0;
-
     double jetPt;
     double jetEta;
     double jetBtag;
     int jetFlavor;
     double SFb;
     double Eff;
-
     double pMC=1;
     double pData=1;
 	

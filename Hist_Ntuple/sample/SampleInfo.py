@@ -11,7 +11,8 @@ dirBaseDilep = dirBase
 dirSystDilep = dirBase
 
 era16 = ["b", "c", "d", "e", "f", "g", "h"]
-era17 = ["b", "c", "d", "e", "f"]
+#era17 = ["b", "c", "d", "e", "f"]
+era17 = ["b", "c", "d", "e"]
 era18 = ["a", "b", "c", "d"]
 data16Mu = []
 data17Mu = []
@@ -42,7 +43,7 @@ def getSamples(y):
                "TT_tytg_M800"  : gs(y, ["TstarTstarToTgammaTgluon_M800"]),  
                "TT_tytg_M900"  : gs(y, ["TstarTstarToTgammaTgluon_M900"]),  
                "TT_tytg_M1000" : gs(y, ["TstarTstarToTgammaTgluon_M1000"]),  
-               "TT_tytg_M1100" : gs(y, ["TstarTstarToTgammaTgluon_M1100"]),  
+               #"TT_tytg_M1100" : gs(y, ["TstarTstarToTgammaTgluon_M1100"]),  
                "TT_tytg_M1200" : gs(y, ["TstarTstarToTgammaTgluon_M1200"]),  
                "TT_tytg_M1300" : gs(y, ["TstarTstarToTgammaTgluon_M1300"]),  
                "TT_tytg_M1400" : gs(y, ["TstarTstarToTgammaTgluon_M1400"]),  
@@ -84,7 +85,7 @@ def getSamples(y):
 
 a = getSamples("2016")
 #print a
-print a.keys()
+#print a.keys()
 '''
     samples = {
                "TT_tytg_M700"  : gs(y, ["TstarTstarToTgammaTgluon_M700"]),  
