@@ -58,7 +58,8 @@ def getSamples(y):
                    "TTbarPowheg_Dilepton" , 
                    "TTbarPowheg_Semilept"]),
                "TTGamma": gs(y, ['TTGamma_Dilepton', 'TTGamma_Hadronic', 'TTGamma_SingleLept']),
-               "Others": gs(y, ['TGJets', 'W1jets', 'W2jets', 'W3jets', 'W4jets', 'TTWtoQQ', 'TTZtoQQ', 'WW', 'WZ', 'ZZ']),
+               "Others": gs(y, ['W1jets', 'W2jets', 'W3jets', 'W4jets', 'TTWtoQQ', 'TTZtoQQ', 'WW', 'WZ', 'ZZ']),
+               #TGJets
                "QCDEle"   : gs(y, ["QCD_Pt20to30_Ele",
                                "QCD_Pt30to50_Ele",
                                "QCD_Pt50to80_Ele",

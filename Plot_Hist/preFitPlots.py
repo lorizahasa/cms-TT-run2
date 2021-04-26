@@ -106,6 +106,7 @@ def makePlot(hName, phaseSpace, isSig, isData, isLog, isRatio, isUnc):
     #Signal hists
     if isSig:
         sigHists  = getSigBaseHists(fileDict, hName, phaseSpace)
+        sortedSigHists = sortHists(sigHists, True)
         for hSig in sigHists:
             hSig.Draw("HISTsame")
     
@@ -145,7 +146,7 @@ def makePlot(hName, phaseSpace, isSig, isData, isLog, isRatio, isUnc):
         plotLegend.AddEntry(bkgHist, plotLegendName, "F")
         hSumAllBkg.Add(bkgHist)
     if isSig:
-        for hSig in sigHists:
+        for hSig in sortedSigHists:
             s0 = hSig.GetName().split("_")[0]
             s1 = hSig.GetName().split("_")[1]
             s2 = hSig.GetName().split("_")[2]

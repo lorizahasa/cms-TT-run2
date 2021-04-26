@@ -13,22 +13,24 @@ SystLevel     = ["Up", "Down"]
 PhaseSpace = ['Boosted_SR', 'Boosted_CR', 'Resolved_SR', 'Resolved_CR']
 
 SampleSignal = {
-         "TT_tytg_M800"    : [rt.kOrange,   "18x m_{T} = 800"],
-         "TT_tytg_M1200"   : [rt.kCyan,     "18x m_{T} = 1200"],
-         "TT_tytg_M1600"   : [rt.kPink,     "18x m_{T} = 1600"],
+         "TT_tytg_M800"    : [rt.kMagenta,   "10x m_{T} = 800"],
+         "TT_tytg_M1200"   : [rt.kCyan,     "10x m_{T} = 1200"],
+         "TT_tytg_M1600"   : [rt.kPink,     "10x m_{T} = 1600"],
          }
 
 SampleBkg = {
          "TTGamma"   : [rt.kGreen, "t#bar{t}#gamma"],
          "TTbar"     : [rt.kRed, "t#bar{t}"],
          "SingleTop" : [rt.kOrange, "t"],
-         "QCD"       : [rt.kYellow, "QCD"],
+         "QCD"       : [rt.kBlack, "QCD"],
          "Others"    : [rt.kBlue, "Others"]
          }
 SampleData = {
          "Data"   : [rt.kBlack, "Data"]
          }
-
+SampleWeight = ["TTGamma", "TTbar", "TT_tytg_M800"]
+SampleLumi = SampleBkg
+SampleLumi.update(SampleSignal)
 SampleSyst = SampleBkg.keys()
 Samples = SampleSignal.keys() + SampleBkg.keys() + SampleData.keys()
 plotList = ["Muon_pt"]

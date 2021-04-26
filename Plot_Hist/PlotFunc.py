@@ -71,7 +71,7 @@ def getBkgSystHists(fileDict, hName, CR, level):
 def decoHist(hist, xTit, yTit, color):
     hist.GetXaxis().SetTitle(xTit);
     hist.GetYaxis().SetTitle(yTit);
-    hist.SetFillColor(color);
+    #hist.SetFillColor(color);
     hist.GetXaxis().SetTitle(xTit);
     hist.GetYaxis().SetTitle(yTit)
     hist.GetYaxis().CenterTitle()
@@ -86,7 +86,7 @@ def decoHistSig(hist, xTit, yTit, color):
     hist.GetXaxis().SetTitle(xTit);
     hist.GetYaxis().SetTitle(yTit);
     hist.SetFillColor(color);
-    hist.Scale(18)
+    hist.Scale(10)
     hist.SetLineColor(color)
     hist.SetLineStyle(2)
     hist.SetLineWidth(3) 
@@ -102,10 +102,11 @@ def decoHistRatio(hist, xTit, yTit, color):
     hist.GetXaxis().SetLabelFont(42);
     #hist.GetXaxis().SetLabelColor(kBlack);
     #hist.GetXaxis().SetAxisColor(kBlack);
-    hist.GetYaxis().SetRangeUser(0.5, 1.5);
+    hist.GetYaxis().SetRangeUser(0.0, 2.0);
     hist.GetXaxis().SetTitleOffset(1);
     hist.GetXaxis().SetLabelOffset(0.01);
     hist.SetMarkerStyle(20); 
+    hist.SetMarkerColor(color)
     #hist.SetMarkerSize(1.2);
     hist.GetYaxis().SetTitleSize(0.11);
     hist.GetYaxis().SetLabelSize(0.10);
@@ -192,9 +193,10 @@ def sortHists(hAllBkgs, isReverse):
     orders for stack/legend.
     '''
     yieldDict = {}
+    print hAllBkgs
     for h in hAllBkgs:
         yieldDict[h.GetName()] = h.Integral()
-        #print h.GetName(), h.Integral()
+        print h.GetName(), h.Integral()
     if isReverse:
         newDict = sorted(yieldDict.items(), key=lambda x: x[1], reverse=True)
     else:

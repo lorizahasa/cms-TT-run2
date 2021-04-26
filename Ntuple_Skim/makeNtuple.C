@@ -1064,6 +1064,7 @@ void makeNtuple::FillEvent(std::string year)
     }
     for (int i_pho = 0; i_pho <_nPho; i_pho++){
         int phoInd = selector->Photons.at(i_pho);
+        _ST += tree->phoEt_[phoInd];
         phoVector.SetPtEtaPhiM(tree->phoEt_[phoInd],
         		       tree->phoEta_[phoInd],
         		       tree->phoPhi_[phoInd],

@@ -14,7 +14,7 @@ def getJetMultiCut(controlRegion="Boosted_SR"):
     if "Boosted" in controlRegion:
         nJet, nBJets, nJetSel, nBJetSel, allJetSel = 2, 1, "Jet_size>=2", "Jet_b_size>=1", "Jet_size>=2 && Jet_b_size>=1"
     if "Resolved" in controlRegion:
-        nJet, nBJets, nJetSel, nBJetSel, allJetSel = 5, 2, "Jet_size>=5", "Jet_b_size>=2", "Jet_size>=5 && Jet_b_size>=2"
+        nJet, nBJets, nJetSel, nBJetSel, allJetSel = 5, 1, "Jet_size>=5", "Jet_b_size>=1", "Jet_size>=5 && Jet_b_size>=1"
     print "nJet: %s, nBJets: %s, nJetSel: %s, nBJetSel: %s, allJetSel: %s"%(nJet, nBJets, nJetSel, nBJetSel, allJetSel)
     return nJet, nBJets, nJetSel, nBJetSel, allJetSel
 

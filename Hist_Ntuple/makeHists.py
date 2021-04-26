@@ -175,6 +175,7 @@ if channel=="Mu":
             extraCuts += "FatJet_size ==0 && Photon_et>100 && %s)*"%(bothJetSel)
         if "CR" in phaseSpace:
             extraCuts += "FatJet_size ==0 && Photon_et > 20 && Photon_et < 50 && %s)*"%(bothJetSel)
+    extraCuts            = "(Event_pass_presel_mu)*"
 
 elif channel=="Ele":
     if sample=="Data":
@@ -193,12 +194,14 @@ elif channel=="Ele":
             extraCuts += "FatJet_size ==0 && Photon_et>100 && %s)*"%(bothJetSel)
         if "CR" in phaseSpace:
             extraCuts += "FatJet_size ==0 && Photon_et > 20 && Photon_et < 50 && %s)*"%(bothJetSel)
+    extraCuts            = "(Event_pass_presel_ele)*"
 else:
     print "Unknown final state, options are Mu and Ele"
     sys.exit()
 
-weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,MuEff,EleEff,Q2,Pdf,isr,fsr,btagWeight)
+#weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,MuEff,EleEff,Q2,Pdf,isr,fsr,btagWeight)
 #weights = "%s"%(evtWeight)
+weights = "1"
 toPrint("Extra cuts ", extraCuts)
 toPrint("Final event weight ", weights)
 
@@ -255,7 +258,7 @@ for index, hist in enumerate(histogramsToMake, start=1):
     if evtWeight[-1]=="*":
         evtWeight= evtWeight[:-1]
     ### Correctly add the photon weights to the plots
-    evtWeight = "%s*%s[0]"%(evtWeight,PhoEff)
+    ####evtWeight = "%s*%s[0]"%(evtWeight,PhoEff)
     print evtWeight
     print hInfo[0]
     print hInfo[1]
@@ -280,6 +283,7 @@ for h in histograms:
     toPrint("Integral of Histogram %s = "%h.GetName(), h.Integral())
     outputFile.cd(histDirInFile)
     gDirectory.Delete("%s;*"%(h.GetName()))
+    h.Sumw2()
     h.Write()
-toPrint("Path of output root file", outFileFullPath)
+print("Path of output root file:\n %s/%s"%(os.getcwd(), outFileFullPath))
 outputFile.Close()

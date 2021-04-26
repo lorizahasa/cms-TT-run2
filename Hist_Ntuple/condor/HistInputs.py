@@ -15,5 +15,6 @@ Systematics   =	[]
 #Systematics   =	["isr","fsr"]
 SystLevel     = ["Up", "Down"]
 #ControlRegion = ['tight_a5j_e2b']
-PhaseSpace = ['Boosted_SR', 'Boosted_CR', 'Resolved_SR', 'Resolved_CR']
+#PhaseSpace = ['Boosted_SR', 'Boosted_CR', 'Resolved_SR', 'Resolved_CR']
+PhaseSpace = ['Boosted_SR']
 
