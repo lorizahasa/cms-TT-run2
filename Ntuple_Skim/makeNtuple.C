@@ -148,28 +148,16 @@ makeNtuple::makeNtuple(int ac, char** av)
 	PUfilename      = "weight/PileupSF/Data_2016BCDGH_Pileup.root";
 	PUfilename_up   = "weight/PileupSF/Data_2016BCDGH_Pileup_scaledUp.root";
 	PUfilename_down = "weight/PileupSF/Data_2016BCDGH_Pileup_scaledDown.root";
-
-	// PUfilename      = "weight/PileupSF/PU_2016_35920_XSecCentral.root";
-	// PUfilename_up   = "weight/PileupSF/PU_2016_35920_XSecUp.root";
-	// PUfilename_down = "weight/PileupSF/PU_2016_35920_XSecDown.root";
     }
     if (year=="2017"){
 	PUfilename      = "weight/PileupSF/Data_2017BCDEF_Pileup.root";
 	PUfilename_up   = "weight/PileupSF/Data_2017BCDEF_Pileup_scaledUp.root";
 	PUfilename_down = "weight/PileupSF/Data_2017BCDEF_Pileup_scaledDown.root";
-
-	// PUfilename      = "weight/PileupSF/PU_2017_41530_XSecCentral.root";
-	// PUfilename_up   = "weight/PileupSF/PU_2017_41530_XSecUp.root";
-	// PUfilename_down = "weight/PileupSF/PU_2017_41530_XSecDown.root";
     }
     if (year=="2018"){
 	PUfilename      = "weight/PileupSF/Data_2018ABCD_Pileup.root";
 	PUfilename_up   = "weight/PileupSF/Data_2018ABCD_Pileup_scaledUp.root";
 	PUfilename_down = "weight/PileupSF/Data_2018ABCD_Pileup_scaledDown.root";
-
-	// PUfilename      = "weight/PileupSF/PU_2018_59740_XSecCentral.root";
-	// PUfilename_up   = "weight/PileupSF/PU_2018_59740_XSecUp.root";
-	// PUfilename_down = "weight/PileupSF/PU_2018_59740_XSecDown.root";
     }
     if (eventNum > -1) {
 	string cut = "event=="+eventStr;
@@ -468,7 +456,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 	phoSF = new PhotonSF("weight/MuEleGammaSF/pho2016/Fall17V2_2016_Medium_photons.root",
 			     "weight/MuEleGammaSF/pho2016/ScalingFactors_80X_Summer16.root",
 			     2016);
-
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
 	l1PrefireSF = new PrefireWeights("weight/MuEleGammaSF/prefire/L1prefiring_photonpt_2016BtoH.root", "L1prefiring_photonpt_2016BtoH",
 					 "weight/MuEleGammaSF/prefire/L1prefiring_jetpt_2016BtoH.root", "L1prefiring_jetpt_2016BtoH");
 
@@ -718,12 +706,12 @@ makeNtuple::makeNtuple(int ac, char** av)
 		    vector<double> muWeights_Up;    
 		    int muInd_ = selector->Muons.at(0);
 		    if (year=="2016"){
-		        vector<double> muWeights_a    = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2016, tree->event_==eventNum);
-		        vector<double> muWeights_b    = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2016, tree->event_==eventNum);
-		        vector<double> muWeights_a_Do = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2016);
-		        vector<double> muWeights_b_Do = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2016);
-		        vector<double> muWeights_a_Up = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2016);
-		        vector<double> muWeights_b_Up = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2016);
+		        vector<double> muWeights_a    = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2016, tree->event_==eventNum);
+		        vector<double> muWeights_b    = muSFb->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2016, tree->event_==eventNum);
+		        vector<double> muWeights_a_Do = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2016);
+		        vector<double> muWeights_b_Do = muSFb->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2016);
+		        vector<double> muWeights_a_Up = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2016);
+		        vector<double> muWeights_b_Up = muSFb->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2016);
 			    for (int _i=0; _i < muWeights_a.size(); _i++){
 			        muWeights.push_back( muWeights_a.at(_i) * 19.695422959/35.921875595 + muWeights_b.at(_i) * 16.226452636/35.921875595);
 			        muWeights_Do.push_back( muWeights_a_Do.at(_i) * 19.695422959/35.921875595 + muWeights_b_Do.at(_i) * 16.226452636/35.921875595);
@@ -731,17 +719,17 @@ makeNtuple::makeNtuple(int ac, char** av)
 			    }
 		    }
 		    if (year=="2017"){    
-		        muWeights    = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2017, tree->event_==eventNum);
-			    muWeights_Do = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2017);
-			    muWeights_Up = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2017);
+		        muWeights    = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2017, tree->event_==eventNum);
+			    muWeights_Do = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2017);
+			    muWeights_Up = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2017);
 		    }
             if(year=="2018"){
-                vector<double> muWeights_a    = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2018, tree->event_==eventNum);
-                vector<double> muWeights_b    = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2018, tree->event_==eventNum);
-                vector<double> muWeights_a_Do = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2018);
-		        vector<double> muWeights_b_Do = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2018);
-                vector<double> muWeights_a_Up = muSFa->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2018);
-		        vector<double> muWeights_b_Up = muSFb->getMuSF(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2018);
+                vector<double> muWeights_a    = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2018, tree->event_==eventNum);
+                vector<double> muWeights_b    = muSFb->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2018, tree->event_==eventNum);
+                vector<double> muWeights_a_Do = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2018);
+		        vector<double> muWeights_b_Do = muSFb->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2018);
+                vector<double> muWeights_a_Up = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2018);
+		        vector<double> muWeights_b_Up = muSFb->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2018);
                 for (int _i=0; _i < muWeights_a.size(); _i++){
                     muWeights.push_back( muWeights_a.at(_i) * 8.950818835/59.740565202 + muWeights_b.at(_i) * 50.789746366/59.740565202);
                     muWeights_Do.push_back( muWeights_a_Do.at(_i) * 8.950818835/59.740565202 + muWeights_b_Do.at(_i) * 50.789746366/59.740565202);
@@ -751,22 +739,19 @@ makeNtuple::makeNtuple(int ac, char** av)
 		    _muEffWeight    = muWeights.at(0);
 		    _muEffWeight_Up = muWeights_Up.at(0);
 		    _muEffWeight_Do = muWeights_Do.at(0);
-
-		    _muEffWeight_IdIso    = muWeights.at(1)    * muWeights.at(2)   ;
-		    _muEffWeight_IdIso_Up = muWeights_Up.at(1) * muWeights_Up.at(2);
-		    _muEffWeight_IdIso_Do = muWeights_Do.at(1) * muWeights_Do.at(2);
-
-		    _muEffWeight_Trig    = muWeights.at(3);
+		    
+		    _muEffWeight_Id    = muWeights.at(1)    ;
+		    _muEffWeight_Id_Up = muWeights_Up.at(1) ;
+		    _muEffWeight_Id_Do = muWeights_Do.at(1) ;
+		    
+            _muEffWeight_Iso    = muWeights.at(2)   ;
+		    _muEffWeight_Iso_Up = muWeights_Up.at(2);
+		    _muEffWeight_Iso_Do = muWeights_Do.at(2);
+            
+            _muEffWeight_Trig    = muWeights.at(3);
 		    _muEffWeight_Trig_Up = muWeights_Up.at(3);
 		    _muEffWeight_Trig_Do = muWeights_Do.at(3);
 
-		    if (tree->event_==eventNum){
-			cout << "Total Muon SF:" << endl;
-			cout << "    ID   = " << muWeights.at(1) << endl;
-			cout << "    Iso  = " << muWeights.at(2) << endl;
-			cout << "    Trig = " << muWeights.at(3) << endl;
-			cout << "    Total= " << muWeights.at(0) << endl;
-		    }
 		    _eleEffWeight    = 1.;
 		    _eleEffWeight_Up = 1.;
 		    _eleEffWeight_Do = 1.;
@@ -778,18 +763,22 @@ makeNtuple::makeNtuple(int ac, char** av)
 		    _muEffWeight_Up = 1.;
 
 		    
-		    vector<double> eleWeights    = eleSF->getEleSF(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],1, tree->event_==eventNum);
-		    vector<double> eleWeights_Do = eleSF->getEleSF(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],0);
-		    vector<double> eleWeights_Up = eleSF->getEleSF(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],2);
+		    vector<double> eleWeights    = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],1, tree->event_==eventNum);
+		    vector<double> eleWeights_Do = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],0);
+		    vector<double> eleWeights_Up = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],2);
 
 
 		    _eleEffWeight    = eleWeights.at(0);
 		    _eleEffWeight_Do = eleWeights_Do.at(0);
 		    _eleEffWeight_Up = eleWeights_Up.at(0);
 
-		    _eleEffWeight_IdReco    = eleWeights.at(1)    * eleWeights.at(2)   ;
-		    _eleEffWeight_IdReco_Do = eleWeights_Do.at(1) * eleWeights_Do.at(2);
-		    _eleEffWeight_IdReco_Up = eleWeights_Up.at(1) * eleWeights_Up.at(2);
+		    _eleEffWeight_Id    = eleWeights.at(1)   ;
+		    _eleEffWeight_Id_Do = eleWeights_Do.at(1);
+		    _eleEffWeight_Id_Up = eleWeights_Up.at(1);
+
+		    _eleEffWeight_Reco    = eleWeights.at(2)    ;
+		    _eleEffWeight_Reco_Do = eleWeights_Do.at(2) ;
+		    _eleEffWeight_Reco_Up = eleWeights_Up.at(2) ;
 
 		    _eleEffWeight_Trig    = eleWeights.at(3);
 		    _eleEffWeight_Trig_Do = eleWeights_Do.at(3);
@@ -1094,9 +1083,9 @@ void makeNtuple::FillEvent(std::string year)
             _phoEffWeight_Do.push_back(1.);
             _phoEffWeight_Up.push_back(1.);
         } else {
-            vector<double> phoWeights = phoSF->getPhoSF(tree->phoEt_[phoInd],tree->phoEta_[phoInd],1, tree->event_==eventNum);
-            vector<double> phoWeights_Do = phoSF->getPhoSF(tree->phoEt_[phoInd],tree->phoEta_[phoInd],0, tree->event_==eventNum);
-            vector<double> phoWeights_Up = phoSF->getPhoSF(tree->phoEt_[phoInd],tree->phoEta_[phoInd],2, tree->event_==eventNum);
+            vector<double> phoWeights = phoSF->getPhoSFs(tree->phoEt_[phoInd],tree->phoEta_[phoInd],1, tree->event_==eventNum);
+            vector<double> phoWeights_Do = phoSF->getPhoSFs(tree->phoEt_[phoInd],tree->phoEta_[phoInd],0, tree->event_==eventNum);
+            vector<double> phoWeights_Up = phoSF->getPhoSFs(tree->phoEt_[phoInd],tree->phoEta_[phoInd],2, tree->event_==eventNum);
         
             _phoEffWeight.push_back(phoWeights.at(0));
             _phoEffWeight_Do.push_back(phoWeights_Do.at(0));

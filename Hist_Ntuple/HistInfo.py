@@ -81,7 +81,7 @@ allPlotList2D = [
 def GetHistogramInfo(extraCuts="(passPresel_Mu && nJet>=4 && nBJet>=2)*", nBJets=1):
     hDict = { 
              "Weight_lumi"              : ["Weight_lumi"             , "Weight_lumi"            , [30,0.0,1.5], extraCuts, "", True],
-             "Weight_pu"                : ["Weight_pu"               , "Weight_pu"              , [30,0.0,1.5], extraCuts, "", True],
+             "Weight_pu"                : ["Weight_pu"               , "Weight_pu"              , [30,0.0,2.0], extraCuts, "", True],
              "Weight_prefire"           : ["Weight_prefire"          , "Weight_prefire"         , [30,0.0,1.5], extraCuts, "", True],
              "Weight_btag"              : ["Weight_btag"             , "Weight_btag"            , [30,0.0,1.5], extraCuts, "", True],
              "Weight_btag_1a"           : ["Weight_btag_1a"          , "Weight_btag_1a"         , [30,0.0,1.5], extraCuts, "", True],
@@ -94,8 +94,8 @@ def GetHistogramInfo(extraCuts="(passPresel_Mu && nJet>=4 && nBJet>=2)*", nBJets
              "Weight_pho"               : ["Weight_pho"              , "Weight_pho"             , [30,0.0,1.5], extraCuts, "", True],
              "Weight_pho_id"            : ["Weight_pho_id"           , "Weight_pho_id"          , [30,0.0,1.5], extraCuts, "", True],
              "Weight_pho_e_veto"        : ["Weight_pho_e_veto"       , "Weight_pho_e_veto"      , [30,0.0,1.5], extraCuts, "", True],
-             "Weight_pu_up"             : ["Weight_pu_up"            , "Weight_pu_up"           , [30,0.0,1.5], extraCuts, "", True],
-             "Weight_pu_down"           : ["Weight_pu_down"          , "Weight_pu_down"         , [30,0.0,1.5], extraCuts, "", True],
+             "Weight_pu_up"             : ["Weight_pu_up"            , "Weight_pu_up"           , [30,0.0,2.0], extraCuts, "", True],
+             "Weight_pu_down"           : ["Weight_pu_down"          , "Weight_pu_down"         , [30,0.0,2.0], extraCuts, "", True],
              "Weight_prefire_up"        : ["Weight_prefire_up"       , "Weight_prefire_up"      , [30,0.0,1.5], extraCuts, "", True],
              "Weight_prefire_down"      : ["Weight_prefire_down"     , "Weight_prefire_down"     , [30,0.0,1.5], extraCuts, "", True],
              "Weight_btag_b_up"         : ["Weight_btag_b_up"        , "Weight_btag_b_up"       , [30,0.0,1.5], extraCuts, "", True],

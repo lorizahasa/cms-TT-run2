@@ -86,19 +86,22 @@ hBase.Sumw2(1)
 hUp.Sumw2(1)
 hDown.Sumw2(1)
 col_depth = 0
+if year=="2017":col_depth = 1
+if year=="2018":col_depth = 2
 hBase.GetYaxis().SetTitle("Events")
+hBase.GetYaxis().SetTitleSize(0.07)
 hBase.SetLineColor(rt.kOrange + col_depth)
-hUp.SetLineColor(rt.kSpring  + col_depth)
-hDown.SetLineColor(rt.kPink + col_depth)
+hUp.SetLineColor(rt.kAzure  + col_depth)
+hDown.SetLineColor(rt.kViolet + col_depth)
 hBase.SetMarkerColor(rt.kOrange + col_depth)
-hUp.SetMarkerColor(rt.kSpring  + col_depth)
-hDown.SetMarkerColor(rt.kPink + col_depth)
-hBase.SetLineWidth(4)
-hUp.SetLineWidth(4)
-hDown.SetLineWidth(4)
+hUp.SetMarkerColor(rt.kAzure  + col_depth)
+hDown.SetMarkerColor(rt.kViolet + col_depth)
+hBase.SetLineWidth(5)
+hUp.SetLineWidth(5)
+hDown.SetLineWidth(5)
 #decoHist(hBase, hName, "Events", rt.kOrange + col_depth)
-#decoHist(hUp, hName, "Events", rt.kSpring + col_depth)
-#decoHist(hDown, hName, "Events", rt.kPink + col_depth)
+#decoHist(hUp, hName, "Events", rt.kAzure + col_depth)
+#decoHist(hDown, hName, "Events", rt.kViolet + col_depth)
 #-----------------------------------------
 # Sanity checks
 #----------------------------------------
@@ -199,6 +202,7 @@ gPad.SetRightMargin(0.03);
 #gPad.SetTickx(0);
 gPad.SetPad(xPadRange[0],yPadRange[0],xPadRange[1],yPadRange[2]);
 gPad.RedrawAxis();
+gPad.SetLogy(True)
 hRatioUp = hUp.Clone("hRatio_up")
 hRatioUp.Divide(hBase)
 print "hBaseCont = ", hBase.GetBinContent(20);
@@ -208,12 +212,14 @@ print "hUpErr = ",  hUp.GetBinError(20);
 print "hRatioUpCont = ", hRatioUp.GetBinContent(20);
 print "hRatioUpErr = ",  hRatioUp.GetBinError(20);
 
-decoHistRatio(hRatioUp, hName, "#frac{(up or down)}{nominal}", rt.kSpring)
-hRatioUp.SetLineWidth(4)
+decoHistRatio(hRatioUp, hName, "#frac{up, down}{nominal}", col_depth + rt.kAzure)
+hRatioUp.SetLineWidth(5)
+hRatioUp.GetYaxis().SetRangeUser(0.01, 100.0)
 hRatioDown = hDown.Clone("hRatio_up")
 hRatioDown.Divide(hBase)
-hRatioDown.SetLineWidth(4)
-decoHistRatio(hRatioDown, hName, "Ratio", rt.kPink)
+hRatioDown.SetLineWidth(5)
+decoHistRatio(hRatioDown, hName, "Ratio", col_depth + rt.kViolet)
+hRatioDown.GetYaxis().SetRangeUser(0.01, 100.0)
 hRatioUp.Draw("EP")
 hRatioDown.Draw("EPsame")
 

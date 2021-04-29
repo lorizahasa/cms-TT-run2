@@ -19,7 +19,6 @@
 
 #include "TRandom3.h"
 #include "ParsePhotonID.h"
-#include "PUReweight.h"
 
 #include "EventTree.h"
 #include "EventPick.h"
@@ -42,14 +41,12 @@
 #include "METzCalculator.h"
 #include "TopEventCombinatorics.h"
 
-// Header file that includes all of the event luminosity scaling
-#include "ScaleFactorFunction.h"
-
-#include "muSF_reader.h"
-#include "eleSF_reader.h"
-#include "phoSF_reader.h"
-
-#include "PrefireWeights.h"
+#include "ReaderPileupSF.h"
+#include "ReaderPrefireSF.h"
+#include "ReaderLumiSF.h"
+#include "ReaderMuSF.h"
+#include "ReaderEleSF.h"
+#include "ReaderPhoSF.h"
 
 #include "UncertaintySourcesList.h"
 
@@ -149,21 +146,30 @@ class makeNtuple {
     Float_t  _muEffWeight_Up;
     Float_t  _muEffWeight_Do;
 
-    Float_t  _muEffWeight_IdIso;
-    Float_t  _muEffWeight_IdIso_Up;
-    Float_t  _muEffWeight_IdIso_Do;
+    Float_t  _muEffWeight_Id;
+    Float_t  _muEffWeight_Id_Up;
+    Float_t  _muEffWeight_Id_Do;
 
+    Float_t  _muEffWeight_Iso;
+    Float_t  _muEffWeight_Iso_Up;
+    Float_t  _muEffWeight_Iso_Do;
+    
     Float_t  _muEffWeight_Trig;
     Float_t  _muEffWeight_Trig_Up;
     Float_t  _muEffWeight_Trig_Do;
-
+    
+    //electron
     Float_t  _eleEffWeight;
     Float_t  _eleEffWeight_Up;
     Float_t  _eleEffWeight_Do;
 
-    Float_t  _eleEffWeight_IdReco;
-    Float_t  _eleEffWeight_IdReco_Up;
-    Float_t  _eleEffWeight_IdReco_Do;
+    Float_t  _eleEffWeight_Id;
+    Float_t  _eleEffWeight_Id_Up;
+    Float_t  _eleEffWeight_Id_Do;
+
+    Float_t  _eleEffWeight_Reco;
+    Float_t  _eleEffWeight_Reco_Up;
+    Float_t  _eleEffWeight_Reco_Do;
 
     Float_t  _eleEffWeight_Trig;
     Float_t  _eleEffWeight_Trig_Up;
@@ -370,10 +376,12 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Weight_btag"    , &_btagWeight );
     outputTree->Branch("Weight_btag_1a" , &_btagWeight_1a );
     outputTree->Branch("Weight_mu"      , &_muEffWeight );
-    outputTree->Branch("Weight_mu_id_iso", &_muEffWeight_IdIso );
+    outputTree->Branch("Weight_mu_id"   , &_muEffWeight_Id );
+    outputTree->Branch("Weight_mu_iso"  , &_muEffWeight_Iso );
     outputTree->Branch("Weight_mu_trig" , &_muEffWeight_Trig );
     outputTree->Branch("Weight_ele"     , &_eleEffWeight );
-    outputTree->Branch("Weight_ele_id_reco" , &_eleEffWeight_IdReco );
+    outputTree->Branch("Weight_ele_id" , &_eleEffWeight_Id );
+    outputTree->Branch("Weight_ele_reco" , &_eleEffWeight_Reco );
     outputTree->Branch("Weight_ele_trig", &_eleEffWeight_Trig );
     outputTree->Branch("Weight_pho"     , &_phoEffWeight );
     outputTree->Branch("Weight_pho_id"  , &_phoEffWeight_Id );
@@ -394,14 +402,18 @@ void makeNtuple::InitBranches(){
 	    outputTree->Branch("Weight_btag_1a_l_down", &_btagWeight_1a_l_Do );
 	    outputTree->Branch("Weight_mu_up"       , &_muEffWeight_Up);
 	    outputTree->Branch("Weight_mu_down"     , &_muEffWeight_Do);
-	    outputTree->Branch("Weight_mu_id_iso_up", &_muEffWeight_IdIso_Up );
-	    outputTree->Branch("Weight_mu_id_iso_down", &_muEffWeight_IdIso_Do );
+	    outputTree->Branch("Weight_mu_id_up"    , &_muEffWeight_Id_Up );
+	    outputTree->Branch("Weight_mu_id_down"  , &_muEffWeight_Id_Do );
+	    outputTree->Branch("Weight_mu_iso_up"   , &_muEffWeight_Iso_Up );
+	    outputTree->Branch("Weight_mu_iso_down" , &_muEffWeight_Iso_Do );
 	    outputTree->Branch("Weight_mu_trig_up"  , &_muEffWeight_Trig_Up );
 	    outputTree->Branch("Weight_mu_trig_down", &_muEffWeight_Trig_Do );
 	    outputTree->Branch("Weight_ele_up"      , &_eleEffWeight_Up );
 	    outputTree->Branch("Weight_ele_down"    , &_eleEffWeight_Do );
-	    outputTree->Branch("Weight_ele_id_reco_up", &_eleEffWeight_IdReco_Up );
-	    outputTree->Branch("Weight_ele_id_reco_down"     , &_eleEffWeight_IdReco_Do );
+	    outputTree->Branch("Weight_ele_id_up", &_eleEffWeight_Id_Up );
+	    outputTree->Branch("Weight_ele_id_down"     , &_eleEffWeight_Id_Do );
+	    outputTree->Branch("Weight_ele_reco_up", &_eleEffWeight_Reco_Up );
+	    outputTree->Branch("Weight_ele_reco_down"     , &_eleEffWeight_Reco_Do );
 	    outputTree->Branch("Weight_ele_trig_up" , &_eleEffWeight_Trig_Up );
 	    outputTree->Branch("Weight_ele_trig_down", &_eleEffWeight_Trig_Do );
 	    outputTree->Branch("Weight_pho_up"      , &_phoEffWeight_Up );

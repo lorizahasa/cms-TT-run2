@@ -9,6 +9,7 @@ samples += ['TTGamma_Dilepton_TuneDown', 'TTGamma_Dilepton_TuneUp', 'TTGamma_Dil
 samples.sort()
 newSamples = []
 f1 = open('Skim_NanoAOD_FileLists_cff_danny.sh','w')
+fPy = open('Skim_NanoAOD_FileLists_cff_danny.py','w')
 f2 = open("Skim_NanoAOD_SplitJobs_cff_danny.py", "w")
 allJobs = 0
 
@@ -52,10 +53,12 @@ for year in [2016,2017,2018]:
                 line += 'root://cmseos.fnal.gov/%s '%(f)
                 filesPerSample.append(f)
         line = line[:-1] + '"\n'
+        linePy = line
         line = line.replace("root://cmseos.fnal.gov/%s%i"%(directory,year), "${eosDir}")
         if hasAny:
             #print(line)
             f1.write(line.encode('ascii'))
+            fPy.write(linePy.encode('ascii'))
         nJobsPerSample = len(filesPerSample)
         nJobsPerYear+=nJobsPerSample
         allJobs += nJobsPerSample
