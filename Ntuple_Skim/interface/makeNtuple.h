@@ -319,13 +319,13 @@ class makeNtuple {
     std::vector<double> jetResolutionVectors;
     std::vector<double> jetBtagVectors;
 
+    TLorentzVector topHad;
     TLorentzVector bhad;
     TLorentzVector blep;
     TLorentzVector Wj1;
     TLorentzVector Wj2;
-    TLorentzVector gj1;
-    TLorentzVector gj2;
-    TLorentzVector boostedTop;
+    TLorentzVector hadDecay;
+    TLorentzVector lepDecay;
 
     void InitVariables();
     void FillEvent(std::string year);

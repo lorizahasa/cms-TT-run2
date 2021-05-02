@@ -1183,58 +1183,53 @@ void makeNtuple::FillEvent(std::string year)
     topEvent.SetLepton(lepVector);
     topEvent.SetMET(METVector);
     topEvent.SetPhotonVector(phoVectors);
-    if(_nFatJet==0){
-        topEvent.Calculate_tytg(5);
-        if (topEvent.GoodCombination_tytg()){
+    if (_nFatJet==0){
+        topEvent.CalculateTstarGluGamma(5);
+        if (topEvent.GoodCombinationTstarGluGamma()){
             bhad = jetVectors[topEvent.getBHad()];
             blep = jetVectors[topEvent.getBLep()];
             Wj1 = jetVectors[topEvent.getJ1()];
             Wj2 = jetVectors[topEvent.getJ2()];
             if (topEvent.getPhotonSide()){ //photon is on leptonic side
-                gj1 = jetVectors[topEvent.getJ3()];
-                gj2 = jetVectors[topEvent.getPho()];
+                hadDecay = jetVectors[topEvent.getG()];
+                lepDecay = phoVectors[topEvent.getPho()];
             }else{ //photon is on hadronic side
-                gj1 = jetVectors[topEvent.getPho()];
-                gj2 = jetVectors[topEvent.getJ3()];
+                hadDecay = phoVectors[topEvent.getPho()];
+                lepDecay = jetVectors[topEvent.getG()];
             }
-            _chi2 = topEvent.getChi2_tytg();
-            METVector.SetPz(topEvent.getNuPz());
-            double _met_pz = topEvent.getNuPz(); 
-            double new_met_E = sqrt(_met_px*_met_px + _met_py*_met_py + _met_pz*_met_pz); 
-            METVector.SetE(new_met_E);
+            METVector.SetXYZM(METVector.Px(), METVector.Py(), topEvent.getNuPz(), 0);
+            _chi2 = topEvent.getChi2_TstarGluGamma();
             _M_jj  = ( Wj1 + Wj2 ).M();
-            _TopHad_mass = ( bhad + Wj1 + Wj2 ).M();
-            _TopLep_mass = ( blep + lepVector + METVector ).M();
-            _TopStarHad_mass = ( bhad + Wj1 + Wj2 + gj1).M();
-            _TopStarLep_mass = ( blep + lepVector + METVector + gj2).M();
-            _TopStar_mass = (_TopStarLep_mass + _TopStarHad_mass)/2;
-            _tgtg_mass = (bhad + Wj1 + Wj2 + gj1 + blep + lepVector + METVector + gj2).M();
+            _TopHad_mass = (bhad + Wj1 + Wj2).M();
+            _TopLep_mass = (blep + lepVector + METVector).M();
+            _TopStarHad_mass = (bhad + Wj1 + Wj2 + hadDecay).M();
+            _TopStarLep_mass = (blep + lepVector + METVector + lepDecay).M();
+            _TopStar_mass = (_TopStarHad_mass + _TopStarLep_mass)/2.;
+            _tgtg_mass = (bhad + Wj1 + Wj2 + hadDecay + blep + lepVector + METVector + lepDecay).M();
+
         }
-    }
-    else{
-        topEvent.Calculate_tytg_fat(2);
-        if (topEvent.GoodCombination_tytg_fat()){
-            //std::cout<<_nFatJet<<std::endl;
+    } else {
+        topEvent.CalculateTstarGluGamma_Boosted(2);
+        if (topEvent.GoodCombinationTstarGluGamma()){
             blep = jetVectors[topEvent.getBLep()];
-            boostedTop = fatJetVectors[topEvent.getFatJet()];
+            topHad = fatJetVectors[topEvent.getTHad()];
+
             if (topEvent.getPhotonSide()){ //photon is on leptonic side
-                gj1 = jetVectors[topEvent.getJ3()];
-                gj2 = jetVectors[topEvent.getPho()];
+                hadDecay = jetVectors[topEvent.getG()];
+                lepDecay = phoVectors[topEvent.getPho()];
             }else{ //photon is on hadronic side
-                gj1 = jetVectors[topEvent.getPho()];
-                gj2 = jetVectors[topEvent.getJ3()];
+                hadDecay = phoVectors[topEvent.getPho()];
+                lepDecay = jetVectors[topEvent.getG()];
             }
-            _chi2 = topEvent.getChi2_tytg_fat();
-            METVector.SetPz(topEvent.getNuPz());
-            double _met_pz = topEvent.getNuPz(); 
-            double new_met_E = sqrt(_met_px*_met_px + _met_py*_met_py + _met_pz*_met_pz); 
-            METVector.SetE(new_met_E);
-            _TopHad_mass = boostedTop.M();
-            _TopLep_mass = ( blep + lepVector + METVector).M();
-            _TopStarHad_mass = (boostedTop + gj1).M();
-            _TopStarLep_mass = ( blep + lepVector + METVector + gj2).M();
-            _TopStar_mass = (_TopStarLep_mass + _TopStarHad_mass)/2;
-            _tgtg_mass = (boostedTop + gj1 + blep + lepVector + METVector + gj2).M();
+            METVector.SetXYZM(METVector.Px(), METVector.Py(), topEvent.getNuPz(), 0);
+            _chi2 = topEvent.getChi2_TstarGluGamma();
+            _TopHad_mass = (topHad).M();
+            _TopLep_mass = (blep + lepVector + METVector).M();
+            _TopStarHad_mass = (topHad + hadDecay).M();
+            _TopStarLep_mass = (blep + lepVector + METVector + lepDecay).M();
+            _TopStar_mass = (_TopStarHad_mass + _TopStarLep_mass)/2.;
+            _tgtg_mass = (topHad + hadDecay + blep + lepVector + METVector + lepDecay).M();
+            _M_jj  = -9999.0; //In the boosted category, we don't reconstruct W_had
         }
     }
     ljetVectors.clear();
