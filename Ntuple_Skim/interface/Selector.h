@@ -112,9 +112,12 @@ private:
 	int egammaRegion(double absEta);
 
 	bool passPhoMediumID(int phoInd, bool cutHoverE, bool cutSIEIE, bool cutIso);
-	JME::JetResolution *jetResolution;
-	JME::JetResolutionScaleFactor *jetResolutionScaleFactor;
-	JME::JetParameters jetParam;
+	JME::JetResolution *jetResolutionAK4;
+	JME::JetResolutionScaleFactor *jetResolutionScaleFactorAK4;
+	JME::JetResolution *jetResolutionAK8;
+	JME::JetResolutionScaleFactor *jetResolutionScaleFactorAK8;
+	JME::JetParameters jetParamAK4;
+	JME::JetParameters jetParamAK8;
 
 };
 #endif

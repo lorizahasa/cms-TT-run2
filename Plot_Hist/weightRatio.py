@@ -214,12 +214,12 @@ print "hRatioUpErr = ",  hRatioUp.GetBinError(20);
 
 decoHistRatio(hRatioUp, hName, "#frac{up, down}{nominal}", col_depth + rt.kAzure)
 hRatioUp.SetLineWidth(5)
-hRatioUp.GetYaxis().SetRangeUser(0.01, 100.0)
+hRatioUp.GetYaxis().SetRangeUser(0.001, 1000.0)
 hRatioDown = hDown.Clone("hRatio_up")
 hRatioDown.Divide(hBase)
 hRatioDown.SetLineWidth(5)
 decoHistRatio(hRatioDown, hName, "Ratio", col_depth + rt.kViolet)
-hRatioDown.GetYaxis().SetRangeUser(0.01, 100.0)
+hRatioDown.GetYaxis().SetRangeUser(0.001, 1000.0)
 hRatioUp.Draw("EP")
 hRatioDown.Draw("EPsame")
 

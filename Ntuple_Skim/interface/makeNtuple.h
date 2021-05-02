@@ -130,18 +130,6 @@ class makeNtuple {
     float _btagWeight_1a_l_Up;
     float _btagWeight_1a_l_Do;
 
-    std::vector<float> _btagWeight;
-    std::vector<float> _btagWeight_b_Up;
-    std::vector<float> _btagWeight_b_Do;
-    std::vector<float> _btagWeight_l_Up;
-    std::vector<float> _btagWeight_l_Do;
-
-    std::vector<float> _btagSF;
-    std::vector<float> _btagSF_b_Up;
-    std::vector<float> _btagSF_b_Do;
-    std::vector<float> _btagSF_l_Up;
-    std::vector<float> _btagSF_l_Do;
-
     Float_t  _muEffWeight;
     Float_t  _muEffWeight_Up;
     Float_t  _muEffWeight_Do;
@@ -373,8 +361,7 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Weight_lumi"    , &_evtWeight );      
     outputTree->Branch("Weight_pu"      , &_PUweight );
     outputTree->Branch("Weight_prefire" , &_prefireSF );
-    outputTree->Branch("Weight_btag"    , &_btagWeight );
-    outputTree->Branch("Weight_btag_1a" , &_btagWeight_1a );
+    outputTree->Branch("Weight_btag" , &_btagWeight_1a );
     outputTree->Branch("Weight_mu"      , &_muEffWeight );
     outputTree->Branch("Weight_mu_id"   , &_muEffWeight_Id );
     outputTree->Branch("Weight_mu_iso"  , &_muEffWeight_Iso );
@@ -392,14 +379,10 @@ void makeNtuple::InitBranches(){
 	    outputTree->Branch("Weight_pu_down"     , &_PUweight_Do );
 	    outputTree->Branch("Weight_prefire_up"  , &_prefireSF_Up );
 	    outputTree->Branch("Weight_prefire_down", &_prefireSF_Do );
-	    outputTree->Branch("Weight_btag_b_up"   , &_btagWeight_b_Up );
-	    outputTree->Branch("Weight_btag_b_down" , &_btagWeight_b_Do );
-	    outputTree->Branch("Weight_btag_l_up"   , &_btagWeight_l_Up );
-	    outputTree->Branch("Weight_btag_l_down" , &_btagWeight_l_Do );
-	    outputTree->Branch("Weight_btag_1a_b_up", &_btagWeight_1a_b_Up );
-	    outputTree->Branch("Weight_btag_1a_b_down", &_btagWeight_1a_b_Do );
-	    outputTree->Branch("Weight_btag_1a_l_up", &_btagWeight_1a_l_Up );
-	    outputTree->Branch("Weight_btag_1a_l_down", &_btagWeight_1a_l_Do );
+	    outputTree->Branch("Weight_btag_b_up"   , &_btagWeight_1a_b_Up );
+	    outputTree->Branch("Weight_btag_b_down" , &_btagWeight_1a_b_Do );
+	    outputTree->Branch("Weight_btag_l_up"   , &_btagWeight_1a_l_Up );
+	    outputTree->Branch("Weight_btag_l_down" , &_btagWeight_1a_l_Do );
 	    outputTree->Branch("Weight_mu_up"       , &_muEffWeight_Up);
 	    outputTree->Branch("Weight_mu_down"     , &_muEffWeight_Do);
 	    outputTree->Branch("Weight_mu_id_up"    , &_muEffWeight_Id_Up );
@@ -630,23 +613,11 @@ void makeNtuple::InitVariables()
     _phoEffWeight_eVeto_Do.clear();
     _phoEffWeight_eVeto_Up.clear();
 
-    _btagWeight.clear();
-    _btagWeight_b_Up.clear();
-    _btagWeight_b_Do.clear();
-    _btagWeight_l_Up.clear();
-    _btagWeight_l_Do.clear();
-
     _btagWeight_1a = 1.;
     _btagWeight_1a_b_Up = 1.;
     _btagWeight_1a_b_Do = 1.;
     _btagWeight_1a_l_Up = 1.;
     _btagWeight_1a_l_Do = 1.;
-
-    _btagSF.clear();
-    _btagSF_b_Up.clear();
-    _btagSF_b_Do.clear();
-    _btagSF_l_Up.clear();
-    _btagSF_l_Do.clear();
 
     _elePt.clear();
     _elePhi.clear();

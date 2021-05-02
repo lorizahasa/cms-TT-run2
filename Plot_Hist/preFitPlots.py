@@ -195,7 +195,7 @@ def makePlot(hName, phaseSpace, isSig, isData, isLog, isRatio, isUnc):
             uncGraphRatio.SetFillColor(2);
             uncGraphRatio.SetFillStyle(3001);
             uncGraphRatio.Draw("E2same");
-        baseLine = TF1("baseLine","1", -100, 2000);
+        baseLine = TF1("baseLine","1", -100, 10000);
         #baseLine.SetLineColor(kRed+1);
         baseLine.SetLineColor(3);
         baseLine.Draw("SAME");

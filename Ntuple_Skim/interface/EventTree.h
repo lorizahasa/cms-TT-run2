@@ -138,6 +138,7 @@ class EventTree{
     Float_t         jetRawFactor_[200];
     Int_t           jetID_[200];
     Float_t         jetArea_[200];
+    Float_t         fatJetArea_[200];
     Float_t         jetBtagCMVA_[200];
     Float_t         jetBtagCSVV2_[200];
     Float_t         jetBtagDeepB_[200];

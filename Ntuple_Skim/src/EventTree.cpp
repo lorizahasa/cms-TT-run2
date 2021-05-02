@@ -248,6 +248,9 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("FatJet_phi",1);
     chain->SetBranchAddress("FatJet_phi", &fatJetPhi_);
 
+    chain->SetBranchStatus("FatJet_area",1);
+    chain->SetBranchAddress("FatJet_area", &fatJetArea_);
+
     chain->SetBranchStatus("FatJet_mass",1);
     chain->SetBranchAddress("FatJet_mass", &fatJetMass_);
 

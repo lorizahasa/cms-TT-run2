@@ -693,13 +693,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 		_btagWeight_1a_b_Do = getBtagSF_1a("b_down",  reader);
 		_btagWeight_1a_l_Up = getBtagSF_1a("l_up",    reader);
 		_btagWeight_1a_l_Do = getBtagSF_1a("l_down",  reader);
-				
-		_btagWeight      = getBtagSF_1c("central", reader, _btagSF);
-		_btagWeight_b_Up = getBtagSF_1c("b_up",    reader, _btagSF_b_Up);
-		_btagWeight_b_Do = getBtagSF_1c("b_down",  reader, _btagSF_b_Do);				
-		_btagWeight_l_Up = getBtagSF_1c("l_up",    reader, _btagSF_l_Up);
-		_btagWeight_l_Do = getBtagSF_1c("l_down",  reader, _btagSF_l_Do);				
-
 		if (evtPick->passPreselMu) {
 		    vector<double> muWeights;
 		    vector<double> muWeights_Do;
@@ -787,24 +780,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 		}
 	    }
 
-	    if (!isMC){
-		if (selector->bJets.size() == 0){
-		    _btagWeight.push_back(1.0);
-		    _btagWeight.push_back(0.0);
-		    _btagWeight.push_back(0.0);
-		}				
-		if (selector->bJets.size() == 1){
-		    _btagWeight.push_back(0.0);
-		    _btagWeight.push_back(1.0);
-		    _btagWeight.push_back(0.0);
-		}				
-		if (selector->bJets.size() >= 2){
-		    _btagWeight.push_back(0.0);
-		    _btagWeight.push_back(0.0);
-		    _btagWeight.push_back(1.0);
-		}				
-	    }
-
 	    if (year=="2016" || year=="2017"){
 		float prefireSF[3] = {1.,1.,1.};
 
@@ -824,7 +799,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 	    if (tree->event_==eventNum){
 		cout << "--------------------------------------------" << endl;
 		cout << "Scale Factor Summary" << endl;
-		cout << std::setprecision(10) << "  evtWeight="<<_evtWeight << "  btagWeight=" << _btagWeight_1a << "  eleEffWeight="<<_eleEffWeight<<"  muEffWeight="<<_muEffWeight;
+		cout << std::setprecision(10) << "  evtWeight="<<_evtWeight <<  _btagWeight_1a << "  eleEffWeight="<<_eleEffWeight<<"  muEffWeight="<<_muEffWeight;
 		if (_phoEffWeight.size()>0){
 		    cout <<"  phoEffWeight="<<_phoEffWeight.at(0);
 		}
@@ -1484,102 +1459,19 @@ float makeNtuple::getBtagSF_1a(string sysType, BTagCalibrationReader reader, boo
     }
 
     return weight;
-
-}
-
-
-vector<float> makeNtuple::getBtagSF_1c(string sysType, BTagCalibrationReader reader, vector<float> &btagSF){
-
-    // Saving weights w(0|n), w(1|n), w(2|n)
-    vector<float> btagWeights;
-
-    double weight0tag = 1.0; 		//w(0|n)
-    double weight1tag = 0.0;		//w(1|n)
-
-    double jetPt;
-    double jetEta;
-    int jetFlavor;
-    double SFb;
-	
-    string b_sysType = "central";
-    string l_sysType = "central";
-    if (sysType=="b_up"){
-	b_sysType = "up";
-    } else if (sysType=="b_down"){
-	b_sysType = "down";
-    } else if (sysType=="l_up"){
-	l_sysType = "up";
-    } else if (sysType=="l_down"){
-	l_sysType = "down";
-    }	
-
-
-    for(std::vector<int>::const_iterator bjetInd = selector->bJets.begin(); bjetInd != selector->bJets.end(); bjetInd++){
-	jetPt = tree->jetPt_[*bjetInd];
-	jetEta = fabs(tree->jetEta_[*bjetInd]);
-	jetFlavor = abs(tree->jetHadFlvr_[*bjetInd]);
-		
-	if (jetFlavor == 5) SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
-	else if(jetFlavor == 4) SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
-	else {
-	    SFb = reader.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
-	}
-
-	btagSF.push_back(SFb);
-    }
-
-    if(selector->bJets.size() == 0) {
-	btagWeights.push_back(1.0);
-	btagWeights.push_back(0.0);
-	btagWeights.push_back(0.0);
-
-	return btagWeights;
-
-    } else if (selector->bJets.size() == 1) {
-	btagWeights.push_back(1-btagSF.at(0));
-	btagWeights.push_back(btagSF.at(0));
-	btagWeights.push_back(0.0);
-		
-	return btagWeights;
-
-    } else {
-
-	// We are following the method 1SFc from the twiki
-	// https://twiki.cern.ch/twiki/bin/viewauth/CMS/BTagSFMethods#1c_Event_reweighting_using_scale
-	for (int i = 0; i < selector->bJets.size(); i++){
-	    SFb = btagSF.at(i);
-	    weight0tag *= 1.0 - SFb;
-	    double prod = SFb;
-	    for (int j = 0; j < selector->bJets.size(); j++){
-		if (j==i) {continue;}
-		prod *= (1.-btagSF.at(j));
-	    }
-	    weight1tag += prod;
-	}
-	btagWeights.push_back(weight0tag);
-	btagWeights.push_back(weight1tag);
-	btagWeights.push_back(1.0 - weight0tag - weight1tag);
-	return btagWeights;
-    }
 }
 
 
 vector<bool> makeNtuple::passPhoMediumID(int phoInd){
-
     Int_t bitMap = tree->phoVidWPBitmap_[phoInd];
-
     vector<bool> cuts = parsePhotonVIDCuts(bitMap, 2);
-
     return cuts;
 
 }
 
 vector<bool> makeNtuple::passPhoTightID(int phoInd){
-
     Int_t bitMap = tree->phoVidWPBitmap_[phoInd];
-
     vector<bool> cuts = parsePhotonVIDCuts(bitMap, 3);
-
     return cuts;
 
 }

@@ -86,7 +86,7 @@ def decoHistSig(hist, xTit, yTit, color):
     hist.GetXaxis().SetTitle(xTit);
     hist.GetYaxis().SetTitle(yTit);
     hist.SetFillColor(color);
-    hist.Scale(10)
+    #hist.Scale(10)
     hist.SetLineColor(color)
     hist.SetLineStyle(2)
     hist.SetLineWidth(3) 

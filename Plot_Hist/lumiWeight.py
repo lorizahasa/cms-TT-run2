@@ -67,7 +67,7 @@ for s in SampleLumi.keys():
         if not os.path.exists(outPlotFullDir):
             os.makedirs(outPlotFullDir)
         rootFile = TFile("%s/AllInc.root"%(inHistFullDir), "read")
-        #print rootFile
+        print rootFile
         hPathBase = "%s/%s/Base/%s"%(sample, phaseSpace, hName)
         hBase = rootFile.Get(hPathBase).Clone("Base_")
         #-----------------------------------------

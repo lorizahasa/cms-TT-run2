@@ -18,6 +18,10 @@ iPosX = 10;
 setTDRStyle()
 xPadRange = [0.0,1.0]
 yPadRange = [0.0,0.30-padGap, 0.30+padGap,1.0]
+xMin = 1.0
+xMax = 75.0
+yMinRatio = 0.0001 
+yMaxRatio = 100.0
 
 #-----------------------------------------
 #INPUT command-line arguments 
@@ -78,37 +82,38 @@ col_depth = 0
 if year=="2017":col_depth = 1
 if year=="2018":col_depth = 2
 
-hDataBase.GetYaxis().SetTitle("Events")
-hDataBase.GetYaxis().SetTitleSize(0.07)
+hDataBase.GetYaxis().SetTitle("Events (normalised to unity)")
+hDataBase.GetYaxis().SetTitleSize(0.06)
+hDataBase.GetYaxis().SetLabelSize(0.05)
 hDataBase.SetLineColor(rt.kOrange + col_depth)
 hDataBase.SetMarkerColor(rt.kOrange + col_depth)
-hDataBase.SetLineWidth(5)
-hDataBase.SetMaximum(1.0)
-hDataBase.GetYaxis().SetRangeUser(0.001, 0.8)
+hDataBase.SetMarkerStyle(20)
+hDataBase.GetXaxis().SetRangeUser(xMin, xMax)
+hDataBase.GetYaxis().SetRangeUser(0.0, 0.8)
 
 hDataUp.SetMarkerColor(rt.kAzure  + col_depth)
 hDataUp.SetLineColor(rt.kAzure  + col_depth)
-hDataUp.SetLineWidth(5)
-hDataUp.SetMaximum(1.0)
-hDataUp.GetYaxis().SetRangeUser(0.001, 0.8)
+hDataUp.SetMarkerStyle(20)
+hDataUp.GetXaxis().SetRangeUser(xMin, xMax) 
+hDataUp.GetYaxis().SetRangeUser(0.0, 0.8)
 
 hDataDown.SetMarkerColor(rt.kViolet + col_depth)
 hDataDown.SetLineColor(rt.kViolet + col_depth)
-hDataDown.SetLineWidth(5)
-hDataDown.SetMaximum(1.0)
-hDataDown.GetYaxis().SetRangeUser(0.001, 0.8)
+hDataDown.SetMarkerStyle(20)
+hDataDown.GetXaxis().SetRangeUser(xMin, xMax)
+hDataDown.GetYaxis().SetRangeUser(0.0, 0.8)
 
 hDataDown.Scale(1.0/hDataDown.Integral())
 hDataBase.Scale(1.0/hDataBase.Integral())
 hDataUp.Scale(1.0/hDataUp.Integral())
-#decoHist(hDataBase, hName, "Events", rt.kOrange + col_depth)
-#decoHist(hDataUp, hName, "Events", rt.kAzure + col_depth)
-#decoHist(hDataDown, hName, "Events", rt.kViolet + col_depth)
+
 
 #-----------------------------------------
 # MC Histograms
 #-----------------------------------------
-mcName = eval("TTbarPowheg_Dilepton_%s_%s"%("FileList", year))
+#mcName = eval("TTbarPowheg_Dilepton_%s_%s"%("FileList", year))
+mcName = eval("TTbarPowheg_Semilept_%s_%s"%("FileList", year))
+#mcName = eval("TTbarPowheg_Hadronic_%s_%s"%("FileList", year))
 mcNameArray = mcName.split(" ")
 hMC = hDataBase.Clone("hMC")
 hMC.Reset()
@@ -122,7 +127,10 @@ if (hMC.GetNbinsX()!=hDataBase.GetNbinsX()):
     if (hMC.GetNbinsX()>hDataBase.GetNbinsX()):
         hMC.Rebin(hMC.GetNbinsX()/hDataBase.GetNbinsX());
 hMC.Scale(1.0/hMC.Integral());
+hMC.SetLineWidth(4)
 hMC.SetLineColor(rt.kBlack + col_depth)
+hMC.GetXaxis().SetRangeUser(xMin, xMax)
+hMC.GetYaxis().SetRangeUser(0.0, 0.8)
 
 #-----------------------------------------
 # Draw histograms 
@@ -138,6 +146,7 @@ gPad.SetBottomMargin(padGap);
 #gPad.SetTickx(0);
 gPad.RedrawAxis();
 #gPad.SetLogy(True)
+gPad.SetLogx(True)
 hDataBase.Draw("EP")
 hDataUp.Draw("EPsame")
 hDataDown.Draw("EPsame")
@@ -166,11 +175,11 @@ extraText   = "#splitline{Preliminary}{%s}"%chCRName
 #CMS_lumi(canvas, iPeriod, iPosX, extraText)
 CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
 #Draw Leg
-leg = TLegend(0.60,0.45,0.85,0.85)
-leg.AddEntry(hDataDown, "#splitline{data down}{(mean = %s)}"%str(round(hDataDown.GetMean(),4)), "EPL")
-leg.AddEntry(hDataBase, "#splitline{data nominal}{(mean = %s)}"%str(round(hDataBase.GetMean(),4)), "EPL")
-leg.AddEntry(hDataUp,   "#splitline{data up}{(mean = %s)}"%str(round(hDataUp.GetMean(),4)), "EPL")
-leg.AddEntry(hMC,   "#splitline{ TTbar}{(mean = %s)}"%str(round(hMC.GetMean(),4)), "PL")
+leg = TLegend(0.20,0.40,0.35,0.80)
+leg.AddEntry(hDataDown, "#splitline{Data down}{(mean = %s)}"%str(round(hDataDown.GetMean(),1)), "EPL")
+leg.AddEntry(hDataBase, "#splitline{Data nominal}{(mean = %s)}"%str(round(hDataBase.GetMean(),1)), "EPL")
+leg.AddEntry(hDataUp,   "#splitline{Data up}{(mean = %s)}"%str(round(hDataUp.GetMean(),1)), "EPL")
+leg.AddEntry(hMC,   "#splitline{ TTbar}{(mean = %s)}"%str(round(hMC.GetMean(),1)), "L")
 decoLegend(leg, 5, 0.034)
 leg.Draw("same")
 
@@ -182,24 +191,28 @@ gPad.SetRightMargin(0.03);
 gPad.SetPad(xPadRange[0],yPadRange[0],xPadRange[1],yPadRange[2]);
 gPad.RedrawAxis();
 gPad.SetLogy(True)
+gPad.SetLogx(True)
 
 hRatioBase = hDataBase.Clone("hRatio_base")
 hRatioBase.Divide(hMC)
-decoHistRatio(hRatioBase, hName, "Pileup Weight", col_depth + rt.kOrange)
-hRatioBase.SetLineWidth(3)
-hRatioBase.GetYaxis().SetRangeUser(0.01, 100.0)
+decoHistRatio(hRatioBase, "Number of primary vertices", "Data/Bkg", col_depth + rt.kOrange)
+#hRatioBase.SetLineWidth(2)
+hRatioBase.GetYaxis().SetRangeUser(yMinRatio, yMaxRatio)
+hRatioBase.GetXaxis().SetRangeUser(xMin, xMax)
 
 hRatioUp = hDataUp.Clone("hRatio_up")
 hRatioUp.Divide(hMC)
-decoHistRatio(hRatioUp, hName, "Pileup Weight", col_depth + rt.kAzure)
-hRatioUp.SetLineWidth(3)
-hRatioUp.GetYaxis().SetRangeUser(0.01, 100.0)
+decoHistRatio(hRatioUp, "Number of primary vertices", "Data/Bkg", col_depth + rt.kAzure)
+#hRatioUp.SetLineWidth(2)
+hRatioUp.GetYaxis().SetRangeUser(yMinRatio, yMaxRatio)
+hRatioUp.GetXaxis().SetRangeUser(xMin, xMax)
 
 hRatioDown = hDataDown.Clone("hRatio_up")
 hRatioDown.Divide(hMC)
-hRatioDown.SetLineWidth(3)
-decoHistRatio(hRatioDown, hName, "Pileup Weight", col_depth + rt.kViolet)
-hRatioDown.GetYaxis().SetRangeUser(0.01, 100.0)
+#hRatioDown.SetLineWidth(2)
+decoHistRatio(hRatioDown, "Number of primary vertices", "Data/Bkg", col_depth + rt.kViolet)
+hRatioDown.GetYaxis().SetRangeUser(yMinRatio, yMaxRatio)
+hRatioDown.GetXaxis().SetRangeUser(xMin, xMax)
 
 hRatioBase.Draw("EP")
 hRatioUp.Draw("EPsame")
