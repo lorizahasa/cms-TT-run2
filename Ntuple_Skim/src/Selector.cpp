@@ -360,12 +360,14 @@ void Selector::filter_fatjets(){
         if (jetPresel) FatJets.push_back(jetInd);
         if (tree->event_==printEvent){
             cout << "   -----" <<endl;
-            cout << "   pt=" << pt <<endl;
-            cout << "   eta=" << eta <<endl;
             cout << "   presel=" << jetPresel << endl;
-            cout << "   fatJetID=" << isId <<endl;
-            cout << "   mass SD=" << mSD <<endl;
-            cout << "   TvsQCD" << TvsQCD << endl;
+            cout << "     " << (pt >= 350.0)            << " pt=" << pt <<endl;
+            cout << "     " << (TMath::Abs(eta) <= 2.4) << " eta=" << eta <<endl;
+            cout << "     " << (isId)                   << " fatJetID="   << isId <<endl;
+            cout << "     " << (mSD >=105 && mSD <=210) << " mass SD=" << mSD <<endl;
+            cout << "     " << (TvsQCD >=0.834)         << " TvsQCD" << TvsQCD << endl;
+            cout << "      dRLep=" << passDR_lep_jet <<endl;
+            cout << "      dRPho=" << passDR_pho_jet << endl;
         }
     }
 }

@@ -400,6 +400,9 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     if(passPreselMu && tree->MET_pt_ >= MET_cut) { if (saveCutflows) {cutFlow_mu->Fill(12); cutFlowWeight_mu->Fill(12,weight);}}
     else passPreselMu = false;
 
+    if (tree->event_==printEvent){
+	cout << "PassMET  "<< (tree->MET_pt_ >= MET_cut) << "("<< tree->MET_pt_ << ")" << endl;
+    }
 
 
     // Photon cut for electrons
