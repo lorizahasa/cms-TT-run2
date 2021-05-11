@@ -91,6 +91,8 @@ public:
 	bool   useDeepCSVbTag;
 	bool   QCDselect;
 
+        bool skipAK4AK8dr;
+
 	std::string year;
 	int printEvent;
 	void clear_vectors();

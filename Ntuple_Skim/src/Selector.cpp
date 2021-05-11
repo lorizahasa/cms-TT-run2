@@ -24,6 +24,8 @@ Selector::Selector(){
     // whether to invert lepton requirements for 
     QCDselect = false;
 
+    skipAK4AK8dr = false;
+
     smearJetPt = true;
     smearPho = true;
     smearEle = true;
@@ -45,8 +47,8 @@ void Selector::process_objects(EventTree* inp_tree){
     filter_muons();
     filter_electrons();
     filter_photons();
-    filter_jets();
     filter_fatjets();
+    filter_jets();
 }
 
 void Selector::clear_vectors(){
@@ -174,7 +176,7 @@ void Selector::filter_photons(){
 void Selector::filter_jets(){
     if (tree->event_==printEvent){
     	cout << "Found Event Staring Jets" << endl;
-	    cout << " nJet=" << tree->nJet_ << endl;
+        cout << " nJet=" << tree->nJet_ << endl;
     }
     for(int jetInd = 0; jetInd < tree->nJet_; ++jetInd){
         double pt = tree->jetPt_[jetInd];
@@ -186,35 +188,38 @@ void Selector::filter_jets(){
         bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 && looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
 
         double resolution = 0.;
-	    if (!tree->isData_){
+        if (tree->event_==printEvent){
+            cout << "------Jet "<<jetInd<< "------" << endl;
+        }
+        if (!tree->isData_){
             jetParamAK4.setJetEta(tree->jetEta_[jetInd]);
             jetParamAK4.setJetPt(tree->jetPt_[jetInd]);
             jetParamAK4.setJetArea(tree->jetArea_[jetInd]);
             jetParamAK4.setRho(tree->rho_);
             resolution = jetResolutionAK4->getResolution(jetParamAK4);
             double jetSF = 1.0;
-	        if (JERsystLevel==1) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::NOMINAL);
-	        if (JERsystLevel==0) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::DOWN);
-	        if (JERsystLevel==2) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::UP);
-	        double jetSmear = 1;
-	        int genIdx = tree->jetGenJetIdx_[jetInd];
-	        if ( (genIdx>-1) && (genIdx < tree->nGenJet_)){
+            if (JERsystLevel==1) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::NOMINAL);
+            if (JERsystLevel==0) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::DOWN);
+            if (JERsystLevel==2) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::UP);
+            double jetSmear = 1;
+            int genIdx = tree->jetGenJetIdx_[jetInd];
+            if ( (genIdx>-1) && (genIdx < tree->nGenJet_)){
 	        double genJetPt = tree->GenJet_pt_[genIdx];
 	        jetSmear = 1. + (jetSF - 1.) * (pt - genJetPt)/pt;
-	        }else{
+            }else{
 	        jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
-	        }
-	        if (tree->event_==printEvent){
-	        cout << "DoJetSmear: " << smearJetPt << endl;
-	        cout << "GenIdx: "<< genIdx << endl;
-	        cout << "jetSF: "<< jetSF << endl;
-	        cout << "JetSmear: "<<jetSmear << endl;
-	        }
-	        if (smearJetPt){
+            }
+            if (tree->event_==printEvent){
+	        cout << "  DoJetSmear: " << smearJetPt << endl;
+	        cout << "  GenIdx: "<< genIdx << endl;
+	        cout << "  jetSF: "<< jetSF << endl;
+	        cout << "  JetSmear: "<<jetSmear << endl;
+            }
+            if (smearJetPt){
 	        pt = pt*jetSmear;
 	        tree->jetPt_[jetInd] = pt;
-	        }
-	    }
+            }
+        }
         bool passDR_lep_jet = true;
         //loop over selected electrons
         for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
@@ -222,21 +227,31 @@ void Selector::filter_jets(){
         }
         //loop over selected muons
         for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
-          if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < 0.1) passDR_lep_jet = false;
+            if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < 0.4) passDR_lep_jet = false;
         }
         bool passDR_pho_jet = true;
         //loop over selected photons
         for(std::vector<int>::const_iterator phoInd = Photons.begin(); phoInd != Photons.end(); phoInd++) {
-	        if (dR(eta, phi, tree->phoEta_[*phoInd], tree->phoPhi_[*phoInd]) < 0.1) passDR_pho_jet = false;
-	        if (tree->event_==printEvent){
+            if (dR(eta, phi, tree->phoEta_[*phoInd], tree->phoPhi_[*phoInd]) < 0.1) passDR_pho_jet = false;
+            if (tree->event_==printEvent){
 	        cout << "       phoInd=" << *phoInd << "   dR=" << dR(eta, phi, tree->phoEta_[*phoInd], tree->phoPhi_[*phoInd]) << "  phoEta=" << tree->phoEta_[*phoInd] << "  phoPhi=" << tree->phoPhi_[*phoInd] << endl;
-	        }
-	    }
+            }
+        }
+
+        bool passDR_ak8 = true;
+        if (!skipAK4AK8dr){
+            //loop over selected fat jets
+            for(std::vector<int>::const_iterator fatJetInd = FatJets.begin(); fatJetInd != FatJets.end(); fatJetInd++) {
+                if (dR(eta, phi, tree->fatJetEta_[*fatJetInd], tree->fatJetPhi_[*fatJetInd]) < 0.8) passDR_ak8 = false;
+            }
+        }
+
         bool jetPresel = (pt >= 30 &&
                           TMath::Abs(eta) <= 2.4 &&
                           jetID_pass &&
                           passDR_lep_jet &&
-                          passDR_pho_jet
+                          passDR_pho_jet &&
+                          passDR_ak8
                           );
         if(jetPresel){
             Jets.push_back(jetInd);
@@ -278,8 +293,9 @@ void Selector::filter_jets(){
 //for 2017,18, id = 0, 2, 6
 void Selector::filter_fatjets(){
     if (tree->event_==printEvent){
+        cout << endl;
         cout << "Found Event Staring Fat Jets" << endl;
-	    cout << " nJet=" << tree->nFatJet_ << endl;
+        cout << "  nJet=" << tree->nFatJet_ << endl;
     }
     for(int jetInd = 0; jetInd < tree->nFatJet_; ++jetInd){
         double pt = tree->fatJetPt_[jetInd];
@@ -290,35 +306,39 @@ void Selector::filter_fatjets(){
         Float_t TvsQCD = tree->fatJetDeepTagT_[jetInd];
         bool isId  = id >=1 || id >=2;
         double resolution = 0.;
-	    if (!tree->isData_){
+        if (tree->event_==printEvent){
+            cout << "------FatJet "<<jetInd<< "------" << endl;
+        }
+        if (!tree->isData_){
             jetParamAK8.setJetEta(tree->fatJetEta_[jetInd]);
             jetParamAK8.setJetPt(tree->fatJetPt_[jetInd]);
             jetParamAK8.setJetArea(tree->fatJetArea_[jetInd]);
             jetParamAK8.setRho(tree->rho_);
             double jetSF = 1.0;
             resolution = jetResolutionAK8->getResolution(jetParamAK8);
-	        if (JERsystLevel==1) jetSF = jetResolutionScaleFactorAK8->getScaleFactor(jetParamAK8,Variation::NOMINAL);
-	        if (JERsystLevel==0) jetSF = jetResolutionScaleFactorAK8->getScaleFactor(jetParamAK8,Variation::DOWN);
-	        if (JERsystLevel==2) jetSF = jetResolutionScaleFactorAK8->getScaleFactor(jetParamAK8,Variation::UP);
-	        double jetSmear = 1;
-	        int genIdx = tree->jetGenJetIdx_[jetInd];
-	        if ( (genIdx>-1) && (genIdx < tree->nGenJet_)){
-	        double genJetPt = tree->GenJet_pt_[genIdx];
+            if (JERsystLevel==1) jetSF = jetResolutionScaleFactorAK8->getScaleFactor(jetParamAK8,Variation::NOMINAL);
+            if (JERsystLevel==0) jetSF = jetResolutionScaleFactorAK8->getScaleFactor(jetParamAK8,Variation::DOWN);
+            if (JERsystLevel==2) jetSF = jetResolutionScaleFactorAK8->getScaleFactor(jetParamAK8,Variation::UP);
+	    
+            double jetSmear = 1;
+            int genIdx = tree->fatJetGenJetAK8Idx_[jetInd];
+            if ( (genIdx>-1) && (genIdx < tree->nGenJetAK8_)){
+	        double genJetPt = tree->GenJetAK8_pt_[genIdx];
 	        jetSmear = 1. + (jetSF - 1.) * (pt - genJetPt)/pt;
-	        }else{
+            }else{
 	        jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
-	        }
-	        if (tree->event_==printEvent){
-	        cout << "DoJetSmear: " << smearJetPt << endl;
-	        cout << "GenIdx: "<< genIdx << endl;
-	        cout << "jetSF: "<< jetSF << endl;
-	        cout << "JetSmear: "<<jetSmear << endl;
-	        }
-	        if (smearJetPt){
+            }
+            if (tree->event_==printEvent){
+	        cout << "  DoJetSmear: " << smearJetPt << endl;
+	        cout << "  GenIdx: "<< genIdx << endl;
+	        cout << "  jetSF: "<< jetSF << endl;
+	        cout << "  JetSmear: "<<jetSmear << endl;
+            }
+            if (smearJetPt){
 	        pt = pt*jetSmear;
 	        tree->fatJetPt_[jetInd] = pt;
-	        }
-	    }
+            }
+        }
         bool passDR_lep_jet = true;
         for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
 	    if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < 0.8) passDR_lep_jet = false;
@@ -339,12 +359,13 @@ void Selector::filter_fatjets(){
                 && isId);
         if (jetPresel) FatJets.push_back(jetInd);
         if (tree->event_==printEvent){
-            cout << " pt=" << pt <<endl;
-            cout << " eta=" << TMath::Abs(eta) <<endl;
-            cout << " presel=" << jetPresel << endl;
-            cout << " fatJetID=" << isId <<endl;
-            cout << " mass SD=" << mSD <<endl;
-            cout << " TvsQCD" << TvsQCD << endl;
+            cout << "   -----" <<endl;
+            cout << "   pt=" << pt <<endl;
+            cout << "   eta=" << eta <<endl;
+            cout << "   presel=" << jetPresel << endl;
+            cout << "   fatJetID=" << isId <<endl;
+            cout << "   mass SD=" << mSD <<endl;
+            cout << "   TvsQCD" << TvsQCD << endl;
         }
     }
 }
