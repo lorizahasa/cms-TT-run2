@@ -1,7 +1,6 @@
 #include"../interface/Selector.h"
 
-//TRandom* generator = new TRandom3(0);
-TRandom* generator = new TRandom3(12345);
+TRandom* generator = new TRandom3(0);
 
 Selector::Selector(){
     year = "2016";
@@ -44,6 +43,9 @@ void Selector::init_JER(std::string inputPrefix){
 void Selector::process_objects(EventTree* inp_tree){
     tree = inp_tree;
     clear_vectors();
+
+    generator->SetSeed(tree->event_ + tree->run_ + tree->lumis_);
+
     filter_muons();
     filter_electrons();
     filter_photons();
