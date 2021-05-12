@@ -88,8 +88,8 @@ void Selector::filter_muons(){
         		  );
         bool passLoose = (pt >= 30.0 &&
         		  TMath::Abs(eta) <= 2.4 &&
-        		  looseMuonID && !tightMuonID &&
-                  muMiniIso < 0.4 
+                          looseMuonID && !passTight &&
+                          muMiniIso < 0.4
         		  );
         if(passTight) Muons.push_back(muInd);
         else if (passLoose) MuonsLoose.push_back(muInd);
@@ -113,17 +113,21 @@ void Selector::filter_electrons(){
         double eleMiniIso = tree->eleMiniPFRelIso_[eleInd];
         // make sure it doesn't fall within the gap
         bool passEtaEBEEGap = (absSCEta < 1.4442) || (absSCEta > 1.566);
+
         bool passTightID = tree->eleMVAFall17V2noIso_WP90_[eleInd];
         bool passVetoID  = tree->eleMVAFall17V2noIso_WPL_[eleInd]; 
+
         bool eleSel = (passEtaEBEEGap && 
                        absEta <= 2.2 &&
                        pt >= 50.0 &&
+                       eleMiniIso <= 0.1 &&
                        passTightID);
         bool looseSel = (passEtaEBEEGap && 
-        	  absEta <= 2.2 &&
-        	  pt >= 15.0 &&
-        	  passVetoID &&
-              !passTightID);
+                         absEta <= 2.2 &&
+                         pt >= 35.0 &&
+                         eleMiniIso <= 0.4 &&
+                         passVetoID &&
+                         !eleSel);
         if(eleSel) Electrons.push_back(eleInd);
         else if(looseSel) ElectronsLoose.push_back(eleInd);
         if (tree->event_==printEvent){
