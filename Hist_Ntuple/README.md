@@ -16,7 +16,7 @@ years of data-taking, etc.
 
 * For example, to produce histogram of jet multiplicity (NJet) of TTbar
 process, for the year 2016, and muon channel, run the following:
-    python makeHists.py -y 2016 -c Mu -s TTbar --plot presel_Njet 
+    python makeHists.py -y 2016 -c Mu -s TTbar --hist presel_Njet 
 
 * To produce multiple histograms, run the following:
     python makeHists.py -y 2016 -c Mu -s TTbar

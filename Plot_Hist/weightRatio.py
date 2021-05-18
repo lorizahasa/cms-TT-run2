@@ -47,8 +47,7 @@ print "------------------------------------"
 #-----------------------------------------
 #Get histograms
 #----------------------------------------
-inHistSubDir = "%s/%s/%s/Merged"%(year, decayMode, channel)
-inHistFullDir = "%s/Hist_Ntuple/%s"%(condorHistDir, inHistSubDir)
+inHistFullDir = "Hist_Ntuple/%s/%s/%s/Merged"%(year, decayMode, channel)
 outPlotSubDir = "Plot_Hist/%s/Syst/%s/%s/%s"%(year, decayMode, channel, phaseSpace)
 outPlotFullDir = "%s/%s"%(condorHistDir, outPlotSubDir)
 if not os.path.exists(outPlotFullDir):

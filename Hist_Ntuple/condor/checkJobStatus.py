@@ -1,7 +1,9 @@
 import os
+import sys
+sys.path.insert(0, os.getcwd().replace("condor", ""))
+from HistInputs import *
 import itertools
 from optparse import OptionParser
-from HistInputs import *
 
 #----------------------------------------
 #INPUT Command Line Arguments 
@@ -38,15 +40,15 @@ else:
     Samples.remove("QCDMu")
     Samples.remove("DataMu")
 #Create for Base
-for sample, ps in itertools.product(Samples, PhaseSpace):
-    rootFile = "%s_%s_Base.root"%(sample, ps)
-    arguments = "%s %s %s %s %s"%(year, decay, channel, sample, ps)
+for sample, r in itertools.product(Samples, Regions.keys()):
+    rootFile = "%s_%s_Base.root"%(sample, r)
+    arguments = "%s %s %s %s %s"%(year, decay, channel, sample, r)
     submittedDict[rootFile] = arguments
 
 #Create for Syst
-for sample, syst, level, ps in itertools.product(Samples, Systematics, SystLevel, PhaseSpace):
-    rootFile = "%s_%s_%s%s.root"%(sample, ps, syst, level)
-    arguments = "%s %s %s %s %s %s %s"%(year, decay, channel, sample, syst, level, ps)
+for sample, syst, level, r in itertools.product(Samples, Systematics, SystLevels, Regions.keys()):
+    rootFile = "%s_%s_%s_%s.root"%(sample, r, syst, level)
+    arguments = "%s %s %s %s %s %s %s"%(year, decay, channel, sample, syst, level, r)
     if not sample in ["DataMu", "DataEle", "QCD_DD"]:
         submittedDict[rootFile] = arguments
 

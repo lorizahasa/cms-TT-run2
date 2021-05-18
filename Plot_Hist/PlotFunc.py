@@ -71,7 +71,7 @@ def getBkgSystHists(fileDict, hName, CR, level):
 def decoHist(hist, xTit, yTit, color):
     hist.GetXaxis().SetTitle(xTit);
     hist.GetYaxis().SetTitle(yTit);
-    #hist.SetFillColor(color);
+    hist.SetFillColor(color);
     hist.GetXaxis().SetTitle(xTit);
     hist.GetYaxis().SetTitle(yTit)
     hist.GetYaxis().CenterTitle()
@@ -89,7 +89,7 @@ def decoHistSig(hist, xTit, yTit, color):
     #hist.Scale(10)
     hist.SetLineColor(color)
     hist.SetLineStyle(2)
-    hist.SetLineWidth(3) 
+    hist.SetLineWidth(4) 
     hist.SetFillColor(0)
 
 def decoHistRatio(hist, xTit, yTit, color):
@@ -193,10 +193,8 @@ def sortHists(hAllBkgs, isReverse):
     orders for stack/legend.
     '''
     yieldDict = {}
-    print hAllBkgs
     for h in hAllBkgs:
         yieldDict[h.GetName()] = h.Integral()
-        print h.GetName(), h.Integral()
     if isReverse:
         newDict = sorted(yieldDict.items(), key=lambda x: x[1], reverse=True)
     else:
@@ -212,16 +210,14 @@ def sortHists(hAllBkgs, isReverse):
 #Reformat jet multiplicity string 
 #----------------------------------------------------------
 #Jet selection naming: a3j_e2b = atleast 3 jet, out of which 2 are b jets: nJet >= 3, nBJet ==2
-def formatCRString(ps="Boosted/SR"):
-    allJetSel = "jets >=5, b jets = 2"
-    if "Boosted" in ps:
-        if "SR" in ps:
-            allJetSel = " N_{jets} #geq 2, N_{jets}^{b} #geq 1, N_{jets}^{fat} #geq 1, p_{T}^{#gamma} > 100"
-        if "CR" in ps:
-            allJetSel = " N_{jets} #geq 2, N_{jets}^{b} #geq 1, N_{jets}^{fat} #geq 1, 20 < p_{T}^{#gamma} < 50"
-    if "Resolved" in ps:
-        if "SR" in ps:
-            allJetSel = " N_{jets} #geq 5, N_{jets}^{b} #geq 2, N_{jets}^{fat} =0, p_{T}^{#gamma} > 100"
-        if "CR" in ps:
-            allJetSel = " N_{jets} #geq 5, N_{jets}^{b} #geq 2, N_{jets}^{fat} =0, 20 < p_{T}^{#gamma} < 50"
-    return allJetSel
+def formatCRString(region):
+    name = region
+    name = name.replace("FatJet_size", "AK8")
+    name = name.replace("Jet_size", "AK4")
+    name = name.replace("Jet_b_size", "b")
+    name = name.replace("Photon_size", "#gamma")
+    name = name.replace("Photon_et", "p_{T}^{#gamma}")
+    name = name.replace(" &&", ",")
+    name = name.replace(">=", "#geq ")
+    name = name.replace("==", "=")
+    return name 

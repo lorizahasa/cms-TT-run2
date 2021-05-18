@@ -25,10 +25,10 @@ parser.add_option("--syst", "--systematic", dest="systematic", default="Base",ty
                      help="Specify which systematic to run on")
 parser.add_option("--cr", "--controlRegion", dest="controlRegion", default="",type='str', 
                      help="which control selection and region such as Tight, VeryTight, Tight0b, looseCR2e1, looseCRe2g1")
-parser.add_option("--plot", dest="plotList",action="append",
-                     help="Add plots" )
-parser.add_option("--allPlots","--allPlots", dest="makeAllPlots",action="store_true",default=False,
-                     help="Make full list of plots in histogramDict" )
+parser.add_option("--hist", dest="histList",action="append",
+                     help="Add hists" )
+parser.add_option("--allHists","--allHists", dest="makeAllHists",action="store_true",default=False,
+                     help="Make full list of hists in histogramDict" )
 (options, args) = parser.parse_args()
 year = options.year
 ttbarDecayMode = options.ttbarDecayMode
@@ -36,7 +36,7 @@ channel = options.channel
 sample = options.sample
 level =options.level
 controlRegion = options.controlRegion
-makeAllPlots = options.makeAllPlots
+makeAllHists = options.makeAllHists
 toPrint("Running for Year, Channel, Sample", "%s, %s, %s"%(year, channel, sample))
 print parser.parse_args()
 samples = getSamples(year)
@@ -216,16 +216,16 @@ toPrint("Final event weight ", weights)
 #Get list of empty histograms
 #----------------------------------------
 histogramInfo = GetHistogramInfo(extraCuts,nBJets)
-plotList = options.plotList
+histList = options.histList
 isHist2D = True
-if plotList is None:
-    if makeAllPlots:
-        plotList = allPlotList 
+if histList is None:
+    if makeAllHists:
+        histList = allHistList 
         if isHist2D:
-            plotList = allPlotList2D
-plotList.sort()
-for p in plotList: print "%s,"%p,
-histogramsToMake = plotList
+            histList = allHistList2D
+histList.sort()
+for p in histList: print "%s,"%p,
+histogramsToMake = histList
 for hist in histogramsToMake:
     if not hist[0] in histogramInfo:
         print "Histogram %s is not defined in HistInfo.py"%hist
@@ -272,7 +272,7 @@ if not "QCD_DD" in sample:
             evtWeight = "%s%s"%(hInfo1st[3],weights)
         if evtWeight[-1]=="*":
             evtWeight= evtWeight[:-1]
-        ### Correctly add the photon weights to the plots
+        ### Correctly add the photon weights to the hists
         print evtWeight
         #histograms.append(TH2D("%s__%s"%(hInfo1st[1], hInfo2nd[1]),"%s__%s"%(hInfo1st[1], hInfo2nd[1]),hInfo1st[2][0],hInfo1st[2][1],hInfo1st[2][2],hInfo2nd[2][0],hInfo2nd[2][1],hInfo2nd[2][2]))
         histograms.append(TH2D("%s__%s"%(hInfo1st[1], hInfo2nd[1]),"%s__%s"%(hInfo2nd[1], hInfo1st[1]),hInfo2nd[2][0],hInfo2nd[2][1],hInfo2nd[2][2],hInfo1st[2][0],hInfo1st[2][1],hInfo1st[2][2]))

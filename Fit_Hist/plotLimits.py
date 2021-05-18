@@ -18,15 +18,15 @@ parser.add_argument(
 #     '--debug-output', '-d', help="""If specified, write the
 #     TGraphs into this output ROOT file""")
 parser.add_argument(
-    '--x-title', default='M_{t^{*}} (GeV)', help="""Title for the x-axis""")
+    '--x-title', default='m_{T} (GeV)', help="""Title for the x-axis""")
 parser.add_argument(
     '--y-title', default=None, help="""Title for the y-axis""")
 parser.add_argument(
-    '--limit-on', default='xss #times BR(t^{*}#rightarrow ty)', help="""Shortcut for setting the y-axis label""")
+    '--limit-on', default='xss #times BR(T #rightarrow ty)', help="""Shortcut for setting the y-axis label""")
 parser.add_argument(
     '--cms-sub', default='Internal', help="""Text below the CMS logo""")
 parser.add_argument(
-    '--scenario-label', default='', help="""Scenario name to be drawn in top
+    '--scenario-label', default='sssss', help="""Scenario name to be drawn in top
     left of plot""")
 parser.add_argument(
     '--title-right', default='', help="""Right header text above the frame""")
@@ -61,7 +61,8 @@ ROOT.gROOT.SetBatch(ROOT.kTRUE)
 plot.ModTDRStyle()
 ROOT.gStyle.SetNdivisions(510, 'XYZ') # probably looks better
 
-canv = ROOT.TCanvas(args.output, args.output)
+#canv = ROOT.TCanvas(args.output, args.output)
+canv = ROOT.TCanvas()
 
 if args.ratio_to is not None:
     pads = plot.TwoPadSplit(0.30, 0.01, 0.01)
@@ -153,10 +154,10 @@ axis[0].GetXaxis().SetTitle(args.x_title)
 axis[0].GetXaxis().SetLabelOffset(axis[0].GetXaxis().GetLabelOffset()*2)
 
 if args.logy:
-    axis[0].SetMinimum(0.1)  # we'll fix this later
+    axis[0].SetMinimum(0.01)  # we'll fix this later
     pads[0].SetLogy(True)
     # axis[0].GetYaxis().SetMoreLogLabels()
-    axis[0].GetYaxis().SetRangeUser(0.007, 150.0)
+    axis[0].GetYaxis().SetRangeUser(0.00001, 150.0)
     # axis[0].SetNdivisions(50005, "X")
 
 y_min, y_max = (plot.GetPadYMin(pads[0]), plot.GetPadYMax(pads[0]))
@@ -202,7 +203,7 @@ box.Draw()
 
 legend.Draw()
 
-plot.DrawCMSLogo(pads[0], 'CMS', args.cms_sub, 11, 0.045, 0.035, 1.2, '', 0.8)
+plot.DrawCMSLogo(pads[0], 'CMS, Prelim', args.cms_sub, 11, 0.045, 0.035, 1.2, '', 0.8)
 plot.DrawTitle(pads[0], args.title_right, 3)
 plot.DrawTitle(pads[0], args.title_left, 1)
 
@@ -228,12 +229,14 @@ if drawTheory:
     print y
     gTheory = ROOT.TGraph(len(x), x, y)
     #gTheory.Draw("ALPsame")
+    #gTheory.SetLineColor(3)
+    #gTheory.SetLineWidth(3)
     gTheory.SetMarkerStyle(21);
     gTheory.Draw("P")
 
 if drawTheory: 
     legend.AddEntry(gTheory, "Theory xss", "LP")
     legend.Draw()
-canv.Print('.pdf')
+canv.SaveAs("%s.pdf"%args.output)
 #canv.Print('.png')
 # maketable.TablefromJson(args.table_vals, args.file, "TablefromJson.txt")

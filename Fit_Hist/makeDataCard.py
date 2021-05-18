@@ -19,9 +19,9 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
-parser.add_option("--hist", "--hist", dest="hName", default="TopStar_mass",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
-parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
+parser.add_option("--ps", "--phaseSpace", dest="phaseSpace", default="Boosted_SR",type='str', 
                      help="which control selection and region")
 parser.add_option("--isQCDMC","--qcdMC",dest="isQCDMC", default=False, action="store_true",
 		  help="")
@@ -31,22 +31,17 @@ decayMode  = options.decayMode
 channel         = options.channel
 mass            = options.mass
 hName        = options.hName
-CR   = options.CR
+phaseSpace = options.phaseSpace
 isQCDMC        = options.isQCDMC
 
 #-----------------------------------------
 #Path of the I/O histograms/datacards
 #----------------------------------------
-inFileName = "%s/%s/%s/%s/Merged/AllInc.root"%(condorHistDir, year, decayMode, channel)
+inFileName = "%s/Hist_Ntuple/%s/%s/%s/Merged/AllInc_Norm.root"%(condorHistDir, year, decayMode, channel)
 print inFileName
-if CR=="":
-    inHistDirBase   = "$PROCESS/Base/SR/$BIN"
-    inHistDirSys    = "$PROCESS/$SYSTEMATIC/SR/$BIN"
-    outFileDir      = "%s/Fit_Hist/%s/%s/%s/%s/SR/mH%s"%(condorCBADir, year, decayMode, channel, hName, mass)
-else:
-    inHistDirBase   = "$PROCESS/Base/CR/%s/$BIN"%CR
-    inHistDirSys    = "$PROCESS/$SYSTEMATIC/CR/%s/$BIN"%CR
-    outFileDir      = "%s/Fit_Hist/%s/%s/%s/%s/CR/%s/mH%s"%(condorCBADir, year, decayMode, channel, hName, CR, mass)
+inHistDirBase   = "$PROCESS/%s/Base/$BIN"%phaseSpace
+inHistDirSys    = "$PROCESS/%s/$SYSTEMATIC/$BIN"%phaseSpace
+outFileDir      = "%s/Fit_Hist/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, phaseSpace, hName, mass)
 
 outFilePath     = "%s/Shapes_Inc.root"%(outFileDir)
 datacardPath    = "%s/Datacard_Inc.txt"%(outFileDir)
@@ -59,18 +54,18 @@ if not os.path.exists(outFileDir):
 cb = ch.CombineHarvester()
 #cb.SetVerbosity(4)
 #AllBkgs = ["TTbar", "Wjets", "ZJets", "Diboson", "SingleTop", "TTV","QCD"]
-AllBkgs = ["TTGamma", "TTbar", "SingleTop"] 
+AllBkgs = ["TTGamma", "TTbar", "SingleTop", "Others"] 
 Signal  = ["TT_tytg_M%s"%mass]
 allMC   = Signal + AllBkgs
 #------------------
 #Add observed data
 #------------------
-cb.AddObservations(["*"],["hcs"],["13TeV"],[channel],[(-1, hName)])
+cb.AddObservations(["*"],["TT"],["13TeV"],[channel],[(-1, hName)])
 #------------------
 #Add sig& bkgs
 #------------------
-cb.AddProcesses(["*"],["hcs"],["13TeV"],[channel],Signal,[(-1, hName)], True)
-cb.AddProcesses(["*"],["hcs"],["13TeV"],[channel],AllBkgs,[(-1, hName)], False)
+cb.AddProcesses(["*"],["TT"],["13TeV"],[channel],Signal,[(-1, hName)], True)
+cb.AddProcesses(["*"],["TT"],["13TeV"],[channel],AllBkgs,[(-1, hName)], False)
 #------------------
 #Add systematics
 #------------------
@@ -78,14 +73,18 @@ cb.cp().process(allMC).AddSyst(cb, "lumi_$ERA", "lnN",ch.SystMap("era") (["13TeV
 cb.cp().process(["TTGamma"]).AddSyst(cb, "CMS_norm_tty", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
 cb.cp().process(["TTbar"]).AddSyst(cb, "CMS_norm_tt", "lnN",ch.SystMap("era") (["13TeV"], 1.055))
 cb.cp().process(["SingleTop"]).AddSyst(cb, "CMS_norm_t", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
-cb.cp().process(allMC).AddSyst(cb, "BTagSF_b" , "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "BTagSF_l" , "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "PU"       , "shape",ch.SystMap("era") (["13TeV"], 1.0))
-#cb.cp().process(allMC).AddSyst(cb, "EleEff"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "PhoEff"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "MuEff"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Pdf"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Q2"   , "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(["Others"]).AddSyst(cb, "CMS_norm_o", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
+cb.cp().process(allMC).AddSyst(cb, "Weight_pu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_mu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_pho",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_ele",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_btag_b", "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_btag_l", "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_prefire","shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_q2",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_pdf",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_isr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_fsr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 #------------------
 #Add rateParam
 #------------------
@@ -93,8 +92,7 @@ cb.cp().process(allMC).AddSyst(cb, "Q2"   , "shape",ch.SystMap("era") (["13TeV"]
 #------------------
 #Add syst groups
 #------------------
-cb.SetGroup("mySyst", ["lumi_13TeV", "BTagSF_b", "BTagSF_l", "PU"])
-#cb.SetGroup("otherSyst", ["TTBarSF", "WGSF", "ZGSF", "PhoEff"])
+cb.SetGroup("mySyst", ["lumi_13TeV", "Weight_pu"]) 
 #------------------
 #Add autoMCStat
 #------------------
@@ -128,10 +126,7 @@ print outFilePath
 #------------------------
 #Save DC path in a file
 #------------------------
-if CR=="":
-    name  = "DC_%s_%s_%s_%s_SR_mH%s"%(year, decayMode, channel, hName, mass)
-else:
-    name  = "DC_%s_%s_%s_%s_CR_%s_mH%s"%(year, decayMode, channel, hName, CR, mass)
+name  = "DC_%s_%s_%s_%s_%s_mH%s"%(year, decayMode, channel, phaseSpace, hName, mass)
 if not os.path.exists("./DataCards.json"):
     with open("DataCards.json", "w") as f:
         data = {}

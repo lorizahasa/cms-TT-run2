@@ -23,14 +23,19 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-#Run for Base
-if [ $# -eq 5 ] 
+##if [ $# -eq 5 ] 
+##then
+##    python makeHists.py -y $1 -d $2 -c $3 -s $4 --r $5 --allHists
+##elif [ $# -eq 7 ] 
+##then
+##    python makeHists.py -y $1 -d $2 -c $3 -s $4 --syst $5 --level $6 --r $7 --allHists
+
+if [ $# -eq 4 ] 
 then
-    python makeHists.py -y $1 -d $2 -c $3 -s $4 --ps $5 --allPlots
-#Run for Syst
-elif [ $# -eq 7 ] 
+    python runMakeHists.py -y $1 -d $2 -c $3 -s $4  
+elif [ $# -eq 6 ] 
 then
-    python makeHists.py -y $1 -d $2 -c $3 -s $4 --syst $5 --level $6 --ps $7 --allPlots
+    python runMakeHists.py -y $1 -d $2 -c $3 -s $4 --syst $5 --level $6 
 
 #For over/under flow of arguments
 else

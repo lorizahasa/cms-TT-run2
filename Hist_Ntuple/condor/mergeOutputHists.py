@@ -6,6 +6,8 @@
 #//////////////////////////////////////////////////
 #https://uscms.org/uscms_at_work/computing/LPC/usingEOSAtLPC.shtml#listFilesOnEOS
 import os
+import sys
+sys.path.insert(0, os.getcwd().replace("condor", ""))
 from optparse import OptionParser
 from HistInputs import *
 

@@ -1,4 +1,6 @@
 import os
+import sys
+sys.path.insert(0, os.getcwd().replace("condor",""))
 import itertools
 from optparse import OptionParser
 from HistInputs import *
@@ -18,12 +20,12 @@ def runCmd(cmd):
     os.system(cmd)
 
 if isCheck:
-    for year, decay, channel in itertools.product(Year, Decay, Channel): 
+    for year, decay, channel in itertools.product(Years, Decays, Channels): 
         args = "-y %s -d %s -c %s"%(year, decay, channel)
         runCmd("python checkJobStatus.py  %s "%args)
 
 if isMerge:
-    for year, decay, channel in itertools.product(Year, Decay, Channel): 
+    for year, decay, channel in itertools.product(Years, Decays, Channels): 
         args = "-y %s -d %s -c %s"%(year, decay, channel)
         runCmd("python mergeOutputHists.py  %s "%args)
 

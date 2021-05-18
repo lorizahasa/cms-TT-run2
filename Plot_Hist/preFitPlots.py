@@ -1,6 +1,8 @@
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 import os
 import sys
+sys.path.insert(0, os.getcwd().replace("Plot_Hist", "Hist_Ntuple"))
+from HistInputs import Regions
 from optparse import OptionParser
 from PlotFunc import *
 from PlotInputs import *
@@ -24,14 +26,15 @@ parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type=
                      help="Specify which decayMode moded of ttbar Semilep or DiLep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("--ps", "--phaseSpace", dest="phaseSpace", default="Resolved_CR",type='str', 
-                     help="which control selection and region")
-parser.add_option("--plot", dest="hName",default="Muon_pt", help="Add plots" )
+parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched",type='str', 
+                     help="which control selection and region"), 
+parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
+                     help="which histogram to be plottted")
 (options, args) = parser.parse_args()
 year            = options.year
 decayMode       = options.decayMode
 channel         = options.channel
-phaseSpace      = options.phaseSpace
+region = options.region
 hName           = options.hName
 
 #-----------------------------------------
@@ -39,7 +42,7 @@ hName           = options.hName
 #----------------------------------------
 inHistSubDir = "/Hist_Ntuple/%s/%s/%s/Merged"%(year, decayMode, channel)
 inHistFullDir = "%s/%s"%(condorHistDir, inHistSubDir)
-outPlotSubDir = "Plot_Hist/%s/%s/%s/%s"%(year, decayMode, channel, phaseSpace)
+outPlotSubDir = "Plot_Hist/%s/%s/%s/%s"%(year, decayMode, channel, region)
 outPlotFullDir = "%s/%s"%(condorHistDir, outPlotSubDir)
 if not os.path.exists(outPlotFullDir):
     os.makedirs(outPlotFullDir)
@@ -53,7 +56,7 @@ gROOT.SetBatch(True)
 #-----------------------------------------
 #Make a plot for one histogram
 #----------------------------------------
-def makePlot(hName, phaseSpace, isSig, isData, isLog, isRatio, isUnc):
+def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     '''
     We first draw stacked histograms then data then unc band.
     The ratio of data and background is drawn next in a separate
@@ -72,7 +75,7 @@ def makePlot(hName, phaseSpace, isSig, isData, isLog, isRatio, isUnc):
     else:
         canvas.cd()
     #Get nominal histograms
-    bkgHists = getBkgBaseHists(fileDict, hName, phaseSpace)
+    bkgHists = getBkgBaseHists(fileDict, hName, region)
     #Stack nominal hists
     xTitle = hName
     yTitle = "Events"
@@ -98,22 +101,22 @@ def makePlot(hName, phaseSpace, isSig, isData, isLog, isRatio, isUnc):
     
     #Data hists
     if isData:
-        dataHist = getDataHists(fileDict, hName, phaseSpace)
+        dataHist = getDataHists(fileDict, hName, region)
         decoHist(dataHist[0], xTitle, yTitle, SampleData["Data"][0])
         dataHist[0].SetMarkerStyle(20)
         dataHist[0].Draw("EPsame")
     
     #Signal hists
     if isSig:
-        sigHists  = getSigBaseHists(fileDict, hName, phaseSpace)
+        sigHists  = getSigBaseHists(fileDict, hName, region)
         sortedSigHists = sortHists(sigHists, True)
         for hSig in sigHists:
             hSig.Draw("HISTsame")
     
     # Unc band
     if isUnc:
-        hSumBkgUps =  getSystHists(fileDict, hName, phaseSpace, "Up")
-        hSumBkgDowns = getSystHists(fileDict, hName, phaseSpace, "Down")
+        hSumBkgUps =  getSystHists(fileDict, hName, region, "Up")
+        hSumBkgDowns = getSystHists(fileDict, hName, region, "Down")
         hDiffUp = hSumBkg.Clone("hDiffUp")
         hDiffUp.Reset()
         hDiffDown = hSumBkg.Clone("hDiffDown")
@@ -136,7 +139,7 @@ def makePlot(hName, phaseSpace, isSig, isData, isLog, isRatio, isUnc):
     #Draw plotLegend
     hForLegend = sortHists(bkgHists, True)
     #plotLegend = TLegend(0.55,0.60,0.92,0.88); for 3 col
-    plotLegend = TLegend(0.70,0.60,0.95,0.88); 
+    plotLegend = TLegend(0.75,0.60,0.95,0.88); 
     decoLegend(plotLegend, 4, 0.035)
     hSumAllBkg = bkgHists[0].Clone("AllBkg")
     if isData:
@@ -165,13 +168,16 @@ def makePlot(hName, phaseSpace, isSig, isData, isLog, isRatio, isUnc):
     hStack.GetYaxis().SetTitle(yTitle)
 
     #Draw CMS, Lumi, channel
+    chColor = 1
     if channel in ["mu", "Mu", "m"]:
-        chName = "1 #color[2]{#mu}, #geq 1 #gamma "
+        chColor = rt.kCyan+col_depth
+        chName = "1 #color[%i]{#mu}, p_{T}^{miss} > 30"%chColor
     else:
-        chName = "1 #color[6]{e}, #geq 1 #gamma "
-    crName = formatCRString(phaseSpace)
-    chName = "%s, %s"%(chName, phaseSpace)
-    chCRName = "#splitline{#font[42]{%s}}{#font[42]{%s}}"%(chName, crName)
+        chColor = rt.kYellow+col_depth
+        chName = "1 #color[%i]{e}, p_{T}^{miss}  > 30"%chColor
+    chName = "#splitline{%s}{%s}"%(chName, region)
+    crName = formatCRString(Regions[region])
+    chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
     extraText   = "#splitline{Preliminary}{%s}"%chCRName
     #CMS_lumi(canvas, iPeriod, iPosX, extraText)
     CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
@@ -188,7 +194,7 @@ def makePlot(hName, phaseSpace, isSig, isData, isLog, isRatio, isUnc):
         gPad.RedrawAxis();
         hRatio = dataHist[0].Clone("hRatio")
         hRatio.Divide(hSumAllBkg)
-        decoHistRatio(hRatio, xTitle, "Obs./Exp.", 1)
+        decoHistRatio(hRatio, xTitle, "Obs./Exp.", chColor)
         hRatio.Draw()
         if isUnc:
             uncGraphRatio = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,True)
@@ -209,10 +215,10 @@ def makePlot(hName, phaseSpace, isSig, isData, isLog, isRatio, isUnc):
 #----------------------------------------
 isData   = True
 isRatio  = True
-if "SR" in phaseSpace:
+if "SR" in region:
     isData  = False
     isRatio = False
 isSig    = True
 isUnc    = False
 isLog    = True
-makePlot(hName, phaseSpace, isSig,  isData, isLog, isRatio, isUnc)
+makePlot(hName, region, isSig,  isData, isLog, isRatio, isUnc)

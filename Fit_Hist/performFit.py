@@ -26,9 +26,9 @@ parser.add_option("--combYear", dest="combYear",default=["2016"], action="append
           help="years to be combined" )
 parser.add_option("--combChannel", dest="combChannel",default=["Mu","Ele"],action="append",
           help="channels to be combined" )
-parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
+parser.add_option("--ps", "--phaseSpace", dest="phaseSpace", default="Boosted_SR",type='str', 
                      help="which control selection and region")
-parser.add_option("--hist", "--hist", dest="hName", default="TopStar_mass",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
 parser.add_option("--isT2W","--isT2W",dest="isT2W", default=False, action="store_true",
 		  help="create text2workspace datacards")
@@ -49,7 +49,7 @@ year            = options.year
 decayMode       = options.decayMode
 channel         = options.channel
 mass            = options.mass
-CR              = options.CR
+phaseSpace = options.phaseSpace
 hName           = options.hName
 combYear        = options.combYear[0].split(",")
 combChannel     = options.combChannel[0].split(",")
@@ -78,14 +78,10 @@ rateParamKey = "rateParam"
 #For separate datacards
 #----------------------------------------
 dirDC = "DirectoryOfDataCard"
-def getDataCard(year, decayMode, channel, CR, hName):
+def getDataCard(year, decayMode, channel, phaseSpace, hName):
     global dirDC
-    if CR=="":
-        name  = "DC_%s_%s_%s_%s_SR_mH%s"%(year, decayMode, channel, hName, mass)
-        dirDC = "%s/Fit_Hist/%s/%s/%s/%s/SR/mH%s"%(condorCBADir, year, decayMode, channel, hName, mass)
-    else:
-        name  = "DC_%s_%s_%s_%s_%s_CR_%s_mH%s"%(year, decayMode, channel, hName, mass, CR)
-        dirDC = "%s/Fit_Hist/%s/%s/%s/%s/CR/%s/mH%s"%(condorCBADir, year, decayMode, channel, hName, mass, CR)
+    name  = "DC_%s_%s_%s_%s_%s_mH%s"%(year, decayMode, channel, phaseSpace, hName, mass)
+    dirDC = "%s/Fit_Hist/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, phaseSpace, hName, mass)
     pathDC   = jsonData[name][0]
     global rateParamKey
     rateParamKey = name.replace("DC","RP")
@@ -98,22 +94,28 @@ def getDataCard(year, decayMode, channel, CR, hName):
 #----------------------------------------
 if isComb:
     combDC = []
+    cat_ = ["Boosted_SR", "Resolved_SR"]
+    ch_  = ["Mu", "Ele"]
+    year_= ["2016", "2017", "2018"]
+    for y, ch, cat in itertools.product(year_, ch_, cat_):
+        pathDC = getDataCard(y, decayMode, ch, cat, hName)
+        combDC.append(pathDC)
+	combDCText = ' '.join([str(dc) for dc in combDC])
+    dirDC        = "%s/Fit_Hist/Combined"%(condorHistDir)
+    '''
     combHist = ["phosel_M3", "presel_M3_0Pho", "phosel_noCut_ChIso", "phosel_MassLepGamma", "presel_MassDilep"]
     for combY, combCh in itertools.product(combYear, combChannel):
-        combDC.append(getDataCard(combY, "Semilep", combCh, CR, combHist[0]))
-        combDC.append(getDataCard(combY, "Semilep", combCh, CR, combHist[1]))
-        combDC.append(getDataCard(combY, "Semilep", combCh, CR, combHist[2]))
-        combDC.append(getDataCard(combY, "Semilep", combCh, CR, combHist[3]))
-        combDC.append(getDataCard(combY, "Dilep",   combCh, CR, combHist[4]))
+        combDC.append(getDataCard(combY, "Semilep", combCh, phaseSpace, combHist[0]))
+        combDC.append(getDataCard(combY, "Semilep", combCh, phaseSpace, combHist[1]))
+        combDC.append(getDataCard(combY, "Semilep", combCh, phaseSpace, combHist[2]))
+        combDC.append(getDataCard(combY, "Semilep", combCh, phaseSpace, combHist[3]))
+        combDC.append(getDataCard(combY, "Dilep",   combCh, phaseSpace, combHist[4]))
 	combDCText = ' '.join([str(dc) for dc in combDC])
     combYText  = ''.join([str(y) for y in combYear])
     combChText = ''.join([str(ch) for ch in combChannel]) 
-    if CR=="":
-        dirDC        = "%s/Fit/Combined/%s_%s/SR"%(condorCBADir, combYText, combChText, shapeOrCount)
-        rateParamKey = "RP_Comb_%s_%s_SR"%(combYText, combChText, shapeOrCount)
-    else:
-        dirDC        = "%s/Fit/Combined/%s_%s/CR/%s"%(condorCBADir, combYText, combChText,  CR)
-        rateParamKey = "RP_Comb_%s_%s_CR_%s"%(combYText, combChText,  CR)
+    dirDC        = "%s/Fit/Combined/%s_%s/%s"%(condorCBADir, combYText, combChText,  phaseSpace)
+    rateParamKey = "RP_Comb_%s_%s_%s"%(combYText, combChText,  phaseSpace)
+    '''
     if not os.path.exists(dirDC):
         os.makedirs(dirDC)
     pathDC  = "%s/Datacard_Comb.txt"%(dirDC)
@@ -121,7 +123,7 @@ if isComb:
     runCmd("combineCards.py %s > %s"%(combDCText, pathDC))
     print pathDC
 else:
-    pathDC = getDataCard(year, decayMode, channel, CR, hName)
+    pathDC = getDataCard(year, decayMode, channel, phaseSpace, hName)
     pathT2W = "%s/Text2W_Inc.root"%(dirDC) 
     print pathDC
 
@@ -168,8 +170,8 @@ if isTP:
 
 if isLimit:
     #https://github.com/cms-analysis/CombineHarvester/blob/master/docs/Limits.md
-    #runCmd("combine --rAbsAcc 0.000001 %s -M AsymptoticLimits --mass %s --name _hcs_run2"%(pathT2W, mass))
-    runCmd("combineTool.py -d %s -M AsymptoticLimits --mass %s -n _hcs_run2 --run blind --there --parallel 4 "%(pathT2W, mass))
+    #runCmd("combine --rAbsAcc 0.000001 %s -M AsymptoticLimits --mass %s --name _TT_run2"%(pathT2W, mass))
+    runCmd("combineTool.py -d %s -M AsymptoticLimits --mass %s -n _TT_run2 --run blind --there --parallel 4 "%(pathT2W, mass))
     print dirDC
 
 #-----------------------------------------

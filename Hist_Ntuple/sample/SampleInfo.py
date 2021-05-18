@@ -48,7 +48,7 @@ def getSamples(y):
                "TT_tytg_M1300" : gs(y, ["TstarTstarToTgammaTgluon_M1300"]),  
                "TT_tytg_M1400" : gs(y, ["TstarTstarToTgammaTgluon_M1400"]),  
                "TT_tytg_M1500" : gs(y, ["TstarTstarToTgammaTgluon_M1500"]),  
-               "TT_tytg_M1600" : gs(y, ["TstarTstarToTgammaTgluon_M1500"]),  
+               "TT_tytg_M1600" : gs(y, ["TstarTstarToTgammaTgluon_M1600"]),  
                "SingleTop" : gs(y, ["ST_tbarW_channel" , 
                    "ST_s_channel", 
                    "ST_t_channel" , 

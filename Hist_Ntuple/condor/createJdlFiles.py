@@ -1,5 +1,7 @@
-import itertools
 import os
+import sys
+sys.path.insert(0, os.getcwd().replace("condor", ""))
+import itertools
 from HistInputs import *
 
 if os.path.exists("tmpSub"):
@@ -26,7 +28,7 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #Create jdl files
 #----------------------------------------
 subFile = open('tmpSub/condorSubmit.sh','w')
-for year, decay, channel in itertools.product(Year, Decay, Channel):
+for year, decay, channel in itertools.product(Years, Decays, Channels):
     condorOutDir = "%s/%s/%s/%s"%(condorHistDir, year, decay, channel)
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%condorOutDir)
     jdlName = 'submitJobs_%s%s%s.jdl'%(year, decay, channel)
@@ -40,17 +42,17 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
         Samples.remove("QCDMu")
         Samples.remove("DataMu")
     #Create for Base, Control region
-    for sample, ps in itertools.product(Samples, PhaseSpace):
+    for sample in Samples:
         run_command =  \
-		'arguments  = %s %s %s %s %s \n\
-queue 1\n\n' %(year, decay, channel, sample, ps)
-	jdlFile.write(run_command)
+		'arguments  = %s %s %s %s \n\
+queue 1\n\n' %(year, decay, channel, sample)
+        jdlFile.write(run_command)
     
     #Create for Syst, Control region
-    for sample, syst, level, ps in itertools.product(Samples, Systematics, SystLevel, PhaseSpace):
+    for sample, syst, level in itertools.product(Samples, Systematics, SystLevels):
         run_command =  \
-		'arguments  = %s %s %s %s %s %s %s \n\
-queue 1\n\n' %(year, decay, channel, sample, syst, level, ps)
+		'arguments  = %s %s %s %s %s %s \n\
+queue 1\n\n' %(year, decay, channel, sample, syst, level)
         if not sample in ["DataMu", "DataEle", "QCD_DD"]:
             jdlFile.write(run_command)
 	#print "condor_submit jdl/%s"%jdlFile
