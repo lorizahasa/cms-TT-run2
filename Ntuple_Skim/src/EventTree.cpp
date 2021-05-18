@@ -404,6 +404,21 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
 	chain->SetBranchStatus("GenJet_mass",1);
 	chain->SetBranchAddress("GenJet_mass", &GenJet_mass_);
+
+	chain->SetBranchStatus("nGenJetAK8",1);
+	chain->SetBranchAddress("nGenJetAK8", &nGenJetAK8_);
+	
+	chain->SetBranchStatus("GenJetAK8_pt",1);
+	chain->SetBranchAddress("GenJetAK8_pt", &GenJetAK8_pt_);
+
+	chain->SetBranchStatus("GenJetAK8_eta",1);
+	chain->SetBranchAddress("GenJetAK8_eta", &GenJetAK8_eta_);
+
+	chain->SetBranchStatus("GenJetAK8_phi",1);
+	chain->SetBranchAddress("GenJetAK8_phi", &GenJetAK8_phi_);
+
+	chain->SetBranchStatus("GenJetAK8_mass",1);
+	chain->SetBranchAddress("GenJetAK8_mass", &GenJetAK8_mass_);
     }
 
     //Fliters
@@ -496,6 +511,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
         //electrons
 	    chain->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
 	    chain->SetBranchAddress("HLT_Ele32_WPTight_Gsf",&HLT_Ele32_WPTight_Gsf_);
+	    chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
+	    chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
 	    chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
 	    chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
 	    chain->SetBranchStatus("HLT_Photon200",1);

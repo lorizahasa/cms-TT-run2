@@ -185,7 +185,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
 
     if (eventNum > -1){
-	selector->smearJetPt=false;
+        //	selector->smearJetPt=false;
     }
     selector->looseJetID = false;
     selector->useDeepCSVbTag = true;
@@ -198,6 +198,10 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (year=="2017") selector->btag_cut_DeepCSV = 0.4941;
     if (year=="2018") selector->btag_cut_DeepCSV = 0.4184;
     
+    if (year=="2016") selector->toptag_cut_DeepAK8 = 0.834;
+    if (year=="2017") selector->toptag_cut_DeepAK8 = 0.725;
+    if (year=="2018") selector->toptag_cut_DeepAK8 = 0.802;
+
     //	selector->jet_Pt_cut = 40.;
     BTagCalibration calib;
     if (!selector->useDeepCSVbTag){
@@ -677,6 +681,14 @@ makeNtuple::makeNtuple(int ac, char** av)
 
 	evtPick->process_event(tree, selector, _PUweight);
 
+        if (tree->event_==eventNum){
+            cout << "EventSelection:" << endl;
+            cout << "  PassPresel e " << evtPick->passPreselEle << endl;
+            cout << "  PassPresel mu" << evtPick->passPreselMu<< endl;
+            cout << "  PassPhoton e " << evtPick->passAllEle << endl;
+            cout << "  PassPhoton mu" << evtPick->passAllMu << endl;
+        }
+
 	if ( evtPick->passPreselEle || evtPick->passPreselMu || saveAllEntries) {
 	    if (saveCutflow && !(evtPick->passAllEle || evtPick->passAllMu) ) continue;
 	    InitVariables();
@@ -1112,6 +1124,7 @@ void makeNtuple::FillEvent(std::string year)
     }
 
     jetVectors.clear();
+    fatJetVectors.clear();
     jetResolutionVectors.clear();
     jetBtagVectors.clear();
     for (int i_fatJet = 0; i_fatJet <_nFatJet; i_fatJet++){
@@ -1183,6 +1196,13 @@ void makeNtuple::FillEvent(std::string year)
     topEvent.SetLepton(lepVector);
     topEvent.SetMET(METVector);
     topEvent.SetPhotonVector(phoVectors);
+
+    if (tree->event_==eventNum){
+        cout << "------------------------------" << endl;
+        cout << "Event Reconstruction" << endl;
+        cout << "   nFatJet "<<_nFatJet << endl;
+        cout << "   nJet    "<<_nJet << endl;
+    }
     if (_nFatJet==0){
         topEvent.CalculateTstarGluGamma(5);
         if (topEvent.GoodCombinationTstarGluGamma()){
@@ -1197,6 +1217,7 @@ void makeNtuple::FillEvent(std::string year)
                 hadDecay = phoVectors[topEvent.getPho()];
                 lepDecay = jetVectors[topEvent.getG()];
             }
+
             METVector.SetXYZM(METVector.Px(), METVector.Py(), topEvent.getNuPz(), 0);
             _chi2 = topEvent.getChi2_TstarGluGamma();
             _M_jj  = ( Wj1 + Wj2 ).M();
@@ -1207,6 +1228,25 @@ void makeNtuple::FillEvent(std::string year)
             _TopStar_mass = (_TopStarHad_mass + _TopStarLep_mass)/2.;
             _tgtg_mass = (bhad + Wj1 + Wj2 + hadDecay + blep + lepVector + METVector + lepDecay).M();
 
+
+            if (tree->event_==eventNum){
+                cout << "  Resolved Case " << endl;
+                cout << "    BHad: Idx=" << topEvent.getBHad() << " Pt=" << bhad.Pt() << endl;
+                cout << "    BLep: Idx=" << topEvent.getBLep() << " Pt=" << blep.Pt() << endl;
+                cout << "    Wj1: Idx=" << topEvent.getJ1() << " Pt=" << Wj1.Pt() << endl;
+                cout << "    Wj2: Idx=" << topEvent.getJ2() << " Pt=" << Wj2.Pt() << endl;
+                cout << "    Glu: Idx=" << topEvent.getG() << " Pt=" << jetVectors[topEvent.getG()].Pt() << endl;
+                if (topEvent.getPhotonSide()){
+                    cout << "    Photon on leptonic decay side" << endl;
+                } else {
+                    cout << "    Photon on hadronic decay side" << endl;
+                }
+                cout << "    ----" << endl;
+                cout << "    chi2="<<_chi2 << endl;
+                cout << "    Tmass(Had)="<<_TopStarHad_mass << endl;
+                cout << "    Tmass(Lep)="<<_TopStarLep_mass << endl;
+                cout << "    Tmass  = "<<_TopStar_mass << endl;
+            }
         }
     } else {
         topEvent.CalculateTstarGluGamma_Boosted(2);
@@ -1221,6 +1261,7 @@ void makeNtuple::FillEvent(std::string year)
                 hadDecay = phoVectors[topEvent.getPho()];
                 lepDecay = jetVectors[topEvent.getG()];
             }
+
             METVector.SetXYZM(METVector.Px(), METVector.Py(), topEvent.getNuPz(), 0);
             _chi2 = topEvent.getChi2_TstarGluGamma();
             _TopHad_mass = (topHad).M();
@@ -1230,6 +1271,25 @@ void makeNtuple::FillEvent(std::string year)
             _TopStar_mass = (_TopStarHad_mass + _TopStarLep_mass)/2.;
             _tgtg_mass = (topHad + hadDecay + blep + lepVector + METVector + lepDecay).M();
             _M_jj  = -9999.0; //In the boosted category, we don't reconstruct W_had
+
+            if (tree->event_==eventNum){
+                cout << "  Resolved Case " << endl;
+                cout << "    BLep: Idx=" << topEvent.getBLep() << " Pt=" << blep.Pt() << endl;
+                cout << "    THad: Idx=" << topEvent.getTHad() << " Pt=" << topHad.Pt() << endl;
+                cout << "    Glu: Idx=" << topEvent.getG() << " Pt=" << jetVectors[topEvent.getG()].Pt() << endl;
+                if (topEvent.getPhotonSide()){
+                    cout << "    Photon on leptonic decay side" << endl;
+                } else {
+                    cout << "    Photon on hadronic decay side" << endl;
+                }
+                cout << "    ----" << endl;
+                cout << "    chi2="<<_chi2 << endl;
+                cout << "    Tmass(Had)="<<_TopStarHad_mass << endl;
+                cout << "    Tmass(Lep)="<<_TopStarLep_mass << endl;
+                cout << "    Tmass(Lep)="<<_TopStar_mass << endl;
+            }
+
+
         }
     }
     ljetVectors.clear();

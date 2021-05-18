@@ -65,6 +65,12 @@ class EventTree{
     Float_t   GenJet_phi_[100];
     Float_t   GenJet_mass_[100];
     
+    UInt_t    nGenJetAK8_;
+    Float_t   GenJetAK8_pt_[100];
+    Float_t   GenJetAK8_eta_[100];
+    Float_t   GenJetAK8_phi_[100];
+    Float_t   GenJetAK8_mass_[100];
+    
     // PU
     Int_t    nPU_;  
     Float_t  nPUTrue_;  

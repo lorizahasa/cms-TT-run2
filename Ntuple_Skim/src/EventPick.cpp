@@ -71,46 +71,16 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     bool passTriggerMu  = false;
     bool passTriggerEle = false;
     if (year=="2016") {
-	    passTriggerMu = (tree->HLT_Mu50_ || tree->HLT_TkMu50_); 
+        passTriggerMu = (tree->HLT_Mu50_ || tree->HLT_TkMu50_);
         passTriggerEle = tree->HLT_Ele27_WPTight_Gsf_ ||tree->HLT_Photon175_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_;
     }
     if (year=="2017"){
-	    passTriggerMu = (tree->HLT_Mu50_ || tree->HLT_TkMu50_);
-	    bool allSingleEGL1or = (tree->L1_SingleEG24_ ||
-				tree->L1_SingleEG26_ ||
-				tree->L1_SingleEG30_ ||
-				tree->L1_SingleEG32_ ||
-				tree->L1_SingleEG34_ ||
-				tree->L1_SingleEG36_ ||
-				tree->L1_SingleEG38_ ||
-				tree->L1_SingleEG40_ ||
-				tree->L1_SingleEG42_ ||
-				tree->L1_SingleEG45_ ||
-				tree->L1_SingleEG50_ ||
-				tree->L1_SingleEG34er2p1_ ||
-				tree->L1_SingleEG36er2p1_ ||
-				tree->L1_SingleEG38er2p1_ ||
-				tree->L1_SingleIsoEG24er2p1_ ||
-				tree->L1_SingleIsoEG26er2p1_ ||
-				tree->L1_SingleIsoEG28er2p1_ ||
-				tree->L1_SingleIsoEG30er2p1_ ||
-				tree->L1_SingleIsoEG32er2p1_ ||
-				tree->L1_SingleIsoEG34er2p1_ ||
-				tree->L1_SingleIsoEG36er2p1_ ||
-				tree->L1_SingleIsoEG24_ ||
-				tree->L1_SingleIsoEG26_ ||
-				tree->L1_SingleIsoEG28_ ||
-				tree->L1_SingleIsoEG30_ ||
-				tree->L1_SingleIsoEG32_ ||
-				tree->L1_SingleIsoEG34_ ||
-				tree->L1_SingleIsoEG36_ ||
-				tree->L1_SingleIsoEG38_);
-        passTriggerEle = (tree->HLT_Ele35_WPTight_Gsf_ ||tree->HLT_Photon200_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_) && allSingleEGL1or;
-
+        passTriggerMu = (tree->HLT_Mu50_ || tree->HLT_TkMu100_ || tree->HLT_OldMu100_);
+        passTriggerEle = (tree->HLT_Ele35_WPTight_Gsf_ ||tree->HLT_Photon200_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_);
     }
     if (year=="2018"){
-	    passTriggerMu = (tree->HLT_Mu50_ || tree->HLT_OldMu100_ || tree->HLT_TkMu100_);
-        passTriggerEle = tree->HLT_Ele32_WPTight_Gsf_ ||tree->HLT_Photon200_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_;
+        passTriggerMu = (tree->HLT_Mu50_ || tree->HLT_OldMu100_ || tree->HLT_TkMu100_);
+        passTriggerEle = tree->HLT_Ele35_WPTight_Gsf_ ||tree->HLT_Photon200_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_;
     }
 
     //Filters
@@ -400,6 +370,9 @@ void EventPick::process_event(EventTree* tree, Selector* selector, double weight
     if(passPreselMu && tree->MET_pt_ >= MET_cut) { if (saveCutflows) {cutFlow_mu->Fill(12); cutFlowWeight_mu->Fill(12,weight);}}
     else passPreselMu = false;
 
+    if (tree->event_==printEvent){
+	cout << "PassMET  "<< (tree->MET_pt_ >= MET_cut) << "("<< tree->MET_pt_ << ")" << endl;
+    }
 
 
     // Photon cut for electrons

@@ -76,6 +76,7 @@ public:
 
 	double btag_cut;
 	double btag_cut_DeepCSV;
+	double toptag_cut_DeepAK8;
 	int JERsystLevel; //0= syst down, 1 = central, 2 = syst up
 	int JECsystLevel;//0= syst down, 1 = central, 2 = syst up
 	int phosmearLevel;
@@ -90,6 +91,8 @@ public:
 	bool   looseJetID;
 	bool   useDeepCSVbTag;
 	bool   QCDselect;
+
+        bool skipAK4AK8dr;
 
 	std::string year;
 	int printEvent;
