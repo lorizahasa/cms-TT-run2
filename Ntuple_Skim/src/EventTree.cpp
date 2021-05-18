@@ -511,6 +511,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
         //electrons
 	    chain->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
 	    chain->SetBranchAddress("HLT_Ele32_WPTight_Gsf",&HLT_Ele32_WPTight_Gsf_);
+	    chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
+	    chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
 	    chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
 	    chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
 	    chain->SetBranchStatus("HLT_Photon200",1);
