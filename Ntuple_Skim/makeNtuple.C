@@ -198,6 +198,10 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (year=="2017") selector->btag_cut_DeepCSV = 0.4941;
     if (year=="2018") selector->btag_cut_DeepCSV = 0.4184;
     
+    if (year=="2016") selector->toptag_cut_DeepAK8 = 0.834;
+    if (year=="2017") selector->toptag_cut_DeepAK8 = 0.725;
+    if (year=="2018") selector->toptag_cut_DeepAK8 = 0.802;
+
     //	selector->jet_Pt_cut = 40.;
     BTagCalibration calib;
     if (!selector->useDeepCSVbTag){
