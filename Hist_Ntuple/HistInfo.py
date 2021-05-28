@@ -98,15 +98,15 @@ def GetHistogramInfo():
              "Weight_fsr_down"          : ["Weight_fsr_down"        , [30,0.0,1.5], False],
              }
     hDictTemp = {
-             "Reco_met"             : ["Reco_met"       , [50,0,1000], True],
+             #"Reco_met"             : ["Reco_met"       , [50,0,1000], True],
              "Jet_size"             : ["Jet_size"       , [16,-0.5,15.5], True],
-             "Jet_b_size"           : ["Jet_b_size"     , [10,-0.5,9.5], True],
-             "FatJet_size"          : ["FatJet_size"    , [5,-0.5,4.5], True],
+             #"Jet_b_size"           : ["Jet_b_size"     , [10,-0.5,9.5], True],
+             #"FatJet_size"          : ["FatJet_size"    , [5,-0.5,4.5], True],
              "Jet_pt"               : ["Jet_pt"         , [50,0,1500], True],
-             "Photon_et"            : ["Photon_et"      , [60,0,1200], True],
-             "Reco_ht"              : ["Reco_ht"        , [60,0,6000], True],
-             "Reco_st"              : ["Reco_st"        , [60,0,6000], True],
-             "Reco_mass_T"          : ["Reco_mass_T"    , [60,0,6000], True],
+             #"Photon_et"            : ["Photon_et"      , [60,0,1200], True],
+             #"Reco_ht"              : ["Reco_ht"        , [60,0,6000], True],
+             #"Reco_st"              : ["Reco_st"        , [60,0,6000], True],
+             #"Reco_mass_T"          : ["Reco_mass_T"    , [60,0,6000], True],
              }
     return hDictTemp
     #return hDict 

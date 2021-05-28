@@ -24,10 +24,10 @@ texFile = open("tex/limitPlot.tex", "w")
 #texFile.write("\\begin{document}\n")
 allPlotPath = []
 allPlotName = []
-for ps in PhaseSpace:
+for r in Regions:
     for decay, channel in itertools.product(Decay, Channel):
         for year in Year:
-            dirDC = "%s/Fit_Hist/%s/%s/%s/%s/%s"%(condorHistDir, year, decay, channel, ps, hName)
+            dirDC = "%s/Fit_Hist/%s/%s/%s/%s/%s"%(condorHistDir, year, decay, channel, r, hName)
             nameDC = "mH*/higgsCombine_TT_run2.AsymptoticLimits.mH*.root" 
             print hName
             runCmd("combineTool.py -M CollectLimits %s/%s -o %s/limits.json"%(dirDC, nameDC, dirDC))
@@ -65,16 +65,16 @@ for ps in PhaseSpace:
                 title_left = "1 #mu, 1 #gamma, "
             else:
                 title_left = "1 e, 1 #gamma, "
-            if "Boosted" in ps:
+            if "Boosted" in r:
                 title_left += "#geq 1 AK8, #geq 2 AK4, #geq 1 b"
-            if "Resolved" in ps:
+            if "Resolved" in r:
                 title_left += "0 AK8, #geq 5 AK4, #geq 1 b"
-            out = "%s/limit_%s_%s_%s"%(dirDC, year, channel, ps)
+            out = "%s/limit_%s_%s_%s"%(dirDC, year, channel, r)
             if scaleLimits:
                 limitFile = "scaled_limits.json"
             else:
                 limitFile = "limits.json"
-            runCmd("python plotLimits.py --title-left \"%s\" --title-right \"%s\" %s/%s -o %s --logy --cms-sub \"%s\""%(title_left, title_right, dirDC, limitFile, out, ps))
+            runCmd("python plotLimits.py --title-left \"%s\" --title-right \"%s\" %s/%s -o %s --logy --cms-sub \"%s\""%(title_left, title_right, dirDC, limitFile, out, r))
             plotPath = "%s.pdf"%(out)
             allPlotPath.append(plotPath)
             allPlotName.append(hName)

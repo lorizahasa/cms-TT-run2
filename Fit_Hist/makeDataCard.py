@@ -21,27 +21,27 @@ parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
-parser.add_option("--ps", "--phaseSpace", dest="phaseSpace", default="Boosted_SR",type='str', 
-                     help="which control selection and region")
+parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
+                     help="which control selection and region"), 
 parser.add_option("--isQCDMC","--qcdMC",dest="isQCDMC", default=False, action="store_true",
 		  help="")
 (options, args) = parser.parse_args()
 year            = options.year
-decayMode  = options.decayMode
+decayMode       = options.decayMode
 channel         = options.channel
 mass            = options.mass
-hName        = options.hName
-phaseSpace = options.phaseSpace
-isQCDMC        = options.isQCDMC
+hName           = options.hName
+region          = options.region
+isQCDMC         = options.isQCDMC
 
 #-----------------------------------------
 #Path of the I/O histograms/datacards
 #----------------------------------------
 inFileName = "%s/Hist_Ntuple/%s/%s/%s/Merged/AllInc_Norm.root"%(condorHistDir, year, decayMode, channel)
 print inFileName
-inHistDirBase   = "$PROCESS/%s/Base/$BIN"%phaseSpace
-inHistDirSys    = "$PROCESS/%s/$SYSTEMATIC/$BIN"%phaseSpace
-outFileDir      = "%s/Fit_Hist/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, phaseSpace, hName, mass)
+inHistDirBase   = "$PROCESS/%s/Base/$BIN"%region
+inHistDirSys    = "$PROCESS/%s/$SYSTEMATIC/$BIN"%region
+outFileDir      = "%s/Fit_Hist/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, region, hName, mass)
 
 outFilePath     = "%s/Shapes_Inc.root"%(outFileDir)
 datacardPath    = "%s/Datacard_Inc.txt"%(outFileDir)
@@ -126,7 +126,7 @@ print outFilePath
 #------------------------
 #Save DC path in a file
 #------------------------
-name  = "DC_%s_%s_%s_%s_%s_mH%s"%(year, decayMode, channel, phaseSpace, hName, mass)
+name  = "DC_%s_%s_%s_%s_%s_mH%s"%(year, decayMode, channel, region, hName, mass)
 if not os.path.exists("./DataCards.json"):
     with open("DataCards.json", "w") as f:
         data = {}

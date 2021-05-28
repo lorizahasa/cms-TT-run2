@@ -26,8 +26,8 @@ parser.add_option("--combYear", dest="combYear",default=["2016"], action="append
           help="years to be combined" )
 parser.add_option("--combChannel", dest="combChannel",default=["Mu","Ele"],action="append",
           help="channels to be combined" )
-parser.add_option("--ps", "--phaseSpace", dest="phaseSpace", default="Boosted_SR",type='str', 
-                     help="which control selection and region")
+parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
+                     help="which control selection and region"), 
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
 parser.add_option("--isT2W","--isT2W",dest="isT2W", default=False, action="store_true",
@@ -49,7 +49,7 @@ year            = options.year
 decayMode       = options.decayMode
 channel         = options.channel
 mass            = options.mass
-phaseSpace = options.phaseSpace
+region          = options.region
 hName           = options.hName
 combYear        = options.combYear[0].split(",")
 combChannel     = options.combChannel[0].split(",")
@@ -61,7 +61,7 @@ isComb          = options.isComb
 isT2W 			= options.isT2W
 isFD            = options.isFD
 isImpact        = options.isImpact
-isLimit        = options.isLimit
+isLimit         = options.isLimit
 isCM            = options.isCM
 isTP            = options.isTP
 isPlotTP        = options.isPlotTP
@@ -78,10 +78,10 @@ rateParamKey = "rateParam"
 #For separate datacards
 #----------------------------------------
 dirDC = "DirectoryOfDataCard"
-def getDataCard(year, decayMode, channel, phaseSpace, hName):
+def getDataCard(year, decayMode, channel, region, hName):
     global dirDC
-    name  = "DC_%s_%s_%s_%s_%s_mH%s"%(year, decayMode, channel, phaseSpace, hName, mass)
-    dirDC = "%s/Fit_Hist/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, phaseSpace, hName, mass)
+    name  = "DC_%s_%s_%s_%s_%s_mH%s"%(year, decayMode, channel, region, hName, mass)
+    dirDC = "%s/Fit_Hist/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, region, hName, mass)
     pathDC   = jsonData[name][0]
     global rateParamKey
     rateParamKey = name.replace("DC","RP")
@@ -105,16 +105,16 @@ if isComb:
     '''
     combHist = ["phosel_M3", "presel_M3_0Pho", "phosel_noCut_ChIso", "phosel_MassLepGamma", "presel_MassDilep"]
     for combY, combCh in itertools.product(combYear, combChannel):
-        combDC.append(getDataCard(combY, "Semilep", combCh, phaseSpace, combHist[0]))
-        combDC.append(getDataCard(combY, "Semilep", combCh, phaseSpace, combHist[1]))
-        combDC.append(getDataCard(combY, "Semilep", combCh, phaseSpace, combHist[2]))
-        combDC.append(getDataCard(combY, "Semilep", combCh, phaseSpace, combHist[3]))
-        combDC.append(getDataCard(combY, "Dilep",   combCh, phaseSpace, combHist[4]))
+        combDC.append(getDataCard(combY, "Semilep", combCh, region, combHist[0]))
+        combDC.append(getDataCard(combY, "Semilep", combCh, region, combHist[1]))
+        combDC.append(getDataCard(combY, "Semilep", combCh, region, combHist[2]))
+        combDC.append(getDataCard(combY, "Semilep", combCh, region, combHist[3]))
+        combDC.append(getDataCard(combY, "Dilep",   combCh, region, combHist[4]))
 	combDCText = ' '.join([str(dc) for dc in combDC])
     combYText  = ''.join([str(y) for y in combYear])
     combChText = ''.join([str(ch) for ch in combChannel]) 
-    dirDC        = "%s/Fit/Combined/%s_%s/%s"%(condorCBADir, combYText, combChText,  phaseSpace)
-    rateParamKey = "RP_Comb_%s_%s_%s"%(combYText, combChText,  phaseSpace)
+    dirDC        = "%s/Fit/Combined/%s_%s/%s"%(condorCBADir, combYText, combChText,  region)
+    rateParamKey = "RP_Comb_%s_%s_%s"%(combYText, combChText,  region)
     '''
     if not os.path.exists(dirDC):
         os.makedirs(dirDC)
@@ -123,7 +123,7 @@ if isComb:
     runCmd("combineCards.py %s > %s"%(combDCText, pathDC))
     print pathDC
 else:
-    pathDC = getDataCard(year, decayMode, channel, phaseSpace, hName)
+    pathDC = getDataCard(year, decayMode, channel, region, hName)
     pathT2W = "%s/Text2W_Inc.root"%(dirDC) 
     print pathDC
 

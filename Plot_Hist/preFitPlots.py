@@ -171,10 +171,10 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     chColor = 1
     if channel in ["mu", "Mu", "m"]:
         chColor = rt.kCyan+col_depth
-        chName = "1 #color[%i]{#mu}, p_{T}^{miss} > 30"%chColor
+        chName = "1 #color[%i]{#mu}, p_{T}^{miss} > 20"%chColor
     else:
         chColor = rt.kYellow+col_depth
-        chName = "1 #color[%i]{e}, p_{T}^{miss}  > 30"%chColor
+        chName = "1 #color[%i]{e}, p_{T}^{miss}  > 20"%chColor
     chName = "#splitline{%s}{%s}"%(chName, region)
     crName = formatCRString(Regions[region])
     chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
@@ -215,7 +215,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
 #----------------------------------------
 isData   = True
 isRatio  = True
-if "SR" in region:
+if "SR" in region or len(region)==13:
     isData  = False
     isRatio = False
 isSig    = True

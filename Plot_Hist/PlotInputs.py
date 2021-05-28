@@ -2,10 +2,10 @@ import ROOT as rt
 #-----------------------------------------------------------------
 condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2"
 #-----------------------------------------------------------------
-#Year 	      =	["2016", "2017", "2018"]
-Year 	      =	["2016"]
-#Channel 	  =	["Mu", "Ele"]
-Channel 	  =	["Mu"]
+Year 	      =	["2016", "2017", "2018"]
+#Year 	      =	["2017"]
+Channel 	  =	["Mu", "Ele"]
+#Channel 	  =	["Ele"]
 Decay 	  =	["Semilep"]
 Systematics   =	[]
 Systematics.append("Weight_pu")
@@ -34,7 +34,7 @@ SampleBkg = {
          "TTGamma"   : [rt.kGreen, "t#bar{t}#gamma"],
          "TTbar"     : [rt.kRed, "t#bar{t}"],
          "SingleTop" : [rt.kOrange, "t"],
-         #"QCD"       : [rt.kPink, "QCD"],
+         "QCD"       : [rt.kPink, "QCD"],
          "Others"    : [rt.kBlue, "Others"]
          }
 SampleData = {
