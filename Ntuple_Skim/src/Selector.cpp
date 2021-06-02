@@ -124,7 +124,7 @@ void Selector::filter_electrons(){
 
         bool eleSel = (passEtaEBEEGap && 
                        absEta <= 2.2 &&
-                       pt >= 50.0 &&
+                       pt >= 20.0 &&
                        eleMiniIso <= 0.1 &&
                        passTightID);
         bool looseSel = (passEtaEBEEGap && 
@@ -140,7 +140,7 @@ void Selector::filter_electrons(){
         } 
     }
 }
-
+//https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedPhotonIdentificationRun2
 void Selector::filter_photons(){
     if (tree->event_==printEvent){
 	    cout << "Found Event Staring Photons" << endl;
@@ -154,7 +154,7 @@ void Selector::filter_photons(){
         bool isEB = tree->phoIsEB_[phoInd];
         bool isEE = tree->phoIsEE_[phoInd];
         uint photonID = tree->phoIDcutbased_[phoInd];
-        bool passMediumPhotonID = photonID >= 2; //0:fail, 1:loose, 2:medium, 3:tight 
+        bool passMediumPhotonID = photonID >= 2; //0:fail, >=1 (loose), >=2 (medium), ==3 (tight) 
         double phoPFRelIso = tree->phoPFRelIso_[phoInd];
         double phoPFRelChIso = tree->phoPFRelChIso_[phoInd];
         bool passDR_lep_pho = true;
@@ -169,8 +169,7 @@ void Selector::filter_photons(){
         bool hasPixelSeed = tree->phoPixelSeed_[phoInd];
         bool phoPresel = (et >= 20.0 &&                          
                           absEta <= 1.4442 &&
-                          passDR_lep_pho && 
-                          !hasPixelSeed
+                          passDR_lep_pho
 			  );
         vector<bool> cutBasedID_split = parsePhotonVIDCuts(tree->phoVidWPBitmap_[phoInd], 2);
         bool passMediumIDNoChIsoOrSIEIE = cutBasedID_split[1] && cutBasedID_split[4] && cutBasedID_split[5]; // HoverE (1), NeuIso (4), and PhoIso (5) cuts, skip ChIso (3) and SIEIE (2)
@@ -241,7 +240,7 @@ void Selector::filter_jets(){
         bool passDR_pho_jet = true;
         //loop over selected photons
         for(std::vector<int>::const_iterator phoInd = Photons.begin(); phoInd != Photons.end(); phoInd++) {
-            if (dR(eta, phi, tree->phoEta_[*phoInd], tree->phoPhi_[*phoInd]) < 0.1) passDR_pho_jet = false;
+            if (dR(eta, phi, tree->phoEta_[*phoInd], tree->phoPhi_[*phoInd]) < 0.4) passDR_pho_jet = false;
             if (tree->event_==printEvent){
 	        cout << "       phoInd=" << *phoInd << "   dR=" << dR(eta, phi, tree->phoEta_[*phoInd], tree->phoPhi_[*phoInd]) << "  phoEta=" << tree->phoEta_[*phoInd] << "  phoPhi=" << tree->phoPhi_[*phoInd] << endl;
             }

@@ -692,7 +692,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 	if ( evtPick->passPreselEle || evtPick->passPreselMu || saveAllEntries) {
 	    if (saveCutflow && !(evtPick->passAllEle || evtPick->passAllMu) ) continue;
 	    InitVariables();
-	   // FillEvent(year);
 	    FillEvent(year); //HEM test
 
 	    if(isMC) {

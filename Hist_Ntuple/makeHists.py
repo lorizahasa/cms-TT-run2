@@ -20,7 +20,7 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
                      help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-s", "--sample", dest="sample", default="TT_tytg_M800",type='str',
                      help="Specify which sample to run on" )
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched",type='str', 
+parser.add_option("-r", "--region", dest="region", default="tty_Enriched",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--level", "--level", dest="level", default="",type='str',
                      help="Specify up/down of systematic")
@@ -69,18 +69,17 @@ toPrint("Running for Year, Channel, Sample", "%s, %s, %s"%(year, channel, sample
 outFileMainDir = "./hists"
 gROOT.SetBatch(True)
 isQCD = False
-evtWeight ="Weight_lumi"
-Pileup ="Weight_pu"
-MuEff = "Weight_mu"
-EleEff= "Weight_ele"
-Q2 = 1.0 
-Pdf = 1.0
-#Pdf = "pdfWeight"
-prefire ="Weight_prefire"
-isr = 1.
-fsr = 1.
-btagWeight="Weight_btag"
-PhoEff= "Weight_pho"
+w_lumi ="Weight_lumi"
+w_pu ="Weight_pu"
+w_mu = "Weight_mu"
+w_ele= "Weight_ele"
+w_q2 = 1.0 
+w_pdf = 1.0
+w_prefire ="Weight_prefire"
+w_isr = 1.
+w_fsr = 1.
+w_btag="Weight_btag"
+w_pho= "Weight_pho"
 histDirInFile = "%s/%s/Base"%(sample, region)
 variation = "Base"
 if "Data" in sample:
@@ -106,59 +105,59 @@ if not syst=="Base":
     toPrint("Running for systematics", syst+level)
     if syst=="Weight_pu":
         if levelUp:
-            Pileup = "Weight_pu_up"
+            w_pu = "Weight_pu_up"
         else:
-            Pileup = "Weight_pu_down"
+            w_pu = "Weight_pu_down"
     elif 'Weight_q2' in syst:
         if levelUp:
-            Q2="Weight_q2_up"
+            w_q2="Weight_q2_up"
         else:
-            Q2="Weight_q2_down"
+            w_q2="Weight_q2_down"
     elif 'Weight_pdf' in syst:
     	if levelUp:
-    		Pdf="Weight_pdf_up"
+    		w_pdf="Weight_pdf_up"
     	else:
-    		Pdf="Weight_pdf_down"
+    		w_pdf="Weight_pdf_down"
     elif 'Weight_mu' in syst:
         if levelUp:
-            MuEff = "Weight_mu_up"
+            w_mu = "Weight_mu_up"
         else:
-            MuEff = "Weight_mu_down" 
+            w_mu = "Weight_mu_down" 
     elif 'Weight_ele' in syst:
         if levelUp:
-            EleEff = "Weight_ele_up"
+            w_ele = "Weight_ele_up"
         else:
-            EleEff = "Weight_ele_down"
+            w_ele = "Weight_ele_down"
     elif 'Weight_pho' in syst:
         if levelUp:
-            PhoEff = "Weight_pho_up"
+            w_pho = "Weight_pho_up"
         else:
-            PhoEff = "Weight_pho_down"
+            w_pho = "Weight_pho_down"
     elif 'Weight_fsr' in syst:
     	if levelUp:
-    	    fsr = "Weight_fsr_up"
+    	    w_fsr = "Weight_fsr_up"
     	else:
-    	    fsr = "Weight_fsr_down"
+    	    w_fsr = "Weight_fsr_down"
     elif 'Weight_isr' in syst:
     	if levelUp:
-    	    isr = "Weight_isr_up"
+    	    w_isr = "Weight_isr_up"
     	else:
-    	    isr = "Weight_isr_down"
+    	    w_isr = "Weight_isr_down"
     elif 'Weight_prefire' in syst:
 	if levelUp:
-	    prefire = "Weight_prefire_up"
+	    w_prefire = "Weight_prefire_up"
 	else:
-	    prefire = "Weight_prefire_down"
+	    w_prefire = "Weight_prefire_down"
     elif 'Weight_btag_b' in syst:
         if levelUp:
-			btagWeight = "Weight_btag_b_up"
+			w_btag = "Weight_btag_b_up"
         else:
-			btagWeight = "Weight_btag_b_down"
+			w_btag = "Weight_btag_b_down"
     elif 'Weight_btag_l' in syst:
         if levelUp:
-			btagWeight = "Weight_btag_l_up"
+			w_btag = "Weight_btag_l_up"
         else:
-			btagWeight = "Weight_btag_l_down" 
+			w_btag = "Weight_btag_l_down" 
     else:
     	if  levelUp:
             analysisNtupleLocation = ntupleDirSyst
@@ -187,7 +186,7 @@ else:
     print "Unknown final state, options are Mu and Ele"
     sys.exit()
 
-weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s"%(evtWeight,Pileup,MuEff,EleEff,Q2,Pdf,isr,fsr,btagWeight)
+weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_pho,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire)
 #weights = "1"
 if "Data" in sample:
     weights = "1"

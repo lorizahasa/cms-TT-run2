@@ -107,6 +107,7 @@ def GetHistogramInfo():
              #"Reco_ht"              : ["Reco_ht"        , [60,0,6000], True],
              #"Reco_st"              : ["Reco_st"        , [60,0,6000], True],
              #"Reco_mass_T"          : ["Reco_mass_T"    , [60,0,6000], True],
+             "Weight_pho"               : ["Weight_pho"             , [30,0.0,1.5], True],
              }
     return hDictTemp
     #return hDict 
