@@ -1339,6 +1339,7 @@ void makeNtuple::FillEvent(std::string year)
 	double pdfMean = 0.;
 	for (int j=0; j < tree->nLHEPdfWeight_; j++ ){
 	    _pdfSystWeight.push_back(tree->LHEPdfWeight_[j]);
+        std::cout<<tree->LHEPdfWeight_[j]<<std::endl;
 	    pdfMean += tree->LHEPdfWeight_[j];
 	}
 	pdfMean = pdfMean/_pdfSystWeight.size();

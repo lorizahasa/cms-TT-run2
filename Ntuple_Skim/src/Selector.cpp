@@ -124,7 +124,7 @@ void Selector::filter_electrons(){
 
         bool eleSel = (passEtaEBEEGap && 
                        absEta <= 2.2 &&
-                       pt >= 20.0 &&
+                       pt >= 50.0 &&
                        eleMiniIso <= 0.1 &&
                        passTightID);
         bool looseSel = (passEtaEBEEGap && 

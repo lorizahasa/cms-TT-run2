@@ -186,6 +186,8 @@ else:
     print "Unknown final state, options are Mu and Ele"
     sys.exit()
 
+if "tt_Enriched" in region:
+    w_pho = "1.0"
 weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_pho,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire)
 #weights = "1"
 if "Data" in sample:

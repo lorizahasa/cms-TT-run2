@@ -51,9 +51,9 @@ vector<double> ElectronSF::getEleSFs(double pt, double eta, int systLevel, bool 
         cout<<"----------------------------"<<endl;
         cout << "Electron Scale Factors: " << endl;
         cout<<  "    pt   = " <<pt<<endl;
-        cout<<  "    eta   = " <<eta<<endl;
+        cout<<  "    eta  = " <<eta<<endl;
         cout << "    ID   = " << idSF << endl;
-        cout << "    Iso  = " << recoSF << endl;
+        cout << "    Reco = " << recoSF << endl;
         cout << "    Trig = " << trigSF << endl;
         cout << "    Total= " << idSF*recoSF*trigSF << endl;
     }
