@@ -140,7 +140,7 @@ void Selector::filter_electrons(){
         } 
     }
 }
-//https://twiki.cern.ch/twiki/bin/view/CMS/CutBasedPhotonIdentificationRun2
+//https://twiki.cern.ch/twiki/bin/view/CMS/MultivariatePhotonIdentificationRun2
 void Selector::filter_photons(){
     if (tree->event_==printEvent){
 	    cout << "Found Event Staring Photons" << endl;
@@ -151,12 +151,6 @@ void Selector::filter_photons(){
         double eta = tree->phoEta_[phoInd];
         double absEta = TMath::Abs(eta);
         double phi = tree->phoPhi_[phoInd];
-        bool isEB = tree->phoIsEB_[phoInd];
-        bool isEE = tree->phoIsEE_[phoInd];
-        uint photonID = tree->phoIDcutbased_[phoInd];
-        bool passMediumPhotonID = photonID >= 2; //0:fail, >=1 (loose), >=2 (medium), ==3 (tight) 
-        double phoPFRelIso = tree->phoPFRelIso_[phoInd];
-        double phoPFRelChIso = tree->phoPFRelChIso_[phoInd];
         bool passDR_lep_pho = true;
         //loop over selected electrons
         for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
@@ -166,17 +160,19 @@ void Selector::filter_photons(){
         for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
 	    if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < 0.4) passDR_lep_pho = false;
         }
+        bool passPhoLooseID = tree->phoMVAId_[phoInd] >=0.42;//tight ID, loose (>=-0.02)
         bool hasPixelSeed = tree->phoPixelSeed_[phoInd];
         bool phoPresel = (et >= 20.0 &&                          
                           absEta <= 1.4442 &&
+                          !hasPixelSeed &&
                           passDR_lep_pho
 			  );
         vector<bool> cutBasedID_split = parsePhotonVIDCuts(tree->phoVidWPBitmap_[phoInd], 2);
         bool passMediumIDNoChIsoOrSIEIE = cutBasedID_split[1] && cutBasedID_split[4] && cutBasedID_split[5]; // HoverE (1), NeuIso (4), and PhoIso (5) cuts, skip ChIso (3) and SIEIE (2)
-        if(phoPresel && passMediumPhotonID) Photons.push_back(phoInd);
+        if(phoPresel && passPhoLooseID) Photons.push_back(phoInd);
         if(phoPresel && passMediumIDNoChIsoOrSIEIE) LoosePhotons.push_back(phoInd);
         if (tree->event_==printEvent){
-            cout << "-- " << phoInd << " pt="<<et<< " eta="<<eta<< " phi="<<phi<<"presel="<< phoPresel<< " drlepgamma="<<passDR_lep_pho<< " medID="<<passMediumPhotonID<<endl;
+            cout << "-- " << phoInd << " pt="<<et<< " eta="<<eta<< " phi="<<phi<<"presel="<< phoPresel<< " drlepgamma="<<passDR_lep_pho<< " medID="<<passPhoLooseID<<endl;
         } 
     }
 }

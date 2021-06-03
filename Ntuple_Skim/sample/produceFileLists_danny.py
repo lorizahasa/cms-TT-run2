@@ -42,8 +42,7 @@ for year in [2016,2017,2018]:
         sType = '%s%i/%s_%i'%(directory, year, s,year)
         sType_ext = '%s%i/%s_ext'%(directory, year, s)
         for f in fileList:
-            if f.startswith(sType) or f.startswith(sType_ext) and "ext" not in f:
-            #if f.startswith(sType) or f.startswith(sType_ext):
+            if f.startswith(sType) or f.startswith(sType_ext):
                 #print(s,f)
                 # if '%s_Pt'%s in f: continue
                 # if '%s_Tune'%s in f: continue
