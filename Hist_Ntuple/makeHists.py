@@ -264,8 +264,8 @@ for h in histograms:
         isRebin = False
     if isRebin:
         if "_pt" in h.GetName() or '_met' in h.GetName():
-            halfBins = numpy.arange(0,500,20.)
-            restBins = numpy.array([600.,1000.,2000.])
+            halfBins = numpy.arange(0,600,40.)
+            restBins = numpy.array([700.,1000.,2000.])
             newBins  = numpy.concatenate((halfBins, restBins), axis=None)
         elif "_chi2" in h.GetName():
             halfBins = numpy.arange(0,300,20.)
@@ -276,8 +276,8 @@ for h in histograms:
             restBins = numpy.array([1800.,2100.,2500.,3000.,6000.])
             newBins  = numpy.concatenate((halfBins, restBins), axis=None)
         else:
-            halfBins = numpy.arange(0,2100,100.)
-            restBins = numpy.array([2200.,2500.,2900.,3400.,4000.,6000.])
+            halfBins = numpy.arange(0,2200,200.)
+            restBins = numpy.array([2400.,2800.,3600.,4800.,6000.])
             newBins  = numpy.concatenate((halfBins, restBins), axis=None)
         hNew = h.Rebin(len(newBins) - 1, h.GetName(), newBins)
         hNew.Write()

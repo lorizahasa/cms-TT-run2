@@ -28,8 +28,6 @@ def getBkgBaseHists(fileDict, hName, CR):
         except Exception:
             print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(fileDict[sample], hPath))
             sys.exit()
-        if "TTGamma" in sample:
-            hist.Scale(0.75)
         bkgHists.append(hist)
     return bkgHists
 

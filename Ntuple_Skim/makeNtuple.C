@@ -457,7 +457,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 			       "weight/MuEleGammaSF/ele2016/EGM2D_BtoH_GT20GeV_RecoSF_Legacy2016.root",
 			       "weight/MuEleGammaSF/ele2016/sf_ele_2016_trig_v5.root");
 	
-	phoSF = new PhotonSF("weight/MuEleGammaSF/pho2016/2016_PhotonsMVAwp80.root",
+	phoSF = new PhotonSF("weight/MuEleGammaSF/pho2016/2016_PhotonsMVAwp90.root",
 			     "weight/MuEleGammaSF/pho2016/ScalingFactors_80X_Summer16.root",
 			     2016);
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
@@ -476,7 +476,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 			       "weight/MuEleGammaSF/ele2017/sf_ele_2017_trig_v5.root");
 
 	
-	phoSF = new PhotonSF("weight/MuEleGammaSF/pho2017/2017_PhotonsMVAwp80.root",
+	phoSF = new PhotonSF("weight/MuEleGammaSF/pho2017/2017_PhotonsMVAwp90.root",
 			     "weight/MuEleGammaSF/pho2017/PixelSeed_ScaleFactors_2017.root",
 			     2017);
 	
@@ -499,7 +499,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 			       "weight/MuEleGammaSF/ele2018/sf_ele_2018_trig_v5.root");
 
 
-	phoSF = new PhotonSF("weight/MuEleGammaSF/pho2018/2018_PhotonsMVAwp80.root",
+	phoSF = new PhotonSF("weight/MuEleGammaSF/pho2018/2018_PhotonsMVAwp90.root",
 			     "weight/MuEleGammaSF/pho2018/HasPix_2018.root",
 			     2018);
 

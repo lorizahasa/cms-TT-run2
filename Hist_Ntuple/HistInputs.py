@@ -48,13 +48,14 @@ SystLevels.append("Down")
 
 Regions = {}
 Regions['tt_Enriched']              = "Jet_size >=4 && Jet_b_size >=2 && Photon_size==0"
-Regions['tty_Enriched']             = "Jet_size ==4 && Jet_b_size >=2 && Photon_size==1 && FatJet_size==0"
+Regions['tty_Enriched']             = "Jet_size >=4 && Jet_b_size >=2 && Photon_size==1"
+###Regions['tty_Enriched']             = "Jet_size ==4 && Jet_b_size >=2 && Photon_size==1 && FatJet_size==0"
 #Regions['ttyg_Enriched']            = "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1"
 
 #Regions['ttyg_Enriched_SR']         = "((Jet_size>=5 && FatJet_size==0) || (Jet_size>=2 && FatJet_size==1)) && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100"
 #Regions['ttyg_Enriched_SR_Resolved']= "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100 && FatJet_size ==0"
 #Regions['ttyg_Enriched_SR_Boosted'] = "Jet_size >=2 && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100 && FatJet_size >=1"
 
-Regions['ttyg_Enriched_CR']         = "((Jet_size>=5 && FatJet_size==0) || (Jet_size>=2 && FatJet_size==1)) && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75"
+#Regions['ttyg_Enriched_CR']         = "((Jet_size>=5 && FatJet_size==0) || (Jet_size>=2 && FatJet_size==1)) && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75"
 #Regions['ttyg_Enriched_CR_Resolved']= "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75 && FatJet_size ==0"
 #Regions['ttyg_Enriched_CR_Boosted'] = "Jet_size >=2 && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75 && FatJet_size >=1"

@@ -160,19 +160,22 @@ void Selector::filter_photons(){
         for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
 	    if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < 0.4) passDR_lep_pho = false;
         }
-        bool passPhoLooseID = tree->phoMVAId_[phoInd] >=0.42;//tight ID, loose (>=-0.02)
-        bool hasPixelSeed = tree->phoPixelSeed_[phoInd];
+        //looseID >=-0.02, tightID >=0.42
+        bool passPhoId      = tree->phoMVAId_[phoInd] >=-0.02;
+        bool hasPixelSeed   = tree->phoPixelSeed_[phoInd];
+        bool phoEleVeto     = tree->phoEleVeto_[phoInd];
         bool phoPresel = (et >= 20.0 &&                          
                           absEta <= 1.4442 &&
                           !hasPixelSeed &&
+                          phoEleVeto &&
                           passDR_lep_pho
 			  );
         vector<bool> cutBasedID_split = parsePhotonVIDCuts(tree->phoVidWPBitmap_[phoInd], 2);
         bool passMediumIDNoChIsoOrSIEIE = cutBasedID_split[1] && cutBasedID_split[4] && cutBasedID_split[5]; // HoverE (1), NeuIso (4), and PhoIso (5) cuts, skip ChIso (3) and SIEIE (2)
-        if(phoPresel && passPhoLooseID) Photons.push_back(phoInd);
+        if(phoPresel && passPhoId) Photons.push_back(phoInd);
         if(phoPresel && passMediumIDNoChIsoOrSIEIE) LoosePhotons.push_back(phoInd);
         if (tree->event_==printEvent){
-            cout << "-- " << phoInd << " pt="<<et<< " eta="<<eta<< " phi="<<phi<<"presel="<< phoPresel<< " drlepgamma="<<passDR_lep_pho<< " medID="<<passPhoLooseID<<endl;
+            cout << "-- " << phoInd << " pt="<<et<< " eta="<<eta<< " phi="<<phi<<"presel="<< phoPresel<< " drlepgamma="<<passDR_lep_pho<< " medID="<<passPhoId<<endl;
         } 
     }
 }
