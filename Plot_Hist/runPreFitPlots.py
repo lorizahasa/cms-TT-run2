@@ -16,12 +16,12 @@ texFile = open("tex/preFitPlot.tex", "w")
 #texFile.write("\\begin{document}\n")
 allPlotPath = []
 allPlotName = []
-for r in Regions.keys():
-    for plot in allHistList:
-        print "================================="
-        print "Making plot for: ", plot
-        print "================================="
-        for d, c in itertools.product(Decay, Channel):
+for plot in allHistList:
+    print "================================="
+    print "Making plot for: ", plot
+    print "================================="
+    for d, c in itertools.product(Decay, Channel):
+        for r in Regions.keys():
             for y in Year:
                 args1 = "-y %s -d %s -c %s --hist %s -r %s "%(y, d, c, plot, r)
                 if "Mu" in c and "Ele" in plot:
@@ -30,7 +30,7 @@ for r in Regions.keys():
                     continue
                 if "Resolved" in r and "FatJet" in plot:
                     continue
-                os.system("python preFitPlots.py %s"%args1)
+                #os.system("python preFitPlots.py %s"%args1)
                 plotDir  = "%s/Plot_Hist/%s/%s/%s/%s"%(condorHistDir, y, d, c, r)
                 plotName  = "%s_%s_%s"%(plot, y, c)
                 plotPath = "%s/%s.pdf"%(plotDir, plotName)

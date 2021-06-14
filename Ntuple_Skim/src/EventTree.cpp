@@ -350,18 +350,20 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 	
     chain->SetBranchStatus("Photon_mvaID",1);
     chain->SetBranchAddress("Photon_mvaID", &phoMVAId_);
+	chain->SetBranchStatus("Photon_mvaID_Fall17V1p1",1);
+	chain->SetBranchAddress("Photon_mvaID_Fall17V1p1", &phoMVAId17V1_);
 
-    if (year=="2016"){
-	chain->SetBranchStatus("Photon_mvaID17",1);
-	chain->SetBranchAddress("Photon_mvaID17", &phoMVAId17V1_);
-    }
-    if (year=="2017" || year=="2018"){
-	chain->SetBranchStatus("Photon_mvaIDV1",1);
-	chain->SetBranchAddress("Photon_mvaIDV1", &phoMVAId17V1_);
-    }
-    
     // Gen Partons
     if (!isData_){
+    chain->SetBranchStatus("nLHEPart",1);
+    chain->SetBranchAddress("nLHEPart", &nLHEPart_);
+    
+    chain->SetBranchStatus("LHEPart_pt",1);
+    chain->SetBranchAddress("LHEPart_pt", &LHEPart_pt_);
+    
+    chain->SetBranchStatus("LHEPart_pdgId",1);
+    chain->SetBranchAddress("LHEPart_pdgId", &LHEPart_pdgId_);
+
 	chain->SetBranchStatus("nGenPart",1);
 	chain->SetBranchAddress("nGenPart", &nGenPart_);
 	

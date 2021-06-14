@@ -79,7 +79,6 @@ w_prefire ="Weight_prefire"
 w_isr = 1.
 w_fsr = 1.
 w_btag="Weight_btag"
-w_pho= "Weight_pho"
 histDirInFile = "%s/%s/Base"%(sample, region)
 variation = "Base"
 if "Data" in sample:
@@ -128,11 +127,6 @@ if not syst=="Base":
             w_ele = "Weight_ele_up"
         else:
             w_ele = "Weight_ele_down"
-    elif 'Weight_pho' in syst:
-        if levelUp:
-            w_pho = "Weight_pho_up"
-        else:
-            w_pho = "Weight_pho_down"
     elif 'Weight_fsr' in syst:
     	if levelUp:
     	    w_fsr = "Weight_fsr_up"
@@ -186,14 +180,7 @@ else:
     print "Unknown final state, options are Mu and Ele"
     sys.exit()
 
-if "tt_Enriched" in region:
-    w_pho = "1.0"
-weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_pho,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire)
-#weights = "1"
-if "Data" in sample:
-    weights = "1"
-toPrint("Extra cuts ", extraCuts)
-toPrint("Final event weight ", weights)
+weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire)
 
 #-----------------------------------------
 #Get list of empty histograms
@@ -231,7 +218,28 @@ for index, hist in enumerate(histogramsToMake, start=1):
     if ('Data' in sample or isQCD) and not hInfo[2]: continue
     toPrint("%s/%s: Filling the histogram"%(index, len(histogramsToMake)), hist)
     histograms.append(TH1F("%s"%(hist),"%s"%(hist),hInfo[1][0],hInfo[1][1],hInfo[1][2]))
-    tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, weights), "goff")
+    if "tt_Enriched" in region:
+        w_pho = "1.0"
+    else:
+        if "Pho" in hist:
+            w_pho= "Weight_pho"
+            if 'Weight_pho' in syst:
+                if levelUp:
+                    w_pho = "Weight_pho_up"
+                else:
+                    w_pho = "Weight_pho_down"
+        else:
+            w_pho= "Weight_pho[0]"
+            if 'Weight_pho' in syst:
+                if levelUp:
+                    w_pho = "Weight_pho_up[0]"
+                else:
+                    w_pho = "Weight_pho_down[0]"
+    toPrint("Extra cuts ", extraCuts)
+    toPrint("Final event weight ", "%s*%s"%(weights, w_pho))
+    tree.Draw("%s>>%s"%(hist,hist), "%s%s*%s"%(extraCuts, weights, w_pho), "goff")
+    if "Data" in sample:
+        tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, "1.0"), "goff")
 
 #-----------------------------------------
 #Final output Linux and ROOT directories
@@ -252,7 +260,6 @@ for h in histograms:
     toPrint("Integral of Histogram %s = "%h.GetName(), h.Integral())
     outputFile.cd(histDirInFile)
     gDirectory.Delete("%s;*"%(h.GetName()))
-    #h.Sumw2()
     #h.Write()
     #toBeBinned = ['_pt', '_met', '_chi2', '_st', '_ht', '_mass']
     toBeBinned = ['_st', '_ht', '_mass_T']

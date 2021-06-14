@@ -142,6 +142,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     plotLegend = TLegend(0.75,0.60,0.95,0.88); 
     decoLegend(plotLegend, 4, 0.035)
     hSumAllBkg = bkgHists[0].Clone("AllBkg")
+    hSumAllBkg.Reset()
     if isData:
         plotLegend.AddEntry(dataHist[0], SampleData["Data"][1], "PEL")
     for bkgHist in hForLegend:
@@ -161,7 +162,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     hStack.SetMinimum(0.1)
     if isLog and hSumAllBkg.Integral() !=0:
         gPad.SetLogy(True)
-        hStack.SetMaximum(100*hStack.GetMaximum())
+        hStack.SetMaximum(500*hStack.GetMaximum())
     else: 
         hStack.SetMaximum(1.3*hStack.GetMaximum())
     hStack.GetXaxis().SetTitle(xTitle)
@@ -175,7 +176,8 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     else:
         chColor = rt.kYellow+col_depth
         chName = "1 #color[%i]{e}, p_{T}^{miss}  > 20"%chColor
-    chName = "#splitline{%s}{%s}"%(chName, region)
+    #chName = "#splitline{%s}{%s}"%(chName, region)
+    chName = "%s, %s"%(chName, region)
     crName = formatCRString(Regions[region])
     chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
     extraText   = "#splitline{Preliminary}{%s}"%chCRName

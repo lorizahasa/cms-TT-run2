@@ -47,8 +47,11 @@ class EventTree{
     Float_t    pvZ_;
     Float_t    pvChi2_;
     
-
     // genParticle
+    UInt_t    nLHEPart_;
+    Float_t   LHEPart_pt_[300];
+    Int_t     LHEPart_pdgId_[300];
+
     UInt_t    nGenPart_;
     Float_t   GenPart_pt_[300];
     Float_t   GenPart_eta_[300];

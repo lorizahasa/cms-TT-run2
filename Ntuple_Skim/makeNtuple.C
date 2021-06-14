@@ -246,6 +246,14 @@ makeNtuple::makeNtuple(int ac, char** av)
     
     bool invertOverlap = false;
     bool skipOverlap = false;
+    bool lowPtTTGamma = false;
+    if (sampleType.find("TTGamma")!= std::string::npos) {
+        doOverlapInvert_TTG = true;
+        if (sampleType=="TTGamma_SingleLept" || sampleType=="TTGamma_Dilepton" || sampleType=="TTGamma_Hadronic" ){
+            lowPtTTGamma = true;
+            cout << "Inclusive TTGamma sample, will remove high Pt photon events" << endl;
+        }
+    }    
     if (sampleType.find("TTbarPowheg")!= std::string::npos) {
 	doOverlapRemoval_TT = true;
     }
@@ -548,9 +556,18 @@ makeNtuple::makeNtuple(int ac, char** av)
 	if( isMC && doOverlapInvert_TTG){
 	    //if (!overlapRemovalTT(tree, tree->event_==eventNum)){	
 	    if (!overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){
-		count_overlap++;			
-		continue;
+		    count_overlap++;			
+		    continue;
 	    }
+        // remove events with LHEPart photon with pt>100 
+        //GeV to avoid double counting with high pt samples
+        if (lowPtTTGamma){
+            for (int lheind = 0; lheind < tree->nLHEPart_; lheind++){
+                if (tree->LHEPart_pdgId_[lheind]==22 && tree->LHEPart_pt_[lheind]>100.){
+                    continue;
+                }
+            }
+        }
 	}
 
 	if( isMC && doOverlapRemoval_TT){
