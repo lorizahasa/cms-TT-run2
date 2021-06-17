@@ -3,12 +3,14 @@ import os
 import sys
 sys.path.insert(0, os.getcwd().replace("Plot_Hist", "Hist_Ntuple"))
 from HistInputs import Regions
+from HistInfo import GetHistogramInfo
 from optparse import OptionParser
 from PlotFunc import *
 from PlotInputs import *
 from PlotCMSLumi import *
 from PlotTDRStyle import *
 
+hInfo = GetHistogramInfo()
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
@@ -78,7 +80,8 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     bkgHists = getBkgBaseHists(fileDict, hName, region)
     #Stack nominal hists
     xTitle = hName
-    yTitle = "Events"
+    binWidth = (hInfo[hName][1][2] - hInfo[hName][1][1])/hInfo[hName][1][0]
+    yTitle = "Events/%s"%str(binWidth)
     hStack = THStack(hName,hName)
     hForStack = sortHists(bkgHists, False)
     lumi_13TeV = "35.9 fb^{-1}"

@@ -30,7 +30,7 @@ for plot in allHistList:
                     continue
                 if "Resolved" in r and "FatJet" in plot:
                     continue
-                #os.system("python preFitPlots.py %s"%args1)
+                os.system("python preFitPlots.py %s"%args1)
                 plotDir  = "%s/Plot_Hist/%s/%s/%s/%s"%(condorHistDir, y, d, c, r)
                 plotName  = "%s_%s_%s"%(plot, y, c)
                 plotPath = "%s/%s.pdf"%(plotDir, plotName)

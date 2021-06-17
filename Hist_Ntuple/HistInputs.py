@@ -47,7 +47,7 @@ SystLevels.append("Up")
 SystLevels.append("Down")
 
 Regions = {}
-#Regions['tt_Enriched']              = "Jet_size >=4 && Jet_b_size >=2 && Photon_size==0"
+Regions['tt_Enriched']              = "Jet_size >=4 && Jet_b_size >=2 && Photon_size==0"
 Regions['tty_Enriched']             = "Jet_size ==4 && Jet_b_size >=2 && Photon_size==1 && FatJet_size==0"
 #Regions['ttyg_Enriched']            = "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1"
 
