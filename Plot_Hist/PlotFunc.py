@@ -1,4 +1,4 @@
-from ROOT import TLegend, TGraphAsymmErrors
+from ROOT import TLegend, TGraphAsymmErrors, Double
 from PlotInputs import *
 import numpy as np
 import sys
@@ -221,3 +221,44 @@ def formatCRString(region):
     name = name.replace(">=", "#geq ")
     name = name.replace("==", "=")
     return name 
+
+def createTable(tDict, sList, nCol, tCaption):
+    table = "\\begin{minipage}[c]{0.32\\textwidth}\n"
+    table += "\\centering\n"
+    table += "\\tiny{\n"
+    col = ""
+    for i in range(nCol):
+        col += "c"
+    table += "\\begin{tabular}{%s}\n"%col
+    table += "\\hline\n"
+    #table += "Process & Yield & $\\pm$ Stat (\%) & $\\pm$ Syst (\%)\\\\\n"
+    table += "Process & Entry & Yield & Stat (Syst)\\\\\n"
+    #table += "Process & Yield & Stat (\%)\\\\\n"
+    table += "\\hline\n"
+    row = ""
+    print Samples.keys()
+    for key in sList:
+        if key in Samples.keys():
+            row += "$ %s $"%Samples[key][1].replace("#", "\\")
+        else:
+            row += key
+        for r in tDict[key]:
+            row = " %s &  %s"%(row, r)
+        row += "\\\\\n"
+    table += "%s\\hline\n"%row
+    table += "\\end{tabular}\n"
+    #table += "\\caption*{table}{%s}\n"%tCaption
+    table += "}\n"
+    table += "\\end{minipage}\n"
+    return table
+
+def getYield(h):
+    err = Double(0.0)
+    norm = h.IntegralAndError(1, h.GetNbinsX(), err)
+    entry = h.GetEntries()
+    if(entry!=0):
+        y = [int(entry), round(norm, 1), str(round(100*err/norm, 1)) + " (---)"]
+    else:
+        y = ["0", "0", "0 (---)"]
+    #y = [round(norm, 2), round(100*err/norm, 2)]
+    return y

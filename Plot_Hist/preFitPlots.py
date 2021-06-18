@@ -5,6 +5,7 @@ sys.path.insert(0, os.getcwd().replace("Plot_Hist", "Hist_Ntuple"))
 from HistInputs import Regions
 from HistInfo import GetHistogramInfo
 from optparse import OptionParser
+from collections import OrderedDict
 from PlotFunc import *
 from PlotInputs import *
 from PlotCMSLumi import *
@@ -50,7 +51,7 @@ if not os.path.exists(outPlotFullDir):
     os.makedirs(outPlotFullDir)
 
 fileDict = {}
-for sample in Samples:
+for sample in Samples.keys():
     fileName = "%s/%s.root"%(inHistFullDir,sample)
     fileDict[sample] = TFile(fileName, "read")
 
@@ -96,10 +97,14 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     if "18" in year:
         col_depth = -1
         lumi_13TeV = "59.7 fb^{-1} (#color[%i]{2018})"%(col_year + col_depth)
+    yDict = {}
+    if isData:
+        sList = ["Data"]
     for h in hForStack: 
         sampleName = h.GetName().split("_")[0]
         decoHist(h, xTitle, yTitle, SampleBkg[sampleName][0]+col_depth)
         hStack.Add(h)
+        yDict[sampleName] = getYield(h)
     hStack.Draw("HIST")
     
     #Data hists
@@ -148,21 +153,27 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     hSumAllBkg.Reset()
     if isData:
         plotLegend.AddEntry(dataHist[0], SampleData["Data"][1], "PEL")
+        yDict["Data"] = getYield(dataHist[0]) 
     for bkgHist in hForLegend:
         plotLegendName = SampleBkg[bkgHist.GetName().split("_")[0]][1] 
         plotLegend.AddEntry(bkgHist, plotLegendName, "F")
+        sList.append(bkgHist.GetName().split("_")[0])
         hSumAllBkg.Add(bkgHist)
+    sList.append("Bkgs")
     if isSig:
         for hSig in sortedSigHists:
             s0 = hSig.GetName().split("_")[0]
             s1 = hSig.GetName().split("_")[1]
             s2 = hSig.GetName().split("_")[2]
             sName = "%s_%s_%s"%(s0, s1, s2)
+            yDict[sName] = getYield(hSig) 
+            sList.append(sName)
             plotLegendName = SampleSignal[sName][1] 
             decoHistSig(hSig, xTitle, yTitle, SampleSignal[sName][0]+col_depth)
             plotLegend.AddEntry(hSig, plotLegendName, "PL")
     plotLegend.Draw()
     hStack.SetMinimum(0.1)
+    yDict["Bkgs"] = getYield(hSumAllBkg)
     if isLog and hSumAllBkg.Integral() !=0:
         gPad.SetLogy(True)
         hStack.SetMaximum(500*hStack.GetMaximum())
@@ -199,7 +210,9 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         gPad.RedrawAxis();
         hRatio = dataHist[0].Clone("hRatio")
         hRatio.Divide(hSumAllBkg)
-        decoHistRatio(hRatio, xTitle, "Obs./Exp.", chColor)
+        decoHistRatio(hRatio, xTitle, "Data/Bkgs", chColor)
+        sList.append("Data/Bkgs")
+        yDict["Data/Bkgs"] = [round(dataHist[0].Integral()/hSumAllBkg.Integral(),2), "---", " --- (---)"]
         hRatio.Draw()
         if isUnc:
             uncGraphRatio = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,True)
@@ -214,6 +227,11 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     #canvas.SaveAs("%s/%s.pdf"%(outPlotFullDir, hName))
     canvas.SaveAs("%s/%s_%s_%s.pdf"%(outPlotFullDir, hName, year, channel))
     #canvas.SaveAs("PlotFromHist/pdf/%s_%s_%s.png"%(hName, year, channel))
+    cap = "%s, %s, %s, %s"%(year, channel, region, hName)
+    table = createTable(yDict, sList, 4, cap.replace("_", "\\_"))
+    tableFile = open("%s/%s_%s_%s.tex"%(outPlotFullDir, hName, year, channel), "w")
+    print table
+    tableFile.write(table)
 
 #-----------------------------------------
 #Finally make the plot for each histogram

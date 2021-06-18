@@ -45,4 +45,5 @@ SampleLumi = SampleBkg
 #SampleLumi.update(SampleSignal)
 SampleSyst = SampleBkg.keys()
 Samples = SampleSignal.keys() + SampleBkg.keys() + SampleData.keys()
+Samples = dict(SampleSignal.items() + SampleBkg.items() + SampleData.items())
 plotList = ["Muon_pt"]

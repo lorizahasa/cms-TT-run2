@@ -30,6 +30,8 @@ for plot in allHistList:
                     continue
                 if "Resolved" in r and "FatJet" in plot:
                     continue
+                if "tt_Enriched" in r and "Photon" in plot:
+                    continue
                 os.system("python preFitPlots.py %s"%args1)
                 plotDir  = "%s/Plot_Hist/%s/%s/%s/%s"%(condorHistDir, y, d, c, r)
                 plotName  = "%s_%s_%s"%(plot, y, c)
@@ -37,7 +39,7 @@ for plot in allHistList:
                 allPlotPath.append(plotPath)
                 allPlotName.append(plot)
 
-showPerFig = 12
+showPerFig = 3
 nPage = len(allPlotPath)/showPerFig
 remainder = len(allPlotPath)%showPerFig
 if remainder != 0:
@@ -50,16 +52,22 @@ for page in np.arange(nPage):
     if remainder != 0:
         if page == nPage -1:
             showPerPage = remainder
+    #Plots
     for n in np.arange(showPerPage):
-        #texFile.write("\subfigure[%s]{\includegraphics[width=0.45\linewidth]{%s/%s}}\n"%(plotLabel, plotPath, plotName))
         perFigName.append(allPlotName[showPerFig*page + n])
         plotPath = allPlotPath[showPerFig*page + n]
         texFile.write("\includegraphics[width=0.32\linewidth]{%s}\n"%(plotPath))
     plotNames = [item for item, count in collections.Counter(perFigName).items()]
     figCap = ', '.join(plotNames)
-    texFile.write("\caption{Distribution of $%s$}\n"%(figCap.replace("_", "\_")))
-    #texFile.write("\\vfil\n")
-    texFile.write("\end{figure}\n")
+    #texFile.write("\caption{Distribution of $%s$}\n"%(figCap.replace("_", "\_")))
+    for n in np.arange(showPerPage):
+        perFigName.append(allPlotName[showPerFig*page + n])
+        plotPath = allPlotPath[showPerFig*page + n]
+        tablePath = plotPath.replace("pdf", "tex")
+        tableFile = open(tablePath)
+        for line in tableFile:
+            texFile.write(line)
     texFile.write("\n")
+    texFile.write("\end{figure}\n")
 #texFile.write("\end{document}")
 

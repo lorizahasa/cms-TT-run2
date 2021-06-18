@@ -275,9 +275,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("FatJet_deepTag_WvsQCD",1);
     chain->SetBranchAddress("FatJet_deepTag_WvsQCD", &fatJetDeepTagW_);
 
-    chain->SetBranchStatus("FatJet_hadronFlavour",1);
-    chain->SetBranchAddress("FatJet_hadronFlavour", &fatJetHadFlvr_);
-
     chain->SetBranchStatus("FatJet_electronIdx3SJ",1);
     chain->SetBranchAddress("FatJet_electronIdx3SJ", &fatJetEleIdx_);
 
@@ -287,6 +284,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     if (!isData_){
         chain->SetBranchStatus("FatJet_genJetAK8Idx",1);
         chain->SetBranchAddress("FatJet_genJetAK8Idx", &fatJetGenJetAK8Idx_);
+        chain->SetBranchStatus("FatJet_hadronFlavour",1);
+        chain->SetBranchAddress("FatJet_hadronFlavour", &fatJetHadFlvr_);
     }
 
     // // photons
@@ -471,36 +470,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 	    chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
 	    chain->SetBranchStatus("HLT_Photon200",1);
 	    chain->SetBranchAddress("HLT_Photon200",&HLT_Photon200_);
-        //L1 trigg for 2017
-	    chain->SetBranchAddress("L1_SingleEG24",&L1_SingleEG24_);
-	    chain->SetBranchAddress("L1_SingleEG26",&L1_SingleEG26_);
-	    chain->SetBranchAddress("L1_SingleEG30",&L1_SingleEG30_);
-	    chain->SetBranchAddress("L1_SingleEG32",&L1_SingleEG32_);
-	    chain->SetBranchAddress("L1_SingleEG34",&L1_SingleEG34_);
-	    chain->SetBranchAddress("L1_SingleEG36",&L1_SingleEG36_);
-	    chain->SetBranchAddress("L1_SingleEG38",&L1_SingleEG38_);
-	    chain->SetBranchAddress("L1_SingleEG40",&L1_SingleEG40_);
-	    chain->SetBranchAddress("L1_SingleEG42",&L1_SingleEG42_);
-	    chain->SetBranchAddress("L1_SingleEG45",&L1_SingleEG45_);
-	    chain->SetBranchAddress("L1_SingleEG50",&L1_SingleEG50_);
-	    chain->SetBranchAddress("L1_SingleEG34er2p1",&L1_SingleEG34er2p1_);
-	    chain->SetBranchAddress("L1_SingleEG36er2p1",&L1_SingleEG36er2p1_);
-	    chain->SetBranchAddress("L1_SingleEG38er2p1",&L1_SingleEG38er2p1_);
-	    chain->SetBranchAddress("L1_SingleIsoEG24er2p1",&L1_SingleIsoEG24er2p1_);
-	    chain->SetBranchAddress("L1_SingleIsoEG26er2p1",&L1_SingleIsoEG26er2p1_);
-	    chain->SetBranchAddress("L1_SingleIsoEG28er2p1",&L1_SingleIsoEG28er2p1_);
-	    chain->SetBranchAddress("L1_SingleIsoEG30er2p1",&L1_SingleIsoEG30er2p1_);
-	    chain->SetBranchAddress("L1_SingleIsoEG32er2p1",&L1_SingleIsoEG32er2p1_);
-	    chain->SetBranchAddress("L1_SingleIsoEG34er2p1",&L1_SingleIsoEG34er2p1_);
-	    chain->SetBranchAddress("L1_SingleIsoEG36er2p1",&L1_SingleIsoEG36er2p1_);
-	    chain->SetBranchAddress("L1_SingleIsoEG24",&L1_SingleIsoEG24_);
-	    chain->SetBranchAddress("L1_SingleIsoEG26",&L1_SingleIsoEG26_);
-	    chain->SetBranchAddress("L1_SingleIsoEG28",&L1_SingleIsoEG28_);
-	    chain->SetBranchAddress("L1_SingleIsoEG30",&L1_SingleIsoEG30_);
-	    chain->SetBranchAddress("L1_SingleIsoEG32",&L1_SingleIsoEG32_);
-	    chain->SetBranchAddress("L1_SingleIsoEG34",&L1_SingleIsoEG34_);
-	    chain->SetBranchAddress("L1_SingleIsoEG36",&L1_SingleIsoEG36_);
-	    chain->SetBranchAddress("L1_SingleIsoEG38",&L1_SingleIsoEG38_);
     }
     if (year=="2018"){
         //muons
