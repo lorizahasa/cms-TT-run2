@@ -243,5 +243,5 @@ if "SR" in region or len(region)==13:
     isRatio = False
 isSig    = True
 isUnc    = False
-isLog    = True
+isLog    = False
 makePlot(hName, region, isSig,  isData, isLog, isRatio, isUnc)

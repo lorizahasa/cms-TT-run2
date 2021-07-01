@@ -440,6 +440,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     _eleEffWeight_Do = 1.;
 
     Long64_t nEntr = tree->GetEntries();
+    nEntr = 1000;
     bool saveAllEntries = false;
     if (sampleType=="Test") {
 	if (nEntr > 20000) nEntr = 20000;
@@ -920,6 +921,7 @@ void makeNtuple::FillEvent(std::string year)
 	_evtWeight       = _lumiWeight *  tree->genWeight_; 
     }else{
 	_evtWeight       = _lumiWeight *  ((tree->genWeight_ >= 0) ? 1 : -1);  //event weight needs to be positive or negative depending on sign of genWeight (to account for mc@nlo negative weights)
+    std::cout<<tree->genWeight_<<std::endl;
     }
 
     if (_isData) {
@@ -1529,7 +1531,6 @@ float makeNtuple::getBtagSF_1a(string sysType, BTagCalibrationReader reader, boo
     if (verbose){
 	cout << "  FinalWeight="<<weight<<endl;
     }
-
     return weight;
 }
 

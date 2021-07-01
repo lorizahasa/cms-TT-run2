@@ -181,7 +181,6 @@ else:
     sys.exit()
 
 weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire)
-
 #-----------------------------------------
 #Get list of empty histograms
 #----------------------------------------

@@ -192,7 +192,8 @@ void Selector::filter_jets(){
         //tight ID for 2016 (bit 0), tightLeptVeto for 2017 (bit 1)
         int jetID_cutBit = 1;
         if (year=="2016"){ jetID_cutBit = 0; }
-        bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 && looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
+        //bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 && looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
+        bool jetID_pass = (tree->jetID_[jetInd] & 2)==2;
 
         double resolution = 0.;
         if (tree->event_==printEvent){

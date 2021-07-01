@@ -106,9 +106,10 @@ def GetHistogramInfo():
              "Jet_pt"               : ["Jet_pt"    , [30,-20,1480], True],
              "Jet_eta"             : ["Jet_eta"    , [12,-2.88,2.88], True],
              "Jet_size"             : ["Jet_size"     , [16,-0.5,15.5], True],
-             #"Jet_b_size"           : ["Jet_b_size"     , [10,-0.5,9.5], True],
-             "Photon_et"            : ["Photon_et"    , [30,-20,1180], True],
+             "Jet_b_size"           : ["Jet_b_size"     , [10,-0.5,9.5], True],
+             #"Photon_et"            : ["Photon_et"    , [30,-20,1180], True],
              "Reco_met"             : ["Reco_met"      , [30,-20,1180], True],
+             #"Weight_btag"              : ["Weight_btag"            , [100,0.0,2.0], True],
              #"Reco_ht"              : ["Reco_ht"        , [30,0,6000], True],
              #"Reco_mass_T"          : ["Reco_mass_T", [30,0,6000], True]
              }
