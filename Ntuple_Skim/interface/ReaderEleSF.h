@@ -15,7 +15,7 @@ class ElectronSF
 	recoHist = (TH2F*) recoFile->Get("EGamma_SF2D");
 
 	TFile* trigFile = TFile::Open(trig_fname.c_str(),"READ");
-	trigHist = (TH2F*) trigFile->Get("EGamma_SF2D");
+	trigHist = (TH2F*) trigFile->Get("h2D_SF");
     }
     double getEleSF(TH2F *h2, double pt, double eta, int systLevel);
     vector<double> getEleSFs(double pt, double eta, int systLevel, bool print=false);
@@ -39,7 +39,10 @@ double ElectronSF::getEleSF(TH2F *h2, double pt, double eta, int systLevel){
     //Get the scale factor and error for that bin
     double sf = h2->GetBinContent(binX, binY);
     double err = h2->GetBinError(binX, binY);
-    return sf + (systLevel -1)*err;
+    if(sf==0.0 && err==0.0)
+        return 1.0;
+    else
+        return sf + (systLevel -1)*err;
 }
 
 vector<double> ElectronSF::getEleSFs(double pt, double eta, int systLevel, bool print){
@@ -47,7 +50,8 @@ vector<double> ElectronSF::getEleSFs(double pt, double eta, int systLevel, bool 
     double recoSF   = getEleSF(recoHist, pt, eta, systLevel);//eta: -2.4, 2.4
     double trigSF   = getEleSF(trigHist, pt, eta, systLevel);
     vector<double> eleSFs {idSF*recoSF*trigSF, idSF, recoSF, trigSF};
-    if (print){ 
+    //if (print){ 
+    if (recoSF >2.0){ 
         cout<<"----------------------------"<<endl;
         cout << "Electron Scale Factors: " << endl;
         cout<<  "    pt   = " <<pt<<endl;

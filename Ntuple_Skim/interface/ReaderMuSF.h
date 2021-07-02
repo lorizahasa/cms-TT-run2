@@ -43,22 +43,24 @@ double MuonSF::getMuSF(TH2D *h2, double pt, double eta, int systLevel){
     //Get the scale factor and error for that bin
     double sf = h2->GetBinContent(binX, binY);
     double err = h2->GetBinError(binX, binY);
-    return sf + (systLevel -1)*err;
+    if (sf==0.0 && err==0.0)
+        return 1.0;
+    else
+        return sf + (systLevel -1)*err;
 }
-
 vector<double> MuonSF::getMuSFs(double pt, double eta, int systLevel, int year, bool print){
     double idSF    = 1.0;
     double isoSF   = 1.0; 
     double trigSF  = 1.0;
     if (year==2017 || year==2018){//axes are interchanged
         idSF    = getMuSF(idHist, abs(eta), pt, systLevel);//eta: 0, 2.4
-        isoSF   = getMuSF(isoHist, abs(eta), pt, systLevel);
+        isoSF   = getMuSF(isoHist, pt, abs(eta), systLevel);
     }
     else{
         idSF    = getMuSF(idHist, pt, eta, systLevel);//eta: -2.4, 2.4
-        isoSF   = getMuSF(isoHist, pt, eta, systLevel);
+        isoSF   = getMuSF(isoHist, abs(eta), pt, systLevel);
     }
-    trigSF  = getMuSF(trigHist, pt, abs(eta), systLevel);//eta: 0, 2.4
+    trigSF  = getMuSF(trigHist, abs(eta), pt, systLevel);//eta: 0, 2.4
     vector<double> muSFs {idSF*isoSF*trigSF, idSF, isoSF, trigSF};
     if (print){ 
         cout<<"----------------------------"<<endl;
