@@ -176,9 +176,11 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     yDict["Bkgs"] = getYield(hSumAllBkg)
     if isLog and hSumAllBkg.Integral() !=0:
         gPad.SetLogy(True)
-        hStack.SetMaximum(500*hStack.GetMaximum())
+        #hStack.SetMaximum(500*hStack.GetMaximum())
+        hStack.SetMaximum(500*dataHist[0].GetMaximum())
     else: 
-        hStack.SetMaximum(1.3*hStack.GetMaximum())
+        #hStack.SetMaximum(1.3*hStack.GetMaximum())
+        hStack.SetMaximum(1.5*dataHist[0].GetMaximum())
     hStack.GetXaxis().SetTitle(xTitle)
     hStack.GetYaxis().SetTitle(yTitle)
 
@@ -212,7 +214,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         hRatio.Divide(hSumAllBkg)
         decoHistRatio(hRatio, xTitle, "Data/Bkgs", chColor)
         sList.append("Data/Bkgs")
-        yDict["Data/Bkgs"] = [round(dataHist[0].Integral()/hSumAllBkg.Integral(),2), "---", " --- (---)"]
+        yDict["Data/Bkgs"] = ["---", round(dataHist[0].Integral()/hSumAllBkg.Integral(),2), " --- (---)"]
         hRatio.Draw()
         if isUnc:
             uncGraphRatio = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,True)

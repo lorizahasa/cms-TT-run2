@@ -30,7 +30,11 @@ for plot in allHistList:
                     continue
                 if "Resolved" in r and "FatJet" in plot:
                     continue
-                if "tt_Enriched" in r and "Photon" in plot:
+                if "tt_Enriched" in r and "Photon" in plot: 
+                    continue
+                if "tt_Enriched" in r and "Reco_mass" in plot:
+                    continue
+                if "tty_Enriched" in r and "Reco_mass" in plot:
                     continue
                 os.system("python preFitPlots.py %s"%args1)
                 plotDir  = "%s/Plot_Hist/%s/%s/%s/%s"%(condorHistDir, y, d, c, r)
@@ -60,13 +64,25 @@ for page in np.arange(nPage):
     plotNames = [item for item, count in collections.Counter(perFigName).items()]
     figCap = ', '.join(plotNames)
     #texFile.write("\caption{Distribution of $%s$}\n"%(figCap.replace("_", "\_")))
+    isTable = True
     for n in np.arange(showPerPage):
         perFigName.append(allPlotName[showPerFig*page + n])
         plotPath = allPlotPath[showPerFig*page + n]
         tablePath = plotPath.replace("pdf", "tex")
-        tableFile = open(tablePath)
-        for line in tableFile:
-            texFile.write(line)
+        if "Mu" in tablePath and "Ele" in tablePath:
+            isTable = False
+        if "Resolved" in tablePath and "FatJet" in tablePath:
+            isTable = False
+        if "tt_Enriched" in tablePath and "Photon" in tablePath: 
+            isTable = False
+        if "tt_Enriched" in tablePath and "Reco_mass" in tablePath:
+            isTable = False
+        if "tty_Enriched" in tablePath and "Reco_mass" in tablePath:
+            isTable = False
+        if isTable:
+            tableFile = open(tablePath)
+            for line in tableFile:
+                texFile.write(line)
     texFile.write("\n")
     texFile.write("\end{figure}\n")
 #texFile.write("\end{document}")

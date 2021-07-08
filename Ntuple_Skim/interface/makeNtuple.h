@@ -174,6 +174,9 @@ class makeNtuple {
     Float_t  _nu_pz;
     Float_t  _nu_pz_other;
     Float_t  _WtransMass;
+    Float_t  _DilepMass;
+    Float_t  _DiphoMass;
+    Float_t  _DilepDelR;
     Float_t  _Mt_blgammaMET;
     Float_t  _Mt_lgammaMET;
     Float_t  _M_bjj;
@@ -201,8 +204,24 @@ class makeNtuple {
     std::vector<float>   _phoPFRelIso;
     std::vector<float>   _phoPFRelChIso;
     std::vector<float>   _phoPFChIso;
+
+    std::vector<bool>    _phoTightID;
+    std::vector<bool>    _phoMediumID;
+    std::vector<int>     _phoGenMatchInd;
     std::vector<float>   _phoMassLepGamma;
-    std::vector<int>     _photonParentPID;
+
+    std::vector<bool>  _photonIsGenuine;
+    std::vector<bool>  _photonIsMisIDEle;
+    std::vector<bool>  _photonIsHadronicPhoton;
+    std::vector<bool>  _photonIsHadronicFake;
+
+    std::vector<bool>    _photonNoIDIsGenuine;
+    std::vector<bool>    _photonNoIDIsMisIDEle;
+    std::vector<bool>    _photonNoIDIsHadronicPhoton;
+    std::vector<bool>    _photonNoIDIsHadronicFake;
+
+    std::vector<int>   _photonParentage;
+    std::vector<int>   _photonParentPID;
 
     std::vector<float>    _phoEffWeight;
     std::vector<float>    _phoEffWeight_Up;
@@ -336,6 +355,7 @@ class makeNtuple {
     void loadBtagEff(string sampleType, string year);
     float getBtagSF_1a(string sysType, BTagCalibrationReader reader, bool verbose=false);
     vector<float> getBtagSF_1c(string sysType, BTagCalibrationReader reader, vector<float> &btagSF);
+    void findPhotonCategory(int phoInd, EventTree* tree, bool* genuine, bool *misIDele, bool *hadronicphoton, bool* hadronicfake, bool* puPhoton, bool verbose=false);
     /* int findPhotonParentage(int phoInd, EventTree* tree); */
     int findPhotonGenMatch(int phoInd, EventTree* tree);
 
@@ -444,8 +464,19 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Photon_h_over_e"    , &_phoHoverE ); 
     outputTree->Branch("Photon_sieie"     , &_phoSIEIE ); 
     outputTree->Branch("Photon_iso"   , &_phoPFChIso ); 
-    outputTree->Branch("Photon_loose_size"  , &_nLoosePho ); 
+
+    outputTree->Branch("Photon_genuine"             , &_photonIsGenuine            );
+    outputTree->Branch("Photon_misid_ele"            , &_photonIsMisIDEle           );
+    outputTree->Branch("Photon_hadronic_photon"        , &_photonIsHadronicPhoton     );
+    outputTree->Branch("Photon_hadronic_fake"        , &_photonIsHadronicFake       );
+    outputTree->Branch("Photon_noid_genuine"            , &_photonNoIDIsGenuine            );
+    outputTree->Branch("Photon_noid_misid_ele"          , &_photonNoIDIsMisIDEle           );
+    outputTree->Branch("Photon_noid_hadronic_photon"           , &_photonNoIDIsHadronicPhoton     );
+    outputTree->Branch("Photon_noid_hadronic_fake"      , &_photonNoIDIsHadronicFake       );
     outputTree->Branch("Photon_parent_pid" , &_photonParentPID);
+    outputTree->Branch("photon_parentage"        , &_photonParentage       );
+    outputTree->Branch("Photon_loose_size"  , &_nLoosePho ); 
+
     //jets
     outputTree->Branch("Jet_size"   , &_nJet ); 
     outputTree->Branch("Jet_b_size"  , &_nBJet ); 
@@ -479,6 +510,9 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Reco_ht"     , &_HT ); 
     outputTree->Branch("Reco_st"     , &_ST ); 
     outputTree->Branch("Reco_chi2"  , &_chi2 );
+    outputTree->Branch("Reco_mass_dipho"                  , &_DiphoMass                   ); 
+    outputTree->Branch("Reco_mass_dilep"                  , &_DilepMass                   );
+    outputTree->Branch("Reco_dr_dilep"                  , &_DilepDelR                   );
     outputTree->Branch("Reco_mass_jj"  , &_M_jj );
     outputTree->Branch("Reco_mass_t_had"  , &_TopHad_mass );
     outputTree->Branch("Reco_mass_t_lep"  , &_TopLep_mass );
@@ -561,6 +595,9 @@ void makeNtuple::InitVariables()
     _chi2   = -9999;
     _HT		 = -9999;
     _ST		 = -9999;
+    _DilepMass   = -9999;
+    _DilepDelR   = -9999;
+    _DiphoMass       = -9999;
 
     _nPho		 = -9999;
     _nEle		     = -9999;
@@ -641,6 +678,16 @@ void makeNtuple::InitVariables()
 
     _photonParentPID.clear();
     _phoMassLepGamma.clear();
+
+    _photonIsGenuine.clear();
+    _photonIsMisIDEle.clear();
+    _photonIsHadronicPhoton.clear();
+    _photonIsHadronicFake.clear();
+
+    _photonNoIDIsGenuine.clear();
+    _photonNoIDIsMisIDEle.clear();
+    _photonNoIDIsHadronicPhoton.clear();
+    _photonNoIDIsHadronicFake.clear();
 
     _jetPt.clear();
     /* _jetEn.clear(); */

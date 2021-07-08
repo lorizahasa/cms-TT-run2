@@ -50,8 +50,7 @@ vector<double> ElectronSF::getEleSFs(double pt, double eta, int systLevel, bool 
     double recoSF   = getEleSF(recoHist, pt, eta, systLevel);//eta: -2.4, 2.4
     double trigSF   = getEleSF(trigHist, pt, eta, systLevel);
     vector<double> eleSFs {idSF*recoSF*trigSF, idSF, recoSF, trigSF};
-    //if (print){ 
-    if (recoSF >2.0){ 
+    if (print){ 
         cout<<"----------------------------"<<endl;
         cout << "Electron Scale Factors: " << endl;
         cout<<  "    pt   = " <<pt<<endl;

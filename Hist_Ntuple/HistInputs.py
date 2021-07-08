@@ -4,7 +4,7 @@ condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple"
 Years 	      =	["2016", "2017", "2018"]
 #Years 	      =	["2018"]
 Channels 	  =	["Mu", "Ele"]
-#Channels 	  =	["Ele"]
+#Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 
 Samples = []
@@ -47,9 +47,14 @@ SystLevels.append("Up")
 SystLevels.append("Down")
 
 Regions = {}
-Regions['tt_Enriched']              = "Jet_size >=4 && Jet_b_size >=2 && Photon_size==0"
-Regions['tty_Enriched']             = "Jet_size ==4 && Jet_b_size >=3 && Photon_size==1" 
-#Regions['tty_Enriched']             = "Jet_size ==4 && Jet_b_size >=2 && Photon_size==1 && FatJet_size==0"
+Regions['tty_Enriched_e2j_e2b']             = "Jet_size ==2 && Jet_b_size ==2 && Photon_size==1 && FatJet_size==0"
+Regions['tty_Enriched_e4j_a0b']             = "Jet_size ==4 && Jet_b_size >=0 && Photon_size==1 && FatJet_size==0"
+Regions['tty_Enriched_e4j_a1b']             = "Jet_size ==4 && Jet_b_size >=1 && Photon_size==1 && FatJet_size==0"
+Regions['tty_Enriched_e4j_a2b']             = "Jet_size ==4 && Jet_b_size >=2 && Photon_size==1 && FatJet_size==0"
+Regions['tty_Enriched_e4j_a3b']             = "Jet_size ==4 && Jet_b_size >=3 && Photon_size==1 && FatJet_size==0"
+
+#Regions['tt_Enriched']              = "Jet_size >=4 && Jet_b_size >=1 && Photon_size==0"
+#Regions['tty_Enriched']             = "Jet_size ==4 && Jet_b_size >=0 && Photon_size==1 && FatJet_size==0"
 #Regions['ttyg_Enriched']            = "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1"
 
 #Regions['ttyg_Enriched_SR']         = "((Jet_size>=5 && FatJet_size==0) || (Jet_size>=2 && FatJet_size==1)) && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100"
