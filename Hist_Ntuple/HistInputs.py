@@ -46,12 +46,17 @@ SystLevels = []
 SystLevels.append("Up")
 SystLevels.append("Down")
 
+phoCat = {}
+phoCat["genuine"]          = "Photon_genuine"         
+phoCat["misid_ele"]        = "Photon_misid_ele"      
+phoCat["hadronic_photon"]  = "Photon_hadronic_photon"
+phoCat["hadronic_fake"]    = "Photon_hadronic_fake"  
+
 Regions = {}
 Regions['tty_Enriched_e2j_e2b']             = "Jet_size ==2 && Jet_b_size ==2 && Photon_size==1 && FatJet_size==0"
-Regions['tty_Enriched_e4j_a0b']             = "Jet_size ==4 && Jet_b_size >=0 && Photon_size==1 && FatJet_size==0"
+Regions['tty_Enriched_e4j_e0b']             = "Jet_size ==4 && Jet_b_size ==0 && Photon_size==1 && FatJet_size==0"
 Regions['tty_Enriched_e4j_a1b']             = "Jet_size ==4 && Jet_b_size >=1 && Photon_size==1 && FatJet_size==0"
 Regions['tty_Enriched_e4j_a2b']             = "Jet_size ==4 && Jet_b_size >=2 && Photon_size==1 && FatJet_size==0"
-Regions['tty_Enriched_e4j_a3b']             = "Jet_size ==4 && Jet_b_size >=3 && Photon_size==1 && FatJet_size==0"
 
 #Regions['tt_Enriched']              = "Jet_size >=4 && Jet_b_size >=1 && Photon_size==0"
 #Regions['tty_Enriched']             = "Jet_size ==4 && Jet_b_size >=0 && Photon_size==1 && FatJet_size==0"

@@ -4,7 +4,7 @@ import os
 sys.path.insert(0, os.getcwd()+"/sample")
 from optparse import OptionParser
 from HistInfo import *
-from HistInputs import Regions
+from HistInputs import Regions, phoCat
 import numpy
 
 from SampleInfo import *
@@ -30,6 +30,8 @@ parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='
                      help="which histogram to be plottted")
 parser.add_option("--allHists","--allHists", dest="makeAllHists",action="store_true",default=False,
                      help="Make full list of hists in histogramDict" )
+parser.add_option("--isPhoCat","--isPhoCat", dest="isPhoCat",action="store_true",default=True,
+                     help="Make full list of hists in histogramDict" )
 (options, args) = parser.parse_args()
 year = options.year
 decayMode = options.decayMode
@@ -38,6 +40,7 @@ sample = options.sample
 region = options.region
 level =options.level
 makeAllHists = options.makeAllHists
+isPhoCat = options.isPhoCat
 print parser.parse_args()
 samples = getSamples(year)
 
@@ -215,8 +218,6 @@ print "Number of events:", tree.GetEntries()
 for index, hist in enumerate(histogramsToMake, start=1):
     hInfo = histogramInfo[hist]
     if ('Data' in sample or isQCD) and not hInfo[2]: continue
-    toPrint("%s/%s: Filling the histogram"%(index, len(histogramsToMake)), hist)
-    histograms.append(TH1F("%s"%(hist),"%s"%(hist),hInfo[1][0],hInfo[1][1],hInfo[1][2]))
     if "tt_Enriched" in region:
         w_pho = "1.0"
     else:
@@ -234,11 +235,20 @@ for index, hist in enumerate(histogramsToMake, start=1):
                     w_pho = "Weight_pho_up[0]"
                 else:
                     w_pho = "Weight_pho_down[0]"
-    toPrint("Extra cuts ", extraCuts)
     toPrint("Final event weight ", "%s*%s"%(weights, w_pho))
-    tree.Draw("%s>>%s"%(hist,hist), "%s%s*%s"%(extraCuts, weights, w_pho), "goff")
+    toPrint("%s/%s: Filling the histogram"%(index, len(histogramsToMake)), hist)
+    toPrint("Extra cuts ", extraCuts)
+    histograms.append(TH1F("%s"%(hist),"%s"%(hist),hInfo[1][0],hInfo[1][1],hInfo[1][2]))
     if "Data" in sample:
         tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, "1.0"), "goff")
+    else:
+        tree.Draw("%s>>%s"%(hist,hist), "%s%s*%s"%(extraCuts, weights, w_pho), "goff")
+        if isPhoCat and "tty" in region:
+            for cat in phoCat.keys():
+                histograms.append(TH1F("%s_%s"%(hist, cat),"%s_%s"%(hist, cat),hInfo[1][0],hInfo[1][1],hInfo[1][2]))
+                extraCuts_ = extraCuts.replace(")", " && %s[0] )"%phoCat[cat])
+                toPrint("Extra cuts ", extraCuts_)
+                tree.Draw("%s>>%s_%s"%(hist,hist,cat), "%s%s*%s"%(extraCuts_, weights, w_pho), "goff")
 
 #-----------------------------------------
 #Final output Linux and ROOT directories

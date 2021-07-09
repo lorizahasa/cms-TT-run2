@@ -47,3 +47,10 @@ SampleSyst = SampleBkg.keys()
 Samples = SampleSignal.keys() + SampleBkg.keys() + SampleData.keys()
 Samples = dict(SampleSignal.items() + SampleBkg.items() + SampleData.items())
 plotList = ["Muon_pt"]
+
+SamplePhoCat = {
+         "genuine"           : [rt.kPlum,       "Genuine #gamma"],
+         "misid_ele"         : [rt.kMint,       "Misid. e"],
+         "hadronic_photon"   : [rt.kGreyScale,     "Nonprompt #gamma"],
+         "hadronic_fake"     : [rt.kBeach,     "Multijet"],
+         }

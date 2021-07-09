@@ -1644,7 +1644,6 @@ void makeNtuple::findPhotonCategory(int phoInd, EventTree* tree, bool* genuine, 
     }
 
     bool parentagePass = maxPDGID < 37;
-
     // bool parentagePass = (fabs(tree->mcMomPID->at(mcMatchInd))<37 || tree->mcMomPID->at(mcMatchInd) == -999);
 
     if (mcMatchPDGID==22){

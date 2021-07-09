@@ -2,7 +2,7 @@ from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGrap
 import os
 import sys
 sys.path.insert(0, os.getcwd().replace("Plot_Hist", "Hist_Ntuple"))
-from HistInputs import Regions
+from HistInputs import Regions, phoCat
 from HistInfo import GetHistogramInfo
 from optparse import OptionParser
 from collections import OrderedDict
@@ -78,13 +78,25 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     else:
         canvas.cd()
     #Get nominal histograms
-    bkgHists = getBkgBaseHists(fileDict, hName, region)
+    allBkgHists = {}
+    allBkgHists[hName] = getBkgBaseHists(fileDict, hName, region)
+    catBkgHists = []
+    for cat in phoCat.keys():
+        newName = "%s_%s"%(hName, cat)
+        allBkgHists[newName] = getBkgBaseHists(fileDict, newName, region)
+        hCat = allBkgHists[newName][0].Clone(newName)
+        hCat.Reset()
+        for bkgs in allBkgHists[newName]:
+            hCat.Add(bkgs)
+        catBkgHists.append(hCat)
+
     #Stack nominal hists
     xTitle = hName
     binWidth = (hInfo[hName][1][2] - hInfo[hName][1][1])/hInfo[hName][1][0]
     yTitle = "Events/%s"%str(binWidth)
     hStack = THStack(hName,hName)
-    hForStack = sortHists(bkgHists, False)
+    hForStack = sortHists(catBkgHists, False)
+    hForTable = sortHists(allBkgHists[hName], True)
     lumi_13TeV = "35.9 fb^{-1}"
     col_depth = 0
     col_year = SampleBkg["TTGamma"][0]
@@ -101,10 +113,10 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     if isData:
         sList = ["Data"]
     for h in hForStack: 
-        sampleName = h.GetName().split("_")[0]
-        decoHist(h, xTitle, yTitle, SampleBkg[sampleName][0]+col_depth)
-        hStack.Add(h)
-        yDict[sampleName] = getYield(h)
+        for cat in phoCat.keys():
+            if cat in h.GetName():
+                decoHist(h, xTitle, yTitle, SamplePhoCat[cat][0]+col_depth)
+                hStack.Add(h)
     hStack.Draw("HIST")
     
     #Data hists
@@ -116,6 +128,11 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     
     #Signal hists
     if isSig:
+        allSigHists = {}
+        allSigHists[hName] = getSigBaseHists(fileDict, hName, region)
+        for cat in phoCat.keys():
+            newName = "%s_%s"%(hName, cat)
+            allSigHists[newName] = getSigBaseHists(fileDict, newName, region)
         sigHists  = getSigBaseHists(fileDict, hName, region)
         sortedSigHists = sortHists(sigHists, True)
         for hSig in sigHists:
@@ -145,35 +162,39 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
             uncGraphTop.Draw(" E2 same ");
 
     #Draw plotLegend
-    hForLegend = sortHists(bkgHists, True)
+    hForLegend = sortHists(catBkgHists, True)
     #plotLegend = TLegend(0.55,0.60,0.92,0.88); for 3 col
     plotLegend = TLegend(0.75,0.55,0.95,0.88); 
     decoLegend(plotLegend, 4, 0.035)
-    hSumAllBkg = bkgHists[0].Clone("AllBkg")
+    hSumAllBkg = catBkgHists[0].Clone("AllBkg")
     hSumAllBkg.Reset()
     if isData:
         plotLegend.AddEntry(dataHist[0], SampleData["Data"][1], "PEL")
-        yDict["Data"] = getYield(dataHist[0]) 
-    for bkgHist in hForLegend:
-        plotLegendName = SampleBkg[bkgHist.GetName().split("_")[0]][1] 
-        plotLegend.AddEntry(bkgHist, plotLegendName, "F")
-        sList.append(bkgHist.GetName().split("_")[0])
-        hSumAllBkg.Add(bkgHist)
+        yDict["Data"] = [round(dataHist[0].Integral()), "---", "---", "---", "---"]
+    for h in hForLegend:
+        for cat in phoCat.keys():
+            if cat in h.GetName():
+                plotLegend.AddEntry(h, SamplePhoCat[cat][1], "F")
+        hSumAllBkg.Add(h)
+    for h in hForTable:
+        sName = h.GetName().split("_")[0]
+        sList.append(sName)
+        yDict[sName] = getRowCat(sName, hName, allBkgHists, phoCat)
     sList.append("Bkgs")
+    yDict["Bkgs"] = getRowCatBkgs(hName, hSumAllBkg, catBkgHists, phoCat)
     if isSig:
         for hSig in sortedSigHists:
             s0 = hSig.GetName().split("_")[0]
             s1 = hSig.GetName().split("_")[1]
             s2 = hSig.GetName().split("_")[2]
             sName = "%s_%s_%s"%(s0, s1, s2)
-            yDict[sName] = getYield(hSig) 
             sList.append(sName)
+            yDict[sName] = getRowCat(sName, hName, allSigHists, phoCat) 
             plotLegendName = SampleSignal[sName][1] 
             decoHistSig(hSig, xTitle, yTitle, SampleSignal[sName][0]+col_depth)
             plotLegend.AddEntry(hSig, plotLegendName, "PL")
     plotLegend.Draw()
     hStack.SetMinimum(0.1)
-    yDict["Bkgs"] = getYield(hSumAllBkg)
     if isLog and hSumAllBkg.Integral() !=0:
         gPad.SetLogy(True)
         #hStack.SetMaximum(500*hStack.GetMaximum())
@@ -214,7 +235,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         hRatio.Divide(hSumAllBkg)
         decoHistRatio(hRatio, xTitle, "Data/Bkgs", chColor)
         sList.append("Data/Bkgs")
-        yDict["Data/Bkgs"] = ["---", round(dataHist[0].Integral()/hSumAllBkg.Integral(),2), " --- (---)"]
+        yDict["Data/Bkgs"] = [round(dataHist[0].Integral()/hSumAllBkg.Integral(),2), "---", "---", "---", "---"] 
         hRatio.Draw()
         if isUnc:
             uncGraphRatio = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,True)
@@ -227,12 +248,14 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         baseLine.Draw("SAME");
         hRatio.Draw("same")
     #canvas.SaveAs("%s/%s.pdf"%(outPlotFullDir, hName))
-    canvas.SaveAs("%s/%s_%s_%s.pdf"%(outPlotFullDir, hName, year, channel))
+    canvas.SaveAs("%s/%s_%s_%sCat.pdf"%(outPlotFullDir, hName, year, channel))
     #canvas.SaveAs("PlotFromHist/pdf/%s_%s_%s.png"%(hName, year, channel))
     cap = "%s, %s, %s, %s"%(year, channel, region, hName)
-    tHead = "Process & Entry & Yield & Stat (Syst)\\%\\\\\n" 
-    table = createTable(yDict, sList, 4, tHead, cap.replace("_", "\\_"))
-    tableFile = open("%s/%s_%s_%s.tex"%(outPlotFullDir, hName, year, channel), "w")
+    #tHead = "Process & Yield & Genuine $\\gamma$ & Nonprompt $\\gamma$ & Misid. e & Multijet \\\\\n" 
+    tHead = "Process & Yield & Gen. $\\gamma$ & N. $\\gamma$ & M. e & Multi. \\\\\n" 
+    tHead += " &  & (\%) & (\%) & (\%) & (\%)  \\\\\n" 
+    table = createTable(yDict, sList, 6, tHead, cap.replace("_", "\\_"))
+    tableFile = open("%s/%s_%s_%sCat.tex"%(outPlotFullDir, hName, year, channel), "w")
     print table
     tableFile.write(table)
 

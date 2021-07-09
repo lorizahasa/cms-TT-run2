@@ -222,7 +222,7 @@ def formatCRString(region):
     name = name.replace("==", "=")
     return name 
 
-def createTable(tDict, sList, nCol, tCaption):
+def createTable(tDict, sList, nCol, tHead, tCaption):
     table = "\\begin{minipage}[c]{0.32\\textwidth}\n"
     table += "\\centering\n"
     table += "\\tiny{\n"
@@ -231,12 +231,10 @@ def createTable(tDict, sList, nCol, tCaption):
         col += "c"
     table += "\\begin{tabular}{%s}\n"%col
     table += "\\hline\n"
-    #table += "Process & Yield & $\\pm$ Stat (\%) & $\\pm$ Syst (\%)\\\\\n"
-    table += "Process & Entry & Yield & Stat (Syst)\\\\\n"
-    #table += "Process & Yield & Stat (\%)\\\\\n"
+    table += tHead 
     table += "\\hline\n"
     row = ""
-    print Samples.keys()
+    #print Samples.keys()
     for key in sList:
         if key in Samples.keys():
             row += "$ %s $"%Samples[key][1].replace("#", "\\")
@@ -262,3 +260,39 @@ def getYield(h):
         y = ["0", "0", "0 (---)"]
     #y = [round(norm, 2), round(100*err/norm, 2)]
     return y
+
+def makeRowCat(catHists, hName):
+    inc = catHists[hName].Integral()
+    gen = catHists["%s_genuine"%hName].Integral()
+    nonP = catHists["%s_hadronic_photon"%hName].Integral()
+    misid = catHists["%s_misid_ele"%hName].Integral()
+    fake = catHists["%s_hadronic_fake"%hName].Integral()
+    if(inc==0):
+        y = ["0", "0", "0", "0", "0"]
+    else:
+        y = [round(inc, 1), round(100*gen/inc, 1), round(100*nonP/inc, 1), round(100*misid/inc, 1), round(100*fake/inc, 1)]
+    return y
+
+def getRowCat(sample, hName, hDict, catDict):
+    oneBkg = {}
+    for h in hDict[hName]:
+        if sample in h.GetName():
+            oneBkg[hName] = h
+    for cat in catDict.keys():
+        for h in hDict["%s_%s"%(hName, cat)]:
+            if sample in h.GetName():
+                oneBkg["%s_%s"%(hName, cat)] = h
+    row = makeRowCat(oneBkg, hName)
+    return row
+
+def getRowCatBkgs(hName, hSum, catBkgs, catDict):
+    allBkgs = {}
+    allBkgs[hName] = hSum
+    for cat in catDict.keys():
+        for h in catBkgs:
+            if cat in h.GetName():
+                allBkgs["%s_%s"%(hName, cat)] = h
+    row = makeRowCat(allBkgs, hName)
+    return row
+
+    
