@@ -66,7 +66,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     pad.
     '''
     canvas = TCanvas()
-    if isRatio:
+    if isData and isRatio:
         canvas.Divide(1, 2)
         canvas.cd(1)
         gPad.SetRightMargin(0.03);
@@ -110,8 +110,9 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         col_depth = -1
         lumi_13TeV = "59.7 fb^{-1} (#color[%i]{2018})"%(col_year + col_depth)
     yDict = {}
+    sList = []
     if isData:
-        sList = ["Data"]
+        sList.append("Data")
     for h in hForStack: 
         for cat in phoCat.keys():
             if cat in h.GetName():
@@ -197,8 +198,10 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     hStack.SetMinimum(0.1)
     if isLog and hSumAllBkg.Integral() !=0:
         gPad.SetLogy(True)
-        #hStack.SetMaximum(500*hStack.GetMaximum())
-        hStack.SetMaximum(500*dataHist[0].GetMaximum())
+        if isData:
+            hStack.SetMaximum(500*dataHist[0].GetMaximum())
+        else:
+            hStack.SetMaximum(500*hStack.GetMaximum())
     else: 
         #hStack.SetMaximum(1.3*hStack.GetMaximum())
         hStack.SetMaximum(1.5*dataHist[0].GetMaximum())

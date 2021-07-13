@@ -49,6 +49,7 @@ if channel in ["mu", "Mu", "MU", "mU"]:
     for sampleMu in Samples:
         haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(outHistFullDir, sampleMu)
         haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'%s_.*root\'`"%( inHistFullDir, sampleMu)
+        print haddIn
         runCmd("hadd -f %s %s"%(haddOut, haddIn))
 else:
     Samples.remove("QCDMu")

@@ -32,8 +32,11 @@ SampleSignal = {
 
 SampleBkg = {
          "TTGamma"   : [rt.kGreen, "t#bar{t}#gamma"],
-         "TTbar"     : [rt.kRed, "t#bar{t}"],
-         "SingleTop" : [rt.kOrange, "t"],
+         "TTbar"     : [rt.kRed, "t/t#bar{t}"],
+         "WJets"     : [rt.kOrange, "W+jets"],
+         "DYJets"    : [rt.kYellow, "DY+jets"],
+         "WGamma"    : [rt.kMint, "W+#gamma"],
+         "ZGamma"    : [rt.kBeach, "Z+#gamma"],
          "QCD"       : [rt.kPink, "QCD"],
          "Others"    : [rt.kBlue, "Others"]
          }

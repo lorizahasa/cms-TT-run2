@@ -16,21 +16,35 @@ parser = OptionParser()
 parser.add_option("--isCat","--isCat", dest="isCat",action="store_true",default=False,
                      help="do photon categorization" )
 parser.add_option("--isMerge","--isMerge", dest="isMerge",action="store_true",default=False,
-                     help="do photon categorization" )
+                     help="merge plots from inclusive and photon categories" )
+parser.add_option("--isTable","--isTable", dest="isTable",action="store_true",default=False,
+                     help="make table for each plot" )
+parser.add_option("--isRun2","--isRun2", dest="isRun2",action="store_true",default=False,
+                     help="plot/table for full Run2" )
 (options, args) = parser.parse_args()
 isCat           = options.isCat
 isMerge         = options.isMerge
+isTable         = options.isTable
+isRun2          = options.isRun2
 
-os.system("mkdir -p tex")
-merge = []
+merge = [""]
 if isCat:
-    merge.append("Cat")
-else:
-    merge.append("")
-texFile = open("tex/preFitPlot%s.tex"%merge[0], "w")
+    merge = ["Cat"]
+
+ext = merge[0]
+Year_ = Year
+
+if isRun2:
+    Year_ = ["Run2"]
+    ext += "Run2"
+    if isMerge:
+        ext += "Merged"
+
 if isMerge:
     merge = ["", "Cat"]
-    texFile = open("tex/preFitPlotMerge.tex", "w")
+    ext += "Merged"
+os.system("mkdir -p tex")
+texFile = open("tex/preFitPlot%s.tex"%ext, "w")
 
 #texFile.write("\documentclass{article}\n")
 #texFile.write("\usepackage{graphicx}\n")
@@ -45,7 +59,7 @@ for plot in allHistList:
     for d, c in itertools.product(Decay, Channel):
         for r in Regions.keys():
             for m in merge:
-                for y in Year:
+                for y in Year_:
                     args1 = "-y %s -d %s -c %s --hist %s -r %s "%(y, d, c, plot, r)
                     if "Mu" in c and "Ele" in plot:
                         continue
@@ -62,13 +76,17 @@ for plot in allHistList:
                     plotDir  = "%s/Plot_Hist/%s/%s/%s/%s"%(condorHistDir, y, d, c, r)
                     plotName  = "%s_%s_%s"%(plot, y, c)
                     if not isMerge:
-                        print m
-                        os.system("python preFitPlots%s.py %s"%(m, args1))
+                        pass
+                        #os.system("python preFitPlots%s.py %s"%(m, args1))
                     plotPath = "%s/%s%s.pdf"%(plotDir, plotName, m)
                     allPlotPath.append(plotPath)
                     allPlotName.append(plot)
 
 showPerFig = 3
+if isRun2:
+    showPerFig = 4
+    if not isTable:
+        showPerFig = 24
 nPage = len(allPlotPath)/showPerFig
 remainder = len(allPlotPath)%showPerFig
 if remainder != 0:
@@ -85,11 +103,13 @@ for page in np.arange(nPage):
     for n in np.arange(showPerPage):
         perFigName.append(allPlotName[showPerFig*page + n])
         plotPath = allPlotPath[showPerFig*page + n]
-        texFile.write("\includegraphics[width=0.32\linewidth]{%s}\n"%(plotPath))
+        if showPerFig==3:
+            texFile.write("\includegraphics[width=0.32\linewidth]{%s}\n"%(plotPath))
+        else:
+            texFile.write("\includegraphics[width=0.24\linewidth]{%s}\n"%(plotPath))
     plotNames = [item for item, count in collections.Counter(perFigName).items()]
     figCap = ', '.join(plotNames)
     #texFile.write("\caption{Distribution of $%s$}\n"%(figCap.replace("_", "\_")))
-    isTable = True
     for n in np.arange(showPerPage):
         perFigName.append(allPlotName[showPerFig*page + n])
         plotPath = allPlotPath[showPerFig*page + n]
@@ -108,7 +128,7 @@ for page in np.arange(nPage):
             tableFile = open(tablePath)
             for line in tableFile:
                 texFile.write(line)
-    texFile.write("\n")
     texFile.write("\end{figure}\n")
+    texFile.write("\n")
 #texFile.write("\end{document}")
 

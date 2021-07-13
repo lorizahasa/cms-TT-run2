@@ -5,56 +5,56 @@ import sys
 #-----------------------------------------
 #Get historgams from the root files 
 #-----------------------------------------
-def getDataHists(fileDict, hName, CR):
+def getDataHists(inFile, hName, CR):
     dataHist     = []
     for sample in SampleData.keys():
         hPath = "data_obs/%s/Base/%s"%(CR, hName)
         try:
-            hist = fileDict[sample].Get(hPath)
+            hist = inFile.Get(hPath)
             hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
         except Exception:
-            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(fileDict[sample], hPath))
+            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
             sys.exit()
         dataHist.append(hist)
     return dataHist
 
-def getBkgBaseHists(fileDict, hName, CR):
+def getBkgBaseHists(inFile, hName, CR):
     bkgHists     = []
     for sample in SampleBkg.keys():
         hPath = "%s/%s/Base/%s"%(sample, CR, hName)
         try:
-            hist = fileDict[sample].Get(hPath)
+            hist = inFile.Get(hPath)
             hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
         except Exception:
-            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(fileDict[sample], hPath))
+            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
             sys.exit()
         bkgHists.append(hist)
     return bkgHists
 
-def getSigBaseHists(fileDict, hName, CR):
+def getSigBaseHists(inFile, hName, CR):
     sigHists     = []
     for sample in SampleSignal.keys():
         hPath = "%s/%s/Base/%s"%(sample, CR, hName)
         try:
-            hist = fileDict[sample].Get(hPath)
+            hist = inFile.Get(hPath)
             hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
         except Exception:
-            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(fileDict[sample], hPath))
+            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
             sys.exit()
         sigHists.append(hist)
     return sigHists
 
-def getBkgSystHists(fileDict, hName, CR, level):
+def getBkgSystHists(inFile, hName, CR, level):
     hSumBkgs = []
     for syst in Systematics:
         hBkg = []
         for sample in SampleSyst:
             hPath = "%s/%s/%s%s/%s"%(sample, syst, level, CR, hName)
             try:
-                hist = fileDict[sample].Get(hPath)
+                hist = inFile.Get(hPath)
                 hist = hist.Clone("%s_%s/%s%s_%s"%(sample, CR, syst,level,hName))
             except Exception:
-                print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(fileDict[sample], hPath))
+                print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
                 sys.exit()
             hBkg.append(hist)
             hSum.Add(h)

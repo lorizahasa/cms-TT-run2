@@ -30,7 +30,7 @@ parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='
                      help="which histogram to be plottted")
 parser.add_option("--allHists","--allHists", dest="makeAllHists",action="store_true",default=False,
                      help="Make full list of hists in histogramDict" )
-parser.add_option("--isPhoCat","--isPhoCat", dest="isPhoCat",action="store_true",default=True,
+parser.add_option("--isCat","--isCat", dest="isCat",action="store_true",default=False,
                      help="Make full list of hists in histogramDict" )
 (options, args) = parser.parse_args()
 year = options.year
@@ -40,7 +40,7 @@ sample = options.sample
 region = options.region
 level =options.level
 makeAllHists = options.makeAllHists
-isPhoCat = options.isPhoCat
+isCat = options.isCat
 print parser.parse_args()
 samples = getSamples(year)
 
@@ -243,7 +243,7 @@ for index, hist in enumerate(histogramsToMake, start=1):
         tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, "1.0"), "goff")
     else:
         tree.Draw("%s>>%s"%(hist,hist), "%s%s*%s"%(extraCuts, weights, w_pho), "goff")
-        if isPhoCat and "tty" in region:
+        if isCat and "tty" in region:
             for cat in phoCat.keys():
                 histograms.append(TH1F("%s_%s"%(hist, cat),"%s_%s"%(hist, cat),hInfo[1][0],hInfo[1][1],hInfo[1][2]))
                 extraCuts_ = extraCuts.replace(")", " && %s[0] )"%phoCat[cat])

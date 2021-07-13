@@ -45,15 +45,11 @@ hName           = options.hName
 #----------------------------------------
 inHistSubDir = "/Hist_Ntuple/%s/%s/%s/Merged"%(year, decayMode, channel)
 inHistFullDir = "%s/%s"%(condorHistDir, inHistSubDir)
+inFile = TFile("%s/AllInc.root"%(inHistFullDir), "read")
 outPlotSubDir = "Plot_Hist/%s/%s/%s/%s"%(year, decayMode, channel, region)
 outPlotFullDir = "%s/%s"%(condorHistDir, outPlotSubDir)
 if not os.path.exists(outPlotFullDir):
     os.makedirs(outPlotFullDir)
-
-fileDict = {}
-for sample in Samples.keys():
-    fileName = "%s/%s.root"%(inHistFullDir,sample)
-    fileDict[sample] = TFile(fileName, "read")
 
 gROOT.SetBatch(True)
 #-----------------------------------------
@@ -66,7 +62,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     pad.
     '''
     canvas = TCanvas()
-    if isRatio:
+    if isData and isRatio:
         canvas.Divide(1, 2)
         canvas.cd(1)
         gPad.SetRightMargin(0.03);
@@ -78,7 +74,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     else:
         canvas.cd()
     #Get nominal histograms
-    bkgHists = getBkgBaseHists(fileDict, hName, region)
+    bkgHists = getBkgBaseHists(inFile, hName, region)
     #Stack nominal hists
     xTitle = hName
     binWidth = (hInfo[hName][1][2] - hInfo[hName][1][1])/hInfo[hName][1][0]
@@ -89,17 +85,21 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     col_depth = 0
     col_year = SampleBkg["TTGamma"][0]
     if "16" in year:
-        col_depth = -3
+        col_depth = -2
         lumi_13TeV = "35.9 fb^{-1} (#color[%i]{2016})"%(col_year+col_depth)
     if "17" in year:
-        col_depth = -2
+        col_depth = -1
         lumi_13TeV = "41.5 fb^{-1} (#color[%i]{2017})"%(col_year + col_depth)
     if "18" in year:
-        col_depth = -1
+        col_depth = 0
         lumi_13TeV = "59.7 fb^{-1} (#color[%i]{2018})"%(col_year + col_depth)
+    if "Run2" in year:
+        col_depth = 1
+        lumi_13TeV = "137.2 fb^{-1} (#color[%i]{Run2})"%(col_year + col_depth)
     yDict = {}
+    sList = []
     if isData:
-        sList = ["Data"]
+        sList.append("Data")
     for h in hForStack: 
         sampleName = h.GetName().split("_")[0]
         decoHist(h, xTitle, yTitle, SampleBkg[sampleName][0]+col_depth)
@@ -109,22 +109,22 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     
     #Data hists
     if isData:
-        dataHist = getDataHists(fileDict, hName, region)
+        dataHist = getDataHists(inFile, hName, region)
         decoHist(dataHist[0], xTitle, yTitle, SampleData["Data"][0])
         dataHist[0].SetMarkerStyle(20)
         dataHist[0].Draw("EPsame")
     
     #Signal hists
     if isSig:
-        sigHists  = getSigBaseHists(fileDict, hName, region)
+        sigHists  = getSigBaseHists(inFile, hName, region)
         sortedSigHists = sortHists(sigHists, True)
         for hSig in sigHists:
             hSig.Draw("HISTsame")
     
     # Unc band
     if isUnc:
-        hSumBkgUps =  getSystHists(fileDict, hName, region, "Up")
-        hSumBkgDowns = getSystHists(fileDict, hName, region, "Down")
+        hSumBkgUps =  getSystHists(inFile, hName, region, "Up")
+        hSumBkgDowns = getSystHists(inFile, hName, region, "Down")
         hDiffUp = hSumBkg.Clone("hDiffUp")
         hDiffUp.Reset()
         hDiffDown = hSumBkg.Clone("hDiffDown")
@@ -147,7 +147,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     #Draw plotLegend
     hForLegend = sortHists(bkgHists, True)
     #plotLegend = TLegend(0.55,0.60,0.92,0.88); for 3 col
-    plotLegend = TLegend(0.75,0.55,0.95,0.88); 
+    plotLegend = TLegend(0.75,0.40,0.95,0.88); 
     decoLegend(plotLegend, 4, 0.035)
     hSumAllBkg = bkgHists[0].Clone("AllBkg")
     hSumAllBkg.Reset()
@@ -155,10 +155,12 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         plotLegend.AddEntry(dataHist[0], SampleData["Data"][1], "PEL")
         yDict["Data"] = getYield(dataHist[0]) 
     for bkgHist in hForLegend:
-        plotLegendName = SampleBkg[bkgHist.GetName().split("_")[0]][1] 
-        plotLegend.AddEntry(bkgHist, plotLegendName, "F")
-        sList.append(bkgHist.GetName().split("_")[0])
         hSumAllBkg.Add(bkgHist)
+    for bkgHist in hForLegend:
+        nBkg = str(round(100*bkgHist.Integral()/hSumAllBkg.Integral(), 1))
+        plotLegendName = SampleBkg[bkgHist.GetName().split("_")[0]][1] 
+        plotLegend.AddEntry(bkgHist, "%s%s %s"%(nBkg, "%", plotLegendName), "F")
+        sList.append(bkgHist.GetName().split("_")[0])
     sList.append("Bkgs")
     if isSig:
         for hSig in sortedSigHists:
@@ -176,8 +178,10 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     yDict["Bkgs"] = getYield(hSumAllBkg)
     if isLog and hSumAllBkg.Integral() !=0:
         gPad.SetLogy(True)
-        #hStack.SetMaximum(500*hStack.GetMaximum())
-        hStack.SetMaximum(500*dataHist[0].GetMaximum())
+        if isData:
+            hStack.SetMaximum(500*dataHist[0].GetMaximum())
+        else:
+            hStack.SetMaximum(500*hStack.GetMaximum())
     else: 
         #hStack.SetMaximum(1.3*hStack.GetMaximum())
         hStack.SetMaximum(1.5*dataHist[0].GetMaximum())
@@ -197,6 +201,10 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     crName = formatCRString(Regions[region])
     chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
     extraText   = "#splitline{Preliminary}{%s}"%chCRName
+    if isData and isRatio:
+        nData  = str(int(dataHist[0].Integral()))
+        nRatio = str(round(dataHist[0].Integral()/hSumAllBkg.Integral(),2))
+        extraText   = "#splitline{Preliminary, Data = %s, Ratio = %s}{%s}"%(nData, nRatio, chCRName)
     #CMS_lumi(canvas, iPeriod, iPosX, extraText)
     CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
 

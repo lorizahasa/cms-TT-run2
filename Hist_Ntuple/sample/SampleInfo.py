@@ -48,18 +48,16 @@ def getSamples(y):
                "TT_tytg_M1400" : gs(y, ["TstarTstarToTgammaTgluon_M1400"]),  
                "TT_tytg_M1500" : gs(y, ["TstarTstarToTgammaTgluon_M1500"]),  
                "TT_tytg_M1600" : gs(y, ["TstarTstarToTgammaTgluon_M1600"]),  
-               "SingleTop" : gs(y, [
+               "TTbar" : gs(y, [
+                   "TTbarPowheg_Hadronic" , 
+                   "TTbarPowheg_Dilepton" , 
+                   "TTbarPowheg_Semilept",
                    "ST_tbarW_channel" , 
                    "ST_s_channel", 
                    "ST_t_channel" , 
                    "ST_tbar_channel", 
                    "ST_tW_channel",
                    "TGJets"
-                   ]),  
-               "TTbar" : gs(y, [
-                   "TTbarPowheg_Hadronic" , 
-                   "TTbarPowheg_Dilepton" , 
-                   "TTbarPowheg_Semilept"
                    ]),
                "TTGamma": gs(y, [
                    'TTGamma_Dilepton', 
@@ -72,19 +70,41 @@ def getSamples(y):
                    'TTGamma_Hadronic_Pt200', 
                    'TTGamma_SingleLept_Pt200'
                    ]),
-               "Others": gs(y, [
-                   'W1jets', 'W2jets', 'W3jets', 'W4jets', 
-                   'TTWtoQQ', 'TTZtoQQ', 
-                   'WW', 'WZ', 'ZZ',
-                   'GJets_HT40To100',
-                   'GJets_HT100To200',
-                   'GJets_HT200To400',
-                   'GJets_HT400To600',
-                   'GJets_HT600ToInf',
+               "WJets": gs(y, [
+                   'W1jets', 
+                   'W2jets', 
+                   'W3jets', 
+                   'W4jets', 
+                   ]),
+               "DYJets": gs(y, [
                    'DYjetsM10to50',
                    'DYjetsM50',
+                   ]),
+               "WGamma": gs(y, [
                    'WGamma', 
+                   ]),
+               "ZGamma": gs(y, [
                    'ZGamma_01J_5f_lowMass'
+                   ]),
+               "Others": gs(y, [
+                   'TTWtoQQ', 
+                   "TTWtoLNu",
+                   'TTZtoQQ',
+                   'TTZtoLL',
+                   'TTZtoLL_M1to10',
+                   'WW',
+                   'WZ',
+                   'ZZ',
+                   #'WWToLNuQQ',
+                   #'WWTo4Q'
+                   #'WZTo1L3Nu_amcatnlo',
+                   #'WZTo1L1Nu2Q_amcatnlo',
+                   #'WZTo2L2Q_amcatnlo',
+                   #'WZTo3LNu_powheg'
+                   #'ZZTo2L2Q',
+                   #'ZZTo2Q2Nu_amcatnlo',
+                   #'ZZTo4L',
+                   #'VVTo2L2Nu_amcatnlo'
                    ]),
                "QCDEle"   : gs(y, [
                    "QCD_Pt20to30_Ele",
@@ -93,7 +113,12 @@ def getSamples(y):
                    "QCD_Pt80to120_Ele",
                    "QCD_Pt120to170_Ele",
                    "QCD_Pt170to300_Ele",
-                   "QCD_Pt300toInf_Ele"
+                   "QCD_Pt300toInf_Ele",
+                   'GJets_HT40To100',
+                   'GJets_HT100To200',
+                   'GJets_HT200To400',
+                   'GJets_HT400To600',
+                   'GJets_HT600ToInf',
                    ]),
                "QCDMu"    : gs(y, [
                    "QCD_Pt20to30_Mu",
@@ -106,13 +131,18 @@ def getSamples(y):
                    "QCD_Pt470to600_Mu",
                    "QCD_Pt600to800_Mu",
                    "QCD_Pt800to1000_Mu",
-                   "QCD_Pt1000toInf_Mu"
+                   "QCD_Pt1000toInf_Mu",
+                   'GJets_HT40To100',
+                   'GJets_HT100To200',
+                   'GJets_HT200To400',
+                   'GJets_HT400To600',
+                   'GJets_HT600ToInf',
                              ]),
                "DataMu" : gs(y, dataAllMu[y]),
                "DataEle" : gs(y, dataAllEle[y])
                }
     return samples
 
-#a = getSamples("2016")
+a = getSamples("2016")
 #print a
-#print a.keys()
+print a.keys()

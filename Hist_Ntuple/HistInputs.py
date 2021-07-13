@@ -19,9 +19,12 @@ Samples.append("TT_tytg_M1400")
 Samples.append("TT_tytg_M1500")
 Samples.append("TT_tytg_M1600")
 #bkg and data
-Samples.append("TTGamma")
 Samples.append("TTbar")
-Samples.append("SingleTop")
+Samples.append("TTGamma")
+Samples.append("WJets")
+Samples.append("DYJets")
+Samples.append("WGamma")
+Samples.append("ZGamma")
 Samples.append("Others")
 Samples.append("QCDEle")
 Samples.append("QCDMu")
@@ -53,11 +56,29 @@ phoCat["hadronic_photon"]  = "Photon_hadronic_photon"
 phoCat["hadronic_fake"]    = "Photon_hadronic_fake"  
 
 Regions = {}
-Regions['tty_Enriched_e2j_e2b']             = "Jet_size ==2 && Jet_b_size ==2 && Photon_size==1 && FatJet_size==0"
-Regions['tty_Enriched_e4j_e0b']             = "Jet_size ==4 && Jet_b_size ==0 && Photon_size==1 && FatJet_size==0"
-Regions['tty_Enriched_e4j_a1b']             = "Jet_size ==4 && Jet_b_size >=1 && Photon_size==1 && FatJet_size==0"
-Regions['tty_Enriched_e4j_a2b']             = "Jet_size ==4 && Jet_b_size >=2 && Photon_size==1 && FatJet_size==0"
+#Regions['tty_Enriched_e2j_e2b']             = "Jet_size ==2 && Jet_b_size ==2 && Photon_size==1 && FatJet_size==0"
+#Regions['tty_Enriched_e4j_e0b']             = "Jet_size ==4 && Jet_b_size ==0 && Photon_size==1 && FatJet_size==0"
+#Regions['tty_Enriched_e4j_e0b']             = "Jet_size ==4 && Jet_b_size ==0 && Photon_size==1 && FatJet_size==0" 
+#Regions['tty_Enriched_e4j_a1b']             = "Jet_size ==4 && Jet_b_size >=1 && Photon_size==1 && FatJet_size==0"
+#Regions['tty_Enriched_e4j_a2b']             = "Jet_size ==4 && Jet_b_size >=2 && Photon_size==1 && FatJet_size==0"
+#Regions['tty_Enriched_a3j_a1b']             = "Jet_size >=3 && Jet_b_size >=1 && Photon_size==1 && FatJet_size==1" 
 
+#--------------------------------
+#Validation region (0 photon) 
+#(TOP-18-010, AN2019_227_v20)
+#--------------------------------
+Regions['tt_Enriched_e2j_e1b_e0y']          = " Jet_size==2 && Jet_b_size==1 && Photon_size==0" 
+Regions['tt_Enriched_e3j_e1b_e0y']          = " Jet_size==3 && Jet_b_size==1 && Photon_size==0" 
+Regions['tt_Enriched_a3j_e1b_e0y']          = " Jet_size>=3 && Jet_b_size==1 && Photon_size==0" 
+Regions['tt_Enriched_a4j_e1b_e0y']          = " Jet_size>=4 && Jet_b_size==1 && Photon_size==0" 
+
+Regions['tt_Enriched_e2j_e0b_e0y']          = " Jet_size==2 && Jet_b_size==0 && Photon_size==0" 
+Regions['tt_Enriched_e3j_e0b_e0y']          = " Jet_size==3 && Jet_b_size==0 && Photon_size==0" 
+Regions['tt_Enriched_a3j_e0b_e0y']          = " Jet_size>=3 && Jet_b_size==0 && Photon_size==0" 
+Regions['tt_Enriched_a4j_e0b_e0y']          = " Jet_size>=4 && Jet_b_size==0 && Photon_size==0" 
+
+
+#--------------------------------
 #Regions['tt_Enriched']              = "Jet_size >=4 && Jet_b_size >=1 && Photon_size==0"
 #Regions['tty_Enriched']             = "Jet_size ==4 && Jet_b_size >=0 && Photon_size==1 && FatJet_size==0"
 #Regions['ttyg_Enriched']            = "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1"
