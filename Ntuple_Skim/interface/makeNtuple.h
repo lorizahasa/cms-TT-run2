@@ -106,6 +106,7 @@ class makeNtuple {
     Float_t  _q2weight_Do;
     Float_t  _q2weight_nominal;
     std::vector<float>   _genScaleSystWeights;
+    Float_t   _genWeight;
 	
     Float_t   _pdfWeight;
     Float_t   _pdfuncer;
@@ -428,7 +429,8 @@ void makeNtuple::InitBranches(){
 	    outputTree->Branch("Weight_q2"  , &_q2weight_nominal );
 	    outputTree->Branch("Weight_q2_up"       , &_q2weight_Up );
 	    outputTree->Branch("Weight_q2_down"     , &_q2weight_Do );
-	    outputTree->Branch("Weight_gen"         , &_genScaleSystWeights );
+	    outputTree->Branch("Weight_lhe_scale"   , &_genScaleSystWeights );
+	    outputTree->Branch("Weight_gen"         , &_genWeight );
 	    outputTree->Branch("Weight_pdf"         , &_pdfWeight );
 	    outputTree->Branch("Weight_pdf_up"      , &_pdfweight_Up );
 	    outputTree->Branch("Weight_pdf_down"    , &_pdfweight_Do );
@@ -621,6 +623,7 @@ void makeNtuple::InitVariables()
     _pdfweight_Up = 1.;
     _pdfweight_Do = 1.;
     _pdfuncer = 0.;
+    _genWeight = 0.;
 
     _q2weight_nominal = 1.;
     _q2weight_Up = 1.;

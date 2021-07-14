@@ -138,7 +138,7 @@ void initCrossSections(){
 
     //from GenXSecAnalzer of 1M events
     crossSections["ZGamma_01J_5f_lowMass"]    = {98.3, 105.4, 105.4}; 
-    crossSections["ZGamma_01J_5f_LoosePt"]    = {124.9, 124.9, 124.9}; 
+    crossSections["ZGamma_01J_lowMLL_lowGPt"]    = {124.9, 124.9, 124.9};//? 
     crossSections["ZGamma_01J_LoosePt"]    = {124.9, 124.9, 124.9};
 
     //crossSections["WGamma_01J"]    = 203.3  ;  
@@ -163,9 +163,9 @@ void initCrossSections(){
     crossSections["WZTo3LNu_powheg"]      = { 4.42965,  4.42965,  4.42965};
     crossSections["WZTo3LNu_amcatnlo"]      = { 4.42965,  4.42965,  4.42965};
 
-    crossSections["ZZTo2L2Q"]       = { 3.28, 3.28, 3.28};
+    crossSections["ZZTo2L2Q_powheg"]       = { 3.28, 3.28, 3.28};
     crossSections["ZZTo2L2Q_amcatnlo"]       = { 3.28, 3.28, 3.28};
-    crossSections["ZZTo2Q2Nu"]      = { 4.04, 4.04, 4.04};
+    crossSections["ZZTo2Q2Nu_powheg"]      = { 4.04, 4.04, 4.04};
     crossSections["ZZTo2Q2Nu_amcatnlo"]      = { 4.04, 4.04, 4.04};
     crossSections["ZZTo4L"]         = { 1.3816, 1.3816, 1.3816};
     crossSections["ZZTo4L_powheg"]         = { 1.3816, 1.3816, 1.3816};

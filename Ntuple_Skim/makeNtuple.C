@@ -904,11 +904,11 @@ void makeNtuple::FillEvent(std::string year)
     // _isPVGood	 = tree->isPVGood_;
     // _rho		 = tree->rho_;
     if (useGenWeightScaling){
-	_evtWeight       = _lumiWeight *  tree->genWeight_; 
+    _genWeight       = tree->genWeight_;
     }else{
-	_evtWeight       = _lumiWeight *  ((tree->genWeight_ >= 0) ? 1 : -1);  //event weight needs to be positive or negative depending on sign of genWeight (to account for mc@nlo negative weights)
-    std::cout<<tree->genWeight_<<std::endl;
+	_genWeight       = (tree->genWeight_ >= 0) ? 1 : -1;  //event weight needs to be positive or negative depending on sign of genWeight (to account for mc@nlo negative weights)
     }
+    _evtWeight = _lumiWeight * _genWeight;
 
     if (_isData) {
 	_evtWeight= 1.;

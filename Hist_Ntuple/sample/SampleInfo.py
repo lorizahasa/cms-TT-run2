@@ -86,26 +86,6 @@ def getSamples(y):
                "ZGamma": gs(y, [
                    'ZGamma_01J_5f_lowMass'
                    ]),
-               "Others": gs(y, [
-                   'TTWtoQQ', 
-                   "TTWtoLNu",
-                   'TTZtoQQ',
-                   'TTZtoLL',
-                   'TTZtoLL_M1to10',
-                   'WW',
-                   'WZ',
-                   'ZZ',
-                   #'WWToLNuQQ',
-                   #'WWTo4Q'
-                   #'WZTo1L3Nu_amcatnlo',
-                   #'WZTo1L1Nu2Q_amcatnlo',
-                   #'WZTo2L2Q_amcatnlo',
-                   #'WZTo3LNu_powheg'
-                   #'ZZTo2L2Q',
-                   #'ZZTo2Q2Nu_amcatnlo',
-                   #'ZZTo4L',
-                   #'VVTo2L2Nu_amcatnlo'
-                   ]),
                "QCDEle"   : gs(y, [
                    "QCD_Pt20to30_Ele",
                    "QCD_Pt30to50_Ele",
@@ -141,8 +121,30 @@ def getSamples(y):
                "DataMu" : gs(y, dataAllMu[y]),
                "DataEle" : gs(y, dataAllEle[y])
                }
+               
+    Others_List= [
+                'TTWtoQQ', 
+                "TTWtoLNu",
+                'TTZtoQQ',
+                'TTZtoLL',
+                'TTZtoLL_M1to10',
+                'WWToLNuQQ_powheg',
+                'WWTo4Q_powheg',
+                'WZTo1L3Nu_amcatnlo',
+                'WZTo1L1Nu2Q_amcatnlo',
+                'WZTo2L2Q_amcatnlo',
+                'WZTo3LNu_powheg',
+                'ZZTo4L_powheg',
+                'VVTo2L2Nu_amcatnlo'
+                ]
+    if y =="2016":
+        pass
+        #Others_List.append("ZZTo2L2Q_powheg")
+    else:
+        Others_List.append("ZZTo2L2Q_amcatnlo")
+    samples["Others"] = gs(y, Others_List)
     return samples
 
 a = getSamples("2016")
-#print a
+print a["Others"]
 print a.keys()
