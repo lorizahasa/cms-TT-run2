@@ -1,5 +1,7 @@
 TTWtoQQ_FileList_2016 = ['/TTWtoQQ_2016_Ntuple.root']
 
+ZZTo2Q2Nu_powheg_FileList_2016 = ['/ZZTo2Q2Nu_powheg_2016_Ntuple.root']
+
 TTWtoLNu_FileList_2016 = ['/TTWtoLNu_2016_Ntuple_1of2.root', '/TTWtoLNu_2016_Ntuple_2of2.root']
 
 QCD_Pt20to30_Ele_FileList_2016 = ['/QCD_Pt20to30_Ele_2016_Ntuple.root']
@@ -94,6 +96,8 @@ TstarTstarToTgammaTgamma_M800_FileList_2016 = ['/TstarTstarToTgammaTgamma_M800_2
 
 QCD_Pt470to600_Mu_FileList_2016 = ['/QCD_Pt470to600_Mu_2016_Ntuple_1of3.root', '/QCD_Pt470to600_Mu_2016_Ntuple_2of3.root', '/QCD_Pt470to600_Mu_2016_Ntuple_3of3.root']
 
+ZZTo2L2Q_powheg_FileList_2016 = ['/ZZTo2L2Q_powheg_2016_Ntuple.root']
+
 TTGamma_SingleLept_Pt200_FileList_2016 = ['/TTGamma_SingleLept_Pt200_2016_Ntuple.root']
 
 ZZ_FileList_2016 = ['/ZZ_2016_Ntuple_1of2.root', '/ZZ_2016_Ntuple_2of2.root']
@@ -127,6 +131,8 @@ TstarTstarToTgluonTgluon_M1400_FileList_2016 = ['/TstarTstarToTgluonTgluon_M1400
 TstarTstarToTgluonTgluon_M1300_FileList_2016 = ['/TstarTstarToTgluonTgluon_M1300_2016_Ntuple.root']
 
 QCD_Pt20to30_bcToE_FileList_2016 = ['/QCD_Pt20to30_bcToE_2016_Ntuple.root']
+
+ZGamma_01J_lowMLL_lowGPt_FileList_2016 = ['/ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_1of5.root', '/ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_2of5.root', '/ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_3of5.root', '/ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_4of5.root', '/ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_5of5.root']
 
 GJets_HT400To600_FileList_2016 = ['/GJets_HT400To600_2016_Ntuple_1of2.root', '/GJets_HT400To600_2016_Ntuple_2of2.root']
 
@@ -389,6 +395,8 @@ ZZTo2L2Q_amcatnlo_FileList_2017 = ['/ZZTo2L2Q_amcatnlo_2017_Ntuple_1of5.root', '
 TstarTstarToTgluonTgluon_M1300_FileList_2017 = ['/TstarTstarToTgluonTgluon_M1300_2017_Ntuple.root']
 
 QCD_Pt20to30_bcToE_FileList_2017 = ['/QCD_Pt20to30_bcToE_2017_Ntuple.root']
+
+ZGamma_01J_lowMLL_lowGPt_FileList_2017 = ['/ZGamma_01J_lowMLL_lowGPt_2017_Ntuple_1of5.root', '/ZGamma_01J_lowMLL_lowGPt_2017_Ntuple_2of5.root', '/ZGamma_01J_lowMLL_lowGPt_2017_Ntuple_3of5.root', '/ZGamma_01J_lowMLL_lowGPt_2017_Ntuple_4of5.root', '/ZGamma_01J_lowMLL_lowGPt_2017_Ntuple_5of5.root']
 
 GJets_HT400To600_FileList_2017 = ['/GJets_HT400To600_2017_Ntuple.root']
 
@@ -653,6 +661,8 @@ ZZTo2L2Q_amcatnlo_FileList_2018 = ['/ZZTo2L2Q_amcatnlo_2018_Ntuple_1of5.root', '
 TstarTstarToTgluonTgluon_M1300_FileList_2018 = ['/TstarTstarToTgluonTgluon_M1300_2018_Ntuple.root']
 
 QCD_Pt20to30_bcToE_FileList_2018 = ['/QCD_Pt20to30_bcToE_2018_Ntuple.root']
+
+ZGamma_01J_lowMLL_lowGPt_FileList_2018 = ['/ZGamma_01J_lowMLL_lowGPt_2018_Ntuple_1of5.root', '/ZGamma_01J_lowMLL_lowGPt_2018_Ntuple_2of5.root', '/ZGamma_01J_lowMLL_lowGPt_2018_Ntuple_3of5.root', '/ZGamma_01J_lowMLL_lowGPt_2018_Ntuple_4of5.root', '/ZGamma_01J_lowMLL_lowGPt_2018_Ntuple_5of5.root']
 
 GJets_HT400To600_FileList_2018 = ['/GJets_HT400To600_2018_Ntuple.root']
 

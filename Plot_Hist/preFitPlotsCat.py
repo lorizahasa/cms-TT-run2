@@ -45,15 +45,11 @@ hName           = options.hName
 #----------------------------------------
 inHistSubDir = "/Hist_Ntuple/%s/%s/%s/Merged"%(year, decayMode, channel)
 inHistFullDir = "%s/%s"%(condorHistDir, inHistSubDir)
+inFile = TFile("%s/AllInc.root"%(inHistFullDir), "read")
 outPlotSubDir = "Plot_Hist/%s/%s/%s/%s"%(year, decayMode, channel, region)
 outPlotFullDir = "%s/%s"%(condorHistDir, outPlotSubDir)
 if not os.path.exists(outPlotFullDir):
     os.makedirs(outPlotFullDir)
-
-fileDict = {}
-for sample in Samples.keys():
-    fileName = "%s/%s.root"%(inHistFullDir,sample)
-    fileDict[sample] = TFile(fileName, "read")
 
 gROOT.SetBatch(True)
 #-----------------------------------------
@@ -79,11 +75,11 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         canvas.cd()
     #Get nominal histograms
     allBkgHists = {}
-    allBkgHists[hName] = getBkgBaseHists(fileDict, hName, region)
+    allBkgHists[hName] = getBkgBaseHists(inFile, hName, region)
     catBkgHists = []
     for cat in phoCat.keys():
         newName = "%s_%s"%(hName, cat)
-        allBkgHists[newName] = getBkgBaseHists(fileDict, newName, region)
+        allBkgHists[newName] = getBkgBaseHists(inFile, newName, region)
         hCat = allBkgHists[newName][0].Clone(newName)
         hCat.Reset()
         for bkgs in allBkgHists[newName]:
@@ -109,6 +105,9 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     if "18" in year:
         col_depth = -1
         lumi_13TeV = "59.7 fb^{-1} (#color[%i]{2018})"%(col_year + col_depth)
+    if "Run2" in year:
+        col_depth = 1
+        lumi_13TeV = "137.2 fb^{-1} (#color[%i]{Run2})"%(col_year + col_depth)
     yDict = {}
     sList = []
     if isData:
@@ -122,7 +121,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     
     #Data hists
     if isData:
-        dataHist = getDataHists(fileDict, hName, region)
+        dataHist = getDataHists(inFile, hName, region)
         decoHist(dataHist[0], xTitle, yTitle, SampleData["Data"][0])
         dataHist[0].SetMarkerStyle(20)
         dataHist[0].Draw("EPsame")
@@ -130,19 +129,19 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     #Signal hists
     if isSig:
         allSigHists = {}
-        allSigHists[hName] = getSigBaseHists(fileDict, hName, region)
+        allSigHists[hName] = getSigBaseHists(inFile, hName, region)
         for cat in phoCat.keys():
             newName = "%s_%s"%(hName, cat)
-            allSigHists[newName] = getSigBaseHists(fileDict, newName, region)
-        sigHists  = getSigBaseHists(fileDict, hName, region)
+            allSigHists[newName] = getSigBaseHists(inFile, newName, region)
+        sigHists  = getSigBaseHists(inFile, hName, region)
         sortedSigHists = sortHists(sigHists, True)
         for hSig in sigHists:
             hSig.Draw("HISTsame")
     
     # Unc band
     if isUnc:
-        hSumBkgUps =  getSystHists(fileDict, hName, region, "Up")
-        hSumBkgDowns = getSystHists(fileDict, hName, region, "Down")
+        hSumBkgUps =  getSystHists(inFile, hName, region, "Up")
+        hSumBkgDowns = getSystHists(inFile, hName, region, "Down")
         hDiffUp = hSumBkg.Clone("hDiffUp")
         hDiffUp.Reset()
         hDiffDown = hSumBkg.Clone("hDiffDown")
@@ -175,8 +174,12 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     for h in hForLegend:
         for cat in phoCat.keys():
             if cat in h.GetName():
-                plotLegend.AddEntry(h, SamplePhoCat[cat][1], "F")
-        hSumAllBkg.Add(h)
+                hSumAllBkg.Add(h)
+    for h in hForLegend:
+        for cat in phoCat.keys():
+            if cat in h.GetName():
+                nBkg = str(round(100*h.Integral()/hSumAllBkg.Integral(), 1))
+                plotLegend.AddEntry(h, "%s%s %s"%(nBkg, "%", SamplePhoCat[cat][1]), "F")
     for h in hForTable:
         sName = h.GetName().split("_")[0]
         sList.append(sName)
@@ -213,14 +216,22 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     if channel in ["mu", "Mu", "m"]:
         chColor = rt.kCyan+col_depth
         chName = "1 #color[%i]{#mu}, p_{T}^{miss} > 20"%chColor
-    else:
-        chColor = rt.kYellow+col_depth
+    elif channel in ["ele", "Ele"]:
+        chColor = rt.kRust+col_depth
         chName = "1 #color[%i]{e}, p_{T}^{miss}  > 20"%chColor
+    else:
+        chColor = rt.kRed + col_depth
+        chName = "1 #color[%i]{#mu + e}, p_{T}^{miss}  > 20"%chColor
+
     #chName = "#splitline{%s}{%s}"%(chName, region)
     chName = "%s, #bf{%s}"%(chName, region)
     crName = formatCRString(Regions[region])
     chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
     extraText   = "#splitline{Preliminary}{%s}"%chCRName
+    if isData and isRatio:
+        nData  = str(int(dataHist[0].Integral()))
+        nRatio = str(round(dataHist[0].Integral()/hSumAllBkg.Integral(),2))
+        extraText   = "#splitline{Preliminary, Data = %s, Ratio = %s}{%s}"%(nData, nRatio, chCRName)
     #CMS_lumi(canvas, iPeriod, iPosX, extraText)
     CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
 

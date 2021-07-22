@@ -193,9 +193,12 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     if channel in ["mu", "Mu", "m"]:
         chColor = rt.kCyan+col_depth
         chName = "1 #color[%i]{#mu}, p_{T}^{miss} > 20"%chColor
-    else:
-        chColor = rt.kYellow+col_depth
+    elif channel in ["ele", "Ele"]:
+        chColor = rt.kRust+col_depth
         chName = "1 #color[%i]{e}, p_{T}^{miss}  > 20"%chColor
+    else:
+        chColor = rt.kRed + col_depth
+        chName = "1 #color[%i]{#mu + e}, p_{T}^{miss}  > 20"%chColor
     #chName = "#splitline{%s}{%s}"%(chName, region)
     chName = "%s, #bf{%s}"%(chName, region)
     crName = formatCRString(Regions[region])

@@ -71,21 +71,26 @@ for plot in allHistList:
                         continue
                     if "tt_Enriched" in r and "Reco_mass_T" in plot:
                         continue
+                    if "tt_Enriched" in r and "Reco_mass_lgamma" in plot:
+                        continue
                     if "tty_Enriched" in r and "Reco_mass_T" in plot:
                         continue
                     plotDir  = "%s/Plot_Hist/%s/%s/%s/%s"%(condorHistDir, y, d, c, r)
                     plotName  = "%s_%s_%s"%(plot, y, c)
                     if not isMerge:
                         pass
-                        #os.system("python preFitPlots%s.py %s"%(m, args1))
+                        #os.system("python preFitPlots%s.py %s "%(m, args1))
                     plotPath = "%s/%s%s.pdf"%(plotDir, plotName, m)
                     allPlotPath.append(plotPath)
                     allPlotName.append(plot)
 
 showPerFig = 3
+figWidth = 0.32
+if not isTable:
+    showPerFig = 15
 if isRun2:
-    showPerFig = 4
     if not isTable:
+        figWidth=0.24
         showPerFig = 24
 nPage = len(allPlotPath)/showPerFig
 remainder = len(allPlotPath)%showPerFig
@@ -103,10 +108,11 @@ for page in np.arange(nPage):
     for n in np.arange(showPerPage):
         perFigName.append(allPlotName[showPerFig*page + n])
         plotPath = allPlotPath[showPerFig*page + n]
-        if showPerFig==3:
-            texFile.write("\includegraphics[width=0.32\linewidth]{%s}\n"%(plotPath))
-        else:
-            texFile.write("\includegraphics[width=0.24\linewidth]{%s}\n"%(plotPath))
+        if showPerPage==2:
+            figWidth = 0.45
+        if showPerPage==1:
+            figWidth = 0.95
+        texFile.write("\includegraphics[width=%s\linewidth]{%s}\n"%(figWidth, plotPath))
     plotNames = [item for item, count in collections.Counter(perFigName).items()]
     figCap = ', '.join(plotNames)
     #texFile.write("\caption{Distribution of $%s$}\n"%(figCap.replace("_", "\_")))
@@ -121,6 +127,8 @@ for page in np.arange(nPage):
         if "tt_Enriched" in tablePath and "Photon" in tablePath: 
             isTable = False
         if "tt_Enriched" in tablePath and "Reco_mass_T" in tablePath:
+            isTable = False
+        if "tt_Enriched" in tablePath and "Reco_mass_lgamma" in plot:
             isTable = False
         if "tty_Enriched" in tablePath and "Reco_mass_T" in tablePath:
             isTable = False

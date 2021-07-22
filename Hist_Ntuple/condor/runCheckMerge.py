@@ -27,10 +27,15 @@ if isCheck:
 if isMerge:
     for year, decay, channel in itertools.product(Years, Decays, Channels): 
         args = "-y %s -d %s -c %s"%(year, decay, channel)
-        #runCmd("python mergeOutputHists.py  %s "%args)
+        runCmd("python mergeOutputHists.py  %s "%args)
     
     for decay, channel in itertools.product( Decays, Channels): 
         args = "-d %s -c %s"%(decay, channel)
         runCmd("python mergeHistsRun2.py  %s "%args)
+    
+    for decay in Decays: 
+        args = "-d %s -c Lep "%decay
+        runCmd("python mergeHistsRun2.py  %s "%args)
+
 
 

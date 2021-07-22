@@ -31,10 +31,17 @@ def runCmd(cmd):
     os.system(cmd)
 
 hists = []
-for y in Years:
-    iSubDir = "%s/%s/%s/Merged/AllInc.root"%(y, decay, channel)
-    iFullDir = "root://cmseosmgm01.fnal.gov:1094/%s/%s"%(condorHistDir, iSubDir)
-    hists.append(iFullDir)
+if channel=="Lep":
+    for c in Channels: 
+        for y in Years:
+            iSubDir = "%s/%s/%s/Merged/AllInc.root"%(y, decay, c)
+            iFullDir = "root://cmseosmgm01.fnal.gov:1094/%s/%s"%(condorHistDir, iSubDir)
+            hists.append(iFullDir)
+else:
+    for y in Years:
+        iSubDir = "%s/%s/%s/Merged/AllInc.root"%(y, decay, channel)
+        iFullDir = "root://cmseosmgm01.fnal.gov:1094/%s/%s"%(condorHistDir, iSubDir)
+        hists.append(iFullDir)
 
 combHists = ' '.join(str(h) for h in hists)
 oHistSubDir = "Run2/%s/%s"%(decay, channel)

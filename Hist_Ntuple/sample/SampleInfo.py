@@ -94,6 +94,11 @@ def getSamples(y):
                    "QCD_Pt120to170_Ele",
                    "QCD_Pt170to300_Ele",
                    "QCD_Pt300toInf_Ele",
+                   "QCD_Pt20to30_bcToE",  
+                   "QCD_Pt30to80_bcToE",  
+                   "QCD_Pt80to170_bcToE", 
+                   "QCD_Pt170to250_bcToE",
+                   "QCD_Pt250toInf_bcToE",
                    'GJets_HT40To100',
                    'GJets_HT100To200',
                    'GJets_HT200To400',
@@ -112,11 +117,16 @@ def getSamples(y):
                    "QCD_Pt600to800_Mu",
                    "QCD_Pt800to1000_Mu",
                    "QCD_Pt1000toInf_Mu",
-                   'GJets_HT40To100',
-                   'GJets_HT100To200',
-                   'GJets_HT200To400',
-                   'GJets_HT400To600',
-                   'GJets_HT600ToInf',
+                   "QCD_Pt20to30_bcToE",  
+                   "QCD_Pt30to80_bcToE",  
+                   "QCD_Pt80to170_bcToE", 
+                   "QCD_Pt170to250_bcToE",
+                   "QCD_Pt250toInf_bcToE",
+                   "GJets_HT40To100",
+                   "GJets_HT100To200",
+                   "GJets_HT200To400",
+                   "GJets_HT400To600",
+                   "GJets_HT600ToInf"
                              ]),
                "DataMu" : gs(y, dataAllMu[y]),
                "DataEle" : gs(y, dataAllEle[y])
@@ -135,16 +145,15 @@ def getSamples(y):
                 'WZTo2L2Q_amcatnlo',
                 'WZTo3LNu_powheg',
                 'ZZTo4L_powheg',
+                'ZZTo2Q2Nu_amcatnlo',
                 'VVTo2L2Nu_amcatnlo'
                 ]
     if y =="2016":
-        pass
-        #Others_List.append("ZZTo2L2Q_powheg")
+        Others_List.append("ZZTo2L2Q_powheg")
     else:
         Others_List.append("ZZTo2L2Q_amcatnlo")
     samples["Others"] = gs(y, Others_List)
     return samples
 
-a = getSamples("2016")
-print a["Others"]
-print a.keys()
+#a = getSamples("2018")
+#print a.keys()
