@@ -31,7 +31,7 @@ float SimpleJetCorrectionUncertainty::uncertainty(std::vector<float> fX, float f
 {
   float result = 1.;
   int bin = mParameters->binIndex(fX);
-  if (bin<0) 
+  if (bin<0)
     //throw cms::Exception(
     cerr << "SimpleJetCorrectionUncertainty"<<" bin variables out of range";
   result = uncertaintyBin((unsigned)bin,fY,fDirection);

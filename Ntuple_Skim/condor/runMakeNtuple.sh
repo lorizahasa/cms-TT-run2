@@ -3,6 +3,12 @@
 #Take input arguments as an array
 myArray=( "$@" )
 #Array: Size=$#, an element=$1, all element = $@
+year=$1
+decay=$2
+sample=$3
+syst=$4
+job=$5
+nJobTotal=$6
 
 printf "Start Running Histogramming at ";/bin/date
 printf "Worker node hostname ";/bin/hostname
@@ -23,10 +29,6 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-year=$1
-sample=$2
-job=$3
-nJobTotal=$4
 varname=${sample}_FileList_${year}
 cd sample
 #source Skim_NanoAOD_FileLists_cff.sh 
@@ -37,18 +39,18 @@ if [ -z $job ] ; then
 else
     jobNum=" ${job}of${nJobTotal}"
 fi
-echo "./makeNtuple ${year} ${sample} ${jobNum} . ${!varname}"
-./makeNtuple ${year} ${sample} ${jobNum} . ${!varname}
+echo "./makeNtuple ${decay} ${year} ${sample}__${syst} ${jobNum} . ${!varname}"
+./makeNtuple ${decay} ${year} ${sample}__${syst} ${jobNum} . ${!varname}
 
 printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-condorOutDir=/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim
+condorOutDir=/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim/${year}/${decay}/{$syst}
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
-    xrdcp -f ${sample}*.root root://cmseos.fnal.gov/${condorOutDir}/${year}
+    xrdcp -f ${decay}_${syst}_${sample}*.root root://cmseos.fnal.gov/${condorOutDir}/
     echo "Cleanup"
     rm -rf CMSSW_10_2_14
     rm *.root

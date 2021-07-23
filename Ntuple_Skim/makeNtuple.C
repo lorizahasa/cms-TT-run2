@@ -8,7 +8,9 @@ int musmear012_g = 1; // 0:down, 1:norm, 2: up
 int elesmear012_g = 1; // 0:down, 1:norm, 2: up
 int phoscale012_g = 1;
 int elescale012_g = 1;
-bool dileptonsample;
+bool dilepSel;
+bool semilepSel;
+bool semileptonsample;
 bool qcdSample;
 auto startClock = std::chrono::high_resolution_clock::now();
 
@@ -61,23 +63,38 @@ makeNtuple::makeNtuple(int ac, char** av)
 	eventStr = tempEventStr;
 	//cout << eventStr << "  "  << eventNum << endl;
     }
-    dileptonsample = false;
-    qcdSample = false;
+    dilepSel    = false;
+    semilepSel  = false;
+    qcdSample   = false;
 
+    if (std::string(av[1])=="semilepton" || 
+        std::string(av[1])=="semilept" ||
+        std::string(av[1])=="semilep" ||
+        std::string(av[1])=="Semilepton" || 
+        std::string(av[1])=="Semilept" ||
+        std::string(av[1])=="Semilep"){
+        semilepSel=true;
+        for (int i = 1; i < ac-1; i++){
+            av[i] = av[i+1];
+	}
+	ac = ac-1;
+        cout << "---------------------------------------" << endl;
+        cout << "Using Semilepton Selection" << endl;
+        cout << "---------------------------------------" << endl;
+    }
     if (std::string(av[1])=="dilepton" || 
         std::string(av[1])=="dilept" ||
         std::string(av[1])=="dilep" ||
         std::string(av[1])=="Dilepton" || 
         std::string(av[1])=="Dilept" ||
         std::string(av[1])=="Dilep"){
-  
-        dileptonsample=true;
+        dilepSel=true;
         for (int i = 1; i < ac-1; i++){
             av[i] = av[i+1];
 	}
 	ac = ac-1;
         cout << "---------------------------------------" << endl;
-        cout << "Using Dilepton Control Region Selection" << endl;
+        cout << "Using Dilepton Selection" << endl;
         cout << "---------------------------------------" << endl;
     }
 
@@ -333,13 +350,13 @@ makeNtuple::makeNtuple(int ac, char** av)
     //	if( systematicType=="elesmear_up")  {elesmear012_g = 2;}
     //	if( systematicType=="elesmear_down"){elesmear012_g = 0;}
 
-    if(dileptonsample)     {evtPick->Nmu_eq=2; evtPick->Nele_eq=2;}
+    if(dilepSel)     {evtPick->Nmu_eq=2; evtPick->Nele_eq=2;}
     if(qcdSample)       {selector->QCDselect = true; evtPick->QCDselect = true;}
     //    if( systematicType=="QCDcr")       {selector->QCDselect = true; evtPick->ZeroBExclusive=true; evtPick->QCDselect = true;}
-    std::cout << "Dilepton Sample :" << dileptonsample << std::endl;
+    std::cout << "Dilepton Sample :" << dilepSel << std::endl;
     std::cout << "JEC: " << jecvar012_g << "  JER: " << jervar012_g << " eleScale "<< elescale012_g << " phoScale" << phoscale012_g << "   ";
     std::cout << "  PhoSmear: " << phosmear012_g << "  muSmear: " << musmear012_g << "  eleSmear: " << elesmear012_g << std::endl;
-    if (dileptonsample && saveCutflow){
+    if (dilepSel && saveCutflow){
 	evtPick->Njet_ge = 2;
 	evtPick->NBjet_ge = 0;
     }
@@ -362,9 +379,11 @@ makeNtuple::makeNtuple(int ac, char** av)
 	//	outputFileName.replace(outputFileName.begin(),outputDirectory.size()+1, outputDirectory + "/"+systematicType + "_");
 	//	outputFileName = outputDirectory + "/"+systematicType + "_" +sampleType+"_"+year+"_Ntuple.root";
     }
-
-    if (dileptonsample){
-	outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/Dilep_");
+    if (semilepSel){
+	    outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/Semilep_");
+    }
+    if (dilepSel){
+	    outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/Dilep_");
     }
     if (qcdSample){
 	outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/QCDcr_");
@@ -983,7 +1002,7 @@ void makeNtuple::FillEvent(std::string year)
     }
     _ST = ht + lt + tree->MET_pt_;
 	
-    if (dileptonsample){
+    if (dilepSel){
 	if (_nMu==2) {
 	    int muInd1 = selector->Muons.at(0);
 	    int muInd2 = selector->Muons.at(1);
