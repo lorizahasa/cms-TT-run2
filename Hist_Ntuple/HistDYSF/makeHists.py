@@ -4,7 +4,7 @@ import os
 sys.path.insert(0, os.getcwd()+"/sample")
 from optparse import OptionParser
 from HistInfo import *
-from HistInputs import Regions, phoCat
+from HistInputs import Regions
 import numpy
 
 from SampleInfo import *
@@ -14,23 +14,21 @@ from SampleInfo import *
 parser = OptionParser()
 parser.add_option("-y", "--year", dest="year", default="2016",type='str',
                      help="Specifyi the year of the data taking" )
-parser.add_option("-d", "--decay", dest="decayMode", default="Semilep",type='str',
+parser.add_option("-d", "--decay", dest="decayMode", default="Dilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
-parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
+parser.add_option("-c", "--channel", dest="channel", default="Ele",type='str',
                      help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("-s", "--sample", dest="sample", default="TT_tytg_M800",type='str',
+parser.add_option("-s", "--sample", dest="sample", default="DYJets",type='str',
                      help="Specify which sample to run on" )
-parser.add_option("-r", "--region", dest="region", default="tty_Enriched",type='str', 
+parser.add_option("-r", "--region", dest="region", default="DY_Enriched_a2j_e0b_e0y",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--level", "--level", dest="level", default="",type='str',
                      help="Specify up/down of systematic")
 parser.add_option("--syst", "--systematic", dest="systematic", default="Base",type='str',
                      help="Specify which systematic to run on")
-parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_dilep",type='str', 
                      help="which histogram to be plottted")
 parser.add_option("--allHists","--allHists", dest="makeAllHists",action="store_true",default=False,
-                     help="Make full list of hists in histogramDict" )
-parser.add_option("--isCat","--isCat", dest="isCat",action="store_true",default=False,
                      help="Make full list of hists in histogramDict" )
 (options, args) = parser.parse_args()
 year = options.year
@@ -41,7 +39,6 @@ region = options.region
 syst = options.systematic
 level =options.level
 makeAllHists = options.makeAllHists
-isCat = options.isCat
 print parser.parse_args()
 
 #-----------------------------------------
@@ -224,37 +221,14 @@ print "Number of events:", tree.GetEntries()
 for index, hist in enumerate(histogramsToMake, start=1):
     hInfo = histogramInfo[hist]
     if ('Data' in sample or isQCD) and not hInfo[2]: continue
-    if "tt_Enriched" in region:
-        w_pho = "1.0"
-    else:
-        if "Pho" in hist:
-            w_pho= "Weight_pho"
-            if 'Weight_pho' in syst:
-                if levelUp:
-                    w_pho = "Weight_pho_up"
-                else:
-                    w_pho = "Weight_pho_down"
-        else:
-            w_pho= "Weight_pho[0]"
-            if 'Weight_pho' in syst:
-                if levelUp:
-                    w_pho = "Weight_pho_up[0]"
-                else:
-                    w_pho = "Weight_pho_down[0]"
-    toPrint("Final event weight ", "%s*%s"%(weights, w_pho))
+    toPrint("Final event weight ", "%s"%(weights))
     toPrint("%s/%s: Filling the histogram"%(index, len(histogramsToMake)), hist)
     toPrint("Extra cuts ", extraCuts)
     histograms.append(TH1F("%s"%(hist),"%s"%(hist),hInfo[1][0],hInfo[1][1],hInfo[1][2]))
     if "Data" in sample:
         tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, "1.0"), "goff")
     else:
-        tree.Draw("%s>>%s"%(hist,hist), "%s%s*%s"%(extraCuts, weights, w_pho), "goff")
-        if isCat and "tty" in region:
-            for cat in phoCat.keys():
-                histograms.append(TH1F("%s_%s"%(hist, cat),"%s_%s"%(hist, cat),hInfo[1][0],hInfo[1][1],hInfo[1][2]))
-                extraCuts_ = extraCuts.replace(")", " && %s[0] )"%phoCat[cat])
-                toPrint("Extra cuts ", extraCuts_)
-                tree.Draw("%s>>%s_%s"%(hist,hist,cat), "%s%s*%s"%(extraCuts_, weights, w_pho), "goff")
+        tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, weights), "goff")
 
 #-----------------------------------------
 #Final output Linux and ROOT directories

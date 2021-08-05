@@ -57,3 +57,8 @@ SamplePhoCat = {
          "hadronic_photon"   : [rt.kGreyScale,     "Nonprompt #gamma"],
          "hadronic_fake"     : [rt.kBeach,     "Multijet"],
          }
+SampleDYSF = {
+         "DYJets"    : [rt.kYellow, "DY+jets"],
+         "OtherBkgs"    : [rt.kBlue, "OtherBkgs"]
+         }
+SampleBkg = SampleDYSF

@@ -17,7 +17,7 @@ else
     cd CMSSW_10_2_14/src
     eval `scramv1 runtime -sh`
 	cd ../..
-	tar --strip-components=1 -zxvf Hist_Ntuple.tar.gz
+	tar --strip-components=1 -zxvf HistDYSF.tar.gz
 fi
 
 #Run for Base, Signal region
@@ -47,7 +47,7 @@ printf "Done Histogramming at ";/bin/date
 #Copy the ouput root files
 #---------------------------------------------
 printf "Copying output files ..."
-condorOutDir=/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple/Raw
+condorOutDir=/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple/HistDYSF/Raw
 eos root://cmseos.fnal.gov mkdir -p $condorOutDir/$1/$2/$3/
 xrdcp -rf hists/$1/$2/$3/*.root root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/ 
 printf "Done ";/bin/date

@@ -1,22 +1,22 @@
 #-----------------------------------------------------------------
-condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple"
+condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple/Raw"
 #-----------------------------------------------------------------
 #Years 	      =	["2016", "2017", "2018"]
 Years 	      =	["2016"]
-Channels 	  =	["Mu", "Ele"]
-#Channels 	  =	["Mu"]
-Decays 	      =	["Semilep"]
+#Channels 	  =	["Mu", "Ele"]
+Channels 	  =	["Ele"]
+Decays 	      =	["Dilep"]
 
 Samples = []
-Samples.append("TT_tytg_M700")
+#Samples.append("TT_tytg_M700")
 Samples.append("TT_tytg_M800")
-Samples.append("TT_tytg_M900")
-Samples.append("TT_tytg_M1000")
-#Samples.append("TT_tytg_M1100")
+#Samples.append("TT_tytg_M900")
+#Samples.append("TT_tytg_M1000")
+##Samples.append("TT_tytg_M1100")
 Samples.append("TT_tytg_M1200")
-Samples.append("TT_tytg_M1300")
-Samples.append("TT_tytg_M1400")
-Samples.append("TT_tytg_M1500")
+#Samples.append("TT_tytg_M1300")
+#Samples.append("TT_tytg_M1400")
+#Samples.append("TT_tytg_M1500")
 Samples.append("TT_tytg_M1600")
 #bkg and data
 Samples.append("TTbar")
@@ -45,7 +45,7 @@ Systematics.append("Weight_isr")
 Systematics.append("Weight_fsr")
 Systematics.append("Weight_jes")
 Systematics.append("Weight_jer")
-Systematics   =	[]
+#Systematics   =	[]
 
 SystLevels = []
 SystLevels.append("Up")
@@ -58,14 +58,19 @@ phoCat["hadronic_photon"]  = "Photon_hadronic_photon"
 phoCat["hadronic_fake"]    = "Photon_hadronic_fake"  
 
 Regions = {}
+rForDYSF = {}
 isTT = False
-isTTY = True
-isTTYG = True
+isTTY = False
+isTTYG = False
+
 #--------------------------------
 #Validation region (0 photon) 
 #(TOP-18-010, AN2019_227_v20)
 #tt control regions
 #--------------------------------
+rForDYSF['tt_Enriched_e3j_e0b_e0y']              = "Jet_size==3 && Jet_b_size==0 && Photon_size==0" 
+#rForDYSF['tt_Enriched_a3j_e0b_e0y']              = "Jet_size>=3 && Jet_b_size==0 && Photon_size==0" 
+#rForDYSF['tt_Enriched_a4j_e0b_e0y']              = "Jet_size>=4 && Jet_b_size==0 && Photon_size==0" 
 if isTT:
     Regions['tt_Enriched_e2j_e0b_e0y']          = "Jet_size==2 && Jet_b_size==0 && Photon_size==0" 
     Regions['tt_Enriched_e3j_e0b_e0y']          = "Jet_size==3 && Jet_b_size==0 && Photon_size==0" 

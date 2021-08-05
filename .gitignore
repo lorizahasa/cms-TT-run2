@@ -11,6 +11,12 @@ Fit_Hist/tex
 */*/*/*.pyc
 */*/*/*/*.pyc
 
+*.json
+*/*.json
+*/*/*.json
+*/*/*/*.json
+*/*/*/*/*.json
+
 *.o
 */*.o
 */*/*.o

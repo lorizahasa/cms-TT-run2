@@ -1,7 +1,8 @@
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 import os
 import sys
-sys.path.insert(0, os.getcwd().replace("Plot_Hist", "Hist_Ntuple"))
+sys.path.insert(0, os.getcwd().replace("Plot_Hist/PlotDYSF", "Hist_Ntuple/HistDYSF"))
+sys.path.insert(0, os.getcwd().replace("PlotDYSF", ""))
 from HistInputs import Regions
 from HistInfo import GetHistogramInfo
 from optparse import OptionParser
@@ -25,32 +26,39 @@ yPadRange = [0.0,0.30-padGap, 0.30+padGap,1.0]
 parser = OptionParser()
 parser.add_option("-y", "--year", dest="year", default="2016",type='str',
                      help="Specifyi the year of the data taking" )
-parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
+parser.add_option("-d", "--decayMode", dest="decayMode", default="Dilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or DiLep? default is Semilep")
-parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
+parser.add_option("-c", "--channel", dest="channel", default="Ele",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched",type='str', 
+parser.add_option("-r", "--region", dest="region", default="DY_Enriched_a3j_e0b_e0y",type='str', 
                      help="which control selection and region"), 
-parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_dilep",type='str', 
                      help="which histogram to be plottted")
+parser.add_option("--forDYSF","--forDYSF", dest="forDYSF",action="store_true",
+        default=False, help="")
+parser.add_option("--afterDYSF","--afterDYSF", dest="afterDYSF",action="store_true",
+        default=False, help="")
 (options, args) = parser.parse_args()
 year            = options.year
 decayMode       = options.decayMode
 channel         = options.channel
 region = options.region
 hName           = options.hName
-
+forDYSF = options.forDYSF
+afterDYSF = options.afterDYSF
+stage = "forDYSF"
+if afterDYSF:
+    stage = "afterDYSF"
 #-----------------------------------------
 #Path of the I/O histrograms/plots
 #----------------------------------------
-inHistSubDir = "/Hist_Ntuple/Raw/%s/%s/%s/Merged"%(year, decayMode, channel)
+inHistSubDir = "/Hist_Ntuple/HistDYSF/%s/%s/%s/%s/Merged"%(stage, year, decayMode, channel)
 inHistFullDir = "%s/%s"%(condorHistDir, inHistSubDir)
 inFile = TFile("%s/AllInc.root"%(inHistFullDir), "read")
-outPlotSubDir = "Plot_Hist/Raw/%s/%s/%s/%s"%(year, decayMode, channel, region)
+outPlotSubDir = "Plot_Hist/PlotDYSF/%s/%s/%s/%s/%s"%(stage, year, decayMode, channel, region)
 outPlotFullDir = "%s/%s"%(condorHistDir, outPlotSubDir)
 if not os.path.exists(outPlotFullDir):
     os.makedirs(outPlotFullDir)
-
 gROOT.SetBatch(True)
 #-----------------------------------------
 #Make a plot for one histogram
@@ -83,7 +91,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     hForStack = sortHists(bkgHists, False)
     lumi_13TeV = "35.9 fb^{-1}"
     col_depth = 0
-    col_year = SampleBkg["TTGamma"][0]
+    col_year = SampleBkg["DYJets"][0]
     if "16" in year:
         col_depth = -2
         lumi_13TeV = "35.9 fb^{-1} (#color[%i]{2016})"%(col_year+col_depth)
@@ -202,6 +210,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     #chName = "#splitline{%s}{%s}"%(chName, region)
     chName = "%s, #bf{%s}"%(chName, region)
     crName = formatCRString(Regions[region])
+    crName = "%s,    %s"%(crName, stage)
     chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
     extraText   = "#splitline{Preliminary}{%s}"%chCRName
     if isData and isRatio:
@@ -255,7 +264,7 @@ isRatio  = True
 if "SR" in region or len(region)==13:
     isData  = False
     isRatio = False
-isSig    = True
+isSig    = False
 isUnc    = False
 isLog    = False
 makePlot(hName, region, isSig,  isData, isLog, isRatio, isUnc)

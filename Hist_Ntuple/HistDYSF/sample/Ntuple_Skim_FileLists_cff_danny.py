@@ -1,0 +1,2356 @@
+Semilep_JetBase__TTGamma_Dilepton_erdOn_FileList_2016 = ['/Semilep_JetBase__TTGamma_Dilepton_erdOn_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgluonTgluon_M1500_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgluonTgluon_M1500_2016_Ntuple.root']
+
+Semilep_JetBase__ST_tbar_channel_FileList_2016 = ['/Semilep_JetBase__ST_tbar_channel_2016_Ntuple_1of5.root', '/Semilep_JetBase__ST_tbar_channel_2016_Ntuple_2of5.root', '/Semilep_JetBase__ST_tbar_channel_2016_Ntuple_3of5.root', '/Semilep_JetBase__ST_tbar_channel_2016_Ntuple_4of5.root', '/Semilep_JetBase__ST_tbar_channel_2016_Ntuple_5of5.root']
+
+Semilep_JetBase__QCD_Pt300to470_Mu_FileList_2016 = ['/Semilep_JetBase__QCD_Pt300to470_Mu_2016_Ntuple_1of3.root', '/Semilep_JetBase__QCD_Pt300to470_Mu_2016_Ntuple_2of3.root', '/Semilep_JetBase__QCD_Pt300to470_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JetBase__GJets_HT200To400_FileList_2016 = ['/Semilep_JetBase__GJets_HT200To400_2016_Ntuple_1of2.root', '/Semilep_JetBase__GJets_HT200To400_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__TTWtoLNu_FileList_2016 = ['/Semilep_JetBase__TTWtoLNu_2016_Ntuple_1of2.root', '/Semilep_JetBase__TTWtoLNu_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgluon_M1100_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgluon_M1100_2016_Ntuple.root']
+
+Semilep_JetBase__TTGamma_SingleLept_Pt200_FileList_2016 = ['/Semilep_JetBase__TTGamma_SingleLept_Pt200_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt600to800_Mu_FileList_2016 = ['/Semilep_JetBase__QCD_Pt600to800_Mu_2016_Ntuple_1of2.root', '/Semilep_JetBase__QCD_Pt600to800_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgamma_M700_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgamma_M700_2016_Ntuple.root']
+
+Semilep_JetBase__Data_SingleEle_d_FileList_2016 = ['/Semilep_JetBase__Data_SingleEle_d_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleEle_d_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleEle_d_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleEle_d_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleEle_d_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleEle_d_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleEle_d_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleEle_d_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleEle_d_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleEle_d_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__Data_SingleEle_g_FileList_2016 = ['/Semilep_JetBase__Data_SingleEle_g_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleEle_g_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleEle_g_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleEle_g_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleEle_g_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleEle_g_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleEle_g_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleEle_g_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleEle_g_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleEle_g_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__Data_SingleEle_f_FileList_2016 = ['/Semilep_JetBase__Data_SingleEle_f_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleEle_f_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleEle_f_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleEle_f_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleEle_f_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleEle_f_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleEle_f_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleEle_f_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleEle_f_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleEle_f_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__Data_SingleEle_c_FileList_2016 = ['/Semilep_JetBase__Data_SingleEle_c_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleEle_c_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleEle_c_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleEle_c_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleEle_c_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleEle_c_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleEle_c_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleEle_c_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleEle_c_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleEle_c_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__Data_SingleEle_b_FileList_2016 = ['/Semilep_JetBase__Data_SingleEle_b_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleEle_b_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleEle_b_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleEle_b_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleEle_b_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleEle_b_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleEle_b_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleEle_b_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleEle_b_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleEle_b_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgluon_M1400_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgluon_M1400_2016_Ntuple.root']
+
+Semilep_JetBase__Data_SingleEle_h_FileList_2016 = ['/Semilep_JetBase__Data_SingleEle_h_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleEle_h_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleEle_h_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleEle_h_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleEle_h_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleEle_h_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleEle_h_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleEle_h_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleEle_h_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleEle_h_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__QCD_Pt300toInf_Ele_FileList_2016 = ['/Semilep_JetBase__QCD_Pt300toInf_Ele_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgluonTgluon_M700_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgluonTgluon_M700_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt50to80_Mu_FileList_2016 = ['/Semilep_JetBase__QCD_Pt50to80_Mu_2016_Ntuple.root']
+
+Semilep_JetBase__WGamma_FileList_2016 = ['/Semilep_JetBase__WGamma_2016_Ntuple.root']
+
+Semilep_JetBase__Data_SingleMu_b_FileList_2016 = ['/Semilep_JetBase__Data_SingleMu_b_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleMu_b_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleMu_b_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleMu_b_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleMu_b_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleMu_b_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleMu_b_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleMu_b_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleMu_b_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleMu_b_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__Data_SingleMu_c_FileList_2016 = ['/Semilep_JetBase__Data_SingleMu_c_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleMu_c_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleMu_c_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleMu_c_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleMu_c_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleMu_c_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleMu_c_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleMu_c_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleMu_c_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleMu_c_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__Data_SingleMu_d_FileList_2016 = ['/Semilep_JetBase__Data_SingleMu_d_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleMu_d_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleMu_d_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleMu_d_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleMu_d_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleMu_d_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleMu_d_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleMu_d_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleMu_d_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleMu_d_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__Data_SingleMu_e_FileList_2016 = ['/Semilep_JetBase__Data_SingleMu_e_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleMu_e_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleMu_e_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleMu_e_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleMu_e_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleMu_e_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleMu_e_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleMu_e_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleMu_e_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleMu_e_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__Data_SingleMu_f_FileList_2016 = ['/Semilep_JetBase__Data_SingleMu_f_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleMu_f_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleMu_f_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleMu_f_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleMu_f_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleMu_f_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleMu_f_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleMu_f_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleMu_f_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleMu_f_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__DYjetsM50_FileList_2016 = ['/Semilep_JetBase__DYjetsM50_2016_Ntuple_10of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_11of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_12of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_13of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_14of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_15of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_16of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_17of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_18of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_19of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_1of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_20of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_2of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_3of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_4of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_5of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_6of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_7of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_8of20.root', '/Semilep_JetBase__DYjetsM50_2016_Ntuple_9of20.root']
+
+Semilep_JetBase__ZZTo2Q2Nu_powheg_FileList_2016 = ['/Semilep_JetBase__ZZTo2Q2Nu_powheg_2016_Ntuple.root']
+
+Semilep_JetBase__ZZ_FileList_2016 = ['/Semilep_JetBase__ZZ_2016_Ntuple_1of2.root', '/Semilep_JetBase__ZZ_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__TstarTstarToTgluonTgluon_M900_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgluonTgluon_M900_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgluonTgluon_M1600_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgluonTgluon_M1600_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt80to170_bcToE_FileList_2016 = ['/Semilep_JetBase__QCD_Pt80to170_bcToE_2016_Ntuple.root']
+
+Semilep_JetBase__W1jets_FileList_2016 = ['/Semilep_JetBase__W1jets_2016_Ntuple.root']
+
+Semilep_JetBase__TTGamma_SingleLept_Pt100_FileList_2016 = ['/Semilep_JetBase__TTGamma_SingleLept_Pt100_2016_Ntuple.root']
+
+Semilep_JetBase__TTWtoQQ_FileList_2016 = ['/Semilep_JetBase__TTWtoQQ_2016_Ntuple.root']
+
+Semilep_JetBase__DYjetsM10to50_FileList_2016 = ['/Semilep_JetBase__DYjetsM10to50_2016_Ntuple.root']
+
+Semilep_JetBase__ST_tbarW_channel_FileList_2016 = ['/Semilep_JetBase__ST_tbarW_channel_2016_Ntuple.root']
+
+Semilep_JetBase__TTGamma_Dilepton_Pt200_FileList_2016 = ['/Semilep_JetBase__TTGamma_Dilepton_Pt200_2016_Ntuple.root']
+
+Semilep_JetBase__ZZTo2L2Q_powheg_FileList_2016 = ['/Semilep_JetBase__ZZTo2L2Q_powheg_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt20to30_bcToE_FileList_2016 = ['/Semilep_JetBase__QCD_Pt20to30_bcToE_2016_Ntuple.root']
+
+Semilep_JetBase__TTGamma_SingleLept_TuneDown_FileList_2016 = ['/Semilep_JetBase__TTGamma_SingleLept_TuneDown_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgamma_M1600_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgamma_M1600_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgluonTgluon_M1400_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgluonTgluon_M1400_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt20to30_Mu_FileList_2016 = ['/Semilep_JetBase__QCD_Pt20to30_Mu_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgluon_M1500_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgluon_M1500_2016_Ntuple.root']
+
+Semilep_JetBase__TGJets_FileList_2016 = ['/Semilep_JetBase__TGJets_2016_Ntuple_1of2.root', '/Semilep_JetBase__TGJets_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__TTZtoLL_FileList_2016 = ['/Semilep_JetBase__TTZtoLL_2016_Ntuple_1of3.root', '/Semilep_JetBase__TTZtoLL_2016_Ntuple_2of3.root', '/Semilep_JetBase__TTZtoLL_2016_Ntuple_3of3.root']
+
+Semilep_JetBase__TTGamma_Dilepton_TuneUp_FileList_2016 = ['/Semilep_JetBase__TTGamma_Dilepton_TuneUp_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt470to600_Mu_FileList_2016 = ['/Semilep_JetBase__QCD_Pt470to600_Mu_2016_Ntuple_1of3.root', '/Semilep_JetBase__QCD_Pt470to600_Mu_2016_Ntuple_2of3.root', '/Semilep_JetBase__QCD_Pt470to600_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JetBase__QCD_Pt250toInf_bcToE_FileList_2016 = ['/Semilep_JetBase__QCD_Pt250toInf_bcToE_2016_Ntuple.root']
+
+Semilep_JetBase__ZGamma_01J_LoosePt_FileList_2016 = ['/Semilep_JetBase__ZGamma_01J_LoosePt_2016_Ntuple_1of5.root', '/Semilep_JetBase__ZGamma_01J_LoosePt_2016_Ntuple_2of5.root', '/Semilep_JetBase__ZGamma_01J_LoosePt_2016_Ntuple_3of5.root', '/Semilep_JetBase__ZGamma_01J_LoosePt_2016_Ntuple_4of5.root', '/Semilep_JetBase__ZGamma_01J_LoosePt_2016_Ntuple_5of5.root']
+
+Semilep_JetBase__QCD_Pt170to300_Ele_FileList_2016 = ['/Semilep_JetBase__QCD_Pt170to300_Ele_2016_Ntuple.root']
+
+Semilep_JetBase__TTGamma_SingleLept_erdOn_FileList_2016 = ['/Semilep_JetBase__TTGamma_SingleLept_erdOn_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgluon_M1000_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgluon_M1000_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgluon_M700_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgluon_M700_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt120to170_Ele_FileList_2016 = ['/Semilep_JetBase__QCD_Pt120to170_Ele_2016_Ntuple_1of2.root', '/Semilep_JetBase__QCD_Pt120to170_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__GJets_HT600ToInf_FileList_2016 = ['/Semilep_JetBase__GJets_HT600ToInf_2016_Ntuple_1of2.root', '/Semilep_JetBase__GJets_HT600ToInf_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__GJets_HT100To200_FileList_2016 = ['/Semilep_JetBase__GJets_HT100To200_2016_Ntuple_1of2.root', '/Semilep_JetBase__GJets_HT100To200_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__W2jets_FileList_2016 = ['/Semilep_JetBase__W2jets_2016_Ntuple_1of2.root', '/Semilep_JetBase__W2jets_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__W3jets_FileList_2016 = ['/Semilep_JetBase__W3jets_2016_Ntuple_1of2.root', '/Semilep_JetBase__W3jets_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__WZTo3LNu_powheg_FileList_2016 = ['/Semilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_10of11.root', '/Semilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_11of11.root', '/Semilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_1of11.root', '/Semilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_2of11.root', '/Semilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_3of11.root', '/Semilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_4of11.root', '/Semilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_5of11.root', '/Semilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_6of11.root', '/Semilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_7of11.root', '/Semilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_8of11.root', '/Semilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_9of11.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgamma_M1200_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgamma_M1200_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgluonTgluon_M1000_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgluonTgluon_M1000_2016_Ntuple.root']
+
+Semilep_JetBase__WWTo4Q_powheg_FileList_2016 = ['/Semilep_JetBase__WWTo4Q_powheg_2016_Ntuple.root']
+
+Semilep_JetBase__TTbarPowheg_Hadronic_FileList_2016 = ['/Semilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_10of10.root', '/Semilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_1of10.root', '/Semilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_2of10.root', '/Semilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_3of10.root', '/Semilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_4of10.root', '/Semilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_5of10.root', '/Semilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_6of10.root', '/Semilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_7of10.root', '/Semilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_8of10.root', '/Semilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__ST_s_channel_FileList_2016 = ['/Semilep_JetBase__ST_s_channel_2016_Ntuple.root']
+
+Semilep_JetBase__VVTo2L2Nu_amcatnlo_FileList_2016 = ['/Semilep_JetBase__VVTo2L2Nu_amcatnlo_2016_Ntuple_1of2.root', '/Semilep_JetBase__VVTo2L2Nu_amcatnlo_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__TTGamma_Hadronic_FileList_2016 = ['/Semilep_JetBase__TTGamma_Hadronic_2016_Ntuple.root']
+
+Semilep_JetBase__WWToLNuQQ_powheg_FileList_2016 = ['/Semilep_JetBase__WWToLNuQQ_powheg_2016_Ntuple_1of2.root', '/Semilep_JetBase__WWToLNuQQ_powheg_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__WZTo2L2Q_amcatnlo_FileList_2016 = ['/Semilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_10of10.root', '/Semilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_1of10.root', '/Semilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_2of10.root', '/Semilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_3of10.root', '/Semilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_4of10.root', '/Semilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_5of10.root', '/Semilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_6of10.root', '/Semilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_7of10.root', '/Semilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_8of10.root', '/Semilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__TTGamma_SingleLept_TuneUp_FileList_2016 = ['/Semilep_JetBase__TTGamma_SingleLept_TuneUp_2016_Ntuple.root']
+
+Semilep_JetBase__TTGamma_Hadronic_Pt100_FileList_2016 = ['/Semilep_JetBase__TTGamma_Hadronic_Pt100_2016_Ntuple.root']
+
+Semilep_JetBase__W4jets_FileList_2016 = ['/Semilep_JetBase__W4jets_2016_Ntuple_1of3.root', '/Semilep_JetBase__W4jets_2016_Ntuple_2of3.root', '/Semilep_JetBase__W4jets_2016_Ntuple_3of3.root']
+
+Semilep_JetBase__TstarTstarToTgluonTgluon_M800_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgluonTgluon_M800_2016_Ntuple.root']
+
+Semilep_JetBase__TTGamma_Dilepton_TuneDown_FileList_2016 = ['/Semilep_JetBase__TTGamma_Dilepton_TuneDown_2016_Ntuple.root']
+
+Semilep_JetBase__GJets_HT40To100_FileList_2016 = ['/Semilep_JetBase__GJets_HT40To100_2016_Ntuple_1of2.root', '/Semilep_JetBase__GJets_HT40To100_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__WZTo1L3Nu_amcatnlo_FileList_2016 = ['/Semilep_JetBase__WZTo1L3Nu_amcatnlo_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgamma_M1500_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgamma_M1500_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgluonTgluon_M1300_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgluonTgluon_M1300_2016_Ntuple.root']
+
+Semilep_JetBase__Data_SingleEle_e_FileList_2016 = ['/Semilep_JetBase__Data_SingleEle_e_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleEle_e_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleEle_e_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleEle_e_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleEle_e_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleEle_e_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleEle_e_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleEle_e_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleEle_e_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleEle_e_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__WW_FileList_2016 = ['/Semilep_JetBase__WW_2016_Ntuple_1of2.root', '/Semilep_JetBase__WW_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__WZ_FileList_2016 = ['/Semilep_JetBase__WZ_2016_Ntuple_1of2.root', '/Semilep_JetBase__WZ_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__ST_t_channel_FileList_2016 = ['/Semilep_JetBase__ST_t_channel_2016_Ntuple_1of5.root', '/Semilep_JetBase__ST_t_channel_2016_Ntuple_2of5.root', '/Semilep_JetBase__ST_t_channel_2016_Ntuple_3of5.root', '/Semilep_JetBase__ST_t_channel_2016_Ntuple_4of5.root', '/Semilep_JetBase__ST_t_channel_2016_Ntuple_5of5.root']
+
+Semilep_JetBase__TTGamma_SingleLept_CR1_FileList_2016 = ['/Semilep_JetBase__TTGamma_SingleLept_CR1_2016_Ntuple.root']
+
+Semilep_JetBase__TTGamma_SingleLept_CR2_FileList_2016 = ['/Semilep_JetBase__TTGamma_SingleLept_CR2_2016_Ntuple.root']
+
+Semilep_JetBase__TTGamma_SingleLept_FileList_2016 = ['/Semilep_JetBase__TTGamma_SingleLept_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgluon_M1300_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgluon_M1300_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt800to1000_Mu_FileList_2016 = ['/Semilep_JetBase__QCD_Pt800to1000_Mu_2016_Ntuple_1of3.root', '/Semilep_JetBase__QCD_Pt800to1000_Mu_2016_Ntuple_2of3.root', '/Semilep_JetBase__QCD_Pt800to1000_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JetBase__TTbarPowheg_Semilept_FileList_2016 = ['/Semilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_10of10.root', '/Semilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_1of10.root', '/Semilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_2of10.root', '/Semilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_3of10.root', '/Semilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_4of10.root', '/Semilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_5of10.root', '/Semilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_6of10.root', '/Semilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_7of10.root', '/Semilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_8of10.root', '/Semilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__QCD_Pt170to250_bcToE_FileList_2016 = ['/Semilep_JetBase__QCD_Pt170to250_bcToE_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt30to50_Ele_FileList_2016 = ['/Semilep_JetBase__QCD_Pt30to50_Ele_2016_Ntuple_1of2.root', '/Semilep_JetBase__QCD_Pt30to50_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__TTGamma_Dilepton_FileList_2016 = ['/Semilep_JetBase__TTGamma_Dilepton_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgamma_M1100_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgamma_M1100_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgamma_M1400_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgamma_M1400_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgamma_M800_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgamma_M800_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgluon_M1600_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgluon_M1600_2016_Ntuple.root']
+
+Semilep_JetBase__TTGamma_Dilepton_CR1_FileList_2016 = ['/Semilep_JetBase__TTGamma_Dilepton_CR1_2016_Ntuple.root']
+
+Semilep_JetBase__TTGamma_Dilepton_CR2_FileList_2016 = ['/Semilep_JetBase__TTGamma_Dilepton_CR2_2016_Ntuple.root']
+
+Semilep_JetBase__Data_SingleMu_h_FileList_2016 = ['/Semilep_JetBase__Data_SingleMu_h_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleMu_h_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleMu_h_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleMu_h_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleMu_h_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleMu_h_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleMu_h_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleMu_h_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleMu_h_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleMu_h_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__QCD_Pt1000toInf_Mu_FileList_2016 = ['/Semilep_JetBase__QCD_Pt1000toInf_Mu_2016_Ntuple_1of2.root', '/Semilep_JetBase__QCD_Pt1000toInf_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__GJets_HT400To600_FileList_2016 = ['/Semilep_JetBase__GJets_HT400To600_2016_Ntuple_1of2.root', '/Semilep_JetBase__GJets_HT400To600_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__QCD_Pt80to120_Ele_FileList_2016 = ['/Semilep_JetBase__QCD_Pt80to120_Ele_2016_Ntuple_1of2.root', '/Semilep_JetBase__QCD_Pt80to120_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__ZZTo2Q2Nu_amcatnlo_FileList_2016 = ['/Semilep_JetBase__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_1of5.root', '/Semilep_JetBase__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_2of5.root', '/Semilep_JetBase__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_3of5.root', '/Semilep_JetBase__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_4of5.root', '/Semilep_JetBase__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_5of5.root']
+
+Semilep_JetBase__TTZtoQQ_FileList_2016 = ['/Semilep_JetBase__TTZtoQQ_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt30to80_bcToE_FileList_2016 = ['/Semilep_JetBase__QCD_Pt30to80_bcToE_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt120to170_Mu_FileList_2016 = ['/Semilep_JetBase__QCD_Pt120to170_Mu_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt80to120_Mu_FileList_2016 = ['/Semilep_JetBase__QCD_Pt80to120_Mu_2016_Ntuple_1of2.root', '/Semilep_JetBase__QCD_Pt80to120_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__ZZTo4L_powheg_FileList_2016 = ['/Semilep_JetBase__ZZTo4L_powheg_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgamma_M1000_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgamma_M1000_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt30to50_Mu_FileList_2016 = ['/Semilep_JetBase__QCD_Pt30to50_Mu_2016_Ntuple.root']
+
+Semilep_JetBase__TTbarPowheg_Dilepton_FileList_2016 = ['/Semilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_10of10.root', '/Semilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_1of10.root', '/Semilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_2of10.root', '/Semilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_3of10.root', '/Semilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_4of10.root', '/Semilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_5of10.root', '/Semilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_6of10.root', '/Semilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_7of10.root', '/Semilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_8of10.root', '/Semilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__TTZtoLL_M1to10_FileList_2016 = ['/Semilep_JetBase__TTZtoLL_M1to10_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt50to80_Ele_FileList_2016 = ['/Semilep_JetBase__QCD_Pt50to80_Ele_2016_Ntuple_1of2.root', '/Semilep_JetBase__QCD_Pt50to80_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__QCD_Pt170to300_Mu_FileList_2016 = ['/Semilep_JetBase__QCD_Pt170to300_Mu_2016_Ntuple_1of2.root', '/Semilep_JetBase__QCD_Pt170to300_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JetBase__ZGamma_01J_lowMLL_lowGPt_FileList_2016 = ['/Semilep_JetBase__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_1of5.root', '/Semilep_JetBase__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_2of5.root', '/Semilep_JetBase__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_3of5.root', '/Semilep_JetBase__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_4of5.root', '/Semilep_JetBase__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_5of5.root']
+
+Semilep_JetBase__TstarTstarToTgluonTgluon_M1200_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgluonTgluon_M1200_2016_Ntuple.root']
+
+Semilep_JetBase__QCD_Pt20to30_Ele_FileList_2016 = ['/Semilep_JetBase__QCD_Pt20to30_Ele_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgluonTgluon_M1100_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgluonTgluon_M1100_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgluon_M1200_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgluon_M1200_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgluon_M900_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgluon_M900_2016_Ntuple.root']
+
+Semilep_JetBase__Data_SingleMu_g_FileList_2016 = ['/Semilep_JetBase__Data_SingleMu_g_2016_Ntuple_10of10.root', '/Semilep_JetBase__Data_SingleMu_g_2016_Ntuple_1of10.root', '/Semilep_JetBase__Data_SingleMu_g_2016_Ntuple_2of10.root', '/Semilep_JetBase__Data_SingleMu_g_2016_Ntuple_3of10.root', '/Semilep_JetBase__Data_SingleMu_g_2016_Ntuple_4of10.root', '/Semilep_JetBase__Data_SingleMu_g_2016_Ntuple_5of10.root', '/Semilep_JetBase__Data_SingleMu_g_2016_Ntuple_6of10.root', '/Semilep_JetBase__Data_SingleMu_g_2016_Ntuple_7of10.root', '/Semilep_JetBase__Data_SingleMu_g_2016_Ntuple_8of10.root', '/Semilep_JetBase__Data_SingleMu_g_2016_Ntuple_9of10.root']
+
+Semilep_JetBase__TTGamma_Dilepton_Pt100_FileList_2016 = ['/Semilep_JetBase__TTGamma_Dilepton_Pt100_2016_Ntuple.root']
+
+Semilep_JetBase__ZGamma_01J_5f_lowMass_FileList_2016 = ['/Semilep_JetBase__ZGamma_01J_5f_lowMass_2016_Ntuple_1of5.root', '/Semilep_JetBase__ZGamma_01J_5f_lowMass_2016_Ntuple_2of5.root', '/Semilep_JetBase__ZGamma_01J_5f_lowMass_2016_Ntuple_3of5.root', '/Semilep_JetBase__ZGamma_01J_5f_lowMass_2016_Ntuple_4of5.root', '/Semilep_JetBase__ZGamma_01J_5f_lowMass_2016_Ntuple_5of5.root']
+
+Semilep_JetBase__ST_tW_channel_FileList_2016 = ['/Semilep_JetBase__ST_tW_channel_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgluon_M800_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgluon_M800_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgamma_M1300_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgamma_M1300_2016_Ntuple.root']
+
+Semilep_JetBase__TstarTstarToTgammaTgamma_M900_FileList_2016 = ['/Semilep_JetBase__TstarTstarToTgammaTgamma_M900_2016_Ntuple.root']
+
+Semilep_JetBase__WZTo1L1Nu2Q_amcatnlo_FileList_2016 = ['/Semilep_JetBase__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_1of5.root', '/Semilep_JetBase__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_2of5.root', '/Semilep_JetBase__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_3of5.root', '/Semilep_JetBase__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_4of5.root', '/Semilep_JetBase__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_5of5.root']
+
+Semilep_JetBase__TTGamma_Hadronic_Pt200_FileList_2016 = ['/Semilep_JetBase__TTGamma_Hadronic_Pt200_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt80to120_Ele_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt80to120_Ele_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__QCD_Pt80to120_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M700_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M700_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1400_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1400_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1000_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1000_2016_Ntuple.root']
+
+Semilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_FileList_2016 = ['/Semilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_1of5.root', '/Semilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_2of5.root', '/Semilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_3of5.root', '/Semilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_4of5.root', '/Semilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1500_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1500_2016_Ntuple.root']
+
+Semilep_JECTotal_up__VVTo2L2Nu_amcatnlo_FileList_2016 = ['/Semilep_JECTotal_up__VVTo2L2Nu_amcatnlo_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__VVTo2L2Nu_amcatnlo_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__QCD_Pt300to470_Mu_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt300to470_Mu_2016_Ntuple_1of3.root', '/Semilep_JECTotal_up__QCD_Pt300to470_Mu_2016_Ntuple_2of3.root', '/Semilep_JECTotal_up__QCD_Pt300to470_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M700_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M700_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt170to300_Mu_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt170to300_Mu_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__QCD_Pt170to300_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1100_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1100_2016_Ntuple.root']
+
+Semilep_JECTotal_up__WZTo2L2Q_amcatnlo_FileList_2016 = ['/Semilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_10of10.root', '/Semilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_1of10.root', '/Semilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_2of10.root', '/Semilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_3of10.root', '/Semilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_4of10.root', '/Semilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_5of10.root', '/Semilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_6of10.root', '/Semilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_7of10.root', '/Semilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_8of10.root', '/Semilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_9of10.root']
+
+Semilep_JECTotal_up__ST_tbar_channel_FileList_2016 = ['/Semilep_JECTotal_up__ST_tbar_channel_2016_Ntuple_1of5.root', '/Semilep_JECTotal_up__ST_tbar_channel_2016_Ntuple_2of5.root', '/Semilep_JECTotal_up__ST_tbar_channel_2016_Ntuple_3of5.root', '/Semilep_JECTotal_up__ST_tbar_channel_2016_Ntuple_4of5.root', '/Semilep_JECTotal_up__ST_tbar_channel_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_up__ZZ_FileList_2016 = ['/Semilep_JECTotal_up__ZZ_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__ZZ_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__WWToLNuQQ_powheg_FileList_2016 = ['/Semilep_JECTotal_up__WWToLNuQQ_powheg_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__WWToLNuQQ_powheg_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__QCD_Pt170to250_bcToE_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt170to250_bcToE_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_SingleLept_TuneUp_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_SingleLept_TuneUp_2016_Ntuple.root']
+
+Semilep_JECTotal_up__WZ_FileList_2016 = ['/Semilep_JECTotal_up__WZ_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__WZ_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__ZGamma_01J_5f_lowMass_FileList_2016 = ['/Semilep_JECTotal_up__ZGamma_01J_5f_lowMass_2016_Ntuple_1of5.root', '/Semilep_JECTotal_up__ZGamma_01J_5f_lowMass_2016_Ntuple_2of5.root', '/Semilep_JECTotal_up__ZGamma_01J_5f_lowMass_2016_Ntuple_3of5.root', '/Semilep_JECTotal_up__ZGamma_01J_5f_lowMass_2016_Ntuple_4of5.root', '/Semilep_JECTotal_up__ZGamma_01J_5f_lowMass_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_up__TTWtoQQ_FileList_2016 = ['/Semilep_JECTotal_up__TTWtoQQ_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M800_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M800_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1000_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1000_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1400_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1400_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt30to50_Ele_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt30to50_Ele_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__QCD_Pt30to50_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__WGamma_FileList_2016 = ['/Semilep_JECTotal_up__WGamma_2016_Ntuple.root']
+
+Semilep_JECTotal_up__W1jets_FileList_2016 = ['/Semilep_JECTotal_up__W1jets_2016_Ntuple.root']
+
+Semilep_JECTotal_up__WZTo1L3Nu_amcatnlo_FileList_2016 = ['/Semilep_JECTotal_up__WZTo1L3Nu_amcatnlo_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_Dilepton_TuneUp_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_Dilepton_TuneUp_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTbarPowheg_Semilept_FileList_2016 = ['/Semilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_10of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_1of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_2of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_3of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_4of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_5of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_6of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_7of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_8of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_9of10.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1400_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1400_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt20to30_bcToE_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt20to30_bcToE_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TGJets_FileList_2016 = ['/Semilep_JECTotal_up__TGJets_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__TGJets_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__TTGamma_SingleLept_Pt100_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_SingleLept_Pt100_2016_Ntuple.root']
+
+Semilep_JECTotal_up__ZZTo4L_powheg_FileList_2016 = ['/Semilep_JECTotal_up__ZZTo4L_powheg_2016_Ntuple.root']
+
+Semilep_JECTotal_up__GJets_HT100To200_FileList_2016 = ['/Semilep_JECTotal_up__GJets_HT100To200_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__GJets_HT100To200_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__ST_s_channel_FileList_2016 = ['/Semilep_JECTotal_up__ST_s_channel_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M800_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M800_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M800_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M800_2016_Ntuple.root']
+
+Semilep_JECTotal_up__ZZTo2L2Q_powheg_FileList_2016 = ['/Semilep_JECTotal_up__ZZTo2L2Q_powheg_2016_Ntuple.root']
+
+Semilep_JECTotal_up__GJets_HT400To600_FileList_2016 = ['/Semilep_JECTotal_up__GJets_HT400To600_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__GJets_HT400To600_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__TTGamma_Dilepton_Pt100_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_Dilepton_Pt100_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_SingleLept_erdOn_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_SingleLept_erdOn_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_SingleLept_TuneDown_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_SingleLept_TuneDown_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTWtoLNu_FileList_2016 = ['/Semilep_JECTotal_up__TTWtoLNu_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__TTWtoLNu_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__TTGamma_Hadronic_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_Hadronic_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1300_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1300_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTZtoLL_M1to10_FileList_2016 = ['/Semilep_JECTotal_up__TTZtoLL_M1to10_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M700_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M700_2016_Ntuple.root']
+
+Semilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_FileList_2016 = ['/Semilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_1of5.root', '/Semilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_2of5.root', '/Semilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_3of5.root', '/Semilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_4of5.root', '/Semilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M900_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M900_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTZtoLL_FileList_2016 = ['/Semilep_JECTotal_up__TTZtoLL_2016_Ntuple_1of3.root', '/Semilep_JECTotal_up__TTZtoLL_2016_Ntuple_2of3.root', '/Semilep_JECTotal_up__TTZtoLL_2016_Ntuple_3of3.root']
+
+Semilep_JECTotal_up__WWTo4Q_powheg_FileList_2016 = ['/Semilep_JECTotal_up__WWTo4Q_powheg_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1300_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1300_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_Dilepton_Pt200_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_Dilepton_Pt200_2016_Ntuple.root']
+
+Semilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_FileList_2016 = ['/Semilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_1of5.root', '/Semilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_2of5.root', '/Semilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_3of5.root', '/Semilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_4of5.root', '/Semilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_up__GJets_HT200To400_FileList_2016 = ['/Semilep_JECTotal_up__GJets_HT200To400_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__GJets_HT200To400_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__QCD_Pt20to30_Ele_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt20to30_Ele_2016_Ntuple.root']
+
+Semilep_JECTotal_up__GJets_HT40To100_FileList_2016 = ['/Semilep_JECTotal_up__GJets_HT40To100_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__GJets_HT40To100_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__TTGamma_Dilepton_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_Dilepton_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M900_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M900_2016_Ntuple.root']
+
+Semilep_JECTotal_up__ST_tW_channel_FileList_2016 = ['/Semilep_JECTotal_up__ST_tW_channel_2016_Ntuple.root']
+
+Semilep_JECTotal_up__DYjetsM10to50_FileList_2016 = ['/Semilep_JECTotal_up__DYjetsM10to50_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt80to120_Mu_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt80to120_Mu_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__QCD_Pt80to120_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__QCD_Pt120to170_Mu_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt120to170_Mu_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_Hadronic_Pt100_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_Hadronic_Pt100_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1600_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1600_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt30to50_Mu_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt30to50_Mu_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt800to1000_Mu_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt800to1000_Mu_2016_Ntuple_1of3.root', '/Semilep_JECTotal_up__QCD_Pt800to1000_Mu_2016_Ntuple_2of3.root', '/Semilep_JECTotal_up__QCD_Pt800to1000_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JECTotal_up__TTGamma_SingleLept_Pt200_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_SingleLept_Pt200_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1300_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1300_2016_Ntuple.root']
+
+Semilep_JECTotal_up__ZGamma_01J_LoosePt_FileList_2016 = ['/Semilep_JECTotal_up__ZGamma_01J_LoosePt_2016_Ntuple_1of5.root', '/Semilep_JECTotal_up__ZGamma_01J_LoosePt_2016_Ntuple_2of5.root', '/Semilep_JECTotal_up__ZGamma_01J_LoosePt_2016_Ntuple_3of5.root', '/Semilep_JECTotal_up__ZGamma_01J_LoosePt_2016_Ntuple_4of5.root', '/Semilep_JECTotal_up__ZGamma_01J_LoosePt_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1200_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1200_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt120to170_Ele_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt120to170_Ele_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__QCD_Pt120to170_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__QCD_Pt80to170_bcToE_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt80to170_bcToE_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1200_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1200_2016_Ntuple.root']
+
+Semilep_JECTotal_up__WW_FileList_2016 = ['/Semilep_JECTotal_up__WW_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__WW_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__DYjetsM50_FileList_2016 = ['/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_10of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_11of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_12of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_13of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_14of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_15of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_16of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_17of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_18of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_19of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_1of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_20of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_2of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_3of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_4of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_5of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_6of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_7of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_8of20.root', '/Semilep_JECTotal_up__DYjetsM50_2016_Ntuple_9of20.root']
+
+Semilep_JECTotal_up__W2jets_FileList_2016 = ['/Semilep_JECTotal_up__W2jets_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__W2jets_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1600_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1600_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_Dilepton_erdOn_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_Dilepton_erdOn_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt250toInf_bcToE_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt250toInf_bcToE_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1100_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M1100_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_Dilepton_TuneDown_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_Dilepton_TuneDown_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt470to600_Mu_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt470to600_Mu_2016_Ntuple_1of3.root', '/Semilep_JECTotal_up__QCD_Pt470to600_Mu_2016_Ntuple_2of3.root', '/Semilep_JECTotal_up__QCD_Pt470to600_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JECTotal_up__ST_tbarW_channel_FileList_2016 = ['/Semilep_JECTotal_up__ST_tbarW_channel_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt1000toInf_Mu_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt1000toInf_Mu_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__QCD_Pt1000toInf_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__TTbarPowheg_Dilepton_FileList_2016 = ['/Semilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_10of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_1of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_2of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_3of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_4of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_5of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_6of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_7of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_8of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_9of10.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1200_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1200_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_Dilepton_CR2_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_Dilepton_CR2_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1100_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1100_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_Dilepton_CR1_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_Dilepton_CR1_2016_Ntuple.root']
+
+Semilep_JECTotal_up__W4jets_FileList_2016 = ['/Semilep_JECTotal_up__W4jets_2016_Ntuple_1of3.root', '/Semilep_JECTotal_up__W4jets_2016_Ntuple_2of3.root', '/Semilep_JECTotal_up__W4jets_2016_Ntuple_3of3.root']
+
+Semilep_JECTotal_up__QCD_Pt50to80_Ele_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt50to80_Ele_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__QCD_Pt50to80_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__TTGamma_Hadronic_Pt200_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_Hadronic_Pt200_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt170to300_Ele_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt170to300_Ele_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTZtoQQ_FileList_2016 = ['/Semilep_JECTotal_up__TTZtoQQ_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt50to80_Mu_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt50to80_Mu_2016_Ntuple.root']
+
+Semilep_JECTotal_up__GJets_HT600ToInf_FileList_2016 = ['/Semilep_JECTotal_up__GJets_HT600ToInf_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__GJets_HT600ToInf_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1600_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1600_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M900_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgluonTgluon_M900_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt300toInf_Ele_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt300toInf_Ele_2016_Ntuple.root']
+
+Semilep_JECTotal_up__ZZTo2Q2Nu_powheg_FileList_2016 = ['/Semilep_JECTotal_up__ZZTo2Q2Nu_powheg_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1000_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1000_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt600to800_Mu_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt600to800_Mu_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__QCD_Pt600to800_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1500_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgluon_M1500_2016_Ntuple.root']
+
+Semilep_JECTotal_up__ST_t_channel_FileList_2016 = ['/Semilep_JECTotal_up__ST_t_channel_2016_Ntuple_1of5.root', '/Semilep_JECTotal_up__ST_t_channel_2016_Ntuple_2of5.root', '/Semilep_JECTotal_up__ST_t_channel_2016_Ntuple_3of5.root', '/Semilep_JECTotal_up__ST_t_channel_2016_Ntuple_4of5.root', '/Semilep_JECTotal_up__ST_t_channel_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_up__TTGamma_SingleLept_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_SingleLept_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTbarPowheg_Hadronic_FileList_2016 = ['/Semilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_10of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_1of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_2of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_3of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_4of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_5of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_6of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_7of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_8of10.root', '/Semilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_9of10.root']
+
+Semilep_JECTotal_up__WZTo3LNu_powheg_FileList_2016 = ['/Semilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_10of11.root', '/Semilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_11of11.root', '/Semilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_1of11.root', '/Semilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_2of11.root', '/Semilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_3of11.root', '/Semilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_4of11.root', '/Semilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_5of11.root', '/Semilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_6of11.root', '/Semilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_7of11.root', '/Semilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_8of11.root', '/Semilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_9of11.root']
+
+Semilep_JECTotal_up__QCD_Pt20to30_Mu_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt20to30_Mu_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1500_FileList_2016 = ['/Semilep_JECTotal_up__TstarTstarToTgammaTgamma_M1500_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_SingleLept_CR2_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_SingleLept_CR2_2016_Ntuple.root']
+
+Semilep_JECTotal_up__TTGamma_SingleLept_CR1_FileList_2016 = ['/Semilep_JECTotal_up__TTGamma_SingleLept_CR1_2016_Ntuple.root']
+
+Semilep_JECTotal_up__QCD_Pt30to80_bcToE_FileList_2016 = ['/Semilep_JECTotal_up__QCD_Pt30to80_bcToE_2016_Ntuple.root']
+
+Semilep_JECTotal_up__W3jets_FileList_2016 = ['/Semilep_JECTotal_up__W3jets_2016_Ntuple_1of2.root', '/Semilep_JECTotal_up__W3jets_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__TTWtoLNu_FileList_2016 = ['/Semilep_JECTotal_down__TTWtoLNu_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__TTWtoLNu_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1000_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1000_2016_Ntuple.root']
+
+Semilep_JECTotal_down__DYjetsM10to50_FileList_2016 = ['/Semilep_JECTotal_down__DYjetsM10to50_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1500_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1500_2016_Ntuple.root']
+
+Semilep_JECTotal_down__ZZ_FileList_2016 = ['/Semilep_JECTotal_down__ZZ_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__ZZ_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__QCD_Pt170to300_Ele_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt170to300_Ele_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1500_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1500_2016_Ntuple.root']
+
+Semilep_JECTotal_down__GJets_HT600ToInf_FileList_2016 = ['/Semilep_JECTotal_down__GJets_HT600ToInf_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__GJets_HT600ToInf_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1100_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1100_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTZtoQQ_FileList_2016 = ['/Semilep_JECTotal_down__TTZtoQQ_2016_Ntuple.root']
+
+Semilep_JECTotal_down__VVTo2L2Nu_amcatnlo_FileList_2016 = ['/Semilep_JECTotal_down__VVTo2L2Nu_amcatnlo_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__VVTo2L2Nu_amcatnlo_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__QCD_Pt120to170_Ele_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt120to170_Ele_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__QCD_Pt120to170_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__WZTo1L3Nu_amcatnlo_FileList_2016 = ['/Semilep_JECTotal_down__WZTo1L3Nu_amcatnlo_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt300to470_Mu_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt300to470_Mu_2016_Ntuple_1of3.root', '/Semilep_JECTotal_down__QCD_Pt300to470_Mu_2016_Ntuple_2of3.root', '/Semilep_JECTotal_down__QCD_Pt300to470_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1100_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1100_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M700_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M700_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1400_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1400_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_SingleLept_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_SingleLept_2016_Ntuple.root']
+
+Semilep_JECTotal_down__W4jets_FileList_2016 = ['/Semilep_JECTotal_down__W4jets_2016_Ntuple_1of3.root', '/Semilep_JECTotal_down__W4jets_2016_Ntuple_2of3.root', '/Semilep_JECTotal_down__W4jets_2016_Ntuple_3of3.root']
+
+Semilep_JECTotal_down__ST_s_channel_FileList_2016 = ['/Semilep_JECTotal_down__ST_s_channel_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTZtoLL_M1to10_FileList_2016 = ['/Semilep_JECTotal_down__TTZtoLL_M1to10_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTbarPowheg_Hadronic_FileList_2016 = ['/Semilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_10of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_1of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_2of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_3of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_4of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_5of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_6of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_7of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_8of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_9of10.root']
+
+Semilep_JECTotal_down__GJets_HT200To400_FileList_2016 = ['/Semilep_JECTotal_down__GJets_HT200To400_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__GJets_HT200To400_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__TTGamma_SingleLept_Pt200_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_SingleLept_Pt200_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_Hadronic_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_Hadronic_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1200_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1200_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTbarPowheg_Semilept_FileList_2016 = ['/Semilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_10of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_1of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_2of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_3of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_4of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_5of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_6of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_7of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_8of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_9of10.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1200_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1200_2016_Ntuple.root']
+
+Semilep_JECTotal_down__WGamma_FileList_2016 = ['/Semilep_JECTotal_down__WGamma_2016_Ntuple.root']
+
+Semilep_JECTotal_down__ST_tbarW_channel_FileList_2016 = ['/Semilep_JECTotal_down__ST_tbarW_channel_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M900_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M900_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt1000toInf_Mu_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt1000toInf_Mu_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__QCD_Pt1000toInf_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__GJets_HT40To100_FileList_2016 = ['/Semilep_JECTotal_down__GJets_HT40To100_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__GJets_HT40To100_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__QCD_Pt80to120_Ele_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt80to120_Ele_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__QCD_Pt80to120_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__QCD_Pt50to80_Ele_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt50to80_Ele_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__QCD_Pt50to80_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__TTGamma_Hadronic_Pt200_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_Hadronic_Pt200_2016_Ntuple.root']
+
+Semilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_FileList_2016 = ['/Semilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_1of5.root', '/Semilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_2of5.root', '/Semilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_3of5.root', '/Semilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_4of5.root', '/Semilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_down__TTGamma_SingleLept_TuneUp_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_SingleLept_TuneUp_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_Dilepton_TuneDown_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_Dilepton_TuneDown_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1600_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1600_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_SingleLept_CR2_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_SingleLept_CR2_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt600to800_Mu_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt600to800_Mu_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__QCD_Pt600to800_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1600_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1600_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTZtoLL_FileList_2016 = ['/Semilep_JECTotal_down__TTZtoLL_2016_Ntuple_1of3.root', '/Semilep_JECTotal_down__TTZtoLL_2016_Ntuple_2of3.root', '/Semilep_JECTotal_down__TTZtoLL_2016_Ntuple_3of3.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1500_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1500_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_Dilepton_erdOn_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_Dilepton_erdOn_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt170to250_bcToE_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt170to250_bcToE_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_SingleLept_erdOn_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_SingleLept_erdOn_2016_Ntuple.root']
+
+Semilep_JECTotal_down__W1jets_FileList_2016 = ['/Semilep_JECTotal_down__W1jets_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt50to80_Mu_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt50to80_Mu_2016_Ntuple.root']
+
+Semilep_JECTotal_down__ST_tbar_channel_FileList_2016 = ['/Semilep_JECTotal_down__ST_tbar_channel_2016_Ntuple_1of5.root', '/Semilep_JECTotal_down__ST_tbar_channel_2016_Ntuple_2of5.root', '/Semilep_JECTotal_down__ST_tbar_channel_2016_Ntuple_3of5.root', '/Semilep_JECTotal_down__ST_tbar_channel_2016_Ntuple_4of5.root', '/Semilep_JECTotal_down__ST_tbar_channel_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1300_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1300_2016_Ntuple.root']
+
+Semilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_FileList_2016 = ['/Semilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_1of5.root', '/Semilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_2of5.root', '/Semilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_3of5.root', '/Semilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_4of5.root', '/Semilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_down__ZGamma_01J_LoosePt_FileList_2016 = ['/Semilep_JECTotal_down__ZGamma_01J_LoosePt_2016_Ntuple_1of5.root', '/Semilep_JECTotal_down__ZGamma_01J_LoosePt_2016_Ntuple_2of5.root', '/Semilep_JECTotal_down__ZGamma_01J_LoosePt_2016_Ntuple_3of5.root', '/Semilep_JECTotal_down__ZGamma_01J_LoosePt_2016_Ntuple_4of5.root', '/Semilep_JECTotal_down__ZGamma_01J_LoosePt_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1300_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1300_2016_Ntuple.root']
+
+Semilep_JECTotal_down__W3jets_FileList_2016 = ['/Semilep_JECTotal_down__W3jets_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__W3jets_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__TTGamma_SingleLept_CR1_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_SingleLept_CR1_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M800_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M800_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt80to170_bcToE_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt80to170_bcToE_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M700_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M700_2016_Ntuple.root']
+
+Semilep_JECTotal_down__ZZTo2Q2Nu_powheg_FileList_2016 = ['/Semilep_JECTotal_down__ZZTo2Q2Nu_powheg_2016_Ntuple.root']
+
+Semilep_JECTotal_down__WWTo4Q_powheg_FileList_2016 = ['/Semilep_JECTotal_down__WWTo4Q_powheg_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1100_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1100_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt20to30_bcToE_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt20to30_bcToE_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt30to50_Ele_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt30to50_Ele_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__QCD_Pt30to50_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__WWToLNuQQ_powheg_FileList_2016 = ['/Semilep_JECTotal_down__WWToLNuQQ_powheg_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__WWToLNuQQ_powheg_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__GJets_HT400To600_FileList_2016 = ['/Semilep_JECTotal_down__GJets_HT400To600_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__GJets_HT400To600_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__DYjetsM50_FileList_2016 = ['/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_10of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_11of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_12of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_13of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_14of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_15of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_16of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_17of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_18of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_19of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_1of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_20of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_2of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_3of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_4of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_5of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_6of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_7of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_8of20.root', '/Semilep_JECTotal_down__DYjetsM50_2016_Ntuple_9of20.root']
+
+Semilep_JECTotal_down__TTWtoQQ_FileList_2016 = ['/Semilep_JECTotal_down__TTWtoQQ_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_Dilepton_TuneUp_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_Dilepton_TuneUp_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt800to1000_Mu_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt800to1000_Mu_2016_Ntuple_1of3.root', '/Semilep_JECTotal_down__QCD_Pt800to1000_Mu_2016_Ntuple_2of3.root', '/Semilep_JECTotal_down__QCD_Pt800to1000_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M900_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M900_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt20to30_Mu_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt20to30_Mu_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_Dilepton_CR1_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_Dilepton_CR1_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1600_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1600_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_Dilepton_CR2_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_Dilepton_CR2_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_Hadronic_Pt100_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_Hadronic_Pt100_2016_Ntuple.root']
+
+Semilep_JECTotal_down__ST_t_channel_FileList_2016 = ['/Semilep_JECTotal_down__ST_t_channel_2016_Ntuple_1of5.root', '/Semilep_JECTotal_down__ST_t_channel_2016_Ntuple_2of5.root', '/Semilep_JECTotal_down__ST_t_channel_2016_Ntuple_3of5.root', '/Semilep_JECTotal_down__ST_t_channel_2016_Ntuple_4of5.root', '/Semilep_JECTotal_down__ST_t_channel_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_down__WZTo3LNu_powheg_FileList_2016 = ['/Semilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_10of11.root', '/Semilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_11of11.root', '/Semilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_1of11.root', '/Semilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_2of11.root', '/Semilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_3of11.root', '/Semilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_4of11.root', '/Semilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_5of11.root', '/Semilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_6of11.root', '/Semilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_7of11.root', '/Semilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_8of11.root', '/Semilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_9of11.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1200_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1200_2016_Ntuple.root']
+
+Semilep_JECTotal_down__WZTo2L2Q_amcatnlo_FileList_2016 = ['/Semilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_10of10.root', '/Semilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_1of10.root', '/Semilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_2of10.root', '/Semilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_3of10.root', '/Semilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_4of10.root', '/Semilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_5of10.root', '/Semilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_6of10.root', '/Semilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_7of10.root', '/Semilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_8of10.root', '/Semilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_9of10.root']
+
+Semilep_JECTotal_down__WW_FileList_2016 = ['/Semilep_JECTotal_down__WW_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__WW_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M700_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M700_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M900_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M900_2016_Ntuple.root']
+
+Semilep_JECTotal_down__ZZTo2L2Q_powheg_FileList_2016 = ['/Semilep_JECTotal_down__ZZTo2L2Q_powheg_2016_Ntuple.root']
+
+Semilep_JECTotal_down__WZ_FileList_2016 = ['/Semilep_JECTotal_down__WZ_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__WZ_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__QCD_Pt170to300_Mu_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt170to300_Mu_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__QCD_Pt170to300_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__QCD_Pt300toInf_Ele_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt300toInf_Ele_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt30to50_Mu_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt30to50_Mu_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt120to170_Mu_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt120to170_Mu_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_SingleLept_TuneDown_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_SingleLept_TuneDown_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_Dilepton_Pt200_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_Dilepton_Pt200_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt250toInf_bcToE_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt250toInf_bcToE_2016_Ntuple.root']
+
+Semilep_JECTotal_down__GJets_HT100To200_FileList_2016 = ['/Semilep_JECTotal_down__GJets_HT100To200_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__GJets_HT100To200_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__TTbarPowheg_Dilepton_FileList_2016 = ['/Semilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_10of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_1of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_2of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_3of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_4of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_5of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_6of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_7of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_8of10.root', '/Semilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_9of10.root']
+
+Semilep_JECTotal_down__TTGamma_Dilepton_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_Dilepton_2016_Ntuple.root']
+
+Semilep_JECTotal_down__ZZTo4L_powheg_FileList_2016 = ['/Semilep_JECTotal_down__ZZTo4L_powheg_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1400_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1400_2016_Ntuple.root']
+
+Semilep_JECTotal_down__W2jets_FileList_2016 = ['/Semilep_JECTotal_down__W2jets_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__W2jets_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__QCD_Pt470to600_Mu_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt470to600_Mu_2016_Ntuple_1of3.root', '/Semilep_JECTotal_down__QCD_Pt470to600_Mu_2016_Ntuple_2of3.root', '/Semilep_JECTotal_down__QCD_Pt470to600_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M800_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M800_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1400_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1400_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1000_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgluonTgluon_M1000_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TTGamma_SingleLept_Pt100_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_SingleLept_Pt100_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TGJets_FileList_2016 = ['/Semilep_JECTotal_down__TGJets_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__TGJets_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1000_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgamma_M1000_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt80to120_Mu_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt80to120_Mu_2016_Ntuple_1of2.root', '/Semilep_JECTotal_down__QCD_Pt80to120_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_FileList_2016 = ['/Semilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_1of5.root', '/Semilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_2of5.root', '/Semilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_3of5.root', '/Semilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_4of5.root', '/Semilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1300_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M1300_2016_Ntuple.root']
+
+Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M800_FileList_2016 = ['/Semilep_JECTotal_down__TstarTstarToTgammaTgluon_M800_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt30to80_bcToE_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt30to80_bcToE_2016_Ntuple.root']
+
+Semilep_JECTotal_down__QCD_Pt20to30_Ele_FileList_2016 = ['/Semilep_JECTotal_down__QCD_Pt20to30_Ele_2016_Ntuple.root']
+
+Semilep_JECTotal_down__ZGamma_01J_5f_lowMass_FileList_2016 = ['/Semilep_JECTotal_down__ZGamma_01J_5f_lowMass_2016_Ntuple_1of5.root', '/Semilep_JECTotal_down__ZGamma_01J_5f_lowMass_2016_Ntuple_2of5.root', '/Semilep_JECTotal_down__ZGamma_01J_5f_lowMass_2016_Ntuple_3of5.root', '/Semilep_JECTotal_down__ZGamma_01J_5f_lowMass_2016_Ntuple_4of5.root', '/Semilep_JECTotal_down__ZGamma_01J_5f_lowMass_2016_Ntuple_5of5.root']
+
+Semilep_JECTotal_down__TTGamma_Dilepton_Pt100_FileList_2016 = ['/Semilep_JECTotal_down__TTGamma_Dilepton_Pt100_2016_Ntuple.root']
+
+Semilep_JECTotal_down__ST_tW_channel_FileList_2016 = ['/Semilep_JECTotal_down__ST_tW_channel_2016_Ntuple.root']
+
+Semilep_JER_up__W2jets_FileList_2016 = ['/Semilep_JER_up__W2jets_2016_Ntuple_1of2.root', '/Semilep_JER_up__W2jets_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__QCD_Pt300to470_Mu_FileList_2016 = ['/Semilep_JER_up__QCD_Pt300to470_Mu_2016_Ntuple_1of3.root', '/Semilep_JER_up__QCD_Pt300to470_Mu_2016_Ntuple_2of3.root', '/Semilep_JER_up__QCD_Pt300to470_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgluon_M700_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgluon_M700_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgluonTgluon_M1300_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgluonTgluon_M1300_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgamma_M1200_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgamma_M1200_2016_Ntuple.root']
+
+Semilep_JER_up__TTGamma_Hadronic_Pt100_FileList_2016 = ['/Semilep_JER_up__TTGamma_Hadronic_Pt100_2016_Ntuple.root']
+
+Semilep_JER_up__TTZtoQQ_FileList_2016 = ['/Semilep_JER_up__TTZtoQQ_2016_Ntuple.root']
+
+Semilep_JER_up__TTGamma_SingleLept_Pt200_FileList_2016 = ['/Semilep_JER_up__TTGamma_SingleLept_Pt200_2016_Ntuple.root']
+
+Semilep_JER_up__GJets_HT40To100_FileList_2016 = ['/Semilep_JER_up__GJets_HT40To100_2016_Ntuple_1of2.root', '/Semilep_JER_up__GJets_HT40To100_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__ST_tW_channel_FileList_2016 = ['/Semilep_JER_up__ST_tW_channel_2016_Ntuple.root']
+
+Semilep_JER_up__TTbarPowheg_Dilepton_FileList_2016 = ['/Semilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_10of10.root', '/Semilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_1of10.root', '/Semilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_2of10.root', '/Semilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_3of10.root', '/Semilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_4of10.root', '/Semilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_5of10.root', '/Semilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_6of10.root', '/Semilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_7of10.root', '/Semilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_8of10.root', '/Semilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_9of10.root']
+
+Semilep_JER_up__GJets_HT200To400_FileList_2016 = ['/Semilep_JER_up__GJets_HT200To400_2016_Ntuple_1of2.root', '/Semilep_JER_up__GJets_HT200To400_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgluon_M1400_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgluon_M1400_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt470to600_Mu_FileList_2016 = ['/Semilep_JER_up__QCD_Pt470to600_Mu_2016_Ntuple_1of3.root', '/Semilep_JER_up__QCD_Pt470to600_Mu_2016_Ntuple_2of3.root', '/Semilep_JER_up__QCD_Pt470to600_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JER_up__TTGamma_SingleLept_TuneDown_FileList_2016 = ['/Semilep_JER_up__TTGamma_SingleLept_TuneDown_2016_Ntuple.root']
+
+Semilep_JER_up__ZZTo2Q2Nu_powheg_FileList_2016 = ['/Semilep_JER_up__ZZTo2Q2Nu_powheg_2016_Ntuple.root']
+
+Semilep_JER_up__TTGamma_Dilepton_TuneDown_FileList_2016 = ['/Semilep_JER_up__TTGamma_Dilepton_TuneDown_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt120to170_Ele_FileList_2016 = ['/Semilep_JER_up__QCD_Pt120to170_Ele_2016_Ntuple_1of2.root', '/Semilep_JER_up__QCD_Pt120to170_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__QCD_Pt30to50_Ele_FileList_2016 = ['/Semilep_JER_up__QCD_Pt30to50_Ele_2016_Ntuple_1of2.root', '/Semilep_JER_up__QCD_Pt30to50_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgluon_M1000_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgluon_M1000_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt170to300_Mu_FileList_2016 = ['/Semilep_JER_up__QCD_Pt170to300_Mu_2016_Ntuple_1of2.root', '/Semilep_JER_up__QCD_Pt170to300_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__GJets_HT600ToInf_FileList_2016 = ['/Semilep_JER_up__GJets_HT600ToInf_2016_Ntuple_1of2.root', '/Semilep_JER_up__GJets_HT600ToInf_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__QCD_Pt80to170_bcToE_FileList_2016 = ['/Semilep_JER_up__QCD_Pt80to170_bcToE_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgamma_M900_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgamma_M900_2016_Ntuple.root']
+
+Semilep_JER_up__TTWtoLNu_FileList_2016 = ['/Semilep_JER_up__TTWtoLNu_2016_Ntuple_1of2.root', '/Semilep_JER_up__TTWtoLNu_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TTbarPowheg_Hadronic_FileList_2016 = ['/Semilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_10of10.root', '/Semilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_1of10.root', '/Semilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_2of10.root', '/Semilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_3of10.root', '/Semilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_4of10.root', '/Semilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_5of10.root', '/Semilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_6of10.root', '/Semilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_7of10.root', '/Semilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_8of10.root', '/Semilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_9of10.root']
+
+Semilep_JER_up__TTGamma_Dilepton_TuneUp_FileList_2016 = ['/Semilep_JER_up__TTGamma_Dilepton_TuneUp_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgluonTgluon_M1400_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgluonTgluon_M1400_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt300toInf_Ele_FileList_2016 = ['/Semilep_JER_up__QCD_Pt300toInf_Ele_2016_Ntuple.root']
+
+Semilep_JER_up__ST_t_channel_FileList_2016 = ['/Semilep_JER_up__ST_t_channel_2016_Ntuple_1of5.root', '/Semilep_JER_up__ST_t_channel_2016_Ntuple_2of5.root', '/Semilep_JER_up__ST_t_channel_2016_Ntuple_3of5.root', '/Semilep_JER_up__ST_t_channel_2016_Ntuple_4of5.root', '/Semilep_JER_up__ST_t_channel_2016_Ntuple_5of5.root']
+
+Semilep_JER_up__QCD_Pt80to120_Mu_FileList_2016 = ['/Semilep_JER_up__QCD_Pt80to120_Mu_2016_Ntuple_1of2.root', '/Semilep_JER_up__QCD_Pt80to120_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__ZGamma_01J_LoosePt_FileList_2016 = ['/Semilep_JER_up__ZGamma_01J_LoosePt_2016_Ntuple_1of5.root', '/Semilep_JER_up__ZGamma_01J_LoosePt_2016_Ntuple_2of5.root', '/Semilep_JER_up__ZGamma_01J_LoosePt_2016_Ntuple_3of5.root', '/Semilep_JER_up__ZGamma_01J_LoosePt_2016_Ntuple_4of5.root', '/Semilep_JER_up__ZGamma_01J_LoosePt_2016_Ntuple_5of5.root']
+
+Semilep_JER_up__ZZTo4L_powheg_FileList_2016 = ['/Semilep_JER_up__ZZTo4L_powheg_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt170to300_Ele_FileList_2016 = ['/Semilep_JER_up__QCD_Pt170to300_Ele_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgamma_M1300_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgamma_M1300_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgamma_M700_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgamma_M700_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt50to80_Mu_FileList_2016 = ['/Semilep_JER_up__QCD_Pt50to80_Mu_2016_Ntuple.root']
+
+Semilep_JER_up__DYjetsM50_FileList_2016 = ['/Semilep_JER_up__DYjetsM50_2016_Ntuple_10of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_11of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_12of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_13of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_14of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_15of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_16of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_17of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_18of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_19of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_1of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_20of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_2of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_3of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_4of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_5of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_6of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_7of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_8of20.root', '/Semilep_JER_up__DYjetsM50_2016_Ntuple_9of20.root']
+
+Semilep_JER_up__QCD_Pt20to30_Ele_FileList_2016 = ['/Semilep_JER_up__QCD_Pt20to30_Ele_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgluonTgluon_M900_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgluonTgluon_M900_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgluon_M1500_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgluon_M1500_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt50to80_Ele_FileList_2016 = ['/Semilep_JER_up__QCD_Pt50to80_Ele_2016_Ntuple_1of2.root', '/Semilep_JER_up__QCD_Pt50to80_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TstarTstarToTgluonTgluon_M1000_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgluonTgluon_M1000_2016_Ntuple.root']
+
+Semilep_JER_up__ZZTo2Q2Nu_amcatnlo_FileList_2016 = ['/Semilep_JER_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_1of5.root', '/Semilep_JER_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_2of5.root', '/Semilep_JER_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_3of5.root', '/Semilep_JER_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_4of5.root', '/Semilep_JER_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_5of5.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgluon_M1100_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgluon_M1100_2016_Ntuple.root']
+
+Semilep_JER_up__WWToLNuQQ_powheg_FileList_2016 = ['/Semilep_JER_up__WWToLNuQQ_powheg_2016_Ntuple_1of2.root', '/Semilep_JER_up__WWToLNuQQ_powheg_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgluon_M900_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgluon_M900_2016_Ntuple.root']
+
+Semilep_JER_up__VVTo2L2Nu_amcatnlo_FileList_2016 = ['/Semilep_JER_up__VVTo2L2Nu_amcatnlo_2016_Ntuple_1of2.root', '/Semilep_JER_up__VVTo2L2Nu_amcatnlo_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__ZZ_FileList_2016 = ['/Semilep_JER_up__ZZ_2016_Ntuple_1of2.root', '/Semilep_JER_up__ZZ_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TGJets_FileList_2016 = ['/Semilep_JER_up__TGJets_2016_Ntuple_1of2.root', '/Semilep_JER_up__TGJets_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TTGamma_Dilepton_Pt200_FileList_2016 = ['/Semilep_JER_up__TTGamma_Dilepton_Pt200_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgamma_M1000_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgamma_M1000_2016_Ntuple.root']
+
+Semilep_JER_up__W1jets_FileList_2016 = ['/Semilep_JER_up__W1jets_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgluonTgluon_M1500_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgluonTgluon_M1500_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgamma_M1400_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgamma_M1400_2016_Ntuple.root']
+
+Semilep_JER_up__GJets_HT100To200_FileList_2016 = ['/Semilep_JER_up__GJets_HT100To200_2016_Ntuple_1of2.root', '/Semilep_JER_up__GJets_HT100To200_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TTGamma_Dilepton_erdOn_FileList_2016 = ['/Semilep_JER_up__TTGamma_Dilepton_erdOn_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgluon_M1200_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgluon_M1200_2016_Ntuple.root']
+
+Semilep_JER_up__W4jets_FileList_2016 = ['/Semilep_JER_up__W4jets_2016_Ntuple_1of3.root', '/Semilep_JER_up__W4jets_2016_Ntuple_2of3.root', '/Semilep_JER_up__W4jets_2016_Ntuple_3of3.root']
+
+Semilep_JER_up__DYjetsM10to50_FileList_2016 = ['/Semilep_JER_up__DYjetsM10to50_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt20to30_Mu_FileList_2016 = ['/Semilep_JER_up__QCD_Pt20to30_Mu_2016_Ntuple.root']
+
+Semilep_JER_up__TTGamma_Hadronic_Pt200_FileList_2016 = ['/Semilep_JER_up__TTGamma_Hadronic_Pt200_2016_Ntuple.root']
+
+Semilep_JER_up__ST_tbarW_channel_FileList_2016 = ['/Semilep_JER_up__ST_tbarW_channel_2016_Ntuple.root']
+
+Semilep_JER_up__WZTo3LNu_powheg_FileList_2016 = ['/Semilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_10of11.root', '/Semilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_11of11.root', '/Semilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_1of11.root', '/Semilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_2of11.root', '/Semilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_3of11.root', '/Semilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_4of11.root', '/Semilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_5of11.root', '/Semilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_6of11.root', '/Semilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_7of11.root', '/Semilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_8of11.root', '/Semilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_9of11.root']
+
+Semilep_JER_up__TTGamma_SingleLept_FileList_2016 = ['/Semilep_JER_up__TTGamma_SingleLept_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgamma_M800_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgamma_M800_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgluonTgluon_M800_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgluonTgluon_M800_2016_Ntuple.root']
+
+Semilep_JER_up__WWTo4Q_powheg_FileList_2016 = ['/Semilep_JER_up__WWTo4Q_powheg_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgluonTgluon_M1100_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgluonTgluon_M1100_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgamma_M1500_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgamma_M1500_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt170to250_bcToE_FileList_2016 = ['/Semilep_JER_up__QCD_Pt170to250_bcToE_2016_Ntuple.root']
+
+Semilep_JER_up__W3jets_FileList_2016 = ['/Semilep_JER_up__W3jets_2016_Ntuple_1of2.root', '/Semilep_JER_up__W3jets_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TTGamma_Dilepton_FileList_2016 = ['/Semilep_JER_up__TTGamma_Dilepton_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgluon_M800_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgluon_M800_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgluon_M1600_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgluon_M1600_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt80to120_Ele_FileList_2016 = ['/Semilep_JER_up__QCD_Pt80to120_Ele_2016_Ntuple_1of2.root', '/Semilep_JER_up__QCD_Pt80to120_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TTZtoLL_FileList_2016 = ['/Semilep_JER_up__TTZtoLL_2016_Ntuple_1of3.root', '/Semilep_JER_up__TTZtoLL_2016_Ntuple_2of3.root', '/Semilep_JER_up__TTZtoLL_2016_Ntuple_3of3.root']
+
+Semilep_JER_up__TTWtoQQ_FileList_2016 = ['/Semilep_JER_up__TTWtoQQ_2016_Ntuple.root']
+
+Semilep_JER_up__TTZtoLL_M1to10_FileList_2016 = ['/Semilep_JER_up__TTZtoLL_M1to10_2016_Ntuple.root']
+
+Semilep_JER_up__TTGamma_SingleLept_Pt100_FileList_2016 = ['/Semilep_JER_up__TTGamma_SingleLept_Pt100_2016_Ntuple.root']
+
+Semilep_JER_up__WGamma_FileList_2016 = ['/Semilep_JER_up__WGamma_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt30to50_Mu_FileList_2016 = ['/Semilep_JER_up__QCD_Pt30to50_Mu_2016_Ntuple.root']
+
+Semilep_JER_up__TTGamma_Dilepton_CR2_FileList_2016 = ['/Semilep_JER_up__TTGamma_Dilepton_CR2_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgluonTgluon_M700_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgluonTgluon_M700_2016_Ntuple.root']
+
+Semilep_JER_up__TTGamma_Dilepton_CR1_FileList_2016 = ['/Semilep_JER_up__TTGamma_Dilepton_CR1_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgamma_M1100_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgamma_M1100_2016_Ntuple.root']
+
+Semilep_JER_up__ZGamma_01J_5f_lowMass_FileList_2016 = ['/Semilep_JER_up__ZGamma_01J_5f_lowMass_2016_Ntuple_1of5.root', '/Semilep_JER_up__ZGamma_01J_5f_lowMass_2016_Ntuple_2of5.root', '/Semilep_JER_up__ZGamma_01J_5f_lowMass_2016_Ntuple_3of5.root', '/Semilep_JER_up__ZGamma_01J_5f_lowMass_2016_Ntuple_4of5.root', '/Semilep_JER_up__ZGamma_01J_5f_lowMass_2016_Ntuple_5of5.root']
+
+Semilep_JER_up__TstarTstarToTgluonTgluon_M1200_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgluonTgluon_M1200_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt600to800_Mu_FileList_2016 = ['/Semilep_JER_up__QCD_Pt600to800_Mu_2016_Ntuple_1of2.root', '/Semilep_JER_up__QCD_Pt600to800_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TTGamma_SingleLept_TuneUp_FileList_2016 = ['/Semilep_JER_up__TTGamma_SingleLept_TuneUp_2016_Ntuple.root']
+
+Semilep_JER_up__TTbarPowheg_Semilept_FileList_2016 = ['/Semilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_10of10.root', '/Semilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_1of10.root', '/Semilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_2of10.root', '/Semilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_3of10.root', '/Semilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_4of10.root', '/Semilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_5of10.root', '/Semilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_6of10.root', '/Semilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_7of10.root', '/Semilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_8of10.root', '/Semilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_9of10.root']
+
+Semilep_JER_up__QCD_Pt250toInf_bcToE_FileList_2016 = ['/Semilep_JER_up__QCD_Pt250toInf_bcToE_2016_Ntuple.root']
+
+Semilep_JER_up__WZ_FileList_2016 = ['/Semilep_JER_up__WZ_2016_Ntuple_1of2.root', '/Semilep_JER_up__WZ_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgluon_M1300_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgluon_M1300_2016_Ntuple.root']
+
+Semilep_JER_up__WW_FileList_2016 = ['/Semilep_JER_up__WW_2016_Ntuple_1of2.root', '/Semilep_JER_up__WW_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__TTGamma_SingleLept_CR2_FileList_2016 = ['/Semilep_JER_up__TTGamma_SingleLept_CR2_2016_Ntuple.root']
+
+Semilep_JER_up__TTGamma_SingleLept_CR1_FileList_2016 = ['/Semilep_JER_up__TTGamma_SingleLept_CR1_2016_Ntuple.root']
+
+Semilep_JER_up__GJets_HT400To600_FileList_2016 = ['/Semilep_JER_up__GJets_HT400To600_2016_Ntuple_1of2.root', '/Semilep_JER_up__GJets_HT400To600_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__WZTo1L3Nu_amcatnlo_FileList_2016 = ['/Semilep_JER_up__WZTo1L3Nu_amcatnlo_2016_Ntuple.root']
+
+Semilep_JER_up__QCD_Pt1000toInf_Mu_FileList_2016 = ['/Semilep_JER_up__QCD_Pt1000toInf_Mu_2016_Ntuple_1of2.root', '/Semilep_JER_up__QCD_Pt1000toInf_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JER_up__QCD_Pt30to80_bcToE_FileList_2016 = ['/Semilep_JER_up__QCD_Pt30to80_bcToE_2016_Ntuple.root']
+
+Semilep_JER_up__ST_s_channel_FileList_2016 = ['/Semilep_JER_up__ST_s_channel_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgammaTgamma_M1600_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgammaTgamma_M1600_2016_Ntuple.root']
+
+Semilep_JER_up__TstarTstarToTgluonTgluon_M1600_FileList_2016 = ['/Semilep_JER_up__TstarTstarToTgluonTgluon_M1600_2016_Ntuple.root']
+
+Semilep_JER_up__ZGamma_01J_lowMLL_lowGPt_FileList_2016 = ['/Semilep_JER_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_1of5.root', '/Semilep_JER_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_2of5.root', '/Semilep_JER_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_3of5.root', '/Semilep_JER_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_4of5.root', '/Semilep_JER_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_5of5.root']
+
+Semilep_JER_up__TTGamma_Dilepton_Pt100_FileList_2016 = ['/Semilep_JER_up__TTGamma_Dilepton_Pt100_2016_Ntuple.root']
+
+Semilep_JER_up__TTGamma_SingleLept_erdOn_FileList_2016 = ['/Semilep_JER_up__TTGamma_SingleLept_erdOn_2016_Ntuple.root']
+
+Semilep_JER_up__WZTo1L1Nu2Q_amcatnlo_FileList_2016 = ['/Semilep_JER_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_1of5.root', '/Semilep_JER_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_2of5.root', '/Semilep_JER_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_3of5.root', '/Semilep_JER_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_4of5.root', '/Semilep_JER_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_5of5.root']
+
+Semilep_JER_up__QCD_Pt20to30_bcToE_FileList_2016 = ['/Semilep_JER_up__QCD_Pt20to30_bcToE_2016_Ntuple.root']
+
+Semilep_JER_up__WZTo2L2Q_amcatnlo_FileList_2016 = ['/Semilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_10of10.root', '/Semilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_1of10.root', '/Semilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_2of10.root', '/Semilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_3of10.root', '/Semilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_4of10.root', '/Semilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_5of10.root', '/Semilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_6of10.root', '/Semilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_7of10.root', '/Semilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_8of10.root', '/Semilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_9of10.root']
+
+Semilep_JER_up__QCD_Pt800to1000_Mu_FileList_2016 = ['/Semilep_JER_up__QCD_Pt800to1000_Mu_2016_Ntuple_1of3.root', '/Semilep_JER_up__QCD_Pt800to1000_Mu_2016_Ntuple_2of3.root', '/Semilep_JER_up__QCD_Pt800to1000_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JER_up__QCD_Pt120to170_Mu_FileList_2016 = ['/Semilep_JER_up__QCD_Pt120to170_Mu_2016_Ntuple.root']
+
+Semilep_JER_up__ST_tbar_channel_FileList_2016 = ['/Semilep_JER_up__ST_tbar_channel_2016_Ntuple_1of5.root', '/Semilep_JER_up__ST_tbar_channel_2016_Ntuple_2of5.root', '/Semilep_JER_up__ST_tbar_channel_2016_Ntuple_3of5.root', '/Semilep_JER_up__ST_tbar_channel_2016_Ntuple_4of5.root', '/Semilep_JER_up__ST_tbar_channel_2016_Ntuple_5of5.root']
+
+Semilep_JER_up__TTGamma_Hadronic_FileList_2016 = ['/Semilep_JER_up__TTGamma_Hadronic_2016_Ntuple.root']
+
+Semilep_JER_up__ZZTo2L2Q_powheg_FileList_2016 = ['/Semilep_JER_up__ZZTo2L2Q_powheg_2016_Ntuple.root']
+
+Semilep_JER_down__TTGamma_SingleLept_erdOn_FileList_2016 = ['/Semilep_JER_down__TTGamma_SingleLept_erdOn_2016_Ntuple.root']
+
+Semilep_JER_down__ZGamma_01J_lowMLL_lowGPt_FileList_2016 = ['/Semilep_JER_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_1of5.root', '/Semilep_JER_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_2of5.root', '/Semilep_JER_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_3of5.root', '/Semilep_JER_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_4of5.root', '/Semilep_JER_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_5of5.root']
+
+Semilep_JER_down__ZZTo2Q2Nu_powheg_FileList_2016 = ['/Semilep_JER_down__ZZTo2Q2Nu_powheg_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgamma_M1100_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgamma_M1100_2016_Ntuple.root']
+
+Semilep_JER_down__TTWtoQQ_FileList_2016 = ['/Semilep_JER_down__TTWtoQQ_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt300toInf_Ele_FileList_2016 = ['/Semilep_JER_down__QCD_Pt300toInf_Ele_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgluon_M1300_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgluon_M1300_2016_Ntuple.root']
+
+Semilep_JER_down__TTGamma_SingleLept_Pt200_FileList_2016 = ['/Semilep_JER_down__TTGamma_SingleLept_Pt200_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgamma_M1500_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgamma_M1500_2016_Ntuple.root']
+
+Semilep_JER_down__TTGamma_Hadronic_FileList_2016 = ['/Semilep_JER_down__TTGamma_Hadronic_2016_Ntuple.root']
+
+Semilep_JER_down__TTWtoLNu_FileList_2016 = ['/Semilep_JER_down__TTWtoLNu_2016_Ntuple_1of2.root', '/Semilep_JER_down__TTWtoLNu_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TstarTstarToTgluonTgluon_M700_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgluonTgluon_M700_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt20to30_Mu_FileList_2016 = ['/Semilep_JER_down__QCD_Pt20to30_Mu_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt50to80_Ele_FileList_2016 = ['/Semilep_JER_down__QCD_Pt50to80_Ele_2016_Ntuple_1of2.root', '/Semilep_JER_down__QCD_Pt50to80_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__VVTo2L2Nu_amcatnlo_FileList_2016 = ['/Semilep_JER_down__VVTo2L2Nu_amcatnlo_2016_Ntuple_1of2.root', '/Semilep_JER_down__VVTo2L2Nu_amcatnlo_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TTZtoQQ_FileList_2016 = ['/Semilep_JER_down__TTZtoQQ_2016_Ntuple.root']
+
+Semilep_JER_down__GJets_HT200To400_FileList_2016 = ['/Semilep_JER_down__GJets_HT200To400_2016_Ntuple_1of2.root', '/Semilep_JER_down__GJets_HT200To400_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TTGamma_Dilepton_erdOn_FileList_2016 = ['/Semilep_JER_down__TTGamma_Dilepton_erdOn_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt800to1000_Mu_FileList_2016 = ['/Semilep_JER_down__QCD_Pt800to1000_Mu_2016_Ntuple_1of3.root', '/Semilep_JER_down__QCD_Pt800to1000_Mu_2016_Ntuple_2of3.root', '/Semilep_JER_down__QCD_Pt800to1000_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JER_down__QCD_Pt80to120_Mu_FileList_2016 = ['/Semilep_JER_down__QCD_Pt80to120_Mu_2016_Ntuple_1of2.root', '/Semilep_JER_down__QCD_Pt80to120_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TTZtoLL_M1to10_FileList_2016 = ['/Semilep_JER_down__TTZtoLL_M1to10_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgluonTgluon_M1300_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgluonTgluon_M1300_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt250toInf_bcToE_FileList_2016 = ['/Semilep_JER_down__QCD_Pt250toInf_bcToE_2016_Ntuple.root']
+
+Semilep_JER_down__ST_s_channel_FileList_2016 = ['/Semilep_JER_down__ST_s_channel_2016_Ntuple.root']
+
+Semilep_JER_down__TTGamma_Hadronic_Pt100_FileList_2016 = ['/Semilep_JER_down__TTGamma_Hadronic_Pt100_2016_Ntuple.root']
+
+Semilep_JER_down__ST_tW_channel_FileList_2016 = ['/Semilep_JER_down__ST_tW_channel_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgamma_M1000_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgamma_M1000_2016_Ntuple.root']
+
+Semilep_JER_down__W2jets_FileList_2016 = ['/Semilep_JER_down__W2jets_2016_Ntuple_1of2.root', '/Semilep_JER_down__W2jets_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TTGamma_SingleLept_TuneUp_FileList_2016 = ['/Semilep_JER_down__TTGamma_SingleLept_TuneUp_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgamma_M700_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgamma_M700_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt120to170_Mu_FileList_2016 = ['/Semilep_JER_down__QCD_Pt120to170_Mu_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgluon_M1200_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgluon_M1200_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt30to80_bcToE_FileList_2016 = ['/Semilep_JER_down__QCD_Pt30to80_bcToE_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgamma_M1400_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgamma_M1400_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt120to170_Ele_FileList_2016 = ['/Semilep_JER_down__QCD_Pt120to170_Ele_2016_Ntuple_1of2.root', '/Semilep_JER_down__QCD_Pt120to170_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__W1jets_FileList_2016 = ['/Semilep_JER_down__W1jets_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgluonTgluon_M800_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgluonTgluon_M800_2016_Ntuple.root']
+
+Semilep_JER_down__ST_t_channel_FileList_2016 = ['/Semilep_JER_down__ST_t_channel_2016_Ntuple_1of5.root', '/Semilep_JER_down__ST_t_channel_2016_Ntuple_2of5.root', '/Semilep_JER_down__ST_t_channel_2016_Ntuple_3of5.root', '/Semilep_JER_down__ST_t_channel_2016_Ntuple_4of5.root', '/Semilep_JER_down__ST_t_channel_2016_Ntuple_5of5.root']
+
+Semilep_JER_down__QCD_Pt470to600_Mu_FileList_2016 = ['/Semilep_JER_down__QCD_Pt470to600_Mu_2016_Ntuple_1of3.root', '/Semilep_JER_down__QCD_Pt470to600_Mu_2016_Ntuple_2of3.root', '/Semilep_JER_down__QCD_Pt470to600_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JER_down__GJets_HT40To100_FileList_2016 = ['/Semilep_JER_down__GJets_HT40To100_2016_Ntuple_1of2.root', '/Semilep_JER_down__GJets_HT40To100_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgluon_M1600_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgluon_M1600_2016_Ntuple.root']
+
+Semilep_JER_down__GJets_HT600ToInf_FileList_2016 = ['/Semilep_JER_down__GJets_HT600ToInf_2016_Ntuple_1of2.root', '/Semilep_JER_down__GJets_HT600ToInf_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__WZTo1L3Nu_amcatnlo_FileList_2016 = ['/Semilep_JER_down__WZTo1L3Nu_amcatnlo_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt170to250_bcToE_FileList_2016 = ['/Semilep_JER_down__QCD_Pt170to250_bcToE_2016_Ntuple.root']
+
+Semilep_JER_down__TTGamma_SingleLept_Pt100_FileList_2016 = ['/Semilep_JER_down__TTGamma_SingleLept_Pt100_2016_Ntuple.root']
+
+Semilep_JER_down__ST_tbarW_channel_FileList_2016 = ['/Semilep_JER_down__ST_tbarW_channel_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgamma_M1600_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgamma_M1600_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgluon_M800_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgluon_M800_2016_Ntuple.root']
+
+Semilep_JER_down__TGJets_FileList_2016 = ['/Semilep_JER_down__TGJets_2016_Ntuple_1of2.root', '/Semilep_JER_down__TGJets_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TstarTstarToTgluonTgluon_M1200_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgluonTgluon_M1200_2016_Ntuple.root']
+
+Semilep_JER_down__ZZTo4L_powheg_FileList_2016 = ['/Semilep_JER_down__ZZTo4L_powheg_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt80to120_Ele_FileList_2016 = ['/Semilep_JER_down__QCD_Pt80to120_Ele_2016_Ntuple_1of2.root', '/Semilep_JER_down__QCD_Pt80to120_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__WZTo1L1Nu2Q_amcatnlo_FileList_2016 = ['/Semilep_JER_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_1of5.root', '/Semilep_JER_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_2of5.root', '/Semilep_JER_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_3of5.root', '/Semilep_JER_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_4of5.root', '/Semilep_JER_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_5of5.root']
+
+Semilep_JER_down__TTGamma_Dilepton_FileList_2016 = ['/Semilep_JER_down__TTGamma_Dilepton_2016_Ntuple.root']
+
+Semilep_JER_down__ZGamma_01J_5f_lowMass_FileList_2016 = ['/Semilep_JER_down__ZGamma_01J_5f_lowMass_2016_Ntuple_1of5.root', '/Semilep_JER_down__ZGamma_01J_5f_lowMass_2016_Ntuple_2of5.root', '/Semilep_JER_down__ZGamma_01J_5f_lowMass_2016_Ntuple_3of5.root', '/Semilep_JER_down__ZGamma_01J_5f_lowMass_2016_Ntuple_4of5.root', '/Semilep_JER_down__ZGamma_01J_5f_lowMass_2016_Ntuple_5of5.root']
+
+Semilep_JER_down__QCD_Pt170to300_Ele_FileList_2016 = ['/Semilep_JER_down__QCD_Pt170to300_Ele_2016_Ntuple.root']
+
+Semilep_JER_down__TTGamma_Dilepton_CR2_FileList_2016 = ['/Semilep_JER_down__TTGamma_Dilepton_CR2_2016_Ntuple.root']
+
+Semilep_JER_down__TTGamma_Dilepton_CR1_FileList_2016 = ['/Semilep_JER_down__TTGamma_Dilepton_CR1_2016_Ntuple.root']
+
+Semilep_JER_down__WZ_FileList_2016 = ['/Semilep_JER_down__WZ_2016_Ntuple_1of2.root', '/Semilep_JER_down__WZ_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TTGamma_Dilepton_TuneUp_FileList_2016 = ['/Semilep_JER_down__TTGamma_Dilepton_TuneUp_2016_Ntuple.root']
+
+Semilep_JER_down__TTGamma_Dilepton_TuneDown_FileList_2016 = ['/Semilep_JER_down__TTGamma_Dilepton_TuneDown_2016_Ntuple.root']
+
+Semilep_JER_down__WW_FileList_2016 = ['/Semilep_JER_down__WW_2016_Ntuple_1of2.root', '/Semilep_JER_down__WW_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TTGamma_Hadronic_Pt200_FileList_2016 = ['/Semilep_JER_down__TTGamma_Hadronic_Pt200_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgluon_M1500_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgluon_M1500_2016_Ntuple.root']
+
+Semilep_JER_down__TTGamma_SingleLept_FileList_2016 = ['/Semilep_JER_down__TTGamma_SingleLept_2016_Ntuple.root']
+
+Semilep_JER_down__ZZTo2L2Q_powheg_FileList_2016 = ['/Semilep_JER_down__ZZTo2L2Q_powheg_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgamma_M1300_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgamma_M1300_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgluon_M700_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgluon_M700_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgluon_M900_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgluon_M900_2016_Ntuple.root']
+
+Semilep_JER_down__ZGamma_01J_LoosePt_FileList_2016 = ['/Semilep_JER_down__ZGamma_01J_LoosePt_2016_Ntuple_1of5.root', '/Semilep_JER_down__ZGamma_01J_LoosePt_2016_Ntuple_2of5.root', '/Semilep_JER_down__ZGamma_01J_LoosePt_2016_Ntuple_3of5.root', '/Semilep_JER_down__ZGamma_01J_LoosePt_2016_Ntuple_4of5.root', '/Semilep_JER_down__ZGamma_01J_LoosePt_2016_Ntuple_5of5.root']
+
+Semilep_JER_down__WZTo3LNu_powheg_FileList_2016 = ['/Semilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_10of11.root', '/Semilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_11of11.root', '/Semilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_1of11.root', '/Semilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_2of11.root', '/Semilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_3of11.root', '/Semilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_4of11.root', '/Semilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_5of11.root', '/Semilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_6of11.root', '/Semilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_7of11.root', '/Semilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_8of11.root', '/Semilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_9of11.root']
+
+Semilep_JER_down__ST_tbar_channel_FileList_2016 = ['/Semilep_JER_down__ST_tbar_channel_2016_Ntuple_1of5.root', '/Semilep_JER_down__ST_tbar_channel_2016_Ntuple_2of5.root', '/Semilep_JER_down__ST_tbar_channel_2016_Ntuple_3of5.root', '/Semilep_JER_down__ST_tbar_channel_2016_Ntuple_4of5.root', '/Semilep_JER_down__ST_tbar_channel_2016_Ntuple_5of5.root']
+
+Semilep_JER_down__TTbarPowheg_Dilepton_FileList_2016 = ['/Semilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_10of10.root', '/Semilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_1of10.root', '/Semilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_2of10.root', '/Semilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_3of10.root', '/Semilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_4of10.root', '/Semilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_5of10.root', '/Semilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_6of10.root', '/Semilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_7of10.root', '/Semilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_8of10.root', '/Semilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_9of10.root']
+
+Semilep_JER_down__TstarTstarToTgluonTgluon_M900_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgluonTgluon_M900_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgluon_M1100_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgluon_M1100_2016_Ntuple.root']
+
+Semilep_JER_down__TTGamma_SingleLept_CR2_FileList_2016 = ['/Semilep_JER_down__TTGamma_SingleLept_CR2_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgamma_M800_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgamma_M800_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgluonTgluon_M1600_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgluonTgluon_M1600_2016_Ntuple.root']
+
+Semilep_JER_down__TTGamma_Dilepton_Pt200_FileList_2016 = ['/Semilep_JER_down__TTGamma_Dilepton_Pt200_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgluonTgluon_M1100_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgluonTgluon_M1100_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt20to30_bcToE_FileList_2016 = ['/Semilep_JER_down__QCD_Pt20to30_bcToE_2016_Ntuple.root']
+
+Semilep_JER_down__ZZTo2Q2Nu_amcatnlo_FileList_2016 = ['/Semilep_JER_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_1of5.root', '/Semilep_JER_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_2of5.root', '/Semilep_JER_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_3of5.root', '/Semilep_JER_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_4of5.root', '/Semilep_JER_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_5of5.root']
+
+Semilep_JER_down__TTbarPowheg_Semilept_FileList_2016 = ['/Semilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_10of10.root', '/Semilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_1of10.root', '/Semilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_2of10.root', '/Semilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_3of10.root', '/Semilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_4of10.root', '/Semilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_5of10.root', '/Semilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_6of10.root', '/Semilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_7of10.root', '/Semilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_8of10.root', '/Semilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_9of10.root']
+
+Semilep_JER_down__QCD_Pt50to80_Mu_FileList_2016 = ['/Semilep_JER_down__QCD_Pt50to80_Mu_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt30to50_Ele_FileList_2016 = ['/Semilep_JER_down__QCD_Pt30to50_Ele_2016_Ntuple_1of2.root', '/Semilep_JER_down__QCD_Pt30to50_Ele_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TTZtoLL_FileList_2016 = ['/Semilep_JER_down__TTZtoLL_2016_Ntuple_1of3.root', '/Semilep_JER_down__TTZtoLL_2016_Ntuple_2of3.root', '/Semilep_JER_down__TTZtoLL_2016_Ntuple_3of3.root']
+
+Semilep_JER_down__TTGamma_SingleLept_CR1_FileList_2016 = ['/Semilep_JER_down__TTGamma_SingleLept_CR1_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgluon_M1400_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgluon_M1400_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt300to470_Mu_FileList_2016 = ['/Semilep_JER_down__QCD_Pt300to470_Mu_2016_Ntuple_1of3.root', '/Semilep_JER_down__QCD_Pt300to470_Mu_2016_Ntuple_2of3.root', '/Semilep_JER_down__QCD_Pt300to470_Mu_2016_Ntuple_3of3.root']
+
+Semilep_JER_down__TstarTstarToTgluonTgluon_M1500_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgluonTgluon_M1500_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgluon_M1000_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgluon_M1000_2016_Ntuple.root']
+
+Semilep_JER_down__WZTo2L2Q_amcatnlo_FileList_2016 = ['/Semilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_10of10.root', '/Semilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_1of10.root', '/Semilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_2of10.root', '/Semilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_3of10.root', '/Semilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_4of10.root', '/Semilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_5of10.root', '/Semilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_6of10.root', '/Semilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_7of10.root', '/Semilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_8of10.root', '/Semilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_9of10.root']
+
+Semilep_JER_down__QCD_Pt20to30_Ele_FileList_2016 = ['/Semilep_JER_down__QCD_Pt20to30_Ele_2016_Ntuple.root']
+
+Semilep_JER_down__GJets_HT100To200_FileList_2016 = ['/Semilep_JER_down__GJets_HT100To200_2016_Ntuple_1of2.root', '/Semilep_JER_down__GJets_HT100To200_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgamma_M900_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgamma_M900_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgammaTgamma_M1200_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgammaTgamma_M1200_2016_Ntuple.root']
+
+Semilep_JER_down__QCD_Pt80to170_bcToE_FileList_2016 = ['/Semilep_JER_down__QCD_Pt80to170_bcToE_2016_Ntuple.root']
+
+Semilep_JER_down__WWToLNuQQ_powheg_FileList_2016 = ['/Semilep_JER_down__WWToLNuQQ_powheg_2016_Ntuple_1of2.root', '/Semilep_JER_down__WWToLNuQQ_powheg_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TTbarPowheg_Hadronic_FileList_2016 = ['/Semilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_10of10.root', '/Semilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_1of10.root', '/Semilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_2of10.root', '/Semilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_3of10.root', '/Semilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_4of10.root', '/Semilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_5of10.root', '/Semilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_6of10.root', '/Semilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_7of10.root', '/Semilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_8of10.root', '/Semilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_9of10.root']
+
+Semilep_JER_down__QCD_Pt30to50_Mu_FileList_2016 = ['/Semilep_JER_down__QCD_Pt30to50_Mu_2016_Ntuple.root']
+
+Semilep_JER_down__WWTo4Q_powheg_FileList_2016 = ['/Semilep_JER_down__WWTo4Q_powheg_2016_Ntuple.root']
+
+Semilep_JER_down__W4jets_FileList_2016 = ['/Semilep_JER_down__W4jets_2016_Ntuple_1of3.root', '/Semilep_JER_down__W4jets_2016_Ntuple_2of3.root', '/Semilep_JER_down__W4jets_2016_Ntuple_3of3.root']
+
+Semilep_JER_down__DYjetsM50_FileList_2016 = ['/Semilep_JER_down__DYjetsM50_2016_Ntuple_10of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_11of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_12of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_13of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_14of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_15of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_16of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_17of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_18of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_19of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_1of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_20of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_2of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_3of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_4of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_5of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_6of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_7of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_8of20.root', '/Semilep_JER_down__DYjetsM50_2016_Ntuple_9of20.root']
+
+Semilep_JER_down__DYjetsM10to50_FileList_2016 = ['/Semilep_JER_down__DYjetsM10to50_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgluonTgluon_M1000_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgluonTgluon_M1000_2016_Ntuple.root']
+
+Semilep_JER_down__ZZ_FileList_2016 = ['/Semilep_JER_down__ZZ_2016_Ntuple_1of2.root', '/Semilep_JER_down__ZZ_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TTGamma_Dilepton_Pt100_FileList_2016 = ['/Semilep_JER_down__TTGamma_Dilepton_Pt100_2016_Ntuple.root']
+
+Semilep_JER_down__GJets_HT400To600_FileList_2016 = ['/Semilep_JER_down__GJets_HT400To600_2016_Ntuple_1of2.root', '/Semilep_JER_down__GJets_HT400To600_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__QCD_Pt600to800_Mu_FileList_2016 = ['/Semilep_JER_down__QCD_Pt600to800_Mu_2016_Ntuple_1of2.root', '/Semilep_JER_down__QCD_Pt600to800_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__QCD_Pt170to300_Mu_FileList_2016 = ['/Semilep_JER_down__QCD_Pt170to300_Mu_2016_Ntuple_1of2.root', '/Semilep_JER_down__QCD_Pt170to300_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__QCD_Pt1000toInf_Mu_FileList_2016 = ['/Semilep_JER_down__QCD_Pt1000toInf_Mu_2016_Ntuple_1of2.root', '/Semilep_JER_down__QCD_Pt1000toInf_Mu_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__WGamma_FileList_2016 = ['/Semilep_JER_down__WGamma_2016_Ntuple.root']
+
+Semilep_JER_down__TstarTstarToTgluonTgluon_M1400_FileList_2016 = ['/Semilep_JER_down__TstarTstarToTgluonTgluon_M1400_2016_Ntuple.root']
+
+Semilep_JER_down__W3jets_FileList_2016 = ['/Semilep_JER_down__W3jets_2016_Ntuple_1of2.root', '/Semilep_JER_down__W3jets_2016_Ntuple_2of2.root']
+
+Semilep_JER_down__TTGamma_SingleLept_TuneDown_FileList_2016 = ['/Semilep_JER_down__TTGamma_SingleLept_TuneDown_2016_Ntuple.root']
+
+Dilep_JetBase__ZZ_FileList_2016 = ['/Dilep_JetBase__ZZ_2016_Ntuple_1of2.root', '/Dilep_JetBase__ZZ_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TTZtoLL_M1to10_FileList_2016 = ['/Dilep_JetBase__TTZtoLL_M1to10_2016_Ntuple.root']
+
+Dilep_JetBase__TTWtoLNu_FileList_2016 = ['/Dilep_JetBase__TTWtoLNu_2016_Ntuple_1of2.root', '/Dilep_JetBase__TTWtoLNu_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TstarTstarToTgluonTgluon_M1500_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgluonTgluon_M1500_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_Hadronic_FileList_2016 = ['/Dilep_JetBase__TTGamma_Hadronic_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgluonTgluon_M1600_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgluonTgluon_M1600_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgamma_M1000_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgamma_M1000_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgluonTgluon_M800_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgluonTgluon_M800_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgamma_M1400_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgamma_M1400_2016_Ntuple.root']
+
+Dilep_JetBase__VVTo2L2Nu_amcatnlo_FileList_2016 = ['/Dilep_JetBase__VVTo2L2Nu_amcatnlo_2016_Ntuple_1of2.root', '/Dilep_JetBase__VVTo2L2Nu_amcatnlo_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgluon_M900_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgluon_M900_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgluon_M1400_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgluon_M1400_2016_Ntuple.root']
+
+Dilep_JetBase__WZTo2L2Q_amcatnlo_FileList_2016 = ['/Dilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_10of10.root', '/Dilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_1of10.root', '/Dilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_2of10.root', '/Dilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_3of10.root', '/Dilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_4of10.root', '/Dilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_5of10.root', '/Dilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_6of10.root', '/Dilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_7of10.root', '/Dilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_8of10.root', '/Dilep_JetBase__WZTo2L2Q_amcatnlo_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__WW_FileList_2016 = ['/Dilep_JetBase__WW_2016_Ntuple_1of2.root', '/Dilep_JetBase__WW_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__DYjetsM10to50_FileList_2016 = ['/Dilep_JetBase__DYjetsM10to50_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_SingleLept_FileList_2016 = ['/Dilep_JetBase__TTGamma_SingleLept_2016_Ntuple.root']
+
+Dilep_JetBase__ST_tbar_channel_FileList_2016 = ['/Dilep_JetBase__ST_tbar_channel_2016_Ntuple_1of5.root', '/Dilep_JetBase__ST_tbar_channel_2016_Ntuple_2of5.root', '/Dilep_JetBase__ST_tbar_channel_2016_Ntuple_3of5.root', '/Dilep_JetBase__ST_tbar_channel_2016_Ntuple_4of5.root', '/Dilep_JetBase__ST_tbar_channel_2016_Ntuple_5of5.root']
+
+Dilep_JetBase__ZGamma_01J_LoosePt_FileList_2016 = ['/Dilep_JetBase__ZGamma_01J_LoosePt_2016_Ntuple_1of5.root', '/Dilep_JetBase__ZGamma_01J_LoosePt_2016_Ntuple_2of5.root', '/Dilep_JetBase__ZGamma_01J_LoosePt_2016_Ntuple_3of5.root', '/Dilep_JetBase__ZGamma_01J_LoosePt_2016_Ntuple_4of5.root', '/Dilep_JetBase__ZGamma_01J_LoosePt_2016_Ntuple_5of5.root']
+
+Dilep_JetBase__TstarTstarToTgluonTgluon_M1200_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgluonTgluon_M1200_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt250toInf_bcToE_FileList_2016 = ['/Dilep_JetBase__QCD_Pt250toInf_bcToE_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgamma_M1600_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgamma_M1600_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt300toInf_Ele_FileList_2016 = ['/Dilep_JetBase__QCD_Pt300toInf_Ele_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_Dilepton_CR2_FileList_2016 = ['/Dilep_JetBase__TTGamma_Dilepton_CR2_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_Dilepton_CR1_FileList_2016 = ['/Dilep_JetBase__TTGamma_Dilepton_CR1_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt800to1000_Mu_FileList_2016 = ['/Dilep_JetBase__QCD_Pt800to1000_Mu_2016_Ntuple_1of3.root', '/Dilep_JetBase__QCD_Pt800to1000_Mu_2016_Ntuple_2of3.root', '/Dilep_JetBase__QCD_Pt800to1000_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JetBase__ZZTo2Q2Nu_amcatnlo_FileList_2016 = ['/Dilep_JetBase__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_1of5.root', '/Dilep_JetBase__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_2of5.root', '/Dilep_JetBase__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_3of5.root', '/Dilep_JetBase__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_4of5.root', '/Dilep_JetBase__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_5of5.root']
+
+Dilep_JetBase__TTGamma_SingleLept_TuneUp_FileList_2016 = ['/Dilep_JetBase__TTGamma_SingleLept_TuneUp_2016_Ntuple.root']
+
+Dilep_JetBase__TTbarPowheg_Hadronic_FileList_2016 = ['/Dilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_10of10.root', '/Dilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_1of10.root', '/Dilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_2of10.root', '/Dilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_3of10.root', '/Dilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_4of10.root', '/Dilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_5of10.root', '/Dilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_6of10.root', '/Dilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_7of10.root', '/Dilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_8of10.root', '/Dilep_JetBase__TTbarPowheg_Hadronic_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgluon_M800_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgluon_M800_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgluon_M1000_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgluon_M1000_2016_Ntuple.root']
+
+Dilep_JetBase__ST_tW_channel_FileList_2016 = ['/Dilep_JetBase__ST_tW_channel_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_Dilepton_TuneUp_FileList_2016 = ['/Dilep_JetBase__TTGamma_Dilepton_TuneUp_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt80to120_Mu_FileList_2016 = ['/Dilep_JetBase__QCD_Pt80to120_Mu_2016_Ntuple_1of2.root', '/Dilep_JetBase__QCD_Pt80to120_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgamma_M1100_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgamma_M1100_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt120to170_Ele_FileList_2016 = ['/Dilep_JetBase__QCD_Pt120to170_Ele_2016_Ntuple_1of2.root', '/Dilep_JetBase__QCD_Pt120to170_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__QCD_Pt30to80_bcToE_FileList_2016 = ['/Dilep_JetBase__QCD_Pt30to80_bcToE_2016_Ntuple.root']
+
+Dilep_JetBase__TTZtoQQ_FileList_2016 = ['/Dilep_JetBase__TTZtoQQ_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt30to50_Mu_FileList_2016 = ['/Dilep_JetBase__QCD_Pt30to50_Mu_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgamma_M900_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgamma_M900_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgamma_M1500_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgamma_M1500_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_SingleLept_CR2_FileList_2016 = ['/Dilep_JetBase__TTGamma_SingleLept_CR2_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_SingleLept_CR1_FileList_2016 = ['/Dilep_JetBase__TTGamma_SingleLept_CR1_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgluon_M1500_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgluon_M1500_2016_Ntuple.root']
+
+Dilep_JetBase__W4jets_FileList_2016 = ['/Dilep_JetBase__W4jets_2016_Ntuple_1of3.root', '/Dilep_JetBase__W4jets_2016_Ntuple_2of3.root', '/Dilep_JetBase__W4jets_2016_Ntuple_3of3.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgluon_M700_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgluon_M700_2016_Ntuple.root']
+
+Dilep_JetBase__WWTo4Q_powheg_FileList_2016 = ['/Dilep_JetBase__WWTo4Q_powheg_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_Dilepton_FileList_2016 = ['/Dilep_JetBase__TTGamma_Dilepton_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgamma_M700_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgamma_M700_2016_Ntuple.root']
+
+Dilep_JetBase__TTWtoQQ_FileList_2016 = ['/Dilep_JetBase__TTWtoQQ_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgluonTgluon_M1300_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgluonTgluon_M1300_2016_Ntuple.root']
+
+Dilep_JetBase__ZZTo2Q2Nu_powheg_FileList_2016 = ['/Dilep_JetBase__ZZTo2Q2Nu_powheg_2016_Ntuple.root']
+
+Dilep_JetBase__W2jets_FileList_2016 = ['/Dilep_JetBase__W2jets_2016_Ntuple_1of2.root', '/Dilep_JetBase__W2jets_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__QCD_Pt50to80_Mu_FileList_2016 = ['/Dilep_JetBase__QCD_Pt50to80_Mu_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt170to250_bcToE_FileList_2016 = ['/Dilep_JetBase__QCD_Pt170to250_bcToE_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_SingleLept_Pt100_FileList_2016 = ['/Dilep_JetBase__TTGamma_SingleLept_Pt100_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_Dilepton_erdOn_FileList_2016 = ['/Dilep_JetBase__TTGamma_Dilepton_erdOn_2016_Ntuple.root']
+
+Dilep_JetBase__ST_s_channel_FileList_2016 = ['/Dilep_JetBase__ST_s_channel_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgluonTgluon_M900_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgluonTgluon_M900_2016_Ntuple.root']
+
+Dilep_JetBase__Data_SingleEle_f_FileList_2016 = ['/Dilep_JetBase__Data_SingleEle_f_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleEle_f_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleEle_f_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleEle_f_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleEle_f_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleEle_f_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleEle_f_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleEle_f_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleEle_f_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleEle_f_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__Data_SingleEle_g_FileList_2016 = ['/Dilep_JetBase__Data_SingleEle_g_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleEle_g_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleEle_g_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleEle_g_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleEle_g_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleEle_g_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleEle_g_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleEle_g_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleEle_g_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleEle_g_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__Data_SingleEle_d_FileList_2016 = ['/Dilep_JetBase__Data_SingleEle_d_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleEle_d_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleEle_d_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleEle_d_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleEle_d_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleEle_d_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleEle_d_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleEle_d_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleEle_d_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleEle_d_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__Data_SingleEle_e_FileList_2016 = ['/Dilep_JetBase__Data_SingleEle_e_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleEle_e_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleEle_e_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleEle_e_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleEle_e_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleEle_e_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleEle_e_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleEle_e_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleEle_e_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleEle_e_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__Data_SingleEle_b_FileList_2016 = ['/Dilep_JetBase__Data_SingleEle_b_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleEle_b_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleEle_b_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleEle_b_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleEle_b_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleEle_b_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleEle_b_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleEle_b_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleEle_b_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleEle_b_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__Data_SingleEle_c_FileList_2016 = ['/Dilep_JetBase__Data_SingleEle_c_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleEle_c_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleEle_c_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleEle_c_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleEle_c_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleEle_c_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleEle_c_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleEle_c_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleEle_c_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleEle_c_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__QCD_Pt80to170_bcToE_FileList_2016 = ['/Dilep_JetBase__QCD_Pt80to170_bcToE_2016_Ntuple.root']
+
+Dilep_JetBase__Data_SingleEle_h_FileList_2016 = ['/Dilep_JetBase__Data_SingleEle_h_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleEle_h_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleEle_h_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleEle_h_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleEle_h_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleEle_h_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleEle_h_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleEle_h_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleEle_h_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleEle_h_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgluon_M1100_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgluon_M1100_2016_Ntuple.root']
+
+Dilep_JetBase__ZZTo4L_powheg_FileList_2016 = ['/Dilep_JetBase__ZZTo4L_powheg_2016_Ntuple.root']
+
+Dilep_JetBase__DYjetsM50_FileList_2016 = ['/Dilep_JetBase__DYjetsM50_2016_Ntuple_10of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_11of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_12of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_13of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_14of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_15of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_16of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_17of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_18of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_19of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_1of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_20of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_2of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_3of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_4of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_5of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_6of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_7of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_8of20.root', '/Dilep_JetBase__DYjetsM50_2016_Ntuple_9of20.root']
+
+Dilep_JetBase__QCD_Pt80to120_Ele_FileList_2016 = ['/Dilep_JetBase__QCD_Pt80to120_Ele_2016_Ntuple_1of2.root', '/Dilep_JetBase__QCD_Pt80to120_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__WWToLNuQQ_powheg_FileList_2016 = ['/Dilep_JetBase__WWToLNuQQ_powheg_2016_Ntuple_1of2.root', '/Dilep_JetBase__WWToLNuQQ_powheg_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TTGamma_Dilepton_Pt100_FileList_2016 = ['/Dilep_JetBase__TTGamma_Dilepton_Pt100_2016_Ntuple.root']
+
+Dilep_JetBase__TTZtoLL_FileList_2016 = ['/Dilep_JetBase__TTZtoLL_2016_Ntuple_1of3.root', '/Dilep_JetBase__TTZtoLL_2016_Ntuple_2of3.root', '/Dilep_JetBase__TTZtoLL_2016_Ntuple_3of3.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgamma_M800_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgamma_M800_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt30to50_Ele_FileList_2016 = ['/Dilep_JetBase__QCD_Pt30to50_Ele_2016_Ntuple_1of2.root', '/Dilep_JetBase__QCD_Pt30to50_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__QCD_Pt170to300_Ele_FileList_2016 = ['/Dilep_JetBase__QCD_Pt170to300_Ele_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgamma_M1200_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgamma_M1200_2016_Ntuple.root']
+
+Dilep_JetBase__WZTo3LNu_powheg_FileList_2016 = ['/Dilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_10of11.root', '/Dilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_11of11.root', '/Dilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_1of11.root', '/Dilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_2of11.root', '/Dilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_3of11.root', '/Dilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_4of11.root', '/Dilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_5of11.root', '/Dilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_6of11.root', '/Dilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_7of11.root', '/Dilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_8of11.root', '/Dilep_JetBase__WZTo3LNu_powheg_2016_Ntuple_9of11.root']
+
+Dilep_JetBase__QCD_Pt120to170_Mu_FileList_2016 = ['/Dilep_JetBase__QCD_Pt120to170_Mu_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgluon_M1200_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgluon_M1200_2016_Ntuple.root']
+
+Dilep_JetBase__TTbarPowheg_Semilept_FileList_2016 = ['/Dilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_10of10.root', '/Dilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_1of10.root', '/Dilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_2of10.root', '/Dilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_3of10.root', '/Dilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_4of10.root', '/Dilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_5of10.root', '/Dilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_6of10.root', '/Dilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_7of10.root', '/Dilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_8of10.root', '/Dilep_JetBase__TTbarPowheg_Semilept_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__GJets_HT100To200_FileList_2016 = ['/Dilep_JetBase__GJets_HT100To200_2016_Ntuple_1of2.root', '/Dilep_JetBase__GJets_HT100To200_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__QCD_Pt600to800_Mu_FileList_2016 = ['/Dilep_JetBase__QCD_Pt600to800_Mu_2016_Ntuple_1of2.root', '/Dilep_JetBase__QCD_Pt600to800_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TstarTstarToTgluonTgluon_M1000_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgluonTgluon_M1000_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_SingleLept_Pt200_FileList_2016 = ['/Dilep_JetBase__TTGamma_SingleLept_Pt200_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgluon_M1600_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgluon_M1600_2016_Ntuple.root']
+
+Dilep_JetBase__TGJets_FileList_2016 = ['/Dilep_JetBase__TGJets_2016_Ntuple_1of2.root', '/Dilep_JetBase__TGJets_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__W3jets_FileList_2016 = ['/Dilep_JetBase__W3jets_2016_Ntuple_1of2.root', '/Dilep_JetBase__W3jets_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TstarTstarToTgluonTgluon_M1400_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgluonTgluon_M1400_2016_Ntuple.root']
+
+Dilep_JetBase__ST_tbarW_channel_FileList_2016 = ['/Dilep_JetBase__ST_tbarW_channel_2016_Ntuple.root']
+
+Dilep_JetBase__TTbarPowheg_Dilepton_FileList_2016 = ['/Dilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_10of10.root', '/Dilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_1of10.root', '/Dilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_2of10.root', '/Dilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_3of10.root', '/Dilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_4of10.root', '/Dilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_5of10.root', '/Dilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_6of10.root', '/Dilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_7of10.root', '/Dilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_8of10.root', '/Dilep_JetBase__TTbarPowheg_Dilepton_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__GJets_HT600ToInf_FileList_2016 = ['/Dilep_JetBase__GJets_HT600ToInf_2016_Ntuple_1of2.root', '/Dilep_JetBase__GJets_HT600ToInf_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__ST_t_channel_FileList_2016 = ['/Dilep_JetBase__ST_t_channel_2016_Ntuple_1of5.root', '/Dilep_JetBase__ST_t_channel_2016_Ntuple_2of5.root', '/Dilep_JetBase__ST_t_channel_2016_Ntuple_3of5.root', '/Dilep_JetBase__ST_t_channel_2016_Ntuple_4of5.root', '/Dilep_JetBase__ST_t_channel_2016_Ntuple_5of5.root']
+
+Dilep_JetBase__QCD_Pt170to300_Mu_FileList_2016 = ['/Dilep_JetBase__QCD_Pt170to300_Mu_2016_Ntuple_1of2.root', '/Dilep_JetBase__QCD_Pt170to300_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__QCD_Pt20to30_Ele_FileList_2016 = ['/Dilep_JetBase__QCD_Pt20to30_Ele_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt1000toInf_Mu_FileList_2016 = ['/Dilep_JetBase__QCD_Pt1000toInf_Mu_2016_Ntuple_1of2.root', '/Dilep_JetBase__QCD_Pt1000toInf_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TTGamma_Dilepton_Pt200_FileList_2016 = ['/Dilep_JetBase__TTGamma_Dilepton_Pt200_2016_Ntuple.root']
+
+Dilep_JetBase__Data_SingleMu_h_FileList_2016 = ['/Dilep_JetBase__Data_SingleMu_h_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleMu_h_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleMu_h_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleMu_h_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleMu_h_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleMu_h_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleMu_h_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleMu_h_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleMu_h_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleMu_h_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__WZ_FileList_2016 = ['/Dilep_JetBase__WZ_2016_Ntuple_1of2.root', '/Dilep_JetBase__WZ_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__Data_SingleMu_e_FileList_2016 = ['/Dilep_JetBase__Data_SingleMu_e_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleMu_e_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleMu_e_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleMu_e_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleMu_e_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleMu_e_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleMu_e_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleMu_e_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleMu_e_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleMu_e_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__Data_SingleMu_d_FileList_2016 = ['/Dilep_JetBase__Data_SingleMu_d_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleMu_d_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleMu_d_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleMu_d_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleMu_d_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleMu_d_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleMu_d_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleMu_d_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleMu_d_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleMu_d_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__Data_SingleMu_g_FileList_2016 = ['/Dilep_JetBase__Data_SingleMu_g_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleMu_g_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleMu_g_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleMu_g_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleMu_g_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleMu_g_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleMu_g_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleMu_g_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleMu_g_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleMu_g_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__Data_SingleMu_f_FileList_2016 = ['/Dilep_JetBase__Data_SingleMu_f_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleMu_f_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleMu_f_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleMu_f_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleMu_f_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleMu_f_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleMu_f_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleMu_f_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleMu_f_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleMu_f_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__Data_SingleMu_c_FileList_2016 = ['/Dilep_JetBase__Data_SingleMu_c_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleMu_c_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleMu_c_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleMu_c_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleMu_c_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleMu_c_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleMu_c_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleMu_c_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleMu_c_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleMu_c_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__Data_SingleMu_b_FileList_2016 = ['/Dilep_JetBase__Data_SingleMu_b_2016_Ntuple_10of10.root', '/Dilep_JetBase__Data_SingleMu_b_2016_Ntuple_1of10.root', '/Dilep_JetBase__Data_SingleMu_b_2016_Ntuple_2of10.root', '/Dilep_JetBase__Data_SingleMu_b_2016_Ntuple_3of10.root', '/Dilep_JetBase__Data_SingleMu_b_2016_Ntuple_4of10.root', '/Dilep_JetBase__Data_SingleMu_b_2016_Ntuple_5of10.root', '/Dilep_JetBase__Data_SingleMu_b_2016_Ntuple_6of10.root', '/Dilep_JetBase__Data_SingleMu_b_2016_Ntuple_7of10.root', '/Dilep_JetBase__Data_SingleMu_b_2016_Ntuple_8of10.root', '/Dilep_JetBase__Data_SingleMu_b_2016_Ntuple_9of10.root']
+
+Dilep_JetBase__WZTo1L1Nu2Q_amcatnlo_FileList_2016 = ['/Dilep_JetBase__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_1of5.root', '/Dilep_JetBase__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_2of5.root', '/Dilep_JetBase__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_3of5.root', '/Dilep_JetBase__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_4of5.root', '/Dilep_JetBase__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_5of5.root']
+
+Dilep_JetBase__TTGamma_SingleLept_erdOn_FileList_2016 = ['/Dilep_JetBase__TTGamma_SingleLept_erdOn_2016_Ntuple.root']
+
+Dilep_JetBase__ZGamma_01J_lowMLL_lowGPt_FileList_2016 = ['/Dilep_JetBase__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_1of5.root', '/Dilep_JetBase__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_2of5.root', '/Dilep_JetBase__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_3of5.root', '/Dilep_JetBase__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_4of5.root', '/Dilep_JetBase__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_5of5.root']
+
+Dilep_JetBase__TTGamma_SingleLept_TuneDown_FileList_2016 = ['/Dilep_JetBase__TTGamma_SingleLept_TuneDown_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt470to600_Mu_FileList_2016 = ['/Dilep_JetBase__QCD_Pt470to600_Mu_2016_Ntuple_1of3.root', '/Dilep_JetBase__QCD_Pt470to600_Mu_2016_Ntuple_2of3.root', '/Dilep_JetBase__QCD_Pt470to600_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JetBase__QCD_Pt300to470_Mu_FileList_2016 = ['/Dilep_JetBase__QCD_Pt300to470_Mu_2016_Ntuple_1of3.root', '/Dilep_JetBase__QCD_Pt300to470_Mu_2016_Ntuple_2of3.root', '/Dilep_JetBase__QCD_Pt300to470_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JetBase__ZGamma_01J_5f_lowMass_FileList_2016 = ['/Dilep_JetBase__ZGamma_01J_5f_lowMass_2016_Ntuple_1of5.root', '/Dilep_JetBase__ZGamma_01J_5f_lowMass_2016_Ntuple_2of5.root', '/Dilep_JetBase__ZGamma_01J_5f_lowMass_2016_Ntuple_3of5.root', '/Dilep_JetBase__ZGamma_01J_5f_lowMass_2016_Ntuple_4of5.root', '/Dilep_JetBase__ZGamma_01J_5f_lowMass_2016_Ntuple_5of5.root']
+
+Dilep_JetBase__WZTo1L3Nu_amcatnlo_FileList_2016 = ['/Dilep_JetBase__WZTo1L3Nu_amcatnlo_2016_Ntuple.root']
+
+Dilep_JetBase__TTGamma_Hadronic_Pt200_FileList_2016 = ['/Dilep_JetBase__TTGamma_Hadronic_Pt200_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt20to30_bcToE_FileList_2016 = ['/Dilep_JetBase__QCD_Pt20to30_bcToE_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt20to30_Mu_FileList_2016 = ['/Dilep_JetBase__QCD_Pt20to30_Mu_2016_Ntuple.root']
+
+Dilep_JetBase__WGamma_FileList_2016 = ['/Dilep_JetBase__WGamma_2016_Ntuple.root']
+
+Dilep_JetBase__GJets_HT40To100_FileList_2016 = ['/Dilep_JetBase__GJets_HT40To100_2016_Ntuple_1of2.root', '/Dilep_JetBase__GJets_HT40To100_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TTGamma_Dilepton_TuneDown_FileList_2016 = ['/Dilep_JetBase__TTGamma_Dilepton_TuneDown_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgamma_M1300_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgamma_M1300_2016_Ntuple.root']
+
+Dilep_JetBase__GJets_HT400To600_FileList_2016 = ['/Dilep_JetBase__GJets_HT400To600_2016_Ntuple_1of2.root', '/Dilep_JetBase__GJets_HT400To600_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TTGamma_Hadronic_Pt100_FileList_2016 = ['/Dilep_JetBase__TTGamma_Hadronic_Pt100_2016_Ntuple.root']
+
+Dilep_JetBase__TstarTstarToTgammaTgluon_M1300_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgammaTgluon_M1300_2016_Ntuple.root']
+
+Dilep_JetBase__W1jets_FileList_2016 = ['/Dilep_JetBase__W1jets_2016_Ntuple.root']
+
+Dilep_JetBase__QCD_Pt50to80_Ele_FileList_2016 = ['/Dilep_JetBase__QCD_Pt50to80_Ele_2016_Ntuple_1of2.root', '/Dilep_JetBase__QCD_Pt50to80_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TstarTstarToTgluonTgluon_M700_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgluonTgluon_M700_2016_Ntuple.root']
+
+Dilep_JetBase__GJets_HT200To400_FileList_2016 = ['/Dilep_JetBase__GJets_HT200To400_2016_Ntuple_1of2.root', '/Dilep_JetBase__GJets_HT200To400_2016_Ntuple_2of2.root']
+
+Dilep_JetBase__TstarTstarToTgluonTgluon_M1100_FileList_2016 = ['/Dilep_JetBase__TstarTstarToTgluonTgluon_M1100_2016_Ntuple.root']
+
+Dilep_JetBase__ZZTo2L2Q_powheg_FileList_2016 = ['/Dilep_JetBase__ZZTo2L2Q_powheg_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt250toInf_bcToE_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt250toInf_bcToE_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTWtoLNu_FileList_2016 = ['/Dilep_JECTotal_up__TTWtoLNu_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__TTWtoLNu_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__GJets_HT100To200_FileList_2016 = ['/Dilep_JECTotal_up__GJets_HT100To200_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__GJets_HT100To200_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1000_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1000_2016_Ntuple.root']
+
+Dilep_JECTotal_up__ZZTo2L2Q_powheg_FileList_2016 = ['/Dilep_JECTotal_up__ZZTo2L2Q_powheg_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt120to170_Ele_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt120to170_Ele_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__QCD_Pt120to170_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__W1jets_FileList_2016 = ['/Dilep_JECTotal_up__W1jets_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt50to80_Mu_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt50to80_Mu_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt30to50_Mu_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt30to50_Mu_2016_Ntuple.root']
+
+Dilep_JECTotal_up__GJets_HT400To600_FileList_2016 = ['/Dilep_JECTotal_up__GJets_HT400To600_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__GJets_HT400To600_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1400_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1400_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1000_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1000_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTGamma_SingleLept_TuneDown_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_SingleLept_TuneDown_2016_Ntuple.root']
+
+Dilep_JECTotal_up__VVTo2L2Nu_amcatnlo_FileList_2016 = ['/Dilep_JECTotal_up__VVTo2L2Nu_amcatnlo_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__VVTo2L2Nu_amcatnlo_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__ZZ_FileList_2016 = ['/Dilep_JECTotal_up__ZZ_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__ZZ_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__QCD_Pt120to170_Mu_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt120to170_Mu_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M800_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M800_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1300_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1300_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTZtoLL_M1to10_FileList_2016 = ['/Dilep_JECTotal_up__TTZtoLL_M1to10_2016_Ntuple.root']
+
+Dilep_JECTotal_up__W2jets_FileList_2016 = ['/Dilep_JECTotal_up__W2jets_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__W2jets_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TTGamma_Dilepton_TuneDown_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_Dilepton_TuneDown_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt80to170_bcToE_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt80to170_bcToE_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTGamma_SingleLept_CR1_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_SingleLept_CR1_2016_Ntuple.root']
+
+Dilep_JECTotal_up__DYjetsM50_FileList_2016 = ['/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_10of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_11of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_12of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_13of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_14of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_15of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_16of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_17of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_18of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_19of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_1of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_20of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_2of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_3of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_4of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_5of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_6of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_7of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_8of20.root', '/Dilep_JECTotal_up__DYjetsM50_2016_Ntuple_9of20.root']
+
+Dilep_JECTotal_up__WWToLNuQQ_powheg_FileList_2016 = ['/Dilep_JECTotal_up__WWToLNuQQ_powheg_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__WWToLNuQQ_powheg_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1300_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1300_2016_Ntuple.root']
+
+Dilep_JECTotal_up__ZGamma_01J_LoosePt_FileList_2016 = ['/Dilep_JECTotal_up__ZGamma_01J_LoosePt_2016_Ntuple_1of5.root', '/Dilep_JECTotal_up__ZGamma_01J_LoosePt_2016_Ntuple_2of5.root', '/Dilep_JECTotal_up__ZGamma_01J_LoosePt_2016_Ntuple_3of5.root', '/Dilep_JECTotal_up__ZGamma_01J_LoosePt_2016_Ntuple_4of5.root', '/Dilep_JECTotal_up__ZGamma_01J_LoosePt_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_up__TTZtoQQ_FileList_2016 = ['/Dilep_JECTotal_up__TTZtoQQ_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt300toInf_Ele_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt300toInf_Ele_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt80to120_Ele_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt80to120_Ele_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__QCD_Pt80to120_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TTbarPowheg_Dilepton_FileList_2016 = ['/Dilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_10of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_1of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_2of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_3of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_4of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_5of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_6of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_7of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_8of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Dilepton_2016_Ntuple_9of10.root']
+
+Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M700_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M700_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTbarPowheg_Hadronic_FileList_2016 = ['/Dilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_10of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_1of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_2of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_3of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_4of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_5of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_6of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_7of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_8of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Hadronic_2016_Ntuple_9of10.root']
+
+Dilep_JECTotal_up__QCD_Pt470to600_Mu_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt470to600_Mu_2016_Ntuple_1of3.root', '/Dilep_JECTotal_up__QCD_Pt470to600_Mu_2016_Ntuple_2of3.root', '/Dilep_JECTotal_up__QCD_Pt470to600_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JECTotal_up__TTGamma_Hadronic_Pt200_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_Hadronic_Pt200_2016_Ntuple.root']
+
+Dilep_JECTotal_up__WZ_FileList_2016 = ['/Dilep_JECTotal_up__WZ_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__WZ_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__ZZTo2Q2Nu_powheg_FileList_2016 = ['/Dilep_JECTotal_up__ZZTo2Q2Nu_powheg_2016_Ntuple.root']
+
+Dilep_JECTotal_up__WW_FileList_2016 = ['/Dilep_JECTotal_up__WW_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__WW_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__W4jets_FileList_2016 = ['/Dilep_JECTotal_up__W4jets_2016_Ntuple_1of3.root', '/Dilep_JECTotal_up__W4jets_2016_Ntuple_2of3.root', '/Dilep_JECTotal_up__W4jets_2016_Ntuple_3of3.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1500_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1500_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1100_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1100_2016_Ntuple.root']
+
+Dilep_JECTotal_up__ST_tW_channel_FileList_2016 = ['/Dilep_JECTotal_up__ST_tW_channel_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTGamma_Dilepton_Pt100_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_Dilepton_Pt100_2016_Ntuple.root']
+
+Dilep_JECTotal_up__W3jets_FileList_2016 = ['/Dilep_JECTotal_up__W3jets_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__W3jets_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M900_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M900_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M700_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M700_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1500_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1500_2016_Ntuple.root']
+
+Dilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_FileList_2016 = ['/Dilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_1of5.root', '/Dilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_2of5.root', '/Dilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_3of5.root', '/Dilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_4of5.root', '/Dilep_JECTotal_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_up__QCD_Pt170to250_bcToE_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt170to250_bcToE_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt20to30_Mu_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt20to30_Mu_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTGamma_SingleLept_Pt100_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_SingleLept_Pt100_2016_Ntuple.root']
+
+Dilep_JECTotal_up__ZGamma_01J_5f_lowMass_FileList_2016 = ['/Dilep_JECTotal_up__ZGamma_01J_5f_lowMass_2016_Ntuple_1of5.root', '/Dilep_JECTotal_up__ZGamma_01J_5f_lowMass_2016_Ntuple_2of5.root', '/Dilep_JECTotal_up__ZGamma_01J_5f_lowMass_2016_Ntuple_3of5.root', '/Dilep_JECTotal_up__ZGamma_01J_5f_lowMass_2016_Ntuple_4of5.root', '/Dilep_JECTotal_up__ZGamma_01J_5f_lowMass_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1200_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1200_2016_Ntuple.root']
+
+Dilep_JECTotal_up__ST_tbarW_channel_FileList_2016 = ['/Dilep_JECTotal_up__ST_tbarW_channel_2016_Ntuple.root']
+
+Dilep_JECTotal_up__DYjetsM10to50_FileList_2016 = ['/Dilep_JECTotal_up__DYjetsM10to50_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt300to470_Mu_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt300to470_Mu_2016_Ntuple_1of3.root', '/Dilep_JECTotal_up__QCD_Pt300to470_Mu_2016_Ntuple_2of3.root', '/Dilep_JECTotal_up__QCD_Pt300to470_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M800_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M800_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M900_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M900_2016_Ntuple.root']
+
+Dilep_JECTotal_up__WWTo4Q_powheg_FileList_2016 = ['/Dilep_JECTotal_up__WWTo4Q_powheg_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTZtoLL_FileList_2016 = ['/Dilep_JECTotal_up__TTZtoLL_2016_Ntuple_1of3.root', '/Dilep_JECTotal_up__TTZtoLL_2016_Ntuple_2of3.root', '/Dilep_JECTotal_up__TTZtoLL_2016_Ntuple_3of3.root']
+
+Dilep_JECTotal_up__WZTo1L3Nu_amcatnlo_FileList_2016 = ['/Dilep_JECTotal_up__WZTo1L3Nu_amcatnlo_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1600_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1600_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1400_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1400_2016_Ntuple.root']
+
+Dilep_JECTotal_up__GJets_HT40To100_FileList_2016 = ['/Dilep_JECTotal_up__GJets_HT40To100_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__GJets_HT40To100_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TTGamma_Hadronic_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_Hadronic_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt80to120_Mu_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt80to120_Mu_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__QCD_Pt80to120_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__GJets_HT600ToInf_FileList_2016 = ['/Dilep_JECTotal_up__GJets_HT600ToInf_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__GJets_HT600ToInf_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__WZTo2L2Q_amcatnlo_FileList_2016 = ['/Dilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_10of10.root', '/Dilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_1of10.root', '/Dilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_2of10.root', '/Dilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_3of10.root', '/Dilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_4of10.root', '/Dilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_5of10.root', '/Dilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_6of10.root', '/Dilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_7of10.root', '/Dilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_8of10.root', '/Dilep_JECTotal_up__WZTo2L2Q_amcatnlo_2016_Ntuple_9of10.root']
+
+Dilep_JECTotal_up__TTGamma_Hadronic_Pt100_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_Hadronic_Pt100_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TGJets_FileList_2016 = ['/Dilep_JECTotal_up__TGJets_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__TGJets_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1000_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1000_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTGamma_SingleLept_erdOn_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_SingleLept_erdOn_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTGamma_Dilepton_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_Dilepton_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1600_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1600_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTWtoQQ_FileList_2016 = ['/Dilep_JECTotal_up__TTWtoQQ_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt50to80_Ele_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt50to80_Ele_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__QCD_Pt50to80_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TTGamma_Dilepton_Pt200_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_Dilepton_Pt200_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1100_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1100_2016_Ntuple.root']
+
+Dilep_JECTotal_up__ST_t_channel_FileList_2016 = ['/Dilep_JECTotal_up__ST_t_channel_2016_Ntuple_1of5.root', '/Dilep_JECTotal_up__ST_t_channel_2016_Ntuple_2of5.root', '/Dilep_JECTotal_up__ST_t_channel_2016_Ntuple_3of5.root', '/Dilep_JECTotal_up__ST_t_channel_2016_Ntuple_4of5.root', '/Dilep_JECTotal_up__ST_t_channel_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_up__QCD_Pt30to50_Ele_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt30to50_Ele_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__QCD_Pt30to50_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TTGamma_SingleLept_TuneUp_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_SingleLept_TuneUp_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt170to300_Mu_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt170to300_Mu_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__QCD_Pt170to300_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M800_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M800_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M700_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M700_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTGamma_SingleLept_Pt200_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_SingleLept_Pt200_2016_Ntuple.root']
+
+Dilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_FileList_2016 = ['/Dilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_1of5.root', '/Dilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_2of5.root', '/Dilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_3of5.root', '/Dilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_4of5.root', '/Dilep_JECTotal_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_up__TTGamma_SingleLept_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_SingleLept_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt30to80_bcToE_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt30to80_bcToE_2016_Ntuple.root']
+
+Dilep_JECTotal_up__ST_tbar_channel_FileList_2016 = ['/Dilep_JECTotal_up__ST_tbar_channel_2016_Ntuple_1of5.root', '/Dilep_JECTotal_up__ST_tbar_channel_2016_Ntuple_2of5.root', '/Dilep_JECTotal_up__ST_tbar_channel_2016_Ntuple_3of5.root', '/Dilep_JECTotal_up__ST_tbar_channel_2016_Ntuple_4of5.root', '/Dilep_JECTotal_up__ST_tbar_channel_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_up__QCD_Pt20to30_Ele_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt20to30_Ele_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1500_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1500_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTbarPowheg_Semilept_FileList_2016 = ['/Dilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_10of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_1of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_2of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_3of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_4of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_5of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_6of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_7of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_8of10.root', '/Dilep_JECTotal_up__TTbarPowheg_Semilept_2016_Ntuple_9of10.root']
+
+Dilep_JECTotal_up__QCD_Pt800to1000_Mu_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt800to1000_Mu_2016_Ntuple_1of3.root', '/Dilep_JECTotal_up__QCD_Pt800to1000_Mu_2016_Ntuple_2of3.root', '/Dilep_JECTotal_up__QCD_Pt800to1000_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JECTotal_up__WGamma_FileList_2016 = ['/Dilep_JECTotal_up__WGamma_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTGamma_Dilepton_CR1_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_Dilepton_CR1_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTGamma_Dilepton_TuneUp_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_Dilepton_TuneUp_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTGamma_Dilepton_CR2_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_Dilepton_CR2_2016_Ntuple.root']
+
+Dilep_JECTotal_up__GJets_HT200To400_FileList_2016 = ['/Dilep_JECTotal_up__GJets_HT200To400_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__GJets_HT200To400_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__QCD_Pt170to300_Ele_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt170to300_Ele_2016_Ntuple.root']
+
+Dilep_JECTotal_up__ST_s_channel_FileList_2016 = ['/Dilep_JECTotal_up__ST_s_channel_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt600to800_Mu_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt600to800_Mu_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__QCD_Pt600to800_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TTGamma_SingleLept_CR2_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_SingleLept_CR2_2016_Ntuple.root']
+
+Dilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_FileList_2016 = ['/Dilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_1of5.root', '/Dilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_2of5.root', '/Dilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_3of5.root', '/Dilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_4of5.root', '/Dilep_JECTotal_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1100_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1100_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1300_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1300_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1600_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1600_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt1000toInf_Mu_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt1000toInf_Mu_2016_Ntuple_1of2.root', '/Dilep_JECTotal_up__QCD_Pt1000toInf_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M900_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M900_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TTGamma_Dilepton_erdOn_FileList_2016 = ['/Dilep_JECTotal_up__TTGamma_Dilepton_erdOn_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1200_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgamma_M1200_2016_Ntuple.root']
+
+Dilep_JECTotal_up__ZZTo4L_powheg_FileList_2016 = ['/Dilep_JECTotal_up__ZZTo4L_powheg_2016_Ntuple.root']
+
+Dilep_JECTotal_up__WZTo3LNu_powheg_FileList_2016 = ['/Dilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_10of11.root', '/Dilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_11of11.root', '/Dilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_1of11.root', '/Dilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_2of11.root', '/Dilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_3of11.root', '/Dilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_4of11.root', '/Dilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_5of11.root', '/Dilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_6of11.root', '/Dilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_7of11.root', '/Dilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_8of11.root', '/Dilep_JECTotal_up__WZTo3LNu_powheg_2016_Ntuple_9of11.root']
+
+Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1400_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgluonTgluon_M1400_2016_Ntuple.root']
+
+Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1200_FileList_2016 = ['/Dilep_JECTotal_up__TstarTstarToTgammaTgluon_M1200_2016_Ntuple.root']
+
+Dilep_JECTotal_up__QCD_Pt20to30_bcToE_FileList_2016 = ['/Dilep_JECTotal_up__QCD_Pt20to30_bcToE_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTGamma_Hadronic_Pt100_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_Hadronic_Pt100_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M900_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M900_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1400_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1400_2016_Ntuple.root']
+
+Dilep_JECTotal_down__W2jets_FileList_2016 = ['/Dilep_JECTotal_down__W2jets_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__W2jets_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__ST_tbar_channel_FileList_2016 = ['/Dilep_JECTotal_down__ST_tbar_channel_2016_Ntuple_1of5.root', '/Dilep_JECTotal_down__ST_tbar_channel_2016_Ntuple_2of5.root', '/Dilep_JECTotal_down__ST_tbar_channel_2016_Ntuple_3of5.root', '/Dilep_JECTotal_down__ST_tbar_channel_2016_Ntuple_4of5.root', '/Dilep_JECTotal_down__ST_tbar_channel_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_down__TTGamma_Dilepton_TuneUp_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_Dilepton_TuneUp_2016_Ntuple.root']
+
+Dilep_JECTotal_down__ZZTo4L_powheg_FileList_2016 = ['/Dilep_JECTotal_down__ZZTo4L_powheg_2016_Ntuple.root']
+
+Dilep_JECTotal_down__ZZTo2L2Q_powheg_FileList_2016 = ['/Dilep_JECTotal_down__ZZTo2L2Q_powheg_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt20to30_Mu_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt20to30_Mu_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1200_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1200_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M700_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M700_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt120to170_Ele_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt120to170_Ele_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__QCD_Pt120to170_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1300_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1300_2016_Ntuple.root']
+
+Dilep_JECTotal_down__WGamma_FileList_2016 = ['/Dilep_JECTotal_down__WGamma_2016_Ntuple.root']
+
+Dilep_JECTotal_down__ST_s_channel_FileList_2016 = ['/Dilep_JECTotal_down__ST_s_channel_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTGamma_Dilepton_Pt200_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_Dilepton_Pt200_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt30to50_Mu_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt30to50_Mu_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTGamma_Dilepton_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_Dilepton_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1200_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1200_2016_Ntuple.root']
+
+Dilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_FileList_2016 = ['/Dilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_1of5.root', '/Dilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_2of5.root', '/Dilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_3of5.root', '/Dilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_4of5.root', '/Dilep_JECTotal_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M800_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M800_2016_Ntuple.root']
+
+Dilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_FileList_2016 = ['/Dilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_1of5.root', '/Dilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_2of5.root', '/Dilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_3of5.root', '/Dilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_4of5.root', '/Dilep_JECTotal_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_down__QCD_Pt20to30_bcToE_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt20to30_bcToE_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TGJets_FileList_2016 = ['/Dilep_JECTotal_down__TGJets_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__TGJets_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__W3jets_FileList_2016 = ['/Dilep_JECTotal_down__W3jets_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__W3jets_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__QCD_Pt30to80_bcToE_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt30to80_bcToE_2016_Ntuple.root']
+
+Dilep_JECTotal_down__GJets_HT40To100_FileList_2016 = ['/Dilep_JECTotal_down__GJets_HT40To100_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__GJets_HT40To100_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__ZZ_FileList_2016 = ['/Dilep_JECTotal_down__ZZ_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__ZZ_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1300_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1300_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTGamma_Dilepton_CR1_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_Dilepton_CR1_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTGamma_Dilepton_CR2_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_Dilepton_CR2_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTGamma_Hadronic_Pt200_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_Hadronic_Pt200_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTbarPowheg_Semilept_FileList_2016 = ['/Dilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_10of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_1of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_2of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_3of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_4of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_5of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_6of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_7of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_8of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Semilept_2016_Ntuple_9of10.root']
+
+Dilep_JECTotal_down__DYjetsM10to50_FileList_2016 = ['/Dilep_JECTotal_down__DYjetsM10to50_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt80to170_bcToE_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt80to170_bcToE_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt170to300_Ele_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt170to300_Ele_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTWtoQQ_FileList_2016 = ['/Dilep_JECTotal_down__TTWtoQQ_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt170to300_Mu_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt170to300_Mu_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__QCD_Pt170to300_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__GJets_HT100To200_FileList_2016 = ['/Dilep_JECTotal_down__GJets_HT100To200_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__GJets_HT100To200_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__WZTo2L2Q_amcatnlo_FileList_2016 = ['/Dilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_10of10.root', '/Dilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_1of10.root', '/Dilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_2of10.root', '/Dilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_3of10.root', '/Dilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_4of10.root', '/Dilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_5of10.root', '/Dilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_6of10.root', '/Dilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_7of10.root', '/Dilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_8of10.root', '/Dilep_JECTotal_down__WZTo2L2Q_amcatnlo_2016_Ntuple_9of10.root']
+
+Dilep_JECTotal_down__QCD_Pt600to800_Mu_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt600to800_Mu_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__QCD_Pt600to800_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M700_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M700_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1600_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1600_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt300toInf_Ele_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt300toInf_Ele_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1100_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1100_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTGamma_Dilepton_TuneDown_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_Dilepton_TuneDown_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTGamma_Dilepton_Pt100_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_Dilepton_Pt100_2016_Ntuple.root']
+
+Dilep_JECTotal_down__ZGamma_01J_5f_lowMass_FileList_2016 = ['/Dilep_JECTotal_down__ZGamma_01J_5f_lowMass_2016_Ntuple_1of5.root', '/Dilep_JECTotal_down__ZGamma_01J_5f_lowMass_2016_Ntuple_2of5.root', '/Dilep_JECTotal_down__ZGamma_01J_5f_lowMass_2016_Ntuple_3of5.root', '/Dilep_JECTotal_down__ZGamma_01J_5f_lowMass_2016_Ntuple_4of5.root', '/Dilep_JECTotal_down__ZGamma_01J_5f_lowMass_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M800_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M800_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt50to80_Ele_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt50to80_Ele_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__QCD_Pt50to80_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__WWToLNuQQ_powheg_FileList_2016 = ['/Dilep_JECTotal_down__WWToLNuQQ_powheg_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__WWToLNuQQ_powheg_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1500_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1500_2016_Ntuple.root']
+
+Dilep_JECTotal_down__ZGamma_01J_LoosePt_FileList_2016 = ['/Dilep_JECTotal_down__ZGamma_01J_LoosePt_2016_Ntuple_1of5.root', '/Dilep_JECTotal_down__ZGamma_01J_LoosePt_2016_Ntuple_2of5.root', '/Dilep_JECTotal_down__ZGamma_01J_LoosePt_2016_Ntuple_3of5.root', '/Dilep_JECTotal_down__ZGamma_01J_LoosePt_2016_Ntuple_4of5.root', '/Dilep_JECTotal_down__ZGamma_01J_LoosePt_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_down__WWTo4Q_powheg_FileList_2016 = ['/Dilep_JECTotal_down__WWTo4Q_powheg_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1600_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1600_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1200_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1200_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt30to50_Ele_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt30to50_Ele_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__QCD_Pt30to50_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__TTGamma_Dilepton_erdOn_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_Dilepton_erdOn_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt50to80_Mu_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt50to80_Mu_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTbarPowheg_Dilepton_FileList_2016 = ['/Dilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_10of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_1of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_2of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_3of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_4of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_5of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_6of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_7of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_8of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Dilepton_2016_Ntuple_9of10.root']
+
+Dilep_JECTotal_down__QCD_Pt20to30_Ele_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt20to30_Ele_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1500_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1500_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt800to1000_Mu_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt800to1000_Mu_2016_Ntuple_1of3.root', '/Dilep_JECTotal_down__QCD_Pt800to1000_Mu_2016_Ntuple_2of3.root', '/Dilep_JECTotal_down__QCD_Pt800to1000_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JECTotal_down__TTGamma_SingleLept_TuneUp_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_SingleLept_TuneUp_2016_Ntuple.root']
+
+Dilep_JECTotal_down__VVTo2L2Nu_amcatnlo_FileList_2016 = ['/Dilep_JECTotal_down__VVTo2L2Nu_amcatnlo_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__VVTo2L2Nu_amcatnlo_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1600_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1600_2016_Ntuple.root']
+
+Dilep_JECTotal_down__WZTo3LNu_powheg_FileList_2016 = ['/Dilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_10of11.root', '/Dilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_11of11.root', '/Dilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_1of11.root', '/Dilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_2of11.root', '/Dilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_3of11.root', '/Dilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_4of11.root', '/Dilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_5of11.root', '/Dilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_6of11.root', '/Dilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_7of11.root', '/Dilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_8of11.root', '/Dilep_JECTotal_down__WZTo3LNu_powheg_2016_Ntuple_9of11.root']
+
+Dilep_JECTotal_down__QCD_Pt80to120_Ele_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt80to120_Ele_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__QCD_Pt80to120_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__ST_tW_channel_FileList_2016 = ['/Dilep_JECTotal_down__ST_tW_channel_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt250toInf_bcToE_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt250toInf_bcToE_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt80to120_Mu_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt80to120_Mu_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__QCD_Pt80to120_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_FileList_2016 = ['/Dilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_1of5.root', '/Dilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_2of5.root', '/Dilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_3of5.root', '/Dilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_4of5.root', '/Dilep_JECTotal_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_5of5.root']
+
+Dilep_JECTotal_down__ZZTo2Q2Nu_powheg_FileList_2016 = ['/Dilep_JECTotal_down__ZZTo2Q2Nu_powheg_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTGamma_SingleLept_Pt200_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_SingleLept_Pt200_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTZtoLL_FileList_2016 = ['/Dilep_JECTotal_down__TTZtoLL_2016_Ntuple_1of3.root', '/Dilep_JECTotal_down__TTZtoLL_2016_Ntuple_2of3.root', '/Dilep_JECTotal_down__TTZtoLL_2016_Ntuple_3of3.root']
+
+Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1000_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1000_2016_Ntuple.root']
+
+Dilep_JECTotal_down__GJets_HT200To400_FileList_2016 = ['/Dilep_JECTotal_down__GJets_HT200To400_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__GJets_HT200To400_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1100_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1100_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M900_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M900_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTbarPowheg_Hadronic_FileList_2016 = ['/Dilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_10of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_1of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_2of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_3of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_4of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_5of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_6of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_7of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_8of10.root', '/Dilep_JECTotal_down__TTbarPowheg_Hadronic_2016_Ntuple_9of10.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M700_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M700_2016_Ntuple.root']
+
+Dilep_JECTotal_down__W1jets_FileList_2016 = ['/Dilep_JECTotal_down__W1jets_2016_Ntuple.root']
+
+Dilep_JECTotal_down__DYjetsM50_FileList_2016 = ['/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_10of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_11of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_12of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_13of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_14of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_15of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_16of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_17of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_18of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_19of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_1of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_20of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_2of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_3of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_4of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_5of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_6of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_7of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_8of20.root', '/Dilep_JECTotal_down__DYjetsM50_2016_Ntuple_9of20.root']
+
+Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1300_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1300_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1400_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M1400_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt470to600_Mu_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt470to600_Mu_2016_Ntuple_1of3.root', '/Dilep_JECTotal_down__QCD_Pt470to600_Mu_2016_Ntuple_2of3.root', '/Dilep_JECTotal_down__QCD_Pt470to600_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1100_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1100_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M800_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M800_2016_Ntuple.root']
+
+Dilep_JECTotal_down__ST_tbarW_channel_FileList_2016 = ['/Dilep_JECTotal_down__ST_tbarW_channel_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1400_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1400_2016_Ntuple.root']
+
+Dilep_JECTotal_down__GJets_HT400To600_FileList_2016 = ['/Dilep_JECTotal_down__GJets_HT400To600_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__GJets_HT400To600_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__QCD_Pt300to470_Mu_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt300to470_Mu_2016_Ntuple_1of3.root', '/Dilep_JECTotal_down__QCD_Pt300to470_Mu_2016_Ntuple_2of3.root', '/Dilep_JECTotal_down__QCD_Pt300to470_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JECTotal_down__TTGamma_SingleLept_erdOn_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_SingleLept_erdOn_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt1000toInf_Mu_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt1000toInf_Mu_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__QCD_Pt1000toInf_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__WZTo1L3Nu_amcatnlo_FileList_2016 = ['/Dilep_JECTotal_down__WZTo1L3Nu_amcatnlo_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTZtoLL_M1to10_FileList_2016 = ['/Dilep_JECTotal_down__TTZtoLL_M1to10_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1500_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1500_2016_Ntuple.root']
+
+Dilep_JECTotal_down__WZ_FileList_2016 = ['/Dilep_JECTotal_down__WZ_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__WZ_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__TTGamma_SingleLept_Pt100_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_SingleLept_Pt100_2016_Ntuple.root']
+
+Dilep_JECTotal_down__WW_FileList_2016 = ['/Dilep_JECTotal_down__WW_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__WW_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__W4jets_FileList_2016 = ['/Dilep_JECTotal_down__W4jets_2016_Ntuple_1of3.root', '/Dilep_JECTotal_down__W4jets_2016_Ntuple_2of3.root', '/Dilep_JECTotal_down__W4jets_2016_Ntuple_3of3.root']
+
+Dilep_JECTotal_down__TTGamma_SingleLept_TuneDown_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_SingleLept_TuneDown_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1000_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgluon_M1000_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTWtoLNu_FileList_2016 = ['/Dilep_JECTotal_down__TTWtoLNu_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__TTWtoLNu_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__TTGamma_Hadronic_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_Hadronic_2016_Ntuple.root']
+
+Dilep_JECTotal_down__GJets_HT600ToInf_FileList_2016 = ['/Dilep_JECTotal_down__GJets_HT600ToInf_2016_Ntuple_1of2.root', '/Dilep_JECTotal_down__GJets_HT600ToInf_2016_Ntuple_2of2.root']
+
+Dilep_JECTotal_down__TTGamma_SingleLept_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_SingleLept_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M900_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgluonTgluon_M900_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTZtoQQ_FileList_2016 = ['/Dilep_JECTotal_down__TTZtoQQ_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt120to170_Mu_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt120to170_Mu_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTGamma_SingleLept_CR1_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_SingleLept_CR1_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TTGamma_SingleLept_CR2_FileList_2016 = ['/Dilep_JECTotal_down__TTGamma_SingleLept_CR2_2016_Ntuple.root']
+
+Dilep_JECTotal_down__QCD_Pt170to250_bcToE_FileList_2016 = ['/Dilep_JECTotal_down__QCD_Pt170to250_bcToE_2016_Ntuple.root']
+
+Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1000_FileList_2016 = ['/Dilep_JECTotal_down__TstarTstarToTgammaTgamma_M1000_2016_Ntuple.root']
+
+Dilep_JECTotal_down__ST_t_channel_FileList_2016 = ['/Dilep_JECTotal_down__ST_t_channel_2016_Ntuple_1of5.root', '/Dilep_JECTotal_down__ST_t_channel_2016_Ntuple_2of5.root', '/Dilep_JECTotal_down__ST_t_channel_2016_Ntuple_3of5.root', '/Dilep_JECTotal_down__ST_t_channel_2016_Ntuple_4of5.root', '/Dilep_JECTotal_down__ST_t_channel_2016_Ntuple_5of5.root']
+
+Dilep_JER_up__QCD_Pt300to470_Mu_FileList_2016 = ['/Dilep_JER_up__QCD_Pt300to470_Mu_2016_Ntuple_1of3.root', '/Dilep_JER_up__QCD_Pt300to470_Mu_2016_Ntuple_2of3.root', '/Dilep_JER_up__QCD_Pt300to470_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JER_up__TTGamma_Dilepton_TuneDown_FileList_2016 = ['/Dilep_JER_up__TTGamma_Dilepton_TuneDown_2016_Ntuple.root']
+
+Dilep_JER_up__TTZtoLL_M1to10_FileList_2016 = ['/Dilep_JER_up__TTZtoLL_M1to10_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgamma_M1500_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgamma_M1500_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgluon_M1500_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgluon_M1500_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt30to80_bcToE_FileList_2016 = ['/Dilep_JER_up__QCD_Pt30to80_bcToE_2016_Ntuple.root']
+
+Dilep_JER_up__TTGamma_SingleLept_CR2_FileList_2016 = ['/Dilep_JER_up__TTGamma_SingleLept_CR2_2016_Ntuple.root']
+
+Dilep_JER_up__TTGamma_SingleLept_CR1_FileList_2016 = ['/Dilep_JER_up__TTGamma_SingleLept_CR1_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt170to300_Ele_FileList_2016 = ['/Dilep_JER_up__QCD_Pt170to300_Ele_2016_Ntuple.root']
+
+Dilep_JER_up__ZGamma_01J_5f_lowMass_FileList_2016 = ['/Dilep_JER_up__ZGamma_01J_5f_lowMass_2016_Ntuple_1of5.root', '/Dilep_JER_up__ZGamma_01J_5f_lowMass_2016_Ntuple_2of5.root', '/Dilep_JER_up__ZGamma_01J_5f_lowMass_2016_Ntuple_3of5.root', '/Dilep_JER_up__ZGamma_01J_5f_lowMass_2016_Ntuple_4of5.root', '/Dilep_JER_up__ZGamma_01J_5f_lowMass_2016_Ntuple_5of5.root']
+
+Dilep_JER_up__TstarTstarToTgluonTgluon_M1600_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgluonTgluon_M1600_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgluon_M1100_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgluon_M1100_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt30to50_Mu_FileList_2016 = ['/Dilep_JER_up__QCD_Pt30to50_Mu_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt300toInf_Ele_FileList_2016 = ['/Dilep_JER_up__QCD_Pt300toInf_Ele_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgluon_M800_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgluon_M800_2016_Ntuple.root']
+
+Dilep_JER_up__GJets_HT200To400_FileList_2016 = ['/Dilep_JER_up__GJets_HT200To400_2016_Ntuple_1of2.root', '/Dilep_JER_up__GJets_HT200To400_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__TstarTstarToTgluonTgluon_M1300_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgluonTgluon_M1300_2016_Ntuple.root']
+
+Dilep_JER_up__ST_s_channel_FileList_2016 = ['/Dilep_JER_up__ST_s_channel_2016_Ntuple.root']
+
+Dilep_JER_up__TTZtoQQ_FileList_2016 = ['/Dilep_JER_up__TTZtoQQ_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgluon_M1600_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgluon_M1600_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgamma_M1000_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgamma_M1000_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgluonTgluon_M700_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgluonTgluon_M700_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt50to80_Ele_FileList_2016 = ['/Dilep_JER_up__QCD_Pt50to80_Ele_2016_Ntuple_1of2.root', '/Dilep_JER_up__QCD_Pt50to80_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__QCD_Pt80to170_bcToE_FileList_2016 = ['/Dilep_JER_up__QCD_Pt80to170_bcToE_2016_Ntuple.root']
+
+Dilep_JER_up__W4jets_FileList_2016 = ['/Dilep_JER_up__W4jets_2016_Ntuple_1of3.root', '/Dilep_JER_up__W4jets_2016_Ntuple_2of3.root', '/Dilep_JER_up__W4jets_2016_Ntuple_3of3.root']
+
+Dilep_JER_up__ZGamma_01J_LoosePt_FileList_2016 = ['/Dilep_JER_up__ZGamma_01J_LoosePt_2016_Ntuple_1of5.root', '/Dilep_JER_up__ZGamma_01J_LoosePt_2016_Ntuple_2of5.root', '/Dilep_JER_up__ZGamma_01J_LoosePt_2016_Ntuple_3of5.root', '/Dilep_JER_up__ZGamma_01J_LoosePt_2016_Ntuple_4of5.root', '/Dilep_JER_up__ZGamma_01J_LoosePt_2016_Ntuple_5of5.root']
+
+Dilep_JER_up__TstarTstarToTgluonTgluon_M1200_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgluonTgluon_M1200_2016_Ntuple.root']
+
+Dilep_JER_up__GJets_HT100To200_FileList_2016 = ['/Dilep_JER_up__GJets_HT100To200_2016_Ntuple_1of2.root', '/Dilep_JER_up__GJets_HT100To200_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__W3jets_FileList_2016 = ['/Dilep_JER_up__W3jets_2016_Ntuple_1of2.root', '/Dilep_JER_up__W3jets_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__WZTo3LNu_powheg_FileList_2016 = ['/Dilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_10of11.root', '/Dilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_11of11.root', '/Dilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_1of11.root', '/Dilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_2of11.root', '/Dilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_3of11.root', '/Dilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_4of11.root', '/Dilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_5of11.root', '/Dilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_6of11.root', '/Dilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_7of11.root', '/Dilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_8of11.root', '/Dilep_JER_up__WZTo3LNu_powheg_2016_Ntuple_9of11.root']
+
+Dilep_JER_up__ZZ_FileList_2016 = ['/Dilep_JER_up__ZZ_2016_Ntuple_1of2.root', '/Dilep_JER_up__ZZ_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__GJets_HT400To600_FileList_2016 = ['/Dilep_JER_up__GJets_HT400To600_2016_Ntuple_1of2.root', '/Dilep_JER_up__GJets_HT400To600_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__ST_tW_channel_FileList_2016 = ['/Dilep_JER_up__ST_tW_channel_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt120to170_Mu_FileList_2016 = ['/Dilep_JER_up__QCD_Pt120to170_Mu_2016_Ntuple.root']
+
+Dilep_JER_up__TTWtoLNu_FileList_2016 = ['/Dilep_JER_up__TTWtoLNu_2016_Ntuple_1of2.root', '/Dilep_JER_up__TTWtoLNu_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__TTGamma_Dilepton_erdOn_FileList_2016 = ['/Dilep_JER_up__TTGamma_Dilepton_erdOn_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt20to30_bcToE_FileList_2016 = ['/Dilep_JER_up__QCD_Pt20to30_bcToE_2016_Ntuple.root']
+
+Dilep_JER_up__ZZTo2Q2Nu_powheg_FileList_2016 = ['/Dilep_JER_up__ZZTo2Q2Nu_powheg_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgluon_M1000_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgluon_M1000_2016_Ntuple.root']
+
+Dilep_JER_up__DYjetsM10to50_FileList_2016 = ['/Dilep_JER_up__DYjetsM10to50_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgluon_M900_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgluon_M900_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt80to120_Ele_FileList_2016 = ['/Dilep_JER_up__QCD_Pt80to120_Ele_2016_Ntuple_1of2.root', '/Dilep_JER_up__QCD_Pt80to120_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__TTGamma_Dilepton_CR1_FileList_2016 = ['/Dilep_JER_up__TTGamma_Dilepton_CR1_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt800to1000_Mu_FileList_2016 = ['/Dilep_JER_up__QCD_Pt800to1000_Mu_2016_Ntuple_1of3.root', '/Dilep_JER_up__QCD_Pt800to1000_Mu_2016_Ntuple_2of3.root', '/Dilep_JER_up__QCD_Pt800to1000_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JER_up__WZ_FileList_2016 = ['/Dilep_JER_up__WZ_2016_Ntuple_1of2.root', '/Dilep_JER_up__WZ_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__WW_FileList_2016 = ['/Dilep_JER_up__WW_2016_Ntuple_1of2.root', '/Dilep_JER_up__WW_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__TTGamma_Dilepton_TuneUp_FileList_2016 = ['/Dilep_JER_up__TTGamma_Dilepton_TuneUp_2016_Ntuple.root']
+
+Dilep_JER_up__ZGamma_01J_lowMLL_lowGPt_FileList_2016 = ['/Dilep_JER_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_1of5.root', '/Dilep_JER_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_2of5.root', '/Dilep_JER_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_3of5.root', '/Dilep_JER_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_4of5.root', '/Dilep_JER_up__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_5of5.root']
+
+Dilep_JER_up__ST_tbarW_channel_FileList_2016 = ['/Dilep_JER_up__ST_tbarW_channel_2016_Ntuple.root']
+
+Dilep_JER_up__WWTo4Q_powheg_FileList_2016 = ['/Dilep_JER_up__WWTo4Q_powheg_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgluonTgluon_M800_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgluonTgluon_M800_2016_Ntuple.root']
+
+Dilep_JER_up__TTGamma_SingleLept_Pt200_FileList_2016 = ['/Dilep_JER_up__TTGamma_SingleLept_Pt200_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgluonTgluon_M900_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgluonTgluon_M900_2016_Ntuple.root']
+
+Dilep_JER_up__TTGamma_SingleLept_TuneUp_FileList_2016 = ['/Dilep_JER_up__TTGamma_SingleLept_TuneUp_2016_Ntuple.root']
+
+Dilep_JER_up__ZZTo2L2Q_powheg_FileList_2016 = ['/Dilep_JER_up__ZZTo2L2Q_powheg_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgamma_M700_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgamma_M700_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgamma_M1300_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgamma_M1300_2016_Ntuple.root']
+
+Dilep_JER_up__WZTo1L3Nu_amcatnlo_FileList_2016 = ['/Dilep_JER_up__WZTo1L3Nu_amcatnlo_2016_Ntuple.root']
+
+Dilep_JER_up__WZTo2L2Q_amcatnlo_FileList_2016 = ['/Dilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_10of10.root', '/Dilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_1of10.root', '/Dilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_2of10.root', '/Dilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_3of10.root', '/Dilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_4of10.root', '/Dilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_5of10.root', '/Dilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_6of10.root', '/Dilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_7of10.root', '/Dilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_8of10.root', '/Dilep_JER_up__WZTo2L2Q_amcatnlo_2016_Ntuple_9of10.root']
+
+Dilep_JER_up__TstarTstarToTgluonTgluon_M1100_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgluonTgluon_M1100_2016_Ntuple.root']
+
+Dilep_JER_up__TTGamma_Dilepton_Pt200_FileList_2016 = ['/Dilep_JER_up__TTGamma_Dilepton_Pt200_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt20to30_Ele_FileList_2016 = ['/Dilep_JER_up__QCD_Pt20to30_Ele_2016_Ntuple.root']
+
+Dilep_JER_up__W2jets_FileList_2016 = ['/Dilep_JER_up__W2jets_2016_Ntuple_1of2.root', '/Dilep_JER_up__W2jets_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__QCD_Pt170to300_Mu_FileList_2016 = ['/Dilep_JER_up__QCD_Pt170to300_Mu_2016_Ntuple_1of2.root', '/Dilep_JER_up__QCD_Pt170to300_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgamma_M800_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgamma_M800_2016_Ntuple.root']
+
+Dilep_JER_up__TTbarPowheg_Dilepton_FileList_2016 = ['/Dilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_10of10.root', '/Dilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_1of10.root', '/Dilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_2of10.root', '/Dilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_3of10.root', '/Dilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_4of10.root', '/Dilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_5of10.root', '/Dilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_6of10.root', '/Dilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_7of10.root', '/Dilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_8of10.root', '/Dilep_JER_up__TTbarPowheg_Dilepton_2016_Ntuple_9of10.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgluon_M700_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgluon_M700_2016_Ntuple.root']
+
+Dilep_JER_up__ST_t_channel_FileList_2016 = ['/Dilep_JER_up__ST_t_channel_2016_Ntuple_1of5.root', '/Dilep_JER_up__ST_t_channel_2016_Ntuple_2of5.root', '/Dilep_JER_up__ST_t_channel_2016_Ntuple_3of5.root', '/Dilep_JER_up__ST_t_channel_2016_Ntuple_4of5.root', '/Dilep_JER_up__ST_t_channel_2016_Ntuple_5of5.root']
+
+Dilep_JER_up__VVTo2L2Nu_amcatnlo_FileList_2016 = ['/Dilep_JER_up__VVTo2L2Nu_amcatnlo_2016_Ntuple_1of2.root', '/Dilep_JER_up__VVTo2L2Nu_amcatnlo_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__TGJets_FileList_2016 = ['/Dilep_JER_up__TGJets_2016_Ntuple_1of2.root', '/Dilep_JER_up__TGJets_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgluon_M1300_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgluon_M1300_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt80to120_Mu_FileList_2016 = ['/Dilep_JER_up__QCD_Pt80to120_Mu_2016_Ntuple_1of2.root', '/Dilep_JER_up__QCD_Pt80to120_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__TTbarPowheg_Hadronic_FileList_2016 = ['/Dilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_10of10.root', '/Dilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_1of10.root', '/Dilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_2of10.root', '/Dilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_3of10.root', '/Dilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_4of10.root', '/Dilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_5of10.root', '/Dilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_6of10.root', '/Dilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_7of10.root', '/Dilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_8of10.root', '/Dilep_JER_up__TTbarPowheg_Hadronic_2016_Ntuple_9of10.root']
+
+Dilep_JER_up__TTbarPowheg_Semilept_FileList_2016 = ['/Dilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_10of10.root', '/Dilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_1of10.root', '/Dilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_2of10.root', '/Dilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_3of10.root', '/Dilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_4of10.root', '/Dilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_5of10.root', '/Dilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_6of10.root', '/Dilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_7of10.root', '/Dilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_8of10.root', '/Dilep_JER_up__TTbarPowheg_Semilept_2016_Ntuple_9of10.root']
+
+Dilep_JER_up__TstarTstarToTgluonTgluon_M1500_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgluonTgluon_M1500_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt250toInf_bcToE_FileList_2016 = ['/Dilep_JER_up__QCD_Pt250toInf_bcToE_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt1000toInf_Mu_FileList_2016 = ['/Dilep_JER_up__QCD_Pt1000toInf_Mu_2016_Ntuple_1of2.root', '/Dilep_JER_up__QCD_Pt1000toInf_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__TTGamma_SingleLept_Pt100_FileList_2016 = ['/Dilep_JER_up__TTGamma_SingleLept_Pt100_2016_Ntuple.root']
+
+Dilep_JER_up__WZTo1L1Nu2Q_amcatnlo_FileList_2016 = ['/Dilep_JER_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_1of5.root', '/Dilep_JER_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_2of5.root', '/Dilep_JER_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_3of5.root', '/Dilep_JER_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_4of5.root', '/Dilep_JER_up__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_5of5.root']
+
+Dilep_JER_up__QCD_Pt170to250_bcToE_FileList_2016 = ['/Dilep_JER_up__QCD_Pt170to250_bcToE_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgamma_M900_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgamma_M900_2016_Ntuple.root']
+
+Dilep_JER_up__ST_tbar_channel_FileList_2016 = ['/Dilep_JER_up__ST_tbar_channel_2016_Ntuple_1of5.root', '/Dilep_JER_up__ST_tbar_channel_2016_Ntuple_2of5.root', '/Dilep_JER_up__ST_tbar_channel_2016_Ntuple_3of5.root', '/Dilep_JER_up__ST_tbar_channel_2016_Ntuple_4of5.root', '/Dilep_JER_up__ST_tbar_channel_2016_Ntuple_5of5.root']
+
+Dilep_JER_up__TTGamma_SingleLept_erdOn_FileList_2016 = ['/Dilep_JER_up__TTGamma_SingleLept_erdOn_2016_Ntuple.root']
+
+Dilep_JER_up__TTGamma_Dilepton_CR2_FileList_2016 = ['/Dilep_JER_up__TTGamma_Dilepton_CR2_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgluon_M1400_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgluon_M1400_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgamma_M1400_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgamma_M1400_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgluon_M1200_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgluon_M1200_2016_Ntuple.root']
+
+Dilep_JER_up__TTGamma_Dilepton_Pt100_FileList_2016 = ['/Dilep_JER_up__TTGamma_Dilepton_Pt100_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgamma_M1600_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgamma_M1600_2016_Ntuple.root']
+
+Dilep_JER_up__TTGamma_Hadronic_FileList_2016 = ['/Dilep_JER_up__TTGamma_Hadronic_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt600to800_Mu_FileList_2016 = ['/Dilep_JER_up__QCD_Pt600to800_Mu_2016_Ntuple_1of2.root', '/Dilep_JER_up__QCD_Pt600to800_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__TstarTstarToTgluonTgluon_M1000_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgluonTgluon_M1000_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt20to30_Mu_FileList_2016 = ['/Dilep_JER_up__QCD_Pt20to30_Mu_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt120to170_Ele_FileList_2016 = ['/Dilep_JER_up__QCD_Pt120to170_Ele_2016_Ntuple_1of2.root', '/Dilep_JER_up__QCD_Pt120to170_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__ZZTo2Q2Nu_amcatnlo_FileList_2016 = ['/Dilep_JER_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_1of5.root', '/Dilep_JER_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_2of5.root', '/Dilep_JER_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_3of5.root', '/Dilep_JER_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_4of5.root', '/Dilep_JER_up__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_5of5.root']
+
+Dilep_JER_up__WGamma_FileList_2016 = ['/Dilep_JER_up__WGamma_2016_Ntuple.root']
+
+Dilep_JER_up__TTGamma_Hadronic_Pt100_FileList_2016 = ['/Dilep_JER_up__TTGamma_Hadronic_Pt100_2016_Ntuple.root']
+
+Dilep_JER_up__GJets_HT40To100_FileList_2016 = ['/Dilep_JER_up__GJets_HT40To100_2016_Ntuple_1of2.root', '/Dilep_JER_up__GJets_HT40To100_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__ZZTo4L_powheg_FileList_2016 = ['/Dilep_JER_up__ZZTo4L_powheg_2016_Ntuple.root']
+
+Dilep_JER_up__WWToLNuQQ_powheg_FileList_2016 = ['/Dilep_JER_up__WWToLNuQQ_powheg_2016_Ntuple_1of2.root', '/Dilep_JER_up__WWToLNuQQ_powheg_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__QCD_Pt470to600_Mu_FileList_2016 = ['/Dilep_JER_up__QCD_Pt470to600_Mu_2016_Ntuple_1of3.root', '/Dilep_JER_up__QCD_Pt470to600_Mu_2016_Ntuple_2of3.root', '/Dilep_JER_up__QCD_Pt470to600_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JER_up__DYjetsM50_FileList_2016 = ['/Dilep_JER_up__DYjetsM50_2016_Ntuple_10of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_11of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_12of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_13of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_14of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_15of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_16of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_17of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_18of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_19of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_1of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_20of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_2of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_3of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_4of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_5of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_6of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_7of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_8of20.root', '/Dilep_JER_up__DYjetsM50_2016_Ntuple_9of20.root']
+
+Dilep_JER_up__TTGamma_Dilepton_FileList_2016 = ['/Dilep_JER_up__TTGamma_Dilepton_2016_Ntuple.root']
+
+Dilep_JER_up__TTZtoLL_FileList_2016 = ['/Dilep_JER_up__TTZtoLL_2016_Ntuple_1of3.root', '/Dilep_JER_up__TTZtoLL_2016_Ntuple_2of3.root', '/Dilep_JER_up__TTZtoLL_2016_Ntuple_3of3.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgamma_M1100_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgamma_M1100_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgluonTgluon_M1400_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgluonTgluon_M1400_2016_Ntuple.root']
+
+Dilep_JER_up__TTGamma_Hadronic_Pt200_FileList_2016 = ['/Dilep_JER_up__TTGamma_Hadronic_Pt200_2016_Ntuple.root']
+
+Dilep_JER_up__TTGamma_SingleLept_TuneDown_FileList_2016 = ['/Dilep_JER_up__TTGamma_SingleLept_TuneDown_2016_Ntuple.root']
+
+Dilep_JER_up__TTWtoQQ_FileList_2016 = ['/Dilep_JER_up__TTWtoQQ_2016_Ntuple.root']
+
+Dilep_JER_up__W1jets_FileList_2016 = ['/Dilep_JER_up__W1jets_2016_Ntuple.root']
+
+Dilep_JER_up__QCD_Pt30to50_Ele_FileList_2016 = ['/Dilep_JER_up__QCD_Pt30to50_Ele_2016_Ntuple_1of2.root', '/Dilep_JER_up__QCD_Pt30to50_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__TTGamma_SingleLept_FileList_2016 = ['/Dilep_JER_up__TTGamma_SingleLept_2016_Ntuple.root']
+
+Dilep_JER_up__TstarTstarToTgammaTgamma_M1200_FileList_2016 = ['/Dilep_JER_up__TstarTstarToTgammaTgamma_M1200_2016_Ntuple.root']
+
+Dilep_JER_up__GJets_HT600ToInf_FileList_2016 = ['/Dilep_JER_up__GJets_HT600ToInf_2016_Ntuple_1of2.root', '/Dilep_JER_up__GJets_HT600ToInf_2016_Ntuple_2of2.root']
+
+Dilep_JER_up__QCD_Pt50to80_Mu_FileList_2016 = ['/Dilep_JER_up__QCD_Pt50to80_Mu_2016_Ntuple.root']
+
+Dilep_JER_down__W2jets_FileList_2016 = ['/Dilep_JER_down__W2jets_2016_Ntuple_1of2.root', '/Dilep_JER_down__W2jets_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__DYjetsM50_FileList_2016 = ['/Dilep_JER_down__DYjetsM50_2016_Ntuple_10of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_11of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_12of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_13of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_14of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_15of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_16of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_17of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_18of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_19of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_1of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_20of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_2of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_3of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_4of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_5of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_6of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_7of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_8of20.root', '/Dilep_JER_down__DYjetsM50_2016_Ntuple_9of20.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgluon_M1400_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgluon_M1400_2016_Ntuple.root']
+
+Dilep_JER_down__TTWtoLNu_FileList_2016 = ['/Dilep_JER_down__TTWtoLNu_2016_Ntuple_1of2.root', '/Dilep_JER_down__TTWtoLNu_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__QCD_Pt1000toInf_Mu_FileList_2016 = ['/Dilep_JER_down__QCD_Pt1000toInf_Mu_2016_Ntuple_1of2.root', '/Dilep_JER_down__QCD_Pt1000toInf_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TGJets_FileList_2016 = ['/Dilep_JER_down__TGJets_2016_Ntuple_1of2.root', '/Dilep_JER_down__TGJets_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgluon_M800_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgluon_M800_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgluonTgluon_M900_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgluonTgluon_M900_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgluonTgluon_M1300_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgluonTgluon_M1300_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_SingleLept_erdOn_FileList_2016 = ['/Dilep_JER_down__TTGamma_SingleLept_erdOn_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt30to80_bcToE_FileList_2016 = ['/Dilep_JER_down__QCD_Pt30to80_bcToE_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt80to120_Ele_FileList_2016 = ['/Dilep_JER_down__QCD_Pt80to120_Ele_2016_Ntuple_1of2.root', '/Dilep_JER_down__QCD_Pt80to120_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__ST_s_channel_FileList_2016 = ['/Dilep_JER_down__ST_s_channel_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt20to30_Mu_FileList_2016 = ['/Dilep_JER_down__QCD_Pt20to30_Mu_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_Dilepton_Pt200_FileList_2016 = ['/Dilep_JER_down__TTGamma_Dilepton_Pt200_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt30to50_Ele_FileList_2016 = ['/Dilep_JER_down__QCD_Pt30to50_Ele_2016_Ntuple_1of2.root', '/Dilep_JER_down__QCD_Pt30to50_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TTGamma_Dilepton_Pt100_FileList_2016 = ['/Dilep_JER_down__TTGamma_Dilepton_Pt100_2016_Ntuple.root']
+
+Dilep_JER_down__ZZTo2Q2Nu_amcatnlo_FileList_2016 = ['/Dilep_JER_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_1of5.root', '/Dilep_JER_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_2of5.root', '/Dilep_JER_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_3of5.root', '/Dilep_JER_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_4of5.root', '/Dilep_JER_down__ZZTo2Q2Nu_amcatnlo_2016_Ntuple_5of5.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgamma_M700_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgamma_M700_2016_Ntuple.root']
+
+Dilep_JER_down__ZGamma_01J_LoosePt_FileList_2016 = ['/Dilep_JER_down__ZGamma_01J_LoosePt_2016_Ntuple_1of5.root', '/Dilep_JER_down__ZGamma_01J_LoosePt_2016_Ntuple_2of5.root', '/Dilep_JER_down__ZGamma_01J_LoosePt_2016_Ntuple_3of5.root', '/Dilep_JER_down__ZGamma_01J_LoosePt_2016_Ntuple_4of5.root', '/Dilep_JER_down__ZGamma_01J_LoosePt_2016_Ntuple_5of5.root']
+
+Dilep_JER_down__TTbarPowheg_Semilept_FileList_2016 = ['/Dilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_10of10.root', '/Dilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_1of10.root', '/Dilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_2of10.root', '/Dilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_3of10.root', '/Dilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_4of10.root', '/Dilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_5of10.root', '/Dilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_6of10.root', '/Dilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_7of10.root', '/Dilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_8of10.root', '/Dilep_JER_down__TTbarPowheg_Semilept_2016_Ntuple_9of10.root']
+
+Dilep_JER_down__QCD_Pt300to470_Mu_FileList_2016 = ['/Dilep_JER_down__QCD_Pt300to470_Mu_2016_Ntuple_1of3.root', '/Dilep_JER_down__QCD_Pt300to470_Mu_2016_Ntuple_2of3.root', '/Dilep_JER_down__QCD_Pt300to470_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JER_down__TTbarPowheg_Dilepton_FileList_2016 = ['/Dilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_10of10.root', '/Dilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_1of10.root', '/Dilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_2of10.root', '/Dilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_3of10.root', '/Dilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_4of10.root', '/Dilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_5of10.root', '/Dilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_6of10.root', '/Dilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_7of10.root', '/Dilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_8of10.root', '/Dilep_JER_down__TTbarPowheg_Dilepton_2016_Ntuple_9of10.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgamma_M1300_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgamma_M1300_2016_Ntuple.root']
+
+Dilep_JER_down__ST_tbar_channel_FileList_2016 = ['/Dilep_JER_down__ST_tbar_channel_2016_Ntuple_1of5.root', '/Dilep_JER_down__ST_tbar_channel_2016_Ntuple_2of5.root', '/Dilep_JER_down__ST_tbar_channel_2016_Ntuple_3of5.root', '/Dilep_JER_down__ST_tbar_channel_2016_Ntuple_4of5.root', '/Dilep_JER_down__ST_tbar_channel_2016_Ntuple_5of5.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgluon_M1100_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgluon_M1100_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_SingleLept_TuneUp_FileList_2016 = ['/Dilep_JER_down__TTGamma_SingleLept_TuneUp_2016_Ntuple.root']
+
+Dilep_JER_down__ZZTo2L2Q_powheg_FileList_2016 = ['/Dilep_JER_down__ZZTo2L2Q_powheg_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgluonTgluon_M700_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgluonTgluon_M700_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgluonTgluon_M1000_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgluonTgluon_M1000_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt80to120_Mu_FileList_2016 = ['/Dilep_JER_down__QCD_Pt80to120_Mu_2016_Ntuple_1of2.root', '/Dilep_JER_down__QCD_Pt80to120_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TTGamma_SingleLept_CR2_FileList_2016 = ['/Dilep_JER_down__TTGamma_SingleLept_CR2_2016_Ntuple.root']
+
+Dilep_JER_down__WZTo2L2Q_amcatnlo_FileList_2016 = ['/Dilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_10of10.root', '/Dilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_1of10.root', '/Dilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_2of10.root', '/Dilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_3of10.root', '/Dilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_4of10.root', '/Dilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_5of10.root', '/Dilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_6of10.root', '/Dilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_7of10.root', '/Dilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_8of10.root', '/Dilep_JER_down__WZTo2L2Q_amcatnlo_2016_Ntuple_9of10.root']
+
+Dilep_JER_down__QCD_Pt170to250_bcToE_FileList_2016 = ['/Dilep_JER_down__QCD_Pt170to250_bcToE_2016_Ntuple.root']
+
+Dilep_JER_down__TTZtoQQ_FileList_2016 = ['/Dilep_JER_down__TTZtoQQ_2016_Ntuple.root']
+
+Dilep_JER_down__ZZ_FileList_2016 = ['/Dilep_JER_down__ZZ_2016_Ntuple_1of2.root', '/Dilep_JER_down__ZZ_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TstarTstarToTgluonTgluon_M1400_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgluonTgluon_M1400_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt50to80_Mu_FileList_2016 = ['/Dilep_JER_down__QCD_Pt50to80_Mu_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt300toInf_Ele_FileList_2016 = ['/Dilep_JER_down__QCD_Pt300toInf_Ele_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgluon_M1500_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgluon_M1500_2016_Ntuple.root']
+
+Dilep_JER_down__GJets_HT40To100_FileList_2016 = ['/Dilep_JER_down__GJets_HT40To100_2016_Ntuple_1of2.root', '/Dilep_JER_down__GJets_HT40To100_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TTGamma_Dilepton_erdOn_FileList_2016 = ['/Dilep_JER_down__TTGamma_Dilepton_erdOn_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt600to800_Mu_FileList_2016 = ['/Dilep_JER_down__QCD_Pt600to800_Mu_2016_Ntuple_1of2.root', '/Dilep_JER_down__QCD_Pt600to800_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TstarTstarToTgluonTgluon_M800_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgluonTgluon_M800_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgamma_M1400_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgamma_M1400_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt120to170_Ele_FileList_2016 = ['/Dilep_JER_down__QCD_Pt120to170_Ele_2016_Ntuple_1of2.root', '/Dilep_JER_down__QCD_Pt120to170_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TTWtoQQ_FileList_2016 = ['/Dilep_JER_down__TTWtoQQ_2016_Ntuple.root']
+
+Dilep_JER_down__TTbarPowheg_Hadronic_FileList_2016 = ['/Dilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_10of10.root', '/Dilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_1of10.root', '/Dilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_2of10.root', '/Dilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_3of10.root', '/Dilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_4of10.root', '/Dilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_5of10.root', '/Dilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_6of10.root', '/Dilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_7of10.root', '/Dilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_8of10.root', '/Dilep_JER_down__TTbarPowheg_Hadronic_2016_Ntuple_9of10.root']
+
+Dilep_JER_down__TTGamma_Dilepton_CR2_FileList_2016 = ['/Dilep_JER_down__TTGamma_Dilepton_CR2_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_Dilepton_CR1_FileList_2016 = ['/Dilep_JER_down__TTGamma_Dilepton_CR1_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt470to600_Mu_FileList_2016 = ['/Dilep_JER_down__QCD_Pt470to600_Mu_2016_Ntuple_1of3.root', '/Dilep_JER_down__QCD_Pt470to600_Mu_2016_Ntuple_2of3.root', '/Dilep_JER_down__QCD_Pt470to600_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgluon_M900_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgluon_M900_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_SingleLept_Pt100_FileList_2016 = ['/Dilep_JER_down__TTGamma_SingleLept_Pt100_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgluon_M1600_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgluon_M1600_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_Hadronic_FileList_2016 = ['/Dilep_JER_down__TTGamma_Hadronic_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_SingleLept_Pt200_FileList_2016 = ['/Dilep_JER_down__TTGamma_SingleLept_Pt200_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt80to170_bcToE_FileList_2016 = ['/Dilep_JER_down__QCD_Pt80to170_bcToE_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgamma_M1000_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgamma_M1000_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgluon_M1200_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgluon_M1200_2016_Ntuple.root']
+
+Dilep_JER_down__ZGamma_01J_5f_lowMass_FileList_2016 = ['/Dilep_JER_down__ZGamma_01J_5f_lowMass_2016_Ntuple_1of5.root', '/Dilep_JER_down__ZGamma_01J_5f_lowMass_2016_Ntuple_2of5.root', '/Dilep_JER_down__ZGamma_01J_5f_lowMass_2016_Ntuple_3of5.root', '/Dilep_JER_down__ZGamma_01J_5f_lowMass_2016_Ntuple_4of5.root', '/Dilep_JER_down__ZGamma_01J_5f_lowMass_2016_Ntuple_5of5.root']
+
+Dilep_JER_down__TTGamma_Dilepton_TuneUp_FileList_2016 = ['/Dilep_JER_down__TTGamma_Dilepton_TuneUp_2016_Ntuple.root']
+
+Dilep_JER_down__WGamma_FileList_2016 = ['/Dilep_JER_down__WGamma_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgluonTgluon_M1500_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgluonTgluon_M1500_2016_Ntuple.root']
+
+Dilep_JER_down__VVTo2L2Nu_amcatnlo_FileList_2016 = ['/Dilep_JER_down__VVTo2L2Nu_amcatnlo_2016_Ntuple_1of2.root', '/Dilep_JER_down__VVTo2L2Nu_amcatnlo_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__WZTo1L3Nu_amcatnlo_FileList_2016 = ['/Dilep_JER_down__WZTo1L3Nu_amcatnlo_2016_Ntuple.root']
+
+Dilep_JER_down__WW_FileList_2016 = ['/Dilep_JER_down__WW_2016_Ntuple_1of2.root', '/Dilep_JER_down__WW_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgamma_M1500_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgamma_M1500_2016_Ntuple.root']
+
+Dilep_JER_down__WZ_FileList_2016 = ['/Dilep_JER_down__WZ_2016_Ntuple_1of2.root', '/Dilep_JER_down__WZ_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgluon_M1300_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgluon_M1300_2016_Ntuple.root']
+
+Dilep_JER_down__TTZtoLL_M1to10_FileList_2016 = ['/Dilep_JER_down__TTZtoLL_M1to10_2016_Ntuple.root']
+
+Dilep_JER_down__WWToLNuQQ_powheg_FileList_2016 = ['/Dilep_JER_down__WWToLNuQQ_powheg_2016_Ntuple_1of2.root', '/Dilep_JER_down__WWToLNuQQ_powheg_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TstarTstarToTgluonTgluon_M1100_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgluonTgluon_M1100_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt30to50_Mu_FileList_2016 = ['/Dilep_JER_down__QCD_Pt30to50_Mu_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_Hadronic_Pt200_FileList_2016 = ['/Dilep_JER_down__TTGamma_Hadronic_Pt200_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_SingleLept_CR1_FileList_2016 = ['/Dilep_JER_down__TTGamma_SingleLept_CR1_2016_Ntuple.root']
+
+Dilep_JER_down__W4jets_FileList_2016 = ['/Dilep_JER_down__W4jets_2016_Ntuple_1of3.root', '/Dilep_JER_down__W4jets_2016_Ntuple_2of3.root', '/Dilep_JER_down__W4jets_2016_Ntuple_3of3.root']
+
+Dilep_JER_down__GJets_HT200To400_FileList_2016 = ['/Dilep_JER_down__GJets_HT200To400_2016_Ntuple_1of2.root', '/Dilep_JER_down__GJets_HT200To400_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__GJets_HT600ToInf_FileList_2016 = ['/Dilep_JER_down__GJets_HT600ToInf_2016_Ntuple_1of2.root', '/Dilep_JER_down__GJets_HT600ToInf_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgamma_M900_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgamma_M900_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_SingleLept_FileList_2016 = ['/Dilep_JER_down__TTGamma_SingleLept_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_Dilepton_FileList_2016 = ['/Dilep_JER_down__TTGamma_Dilepton_2016_Ntuple.root']
+
+Dilep_JER_down__ST_tW_channel_FileList_2016 = ['/Dilep_JER_down__ST_tW_channel_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgamma_M1100_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgamma_M1100_2016_Ntuple.root']
+
+Dilep_JER_down__ZZTo2Q2Nu_powheg_FileList_2016 = ['/Dilep_JER_down__ZZTo2Q2Nu_powheg_2016_Ntuple.root']
+
+Dilep_JER_down__W1jets_FileList_2016 = ['/Dilep_JER_down__W1jets_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt170to300_Mu_FileList_2016 = ['/Dilep_JER_down__QCD_Pt170to300_Mu_2016_Ntuple_1of2.root', '/Dilep_JER_down__QCD_Pt170to300_Mu_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TTZtoLL_FileList_2016 = ['/Dilep_JER_down__TTZtoLL_2016_Ntuple_1of3.root', '/Dilep_JER_down__TTZtoLL_2016_Ntuple_2of3.root', '/Dilep_JER_down__TTZtoLL_2016_Ntuple_3of3.root']
+
+Dilep_JER_down__DYjetsM10to50_FileList_2016 = ['/Dilep_JER_down__DYjetsM10to50_2016_Ntuple.root']
+
+Dilep_JER_down__ZZTo4L_powheg_FileList_2016 = ['/Dilep_JER_down__ZZTo4L_powheg_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgluonTgluon_M1600_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgluonTgluon_M1600_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt20to30_bcToE_FileList_2016 = ['/Dilep_JER_down__QCD_Pt20to30_bcToE_2016_Ntuple.root']
+
+Dilep_JER_down__ZGamma_01J_lowMLL_lowGPt_FileList_2016 = ['/Dilep_JER_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_1of5.root', '/Dilep_JER_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_2of5.root', '/Dilep_JER_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_3of5.root', '/Dilep_JER_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_4of5.root', '/Dilep_JER_down__ZGamma_01J_lowMLL_lowGPt_2016_Ntuple_5of5.root']
+
+Dilep_JER_down__QCD_Pt250toInf_bcToE_FileList_2016 = ['/Dilep_JER_down__QCD_Pt250toInf_bcToE_2016_Ntuple.root']
+
+Dilep_JER_down__WZTo1L1Nu2Q_amcatnlo_FileList_2016 = ['/Dilep_JER_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_1of5.root', '/Dilep_JER_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_2of5.root', '/Dilep_JER_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_3of5.root', '/Dilep_JER_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_4of5.root', '/Dilep_JER_down__WZTo1L1Nu2Q_amcatnlo_2016_Ntuple_5of5.root']
+
+Dilep_JER_down__WZTo3LNu_powheg_FileList_2016 = ['/Dilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_10of11.root', '/Dilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_11of11.root', '/Dilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_1of11.root', '/Dilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_2of11.root', '/Dilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_3of11.root', '/Dilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_4of11.root', '/Dilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_5of11.root', '/Dilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_6of11.root', '/Dilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_7of11.root', '/Dilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_8of11.root', '/Dilep_JER_down__WZTo3LNu_powheg_2016_Ntuple_9of11.root']
+
+Dilep_JER_down__QCD_Pt20to30_Ele_FileList_2016 = ['/Dilep_JER_down__QCD_Pt20to30_Ele_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgamma_M1200_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgamma_M1200_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgluon_M1000_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgluon_M1000_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_SingleLept_TuneDown_FileList_2016 = ['/Dilep_JER_down__TTGamma_SingleLept_TuneDown_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_Hadronic_Pt100_FileList_2016 = ['/Dilep_JER_down__TTGamma_Hadronic_Pt100_2016_Ntuple.root']
+
+Dilep_JER_down__GJets_HT100To200_FileList_2016 = ['/Dilep_JER_down__GJets_HT100To200_2016_Ntuple_1of2.root', '/Dilep_JER_down__GJets_HT100To200_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__QCD_Pt50to80_Ele_FileList_2016 = ['/Dilep_JER_down__QCD_Pt50to80_Ele_2016_Ntuple_1of2.root', '/Dilep_JER_down__QCD_Pt50to80_Ele_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__ST_tbarW_channel_FileList_2016 = ['/Dilep_JER_down__ST_tbarW_channel_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt800to1000_Mu_FileList_2016 = ['/Dilep_JER_down__QCD_Pt800to1000_Mu_2016_Ntuple_1of3.root', '/Dilep_JER_down__QCD_Pt800to1000_Mu_2016_Ntuple_2of3.root', '/Dilep_JER_down__QCD_Pt800to1000_Mu_2016_Ntuple_3of3.root']
+
+Dilep_JER_down__GJets_HT400To600_FileList_2016 = ['/Dilep_JER_down__GJets_HT400To600_2016_Ntuple_1of2.root', '/Dilep_JER_down__GJets_HT400To600_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__TstarTstarToTgluonTgluon_M1200_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgluonTgluon_M1200_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgamma_M1600_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgamma_M1600_2016_Ntuple.root']
+
+Dilep_JER_down__QCD_Pt170to300_Ele_FileList_2016 = ['/Dilep_JER_down__QCD_Pt170to300_Ele_2016_Ntuple.root']
+
+Dilep_JER_down__ST_t_channel_FileList_2016 = ['/Dilep_JER_down__ST_t_channel_2016_Ntuple_1of5.root', '/Dilep_JER_down__ST_t_channel_2016_Ntuple_2of5.root', '/Dilep_JER_down__ST_t_channel_2016_Ntuple_3of5.root', '/Dilep_JER_down__ST_t_channel_2016_Ntuple_4of5.root', '/Dilep_JER_down__ST_t_channel_2016_Ntuple_5of5.root']
+
+Dilep_JER_down__QCD_Pt120to170_Mu_FileList_2016 = ['/Dilep_JER_down__QCD_Pt120to170_Mu_2016_Ntuple.root']
+
+Dilep_JER_down__W3jets_FileList_2016 = ['/Dilep_JER_down__W3jets_2016_Ntuple_1of2.root', '/Dilep_JER_down__W3jets_2016_Ntuple_2of2.root']
+
+Dilep_JER_down__WWTo4Q_powheg_FileList_2016 = ['/Dilep_JER_down__WWTo4Q_powheg_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgamma_M800_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgamma_M800_2016_Ntuple.root']
+
+Dilep_JER_down__TstarTstarToTgammaTgluon_M700_FileList_2016 = ['/Dilep_JER_down__TstarTstarToTgammaTgluon_M700_2016_Ntuple.root']
+
+Dilep_JER_down__TTGamma_Dilepton_TuneDown_FileList_2016 = ['/Dilep_JER_down__TTGamma_Dilepton_TuneDown_2016_Ntuple.root']
+
