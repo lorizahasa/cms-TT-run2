@@ -1,15 +1,5 @@
 
 from Ntuple_Skim_FileLists_cff_danny import *
-#-----------------------------------------
-#INPUT AnalysisNtuples Directory
-#----------------------------------------
-dirBase = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim" 
-dirBaseCR = dirBase
-dirSyst = dirBase
-dirSystCR = dirBase
-dirBaseDilep = dirBase
-dirSystDilep = dirBase
-
 era16 = ["b", "c", "d", "e", "f", "g", "h"]
 era17 = ["b", "c", "d", "e", "f"]
 era18 = ["a", "b", "c", "d"]
@@ -30,25 +20,28 @@ for d in era18:
     data18Ele.append("Data_SingleEle_%s"%d)
 dataAllMu = {"2016":data16Mu, "2017":data17Mu, "2018":data18Mu}
 dataAllEle = {"2016":data16Ele, "2017":data17Ele, "2018":data18Ele}
-def gs(year, s_array):
+def gs(y, d, syst, s_array):
     sample = []
     for s in s_array:
-        sample += eval("%s_FileList_%s"%(s, year))
+        if "Data" in s and not "Base" in syst:
+            sample += eval("%s_%s__%s_FileList_%s"%(d, "JetBase", s, y))
+        else:
+            sample += eval("%s_%s__%s_FileList_%s"%(d, syst, s, y))
     return sample
 
-def getSamples(y):
+def getSamples(y, d, syst):
     samples = {
-               "TT_tytg_M700"  : gs(y, ["TstarTstarToTgammaTgluon_M700"]),  
-               "TT_tytg_M800"  : gs(y, ["TstarTstarToTgammaTgluon_M800"]),  
-               "TT_tytg_M900"  : gs(y, ["TstarTstarToTgammaTgluon_M900"]),  
-               "TT_tytg_M1000" : gs(y, ["TstarTstarToTgammaTgluon_M1000"]),  
-               #"TT_tytg_M1100" : gs(y, ["TstarTstarToTgammaTgluon_M1100"]),  
-               "TT_tytg_M1200" : gs(y, ["TstarTstarToTgammaTgluon_M1200"]),  
-               "TT_tytg_M1300" : gs(y, ["TstarTstarToTgammaTgluon_M1300"]),  
-               "TT_tytg_M1400" : gs(y, ["TstarTstarToTgammaTgluon_M1400"]),  
-               "TT_tytg_M1500" : gs(y, ["TstarTstarToTgammaTgluon_M1500"]),  
-               "TT_tytg_M1600" : gs(y, ["TstarTstarToTgammaTgluon_M1600"]),  
-               "TTbar" : gs(y, [
+               "TT_tytg_M700"  : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M700"]),  
+               "TT_tytg_M800"  : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M800"]),  
+               "TT_tytg_M900"  : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M900"]),  
+               "TT_tytg_M1000" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1000"]),  
+               #"TT_tytg_M1100" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1100"]),  
+               "TT_tytg_M1200" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1200"]),  
+               "TT_tytg_M1300" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1300"]),  
+               "TT_tytg_M1400" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1400"]),  
+               "TT_tytg_M1500" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1500"]),  
+               "TT_tytg_M1600" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1600"]),  
+               "TTbar" : gs(y, d, syst, [
                    "TTbarPowheg_Hadronic" , 
                    "TTbarPowheg_Dilepton" , 
                    "TTbarPowheg_Semilept",
@@ -59,7 +52,7 @@ def getSamples(y):
                    "ST_tW_channel",
                    "TGJets"
                    ]),
-               "TTGamma": gs(y, [
+               "TTGamma": gs(y, d, syst, [
                    'TTGamma_Dilepton', 
                    'TTGamma_Hadronic', 
                    'TTGamma_SingleLept',
@@ -70,23 +63,23 @@ def getSamples(y):
                    'TTGamma_Hadronic_Pt200', 
                    'TTGamma_SingleLept_Pt200'
                    ]),
-               "WJets": gs(y, [
+               "WJets": gs(y, d, syst, [
                    'W1jets', 
                    'W2jets', 
                    'W3jets', 
                    'W4jets', 
                    ]),
-               "DYJets": gs(y, [
+               "DYJets": gs(y, d, syst, [
                    'DYjetsM10to50',
                    'DYjetsM50',
                    ]),
-               "WGamma": gs(y, [
+               "WGamma": gs(y, d, syst, [
                    'WGamma', 
                    ]),
-               "ZGamma": gs(y, [
+               "ZGamma": gs(y, d, syst, [
                    'ZGamma_01J_5f_lowMass'
                    ]),
-               "QCDEle"   : gs(y, [
+               "QCDEle"   : gs(y, d, syst, [
                    "QCD_Pt20to30_Ele",
                    "QCD_Pt30to50_Ele",
                    "QCD_Pt50to80_Ele",
@@ -105,7 +98,7 @@ def getSamples(y):
                    'GJets_HT400To600',
                    'GJets_HT600ToInf',
                    ]),
-               "QCDMu"    : gs(y, [
+               "QCDMu"    : gs(y, d, syst, [
                    "QCD_Pt20to30_Mu",
                    "QCD_Pt30to50_Mu",
                    "QCD_Pt50to80_Mu",
@@ -128,8 +121,8 @@ def getSamples(y):
                    "GJets_HT400To600",
                    "GJets_HT600ToInf"
                              ]),
-               "DataMu" : gs(y, dataAllMu[y]),
-               "DataEle" : gs(y, dataAllEle[y])
+               "DataMu" : gs(y, d, syst, dataAllMu[y]),
+               "DataEle" : gs(y, d, syst, dataAllEle[y])
                }
                
     Others_List= [
@@ -152,8 +145,9 @@ def getSamples(y):
         Others_List.append("ZZTo2L2Q_powheg")
     else:
         Others_List.append("ZZTo2L2Q_amcatnlo")
-    samples["Others"] = gs(y, Others_List)
+    samples["Others"] = gs(y, d, syst, Others_List)
     return samples
 
-#a = getSamples("2018")
-#print a.keys()
+if __name__ == '__main__':
+    a = getSamples("2016", "Semilep", "JetBase")
+    print a.keys()

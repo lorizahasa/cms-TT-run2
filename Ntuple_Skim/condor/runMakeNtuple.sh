@@ -46,11 +46,11 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-condorOutDir=/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim/${year}/${decay}/{$syst}
+condorOutDir=/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim/${year}/${decay}/${syst}
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
-    xrdcp -f ${decay}_${syst}_${sample}*.root root://cmseos.fnal.gov/${condorOutDir}/
+    xrdcp -f ${decay}_${syst}__${sample}*.root root://cmseos.fnal.gov/${condorOutDir}/
     echo "Cleanup"
     rm -rf CMSSW_10_2_14
     rm *.root

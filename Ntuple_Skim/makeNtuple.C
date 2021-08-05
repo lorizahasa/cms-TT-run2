@@ -375,7 +375,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     // char outputFileName[100];
     cout << av[3] << " " << sampleType << " " << systematicType << endl;
     if (systematicType!=""){
-	outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/"+systematicType + "_");
+	outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/"+systematicType + "__");
 	//	outputFileName.replace(outputFileName.begin(),outputDirectory.size()+1, outputDirectory + "/"+systematicType + "_");
 	//	outputFileName = outputDirectory + "/"+systematicType + "_" +sampleType+"_"+year+"_Ntuple.root";
     }

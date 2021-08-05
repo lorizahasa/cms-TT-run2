@@ -15,7 +15,7 @@ condorLogDir = "log"
 tarFile = "tmpSub/Ntuple_Skim.tar.gz"
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
-#os.system("tar -zcvf %s ../../Ntuple_Skim --exclude condor"%tarFile)
+os.system("tar -zcvf %s ../../Ntuple_Skim --exclude condor"%tarFile)
 os.system("cp runMakeNtuple.sh tmpSub/")
 common_command = \
 'Universe   = vanilla\n\
@@ -40,7 +40,6 @@ for year in Years:
     for decay, syst in itertools.product(Decays, Systs):
         os.system("eos root://cmseos.fnal.gov mkdir -p %s/%s/%s/%s"%(condorNtupleDir, year, decay, syst))
         jdlFile.write("X=$(step)+1\n")
-        sampleList = {'TstarTstarToTgluonTgluon_M800': 1}
         for sampleName, nJob in sampleList.items():
             if nJob==1:
                 jdl =  'Arguments  = %s %s %s %s \nQueue 1\n\n' %(year, decay, sampleName, syst)

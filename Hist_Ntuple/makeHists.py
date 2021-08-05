@@ -30,7 +30,7 @@ parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='
                      help="which histogram to be plottted")
 parser.add_option("--allHists","--allHists", dest="makeAllHists",action="store_true",default=False,
                      help="Make full list of hists in histogramDict" )
-parser.add_option("--isCat","--isCat", dest="isCat",action="store_true",default=True,
+parser.add_option("--isCat","--isCat", dest="isCat",action="store_true",default=False,
                      help="Make full list of hists in histogramDict" )
 (options, args) = parser.parse_args()
 year = options.year
@@ -38,20 +38,29 @@ decayMode = options.decayMode
 channel = options.channel
 sample = options.sample
 region = options.region
+syst = options.systematic
 level =options.level
 makeAllHists = options.makeAllHists
 isCat = options.isCat
 print parser.parse_args()
-samples = getSamples(year)
 
 #-----------------------------------------
 #INPUT AnalysisNtuples Directory
 #----------------------------------------
-ntupleDirBase       = "%s/%s"%(dirBase,      year) 
-ntupleDirBaseCR     = "%s/%s"%(dirBaseCR,    year)
-ntupleDirSyst       = "%s/%s"%(dirSyst,      year)
-ntupleDirSystCR     = "%s/%s"%(dirSystCR,    year)
-analysisNtupleLocation = ntupleDirBase
+condorNtupleDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
+systDir = "JetBase"
+if "jes" in syst and "Up" in level:
+    systDir = "JECTotal_up"
+if "jes" in syst and "Down" in level:
+    systDir = "JECTotal_down"
+if "jer" in syst and "Up" in level:
+    systDir = "JER_up"
+if "jer" in syst and "Down" in level:
+    systDir = "JER_down"
+if "Data" in sample:
+    systDir = "JetBase"
+samples = getSamples(year, decayMode, systDir)
+analysisNtupleLocation = "%s/%s/%s/%s"%(condorNtupleDir, year, decayMode, systDir) 
 
 #----------------------------------------------------------
 #NICE WAY TO PRINT STRINGS
@@ -66,6 +75,7 @@ def toPrint(string, value):
     print "| "+ " "*length +              " |"
     print "* "+ line +                    " *"
 toPrint("Running for Year, Channel, Sample", "%s, %s, %s"%(year, channel, sample))
+
 #-----------------------------------------
 #OUTPUT Histogram Directory
 #----------------------------------------
@@ -92,7 +102,6 @@ if "QCD%s"%channel in sample:
 #-----------------------------------------
 #For Systematics
 #----------------------------------------
-syst = options.systematic
 levelUp = False
 if level in ["up", "UP", "uP", "Up"]: 
 	levelUp = True
@@ -156,10 +165,7 @@ if not syst=="Base":
         else:
 			w_btag = "Weight_btag_l_down" 
     else:
-    	if  levelUp:
-            analysisNtupleLocation = ntupleDirSyst
-    	else:
-            analysisNtupleLocation = ntupleDirSyst
+        print "Running Jet Syst"
 
 #-----------------------------------------
 #Select channels

@@ -1,8 +1,8 @@
 #-----------------------------------------------------------------
 condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple"
 #-----------------------------------------------------------------
-Years 	      =	["2016", "2017", "2018"]
-#Years 	      =	["2018"]
+#Years 	      =	["2016", "2017", "2018"]
+Years 	      =	["2016"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
@@ -43,6 +43,8 @@ Systematics.append("Weight_q2")
 Systematics.append("Weight_pdf")
 Systematics.append("Weight_isr")
 Systematics.append("Weight_fsr")
+Systematics.append("Weight_jes")
+Systematics.append("Weight_jer")
 Systematics   =	[]
 
 SystLevels = []
