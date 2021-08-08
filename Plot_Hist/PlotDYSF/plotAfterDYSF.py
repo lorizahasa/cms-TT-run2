@@ -1,6 +1,7 @@
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 import os
 import sys
+import json
 sys.path.insert(0, os.getcwd().replace("Plot_Hist/PlotDYSF", "Hist_Ntuple/HistDYSF"))
 sys.path.insert(0, os.getcwd().replace("PlotDYSF", ""))
 from HistInputs import Regions
@@ -34,21 +35,13 @@ parser.add_option("-r", "--region", dest="region", default="DY_Enriched_a3j_e0b_
                      help="which control selection and region"), 
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_dilep",type='str', 
                      help="which histogram to be plottted")
-parser.add_option("--forDYSF","--forDYSF", dest="forDYSF",action="store_true",
-        default=False, help="")
-parser.add_option("--afterDYSF","--afterDYSF", dest="afterDYSF",action="store_true",
-        default=False, help="")
 (options, args) = parser.parse_args()
 year            = options.year
 decayMode       = options.decayMode
 channel         = options.channel
 region = options.region
 hName           = options.hName
-forDYSF = options.forDYSF
-afterDYSF = options.afterDYSF
-stage = "forDYSF"
-if afterDYSF:
-    stage = "afterDYSF"
+stage = "afterDYSF"
 #-----------------------------------------
 #Path of the I/O histrograms/plots
 #----------------------------------------
@@ -60,6 +53,25 @@ outPlotFullDir = "%s/%s"%(condorHistDir, outPlotSubDir)
 if not os.path.exists(outPlotFullDir):
     os.makedirs(outPlotFullDir)
 gROOT.SetBatch(True)
+
+#-----------------------------------------
+# Get dySF from the JSON file
+#-----------------------------------------
+name  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, channel, region, hName)
+path = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitDYSF/"
+with open ("%s/RateParams.json"%path) as jsonFile:
+    jsonData = json.load(jsonFile)
+
+def getRateParam(name, proc):
+    paramDicts   = jsonData[name]
+    rateParam = 1.0
+    for paramDict in paramDicts:
+        for key, val in paramDict.iteritems():
+            if proc==key:
+                rateParam = val
+    return rateParam
+dySF   = getRateParam(name,"r")
+print dySF
 #-----------------------------------------
 #Make a plot for one histogram
 #----------------------------------------
@@ -86,7 +98,8 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     #Stack nominal hists
     xTitle = hName
     binWidth = (hInfo[hName][1][2] - hInfo[hName][1][1])/hInfo[hName][1][0]
-    yTitle = "Events/%s"%str(binWidth)
+    #yTitle = "Events/%s"%str(binWidth)
+    yTitle = "Events/%s"%str(2)
     hStack = THStack(hName,hName)
     hForStack = sortHists(bkgHists, False)
     lumi_13TeV = "35.9 fb^{-1}"
@@ -200,17 +213,17 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     chColor = 1
     if channel in ["mu", "Mu", "m"]:
         chColor = rt.kCyan+col_depth
-        chName = "1 #color[%i]{#mu}, p_{T}^{miss} > 20"%chColor
+        chName = "2 #color[%i]{#mu}, p_{T}^{miss} > 20"%chColor
     elif channel in ["ele", "Ele"]:
         chColor = rt.kRust+col_depth
         chName = "2 #color[%i]{e}, p_{T}^{miss}  > 20"%chColor
     else:
         chColor = rt.kRed + col_depth
-        chName = "1 #color[%i]{#mu + e}, p_{T}^{miss}  > 20"%chColor
+        chName = "2 #color[%i]{#mu + e}, p_{T}^{miss}  > 20"%chColor
     #chName = "#splitline{%s}{%s}"%(chName, region)
     chName = "%s, #bf{%s}"%(chName, region)
     crName = formatCRString(Regions[region])
-    crName = "%s,    %s"%(crName, stage)
+    crName = "%s, #color[4]{%s=%s}"%(crName, stage, str(dySF))
     chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
     extraText   = "#splitline{Preliminary}{%s}"%chCRName
     if isData and isRatio:
@@ -235,6 +248,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         decoHistRatio(hRatio, xTitle, "Data/Bkgs", chColor)
         sList.append("Data/Bkgs")
         yDict["Data/Bkgs"] = ["---", round(dataHist[0].Integral()/hSumAllBkg.Integral(),2), " --- (---)"]
+        hRatio.GetYaxis().SetRangeUser(0.6, 1.4);
         hRatio.Draw()
         if isUnc:
             uncGraphRatio = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,True)
@@ -264,7 +278,7 @@ isRatio  = True
 if "SR" in region or len(region)==13:
     isData  = False
     isRatio = False
-isSig    = False
+isSig    = True
 isUnc    = False
 isLog    = False
 makePlot(hName, region, isSig,  isData, isLog, isRatio, isUnc)

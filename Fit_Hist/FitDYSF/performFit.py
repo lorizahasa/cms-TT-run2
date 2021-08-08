@@ -14,7 +14,7 @@ from array import array
 parser = OptionParser()
 parser.add_option("-y", "--year", dest="year", default="2016",type='str',
                      help="Specify the year of the data taking" )
-parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
+parser.add_option("-d", "--decayMode", dest="decayMode", default="Dilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
@@ -26,9 +26,9 @@ parser.add_option("--combYear", dest="combYear",default=["2016"], action="append
           help="years to be combined" )
 parser.add_option("--combChannel", dest="combChannel",default=["Mu","Ele"],action="append",
           help="channels to be combined" )
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
+parser.add_option("-r", "--region", dest="region", default="DY_Enriched_a2j_e0b_e0y",type='str', 
                      help="which control selection and region"), 
-parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_dilep",type='str', 
                      help="which histogram to be used for making datacard")
 parser.add_option("--isT2W","--isT2W",dest="isT2W", default=False, action="store_true",
 		  help="create text2workspace datacards")

@@ -2,6 +2,8 @@ NanoAOD_Gen
 Plot_Hist/PlotFromHist
 Plot_Hist/tex
 Fit_Hist/tex
+Plot_Hist/PlotDYSF/tex
+Fit_Hist/FitDYSF/tex
 *.root
 */*.root
 
@@ -10,6 +12,12 @@ Fit_Hist/tex
 */*/*.pyc
 */*/*/*.pyc
 */*/*/*/*.pyc
+
+*..out
+*/*..out
+*/*/*..out
+*/*/*/*..out
+*/*/*/*/*..out
 
 *.json
 */*.json

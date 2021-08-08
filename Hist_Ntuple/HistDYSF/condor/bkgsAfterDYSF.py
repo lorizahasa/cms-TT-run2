@@ -140,9 +140,9 @@ for sysType in allSysType:
     writeList.append(getHistAlone(inHistName,  "DYJets",  sysType))
     writeList.append(getHistOther(inHistName,  "OtherBkgs",   sysType))
     # signal sample for plotting purpose
-    #writeList.append(getHistAlone(inHistName,  "TT_tytg_M800",   sysType))
-    #writeList.append(getHistAlone(inHistName,  "TT_tytg_M1200",  sysType))
-    #writeList.append(getHistAlone(inHistName,  "TT_tytg_M1600",  sysType))
+    writeList.append(getHistAlone(inHistName,  "TT_tytg_M800",   sysType))
+    writeList.append(getHistAlone(inHistName,  "TT_tytg_M1200",  sysType))
+    writeList.append(getHistAlone(inHistName,  "TT_tytg_M1600",  sysType))
 for write in writeList:
     writeHist(write[0], write[1], write[2], outputFile)
 outputFile.Close()

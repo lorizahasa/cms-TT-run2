@@ -105,7 +105,6 @@ def decoHistRatio(hist, xTit, yTit, color):
     hist.GetXaxis().SetLabelFont(42);
     #hist.GetXaxis().SetLabelColor(kBlack);
     #hist.GetXaxis().SetAxisColor(kBlack);
-    hist.GetYaxis().SetRangeUser(0.5, 1.5);
     hist.GetXaxis().SetTitleOffset(1);
     hist.GetXaxis().SetLabelOffset(0.01);
     hist.SetMarkerStyle(20); 

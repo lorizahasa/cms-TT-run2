@@ -2,10 +2,10 @@ import ROOT as rt
 #-----------------------------------------------------------------
 condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2"
 #-----------------------------------------------------------------
-#Year 	      =	["2016", "2017", "2018"]
-Year 	      =	["2016"]
-#Channel 	  =	["Mu", "Ele"]
-Channel 	  =	["Ele"]
+Year 	      =	["2016", "2017", "2018"]
+#Year 	      =	["2017", "2018"]
+Channel 	  =	["Mu", "Ele"]
+#Channel 	  =	["Mu"]
 Decay 	  =	["Dilep"]
 SampleSignal = {
          "TT_tytg_M800"    : [rt.kMagenta,  "m_{T} = 800"],

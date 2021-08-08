@@ -19,10 +19,13 @@ parser.add_option("--isTable","--isTable", dest="isTable",action="store_true",de
                      help="make table for each plot" )
 parser.add_option("--isRun2","--isRun2", dest="isRun2",action="store_true",default=False,
                      help="plot/table for full Run2" )
+parser.add_option("--isMake","--isMake", dest="isMake",action="store_true",default=False,
+                     help="plot/table for full Run2" )
 (options, args) = parser.parse_args()
 isMerge         = options.isMerge
 isTable         = options.isTable
 isRun2          = options.isRun2
+isMake          = options.isMake
 
 merge = ["forDYSF", "afterDYSF"]
 
@@ -72,9 +75,11 @@ for plot in allHistList:
                         continue
                     plotDir  = "%s/Plot_Hist/PlotDYSF/%s/%s/%s/%s/%s"%(condorHistDir, m, y, d, c, r)
                     plotName  = "%s_%s_%s"%(plot, y, c)
-                    if not isMerge:
-                        pass
-                        os.system("python preFitPlots.py --%s %s "%(m, args1))
+                    if isMake: 
+                        if "for" in m:
+                            os.system("python plotForDYSF.py %s"%(args1))
+                        else:
+                            os.system("python plotAfterDYSF.py %s"%(args1))
                     plotPath = "%s/%s.pdf"%(plotDir, plotName)
                     allPlotPath.append(plotPath)
                     allPlotName.append(plot)
@@ -82,7 +87,7 @@ for plot in allHistList:
 showPerFig = 3
 figWidth = 0.32
 if not isTable:
-    showPerFig = 15
+    showPerFig = 12
 if isRun2:
     if not isTable:
         figWidth=0.24

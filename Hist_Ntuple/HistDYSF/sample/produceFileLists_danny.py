@@ -2,8 +2,8 @@ import subprocess
 import itertools
 import sys
 import os
-sys.path.insert(0, os.getcwd().replace("Hist_Ntuple/sample","Ntuple_Skim/"))
-sys.path.insert(0, os.getcwd().replace("Hist_Ntuple/sample","Ntuple_Skim/sample"))
+sys.path.insert(0, os.getcwd().replace("Hist_Ntuple/HistDYSF/sample","Ntuple_Skim/"))
+sys.path.insert(0, os.getcwd().replace("Hist_Ntuple/HistDYSF/sample","Ntuple_Skim/sample"))
 from Skim_NanoAOD_SplitJobs_cff_danny import Samples_2016, Samples_2017, Samples_2018
 from NtupleInputs import *
 
