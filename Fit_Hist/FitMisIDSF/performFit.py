@@ -16,7 +16,7 @@ parser.add_option("-y", "--year", dest="year", default="2016",type='str',
                      help="Specify the year of the data taking" )
 parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
-parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
+parser.add_option("-c", "--channel", dest="channel", default="Ele",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
@@ -26,9 +26,9 @@ parser.add_option("--combYear", dest="combYear",default=["2016"], action="append
           help="years to be combined" )
 parser.add_option("--combChannel", dest="combChannel",default=["Mu","Ele"],action="append",
           help="channels to be combined" )
-parser.add_option("-r", "--region", dest="region", default="DY_Enriched_a2j_e0b_e0y",type='str', 
+parser.add_option("-r", "--region", dest="region", default="MisID_Enriched_e3j_e0b_e1y",type='str', 
                      help="which control selection and region"), 
-parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_dilep",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_lgamma",type='str', 
                      help="which histogram to be used for making datacard")
 parser.add_option("--isT2W","--isT2W",dest="isT2W", default=False, action="store_true",
 		  help="create text2workspace datacards")
@@ -81,7 +81,7 @@ dirDC = "DirectoryOfDataCard"
 def getDataCard(year, decayMode, channel, region, hName):
     global dirDC
     name  = "DC_%s_%s_%s_%s_%s"%(year, decayMode, channel, region, hName)
-    dirDC = "%s/Fit_Hist/FitDYSF/forDYSF/%s/%s/%s/%s/%s"%(condorHistDir, year, decayMode, channel, region, hName)
+    dirDC = "%s/Fit_Hist/FitMisIDSF/forMisIDSF/%s/%s/%s/%s/%s"%(condorHistDir, year, decayMode, channel, region, hName)
     pathDC   = jsonData[name][0]
     global rateParamKey
     rateParamKey = name.replace("DC","RP")

@@ -4,6 +4,8 @@ Plot_Hist/tex
 Fit_Hist/tex
 Plot_Hist/PlotDYSF/tex
 Fit_Hist/FitDYSF/tex
+Plot_Hist/PlotMisIDSF/tex
+Fit_Hist/FitMisIDSF/tex
 *.root
 */*.root
 
