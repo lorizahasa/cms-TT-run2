@@ -14,7 +14,7 @@ from array import array
 parser = OptionParser()
 parser.add_option("-y", "--year", dest="year", default="2016",type='str',
                      help="Specify the year of the data taking" )
-parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
+parser.add_option("-d", "--decayMode", dest="decayMode", default="Dilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
@@ -136,7 +136,7 @@ if isT2W:
 #Fit diagnostics
 #----------------------------------------
 rMin = 0
-rMax = 2
+rMax = 20
 #paramList = ["r", "nonPromptSF", "TTbarSF", "WGSF", "ZGSF", "OtherSF", "lumi_13TeV"]
 paramList = ["r"]
 params    = ','.join([str(param) for param in paramList])
@@ -154,11 +154,12 @@ if isFD:
         jsonData = json.load(jsonFile)
     jsonData[rateParamKey] = []
     for param in paramList:
-        val = fit_s.floatParsFinal().find(param).getVal()
-        print "%20s = %10s"%(param, val)
-        print "%20s = %10s"%(param, round(val,5))
+        fit_s.floatParsFinal().find(param).Print()
+        valLow = fit_s.floatParsFinal().find(param).getErrorLo()
+        valNom = fit_s.floatParsFinal().find(param).getVal()
+        valHi  = fit_s.floatParsFinal().find(param).getErrorHi()
         paramDict = {}
-        paramDict[param] = round(val,4)
+        paramDict[param] = [valLow, valNom, valHi] 
         jsonData[rateParamKey].append(paramDict)
     #plot covariant matrix
     with open ('RateParams.json', 'w') as jsonFile:

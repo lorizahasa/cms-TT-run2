@@ -46,6 +46,7 @@ if "le" in channel:
     newBins = numpy.array([0,80,84,88,92,96,100,180.])
 else:
     newBins = numpy.array([0,90,180.])
+newBins = numpy.arange(0.,240.,20) #dont put space
 dySF   = 1.2 
 def addHist(histList, name):
     if len(histList) ==0:
@@ -68,7 +69,7 @@ def writeHist(hist, procDir, histNewName, outputFile):
         outputFile.mkdir(outHistDir)
     outputFile.cd(outHistDir)
     gDirectory.Delete("%s;*"%(hist.GetName()))
-    print "%20s, %15s, %10s, %10s"%(inHistName, procDir, histNewName, round(hist.Integral()))
+    print "%20s/%15s/%10s, %10s"%(procDir, CR, histNewName, round(hist.Integral()))
     hNew = hist.Rebin(len(newBins)-1, histNewName, newBins) 
     hNew.Write()
     #hist.Write()
@@ -97,11 +98,30 @@ def getHistMisID(inHistName, procDir, sysType):
     return addHist(hList, sysType), procDir, sysType_
 
 
+def getHistVGamma(inHistName, procDir, sysType):
+    hList = []
+    sysType_ = sysType
+    for sample in Samples:
+        if procDir in sample:
+            histDir = getHistDir(sample, sysType, CR)
+            h1 = inFile.Get("%s/%s_genuine"%(histDir, inHistName))
+            h2 = inFile.Get("%s/%s_hadronic_photon"%(histDir, inHistName))
+            h3 = inFile.Get("%s/%s_hadronic_fake"%(histDir, inHistName))
+            hList.append(h1)
+            hList.append(h2)
+            hList.append(h3)
+    return addHist(hList, sysType), procDir, sysType_
+
 def getHistOther(inHistName, procDir, sysType):
     hList = []
     sysType_ = sysType
     for sample in Samples:
-        if "TT_tytg" not in sample and "Data" not in sample:
+        isOther = True
+        if "TT_tytg" in sample: isOther = False
+        if "Data" in sample: isOther  = False
+        if "WGamma" in sample: isOther = False
+        if "ZGamma" in sample: isOther = False
+        if isOther:
             if "QCD" in sample:
                 sample = "QCD"
             histDir = getHistDir(sample, sysType, CR)
@@ -126,11 +146,13 @@ for syst, level in itertools.product(Systematics, SystLevels):
     sysType = "%s%s"%(syst, level)
     allSysType.append(sysType)
 writeList = []
+writeList.append(getHistData(inHistName,  "data_obs", "Base"))
 for sysType in allSysType:
 #for sysType in ["Base"]: 
-    writeList.append(getHistData(inHistName, "data_obs", "Base"))
-    writeList.append(getHistMisID(inHistName,  "MisIDEle",  sysType))
+    writeList.append(getHistMisID(inHistName, "MisIDEle",  sysType))
     writeList.append(getHistOther(inHistName, "OtherPhotons", sysType))
+    writeList.append(getHistVGamma(inHistName, "ZGamma", sysType))
+    writeList.append(getHistVGamma(inHistName, "WGamma", sysType))
     # signal sample for plotting purpose
     writeList.append(getHistData(inHistName,  "TT_tytg_M800",   sysType))
     writeList.append(getHistData(inHistName,  "TT_tytg_M1200",  sysType))

@@ -185,7 +185,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
             hStack.SetMaximum(500*hStack.GetMaximum())
     else: 
         #hStack.SetMaximum(1.3*hStack.GetMaximum())
-        hStack.SetMaximum(1.5*dataHist[0].GetMaximum())
+        hStack.SetMaximum(1.7*dataHist[0].GetMaximum())
     hStack.GetXaxis().SetTitle(xTitle)
     hStack.GetYaxis().SetTitle(yTitle)
 

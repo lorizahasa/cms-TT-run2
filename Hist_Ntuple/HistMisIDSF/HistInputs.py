@@ -1,10 +1,10 @@
 #-----------------------------------------------------------------
 condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple/HistMisIDSF/Raw"
 #-----------------------------------------------------------------
-#Years 	      =	["2016", "2017", "2018"]
-Years 	      =	["2016"]
-#Channels 	  =	["Mu", "Ele"]
-Channels 	  =	["Ele"]
+Years 	      =	["2016", "2017", "2018"]
+#Years 	      =	["2016"]
+Channels 	  =	["Mu", "Ele"]
+#Channels 	  =	["Ele"]
 Decays 	      =	["Semilep"]
 
 Samples = []
@@ -28,7 +28,7 @@ Systematics   =	[]
 Systematics.append("Weight_pu")
 Systematics.append("Weight_mu")
 Systematics.append("Weight_ele")
-Systematics.append("Weight_pho")
+#Systematics.append("Weight_pho")
 Systematics.append("Weight_btag_b")
 Systematics.append("Weight_btag_l")
 Systematics.append("Weight_prefire")

@@ -1,5 +1,5 @@
 NanoAOD_Gen
-Plot_Hist/PlotFromHist
+Plot_Hist//PlotMain/PlotFromHist
 Plot_Hist/tex
 Fit_Hist/tex
 Plot_Hist/PlotDYSF/tex
@@ -15,11 +15,17 @@ Fit_Hist/FitMisIDSF/tex
 */*/*/*.pyc
 */*/*/*/*.pyc
 
-*..out
-*/*..out
-*/*/*..out
-*/*/*/*..out
-*/*/*/*/*..out
+*.out
+*/*.out
+*/*/*.out
+*/*/*/*.out
+*/*/*/*/*.out
+
+*.log
+*/*.log
+*/*/*.log
+*/*/*/*.log
+*/*/*/*/*.log
 
 *.json
 */*.json

@@ -26,7 +26,7 @@ parser.add_option("--combYear", dest="combYear",default=["2016"], action="append
           help="years to be combined" )
 parser.add_option("--combChannel", dest="combChannel",default=["Mu","Ele"],action="append",
           help="channels to be combined" )
-parser.add_option("-r", "--region", dest="region", default="MisID_Enriched_e3j_e0b_e1y",type='str', 
+parser.add_option("-r", "--region", dest="region", default="MisID_Enriched_a2j_e0b_e1y",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_lgamma",type='str', 
                      help="which histogram to be used for making datacard")
@@ -136,13 +136,13 @@ if isT2W:
 #Fit diagnostics
 #----------------------------------------
 rMin = 0
-rMax = 2
-#paramList = ["r", "nonPromptSF", "TTbarSF", "WGSF", "ZGSF", "OtherSF", "lumi_13TeV"]
-paramList = ["r"]
+rMax = 20
+paramList = ["r","ZGammaSF", "WGammaSF"] 
+#paramList = ["r"]
 params    = ','.join([str(param) for param in paramList])
 if isFD:
     #runCmd("combine -M FitDiagnostics  %s --out %s -t -1 --plots --redefineSignalPOIs %s -v2 --saveShapes --saveWithUncertainties --saveNormalizations --cminDefaultMinimizerStrategy 0 --rMin=%s --rMax=%s"%(pathT2W, dirDC, params, rMin, rMax))
-    runCmd("combine -M FitDiagnostics  %s --out %s  --expectSignal 1 --plots --redefineSignalPOIs %s -v2 --saveShapes --saveWithUncertainties --saveNormalizations --cminDefaultMinimizerStrategy 0 --rMin=%s --rMax=%s"%(pathT2W, dirDC, params, rMin, rMax))
+    ##runCmd("combine -M FitDiagnostics  %s --out %s  --expectSignal 1 --plots --redefineSignalPOIs %s -v2 --saveShapes --saveWithUncertainties --saveNormalizations --cminDefaultMinimizerStrategy 0 --rMin=%s --rMax=%s"%(pathT2W, dirDC, params, rMin, rMax))
     #runCmd("combine -M FitDiagnostics %s --out %s -t -1 --plots -v2 --saveShapes --saveWithUncertainties --saveNormalizations --cminDefaultMinimizerStrategy 0 --rMin=%s --rMax=%s"%(pathT2W, dirDC, rMin, rMax))
     #runCmd("python diffNuisances.py --abs --all %s/fitDiagnostics.root -g %s/diffNuisances.root"%(dirDC,dirDC))
     runCmd("python diffNuisances.py --all %s/fitDiagnostics.root -g %s/diffNuisances.root"%(dirDC,dirDC))
@@ -154,11 +154,12 @@ if isFD:
         jsonData = json.load(jsonFile)
     jsonData[rateParamKey] = []
     for param in paramList:
-        val = fit_s.floatParsFinal().find(param).getVal()
-        print "%20s = %10s"%(param, val)
-        print "%20s = %10s"%(param, round(val,5))
+        fit_s.floatParsFinal().find(param).Print()
+        valLow = fit_s.floatParsFinal().find(param).getErrorLo()
+        valNom = fit_s.floatParsFinal().find(param).getVal()
+        valHi  = fit_s.floatParsFinal().find(param).getErrorHi()
         paramDict = {}
-        paramDict[param] = round(val,4)
+        paramDict[param] = [valLow, valNom, valHi] 
         jsonData[rateParamKey].append(paramDict)
     #plot covariant matrix
     with open ('RateParams.json', 'w') as jsonFile:

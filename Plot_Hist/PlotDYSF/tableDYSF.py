@@ -32,6 +32,11 @@ def getRateParam(name, proc):
                 rateParam = val
     return rateParam
 
+def roundMe(value, place):
+    upStr = '{:.%sf}'%str(place)
+    upVal = round(value, place)
+    return upStr.format(upVal)
+
 #Put SF in reformated dicts
 lepDicts = {}
 for c in Channel:
@@ -59,7 +64,9 @@ col = ""
 for i in range(nCol):
     col += "c"
 table = "\\setlength{\\tabcolsep}{12pt}\n"
-table += "\\centering"
+table +="\\begin{table}"
+table += "\\cmsTable{\n"
+table += "\\centering\n"
 table += "\\begin{tabular}{%s}\n"%col
 table += "\\hline\n"
 tHead = "Channel & Regions" 
@@ -77,11 +84,18 @@ for ch in lepDicts.keys():
         #row += "& %s"%formatCRString(Regions[l]).replace("#", "\\")
         row += "& %s"%l.replace("_", "\\_")
         for sf in chDict[l]:
-            row += "& %s"%sf
+            valNom = roundMe(sf[1], 2) # 0 = down, 1 = up, 2 = down
+            #perUp  = roundMe(abs(100*sf[2]/sf[1]),1)
+            #perDown  = roundMe(abs(100*sf[0]/sf[1]),1)
+            #row += "& $%s^{+%s%s}_{-%s%s}$"%(valNom, perUp,"\\%", perDown, "\\%")
+            perUp  = roundMe(sf[2],2)
+            perDown  = roundMe(abs(sf[0]),2)
+            row += "& $%s^{+%s}_{-%s}$"%(valNom, perUp, perDown)
         row += "\\\\\n"
     table += "%s\\hline\n"%row
 table += "\\end{tabular}\n"
-table += "\\caption{Normalization scale factors for DYJets sample}"
-print table
+table += "}"
+table += "\\caption{DYJetsSF}"
+table += "\\end{table}"
 tableFile = open("tex/tableDYSF.tex", "w")
 tableFile.write(table)

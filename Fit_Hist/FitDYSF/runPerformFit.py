@@ -43,9 +43,9 @@ for y, d, c, r in itertools.product(Year, Decay, Channel, Regions):
     if isT2W:
         runCmd("python performFit.py %s --isT2W"%args)
     if isFD:
-        runCmd("python performFit.py %s --isFD"%args)
+        runCmd("python performFit.py %s --isT2W --isFD"%args)
     if isImpact:
-        runCmd("python performFit.py %s --isImpact"%args)
+        runCmd("python performFit.py %s --isT2W --isImpact"%args)
     plotPath = "%s/nuisImpact.pdf"%(plotDir)
     allPlotPath.append(plotPath)
     allPlotName.append(hName)

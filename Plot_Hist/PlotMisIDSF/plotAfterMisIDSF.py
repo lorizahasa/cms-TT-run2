@@ -70,8 +70,10 @@ def getRateParam(name, proc):
             if proc==key:
                 rateParam = val
     return rateParam
-dySF   = getRateParam(name,"r")
-print dySF
+misIDSF   = round(getRateParam(name,"r"),2)
+wGammaSF  = round(getRateParam(name,"WGammaSF"),2)
+zGammaSF  = round(getRateParam(name,"ZGammaSF"),2)
+print "%s: miIDSF = %s, wGammaSF = %s, zGammaSF = %s"%(region, misIDSF, wGammaSF, zGammaSF)
 #-----------------------------------------
 #Make a plot for one histogram
 #----------------------------------------
@@ -205,7 +207,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
             hStack.SetMaximum(500*hStack.GetMaximum())
     else: 
         #hStack.SetMaximum(1.3*hStack.GetMaximum())
-        hStack.SetMaximum(1.5*dataHist[0].GetMaximum())
+        hStack.SetMaximum(1.7*dataHist[0].GetMaximum())
     hStack.GetXaxis().SetTitle(xTitle)
     hStack.GetYaxis().SetTitle(yTitle)
 
@@ -223,8 +225,8 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     #chName = "#splitline{%s}{%s}"%(chName, region)
     chName = "%s, #bf{%s}"%(chName, region)
     crName = formatCRString(Regions[region])
-    crName = "%s, #color[4]{%s=%s}"%(crName, stage, str(dySF))
-    chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
+    crName = "#splitline{(%s)}{#color[4]{%s=%s, ZGSF=%s, WGSF=%s}}"%(crName, stage, str(misIDSF), str(zGammaSF), str(wGammaSF))
+    chCRName = "#splitline{#font[42]{%s}}{#font[42]{%s}}"%(chName, crName)
     extraText   = "#splitline{Preliminary}{%s}"%chCRName
     if isData and isRatio:
         nData  = str(int(dataHist[0].Integral()))

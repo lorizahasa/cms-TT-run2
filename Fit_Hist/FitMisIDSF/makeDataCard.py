@@ -48,7 +48,7 @@ if not os.path.exists(outFileDir):
 cb = ch.CombineHarvester()
 #cb.SetVerbosity(4)
 #AllBkgs = ["TTbar", "Wjets", "ZJets", "Diboson", "SingleTop", "TTV","QCD"]
-AllBkgs = ["OtherPhotons"]
+AllBkgs = ["OtherPhotons", "ZGamma", "WGamma"]
 Signal  = ["MisIDEle"]
 allMC   = Signal + AllBkgs
 #------------------
@@ -67,12 +67,12 @@ cb.cp().process(allMC).AddSyst(cb, "lumi_$ERA", "lnN",ch.SystMap("era") (["13TeV
 cb.cp().process(allMC).AddSyst(cb, "Weight_pu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_mu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_ele",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_pho",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_pho",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_btag_b", "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_btag_l", "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_prefire","shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_q2",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_pdf",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_pdf",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_isr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_fsr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_jes",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
@@ -80,7 +80,8 @@ cb.cp().process(allMC).AddSyst(cb, "Weight_jer",    "shape",ch.SystMap("era") ([
 #------------------
 #Add rateParam
 #------------------
-##cb.cp().process(["TTbar"]).bin([hName]).AddSyst(cb, 'TTbarSF', 'rateParam', ch.SystMap()(1.0))
+cb.cp().process(["ZGamma"]).bin([hName]).AddSyst(cb, 'ZGammaSF', 'rateParam', ch.SystMap()(1.0))
+cb.cp().process(["WGamma"]).bin([hName]).AddSyst(cb, 'WGammaSF', 'rateParam', ch.SystMap()(1.0))
 #------------------
 #Add syst groups
 #------------------
@@ -109,11 +110,10 @@ print outFilePath
 #------------------
 #Add param
 #------------------
-#dc = open(datacardPath, "a")
-#dc.write("TTbarSF \t param \t 1.0 \t 0.05\n")
-#dc.write("WGSF    \t param \t 1.0 \t 0.10\n")
-#dc.write("ZGSF    \t param \t 1.0 \t 0.10\n")
-#dc.close()
+dc = open(datacardPath, "a")
+dc.write("WGammaSF    \t param \t 1.0 \t 0.10\n")
+dc.write("ZGammaSF    \t param \t 1.0 \t 0.10\n")
+dc.close()
 
 #------------------------
 #Save DC path in a file

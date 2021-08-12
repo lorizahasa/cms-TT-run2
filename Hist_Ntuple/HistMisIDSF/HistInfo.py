@@ -6,6 +6,7 @@
 def GetHistogramInfo():
     hDict = {
              "Reco_mass_lgamma"     : ["Reco_mass_lgamma", [300,0,300], True],
+             #"Weight_pho"               : ["Weight_pho"             , [30,0.0,1.5], True],
              }
     return hDict
 

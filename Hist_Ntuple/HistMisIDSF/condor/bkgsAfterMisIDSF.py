@@ -46,6 +46,7 @@ if "le" in channel:
     newBins = numpy.array([0,80,84,88,92,96,100,180.])
 else:
     newBins = numpy.array([0,90,180.])
+newBins = numpy.arange(0.,240.,20) #dont put space
 dySF   = 1.2 
 
 path = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitMisIDSF/"
@@ -62,7 +63,9 @@ def getRateParam(name, proc):
     return rateParam
 name  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, channel, CR, inHistName)
 misIDSF   = getRateParam(name,"r")
-print misIDSF
+wGammaSF  = getRateParam(name,"WGammaSF")
+zGammaSF  = getRateParam(name,"ZGammaSF")
+print "%s: miIDSF = %s, wGammaSF = %s, zGammaSF = %s"%(CR, misIDSF, wGammaSF, zGammaSF)
 
 def addHist(histList, name):
     if len(histList) ==0:
@@ -114,12 +117,37 @@ def getHistMisID(inHistName, procDir, sysType):
             hList.append(h)
     return addHist(hList, sysType), procDir, sysType_
 
+def getHistVGamma(inHistName, procDir, sysType):
+    hList = []
+    sysType_ = sysType
+    for sample in Samples:
+        if procDir in sample:
+            histDir = getHistDir(sample, sysType, CR)
+            h1 = inFile.Get("%s/%s_genuine"%(histDir, inHistName))
+            h2 = inFile.Get("%s/%s_hadronic_photon"%(histDir, inHistName))
+            h3 = inFile.Get("%s/%s_hadronic_fake"%(histDir, inHistName))
+            vGammaSF = 1.0
+            if "ZGamma" in procDir: vGammaSF = zGammaSF
+            if "WGammaSF" in procDir: vGammaSF = wGammaSF
+            h1.Scale(vGammaSF)
+            h2.Scale(vGammaSF)
+            h3.Scale(vGammaSF)
+            hList.append(h1)
+            hList.append(h2)
+            hList.append(h3)
+    return addHist(hList, sysType), procDir, sysType_
+
 
 def getHistOther(inHistName, procDir, sysType):
     hList = []
     sysType_ = sysType
     for sample in Samples:
-        if "TT_tytg" not in sample and "Data" not in sample:
+        isOther = True
+        if "TT_tytg" in sample: isOther = False
+        if "Data" in sample: isOther  = False
+        if "WGamma" in sample: isOther = False
+        if "ZGamma" in sample: isOther = False
+        if isOther:
             if "QCD" in sample:
                 sample = "QCD"
             histDir = getHistDir(sample, sysType, CR)
@@ -144,11 +172,12 @@ for syst, level in itertools.product(Systematics, SystLevels):
     sysType = "%s%s"%(syst, level)
     allSysType.append(sysType)
 writeList = []
+writeList.append(getHistData(inHistName, "data_obs", "Base"))
 for sysType in allSysType:
-#for sysType in ["Base"]: 
-    writeList.append(getHistData(inHistName, "data_obs", "Base"))
     writeList.append(getHistMisID(inHistName,  "MisIDEle",  sysType))
     writeList.append(getHistOther(inHistName, "OtherPhotons", sysType))
+    writeList.append(getHistVGamma(inHistName, "ZGamma", sysType))
+    writeList.append(getHistVGamma(inHistName, "WGamma", sysType))
     # signal sample for plotting purpose
     writeList.append(getHistData(inHistName,  "TT_tytg_M800",   sysType))
     writeList.append(getHistData(inHistName,  "TT_tytg_M1200",  sysType))

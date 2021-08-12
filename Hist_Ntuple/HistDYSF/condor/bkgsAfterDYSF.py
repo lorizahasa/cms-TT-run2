@@ -53,7 +53,7 @@ def getRateParam(name, proc):
             if proc==key:
                 rateParam = val
     return rateParam
-dySF   = getRateParam(name,"r")
+dySF   = getRateParam(name,"r")[1]
 print dySF
 
 #-----------------------------------------
