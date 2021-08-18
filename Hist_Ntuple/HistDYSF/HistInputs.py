@@ -1,8 +1,7 @@
 #-----------------------------------------------------------------
 condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple/HistDYSF/Raw"
 #-----------------------------------------------------------------
-#Years 	      =	["2016", "2017", "2018"]
-Years 	      =	["2017", "2018"]
+Years 	      =	["2016", "2017", "2018"]
 #Years 	      =	["2016"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Ele"]
@@ -20,10 +19,8 @@ Samples.append("DYJets")
 Samples.append("WGamma")
 Samples.append("ZGamma")
 Samples.append("Others")
-Samples.append("QCDEle")
-Samples.append("QCDMu")
-Samples.append("DataMu")
-Samples.append("DataEle")
+Samples.append("QCD")
+Samples.append("Data")
 
 Systematics   =	[]
 Systematics.append("Weight_pu")

@@ -20,7 +20,7 @@ parser.add_option("-c", "--channel", dest="channel", default="Ele",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("--hist", "--hist", dest="inHistName", default="Reco_mass_dilep",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("--cr", "--CR", dest="CR", default="",type='str', 
+parser.add_option("--cr", "--CR", dest="CR", default="DY_Enriched_a2j_e0b_e0y",type='str', 
                      help="which control selection and region")
 (options, args) = parser.parse_args()
 year            = options.year
@@ -92,11 +92,9 @@ def getHistOther(inHistName, procDir, sysType):
         others = True
         if "TT_tytg" in s: others = False
         if "Data" in s: others = False
-        if "QCD" in s: others = False
         if "DY" in s: others = False
         if others: 
             SampleOther.append(s)
-    SampleOther.append("QCD")
     hList = []
     sysType_ = sysType
     for sample in SampleOther:

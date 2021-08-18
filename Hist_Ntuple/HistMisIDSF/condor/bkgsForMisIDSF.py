@@ -88,8 +88,6 @@ def getHistMisID(inHistName, procDir, sysType):
     sysType_ = sysType
     for sample in Samples:
         if "TT_tytg" not in sample and "Data" not in sample:
-            if "QCD" in sample:
-                sample = "QCD"
             histDir = getHistDir(sample, sysType, CR)
             h = inFile.Get("%s/%s_misid_ele"%(histDir, inHistName))
             if "DYJets" in sample:
@@ -122,8 +120,6 @@ def getHistOther(inHistName, procDir, sysType):
         if "WGamma" in sample: isOther = False
         if "ZGamma" in sample: isOther = False
         if isOther:
-            if "QCD" in sample:
-                sample = "QCD"
             histDir = getHistDir(sample, sysType, CR)
             h1 = inFile.Get("%s/%s_genuine"%(histDir, inHistName))
             h2 = inFile.Get("%s/%s_hadronic_photon"%(histDir, inHistName))

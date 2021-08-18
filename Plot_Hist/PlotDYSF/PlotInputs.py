@@ -19,3 +19,19 @@ SampleBkg = {
          "DYJets"    : [rt.kYellow, "DY+jets"],
          "OtherBkgs"    : [rt.kBlue, "OtherBkgs"]
          }
+Samples = SampleBkg
+SampleSyst = SampleBkg
+
+Systematics   =	[]
+Systematics.append("Weight_pu")
+Systematics.append("Weight_mu")
+Systematics.append("Weight_ele")
+Systematics.append("Weight_btag_b")
+Systematics.append("Weight_btag_l")
+Systematics.append("Weight_prefire")
+#Systematics.append("Weight_q2")
+#Systematics.append("Weight_pdf")
+Systematics.append("Weight_isr")
+Systematics.append("Weight_fsr")
+Systematics.append("Weight_jes")
+Systematics.append("Weight_jer")

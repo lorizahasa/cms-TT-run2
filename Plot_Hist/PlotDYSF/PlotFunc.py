@@ -52,16 +52,15 @@ def getBkgSystHists(inFile, hName, CR, level):
     for syst in Systematics:
         hBkg = []
         for sample in SampleSyst:
-            hPath = "%s/%s/%s%s/%s"%(sample, syst, level, CR, hName)
+            hPath = "%s/%s/%s/%s%s"%(sample, CR, hName, syst, level)
             try:
                 hist = inFile.Get(hPath)
-                hist = hist.Clone("%s_%s/%s%s_%s"%(sample, CR, syst,level,hName))
+                hist = hist.Clone("%s_%s_%s_%s%s"%(sample, CR, hName, syst,level))
             except Exception:
                 print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
                 sys.exit()
             hBkg.append(hist)
-            hSum.Add(h)
-        hSum = hist.Clone("hSumBkgs_%s_%s%s_%s"%(CR, syst,level,hName))
+        hSum = hist.Clone("hSumBkgs_%s_%s_%s%s"%(CR, hName, syst,level))
         hSum.Reset()
         for h in hBkg:
             hSum.Add(h)

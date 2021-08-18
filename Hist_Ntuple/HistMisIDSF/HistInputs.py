@@ -19,10 +19,8 @@ Samples.append("DYJets")
 Samples.append("WGamma")
 Samples.append("ZGamma")
 Samples.append("Others")
-Samples.append("QCDEle")
-Samples.append("QCDMu")
-Samples.append("DataMu")
-Samples.append("DataEle")
+Samples.append("QCD")
+Samples.append("Data")
 
 Systematics   =	[]
 Systematics.append("Weight_pu")

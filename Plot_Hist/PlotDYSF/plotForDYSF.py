@@ -122,29 +122,6 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         for hSig in sigHists:
             hSig.Draw("HISTsame")
     
-    # Unc band
-    if isUnc:
-        hSumBkgUps =  getSystHists(inFile, hName, region, "Up")
-        hSumBkgDowns = getSystHists(inFile, hName, region, "Down")
-        hDiffUp = hSumBkg.Clone("hDiffUp")
-        hDiffUp.Reset()
-        hDiffDown = hSumBkg.Clone("hDiffDown")
-        hDiffDown.Reset()
-        for hUp in hSumBkgUps:
-            hDiff = hUp.Clone("hDiff")
-            hDiff.Add(hSumBkg, -1)    
-            hDiffUp.Add(hDiff)
-            print "hDiffUp = ", hDiffUp.Integral()
-        for hDown in hSumBkgDowns:
-            hDiff = hSumBkg.Clone("hDiff")
-            hDiff.Add(hDown, -1)    
-            hDiffDown.Add(hDiff)
-            #Get unc band for the top plot
-            uncGraphTop = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,False)
-            uncGraphTop.SetFillColor(2);
-            uncGraphTop.SetFillStyle(3001);
-            uncGraphTop.Draw(" E2 same ");
-
     #Draw plotLegend
     hForLegend = sortHists(bkgHists, True)
     #plotLegend = TLegend(0.55,0.60,0.92,0.88); for 3 col
@@ -174,7 +151,6 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
             plotLegendName = SampleSignal[sName][1] 
             decoHistSig(hSig, xTitle, yTitle, SampleSignal[sName][0]+col_depth)
             plotLegend.AddEntry(hSig, plotLegendName, "PL")
-    plotLegend.Draw()
     hStack.SetMinimum(0.1)
     yDict["Bkgs"] = getYield(hSumAllBkg)
     if isLog and hSumAllBkg.Integral() !=0:
@@ -188,6 +164,31 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         hStack.SetMaximum(1.5*dataHist[0].GetMaximum())
     hStack.GetXaxis().SetTitle(xTitle)
     hStack.GetYaxis().SetTitle(yTitle)
+    
+    # Unc band
+    if isUnc:
+        hSumBkgUps   = getBkgSystHists(inFile, hName, region, "Up")
+        hSumBkgDowns = getBkgSystHists(inFile, hName, region, "Down")
+        hDiffUp = hSumAllBkg.Clone("hDiffUp")
+        hDiffUp.Reset()
+        hDiffDown = hSumAllBkg.Clone("hDiffDown")
+        hDiffDown.Reset()
+        for hUp in hSumBkgUps:
+            hDiff = hUp.Clone("hDiff")
+            hDiff.Add(hSumAllBkg, -1)    
+            hDiffUp.Add(hDiff)
+            print("%s = %s")%(hUp.GetName(), hDiffUp.Integral())
+        for hDown in hSumBkgDowns:
+            hDiff = hSumAllBkg.Clone("hDiff")
+            hDiff.Add(hDown, -1)    
+            hDiffDown.Add(hDiff)
+        #Get unc band for the top plot
+        uncGraphTop = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,False)
+        uncGraphTop.SetFillColor(rt.kGreen);
+        uncGraphTop.SetFillStyle(3001);
+        uncGraphTop.Draw("E2same");
+        plotLegend.AddEntry(uncGraphTop,"#splitline{Bkg unc. (4%)}{(stat. #oplus syst.)}", "F")
+    plotLegend.Draw()
 
     #Draw CMS, Lumi, channel
     chColor = 1
@@ -212,7 +213,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         extraText   = "#splitline{Preliminary, Data = %s, Ratio = %s}{%s}"%(nData, nRatio, chCRName)
     #CMS_lumi(canvas, iPeriod, iPosX, extraText)
     CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
-
+    
     #Draw the ratio of data and all background
     #Divide canvas for the ratio plot
     if isData and isRatio:
@@ -232,7 +233,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         hRatio.Draw()
         if isUnc:
             uncGraphRatio = getUncBand(hSumAllBkg, hDiffUp, hDiffDown,True)
-            uncGraphRatio.SetFillColor(2);
+            uncGraphRatio.SetFillColor(rt.kGreen);
             uncGraphRatio.SetFillStyle(3001);
             uncGraphRatio.Draw("E2same");
         baseLine = TF1("baseLine","1", -100, 10000);

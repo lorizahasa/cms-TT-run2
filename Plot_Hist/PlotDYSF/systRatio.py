@@ -193,7 +193,7 @@ for h in allHistUpSorted:
 yMax = max(maxRatio)
 print yMax
 for i, h in enumerate(allHistUpSorted):
-    h.GetYaxis().SetRangeUser(1-0.7*yMax, 1+0.7*yMax)
+    h.GetYaxis().SetRangeUser(1-0.5*yMax, 1+0.5*yMax)
     systPercentage = int(round(allSystPercentage[h.GetName()]))
     legName = "%s (%s%%)"%(h.GetName().split("_")[1], str(systPercentage))
     leg.AddEntry(h, legName, "L")

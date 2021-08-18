@@ -62,9 +62,9 @@ def getRateParam(name, proc):
                 rateParam = val
     return rateParam
 name  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, channel, CR, inHistName)
-misIDSF   = getRateParam(name,"r")
-wGammaSF  = getRateParam(name,"WGammaSF")
-zGammaSF  = getRateParam(name,"ZGammaSF")
+misIDSF   = getRateParam(name,"r")[1]
+wGammaSF  = getRateParam(name,"WGammaSF")[1]
+zGammaSF  = getRateParam(name,"ZGammaSF")[1]
 print "%s: miIDSF = %s, wGammaSF = %s, zGammaSF = %s"%(CR, misIDSF, wGammaSF, zGammaSF)
 
 def addHist(histList, name):
@@ -107,8 +107,6 @@ def getHistMisID(inHistName, procDir, sysType):
     sysType_ = sysType
     for sample in Samples:
         if "TT_tytg" not in sample and "Data" not in sample:
-            if "QCD" in sample:
-                sample = "QCD"
             histDir = getHistDir(sample, sysType, CR)
             h = inFile.Get("%s/%s_misid_ele"%(histDir, inHistName))
             if "DYJets" in sample:
@@ -128,7 +126,7 @@ def getHistVGamma(inHistName, procDir, sysType):
             h3 = inFile.Get("%s/%s_hadronic_fake"%(histDir, inHistName))
             vGammaSF = 1.0
             if "ZGamma" in procDir: vGammaSF = zGammaSF
-            if "WGammaSF" in procDir: vGammaSF = wGammaSF
+            if "WGamma" in procDir: vGammaSF = wGammaSF
             h1.Scale(vGammaSF)
             h2.Scale(vGammaSF)
             h3.Scale(vGammaSF)
@@ -148,8 +146,6 @@ def getHistOther(inHistName, procDir, sysType):
         if "WGamma" in sample: isOther = False
         if "ZGamma" in sample: isOther = False
         if isOther:
-            if "QCD" in sample:
-                sample = "QCD"
             histDir = getHistDir(sample, sysType, CR)
             h1 = inFile.Get("%s/%s_genuine"%(histDir, inHistName))
             h2 = inFile.Get("%s/%s_hadronic_photon"%(histDir, inHistName))

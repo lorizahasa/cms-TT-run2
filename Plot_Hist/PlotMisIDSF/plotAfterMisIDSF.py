@@ -70,9 +70,9 @@ def getRateParam(name, proc):
             if proc==key:
                 rateParam = val
     return rateParam
-misIDSF   = round(getRateParam(name,"r"),2)
-wGammaSF  = round(getRateParam(name,"WGammaSF"),2)
-zGammaSF  = round(getRateParam(name,"ZGammaSF"),2)
+misIDSF   = round(getRateParam(name,"r")[1], 2)
+wGammaSF  = round(getRateParam(name,"WGammaSF")[1], 2)
+zGammaSF  = round(getRateParam(name,"ZGammaSF")[1], 2)
 print "%s: miIDSF = %s, wGammaSF = %s, zGammaSF = %s"%(region, misIDSF, wGammaSF, zGammaSF)
 #-----------------------------------------
 #Make a plot for one histogram

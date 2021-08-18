@@ -20,12 +20,6 @@ parser.add_option("-c", "--channel", dest="channel", default="Ele",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
-parser.add_option("--isComb","--isComb",dest="isComb", default=False, action="store_true",
-		  help="combine datacards")
-parser.add_option("--combYear", dest="combYear",default=["2016"], action="append",
-          help="years to be combined" )
-parser.add_option("--combChannel", dest="combChannel",default=["Mu","Ele"],action="append",
-          help="channels to be combined" )
 parser.add_option("-r", "--region", dest="region", default="MisID_Enriched_a2j_e0b_e1y",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_lgamma",type='str', 
@@ -44,6 +38,12 @@ parser.add_option("--isTP","--isTP",dest="isTP", default=False, action="store_tr
 		  help="generate toys")
 parser.add_option("--isPlotTP","--isPlotTP",dest="isPlotTP", default=False, action="store_true",
 		  help="plot generated toys")
+parser.add_option("--isCombCh","--isCombCh",dest="isCombCh", default=False, action="store_true",
+		  help="combine datacards")
+parser.add_option("--isCombYear","--isCombYear",dest="isCombYear", default=False, action="store_true",
+		  help="combine datacards")
+parser.add_option("--isCombChYear","--isCombChYear",dest="isCombChYear", default=False, action="store_true",
+		  help="combine datacards")
 (options, args) = parser.parse_args()
 year            = options.year
 decayMode       = options.decayMode
@@ -51,12 +51,9 @@ channel         = options.channel
 mass            = options.mass
 region          = options.region
 hName           = options.hName
-combYear        = options.combYear[0].split(",")
-combChannel     = options.combChannel[0].split(",")
-print combChannel
-combChannel = ["Mu","Ele"]
-
-isComb          = options.isComb
+isCombCh        = options.isCombCh
+isCombYear      = options.isCombYear
+isCombChYear    = options.isCombChYear
 
 isT2W 			= options.isT2W
 isFD            = options.isFD
@@ -73,18 +70,13 @@ def runCmd(cmd):
     os.system(cmd)
 with open ("DataCards.json") as jsonFile:
     jsonData = json.load(jsonFile)
-rateParamKey = "rateParam"
+
 #-----------------------------------------
 #For separate datacards
 #----------------------------------------
-dirDC = "DirectoryOfDataCard"
 def getDataCard(year, decayMode, channel, region, hName):
-    global dirDC
     name  = "DC_%s_%s_%s_%s_%s"%(year, decayMode, channel, region, hName)
-    dirDC = "%s/Fit_Hist/FitMisIDSF/forMisIDSF/%s/%s/%s/%s/%s"%(condorHistDir, year, decayMode, channel, region, hName)
     pathDC   = jsonData[name][0]
-    global rateParamKey
-    rateParamKey = name.replace("DC","RP")
     if not os.path.exists(pathDC):
         print "Datacard: %s does not exist"%pathDC
         sys.exit()
@@ -92,43 +84,48 @@ def getDataCard(year, decayMode, channel, region, hName):
 #-----------------------------------------
 #For combination of datacards
 #----------------------------------------
-if isComb:
-    combDC = []
-    cat_ = ["Boosted_SR", "Resolved_SR"]
-    ch_  = ["Mu", "Ele"]
-    year_= ["2016", "2017", "2018"]
-    for y, ch, cat in itertools.product(year_, ch_, cat_):
-        pathDC = getDataCard(y, decayMode, ch, cat, hName)
-        combDC.append(pathDC)
-	combDCText = ' '.join([str(dc) for dc in combDC])
-    dirDC        = "%s/Fit_Hist/Combined"%(condorHistDir)
-    '''
-    combHist = ["phosel_M3", "presel_M3_0Pho", "phosel_noCut_ChIso", "phosel_MassLepGamma", "presel_MassDilep"]
-    for combY, combCh in itertools.product(combYear, combChannel):
-        combDC.append(getDataCard(combY, "Semilep", combCh, region, combHist[0]))
-        combDC.append(getDataCard(combY, "Semilep", combCh, region, combHist[1]))
-        combDC.append(getDataCard(combY, "Semilep", combCh, region, combHist[2]))
-        combDC.append(getDataCard(combY, "Semilep", combCh, region, combHist[3]))
-        combDC.append(getDataCard(combY, "Dilep",   combCh, region, combHist[4]))
-	combDCText = ' '.join([str(dc) for dc in combDC])
-    combYText  = ''.join([str(y) for y in combYear])
-    combChText = ''.join([str(ch) for ch in combChannel]) 
-    dirDC        = "%s/Fit/Combined/%s_%s/%s"%(condorCBADir, combYText, combChText,  region)
-    rateParamKey = "RP_Comb_%s_%s_%s"%(combYText, combChText,  region)
-    '''
-    if not os.path.exists(dirDC):
-        os.makedirs(dirDC)
-    pathDC  = "%s/Datacard_Comb.txt"%(dirDC)
-    pathT2W = "%s/Text2W_Comb.root"%(dirDC)
-    runCmd("combineCards.py %s > %s"%(combDCText, pathDC))
-    print pathDC
+dcList = []
+if isCombCh:
+    channels  = ["Mu", "Ele"]
+    combCh = '_'.join(channels)
+    for ch in channels:
+        pathDC = getDataCard(year, decayMode, ch, region, hName)
+        dcList.append(pathDC)
+    rateParamKey  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, combCh, region, hName)
+    dirDC = "%s/Fit_Hist/FitMisIDSF/forMisIDSF/%s/%s/%s/%s/%s"%(condorHistDir, year, decayMode, combCh, region, hName)
+elif isCombYear:
+    years= ["2016", "2017", "2018"]
+    combYear = '_'.join(years)
+    for y in years:
+        pathDC = getDataCard(y, decayMode, channel, region, hName)
+        dcList.append(pathDC)
+    rateParamKey  = "RP_%s_%s_%s_%s_%s"%(combYear, decayMode, channel, region, hName)
+    dirDC = "%s/Fit_Hist/FitMisIDSF/forMisIDSF/%s/%s/%s/%s/%s"%(condorHistDir, combYear, decayMode, channel, region, hName)
+elif isCombChYear:
+    channels  = ["Mu", "Ele"]
+    years= ["2016", "2017", "2018"]
+    combCh = '_'.join(channels)
+    combYear = '_'.join(years)
+    for y, ch in itertools.product(years, channels):
+        pathDC = getDataCard(y, decayMode, ch, region, hName)
+        dcList.append(pathDC)
+    rateParamKey  = "RP_%s_%s_%s_%s_%s"%(combYear, decayMode, combCh, region, hName)
+    dirDC = "%s/Fit_Hist/FitMisIDSF/forMisIDSF/%s/%s/%s/%s/%s"%(condorHistDir, combYear, decayMode, combCh, region, hName)
 else:
     pathDC = getDataCard(year, decayMode, channel, region, hName)
-    pathT2W = "%s/Text2W_Inc.root"%(dirDC) 
-    print pathDC
+    dcList.append(pathDC)
+    rateParamKey  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, channel, region, hName)
+    dirDC = "%s/Fit_Hist/FitMisIDSF/forMisIDSF/%s/%s/%s/%s/%s"%(condorHistDir, year, decayMode, channel, region, hName)
+
+combDCText = ' '.join(dcList)
+if not os.path.exists(dirDC):
+    os.makedirs(dirDC)
+pathDC  = "%s/Datacard.txt"%(dirDC)
+pathT2W = "%s/Text2W.root"%(dirDC)
+runCmd("combineCards.py %s > %s"%(combDCText, pathDC))
+print pathDC
 
 if isT2W:
-        #runCmd("text2workspace.py %s -o %s -P HiggsAnalysis.CombinedLimit.ChargedHiggs:brChargedHiggs"%(pathDC, pathT2W))
         runCmd("text2workspace.py %s -o %s"%(pathDC, pathT2W))
         print pathT2W
 
@@ -137,19 +134,18 @@ if isT2W:
 #----------------------------------------
 rMin = 0
 rMax = 20
-paramList = ["r","ZGammaSF", "WGammaSF"] 
-#paramList = ["r"]
+#paramList = ["r", "nonPromptSF", "TTbarSF", "WGSF", "ZGSF", "OtherSF", "lumi_13TeV"]
+paramList = ["r", "WGammaSF", "ZGammaSF"]
 params    = ','.join([str(param) for param in paramList])
 if isFD:
-    #runCmd("combine -M FitDiagnostics  %s --out %s -t -1 --plots --redefineSignalPOIs %s -v2 --saveShapes --saveWithUncertainties --saveNormalizations --cminDefaultMinimizerStrategy 0 --rMin=%s --rMax=%s"%(pathT2W, dirDC, params, rMin, rMax))
-    ##runCmd("combine -M FitDiagnostics  %s --out %s  --expectSignal 1 --plots --redefineSignalPOIs %s -v2 --saveShapes --saveWithUncertainties --saveNormalizations --cminDefaultMinimizerStrategy 0 --rMin=%s --rMax=%s"%(pathT2W, dirDC, params, rMin, rMax))
-    #runCmd("combine -M FitDiagnostics %s --out %s -t -1 --plots -v2 --saveShapes --saveWithUncertainties --saveNormalizations --cminDefaultMinimizerStrategy 0 --rMin=%s --rMax=%s"%(pathT2W, dirDC, rMin, rMax))
-    #runCmd("python diffNuisances.py --abs --all %s/fitDiagnostics.root -g %s/diffNuisances.root"%(dirDC,dirDC))
-    runCmd("python diffNuisances.py --all %s/fitDiagnostics.root -g %s/diffNuisances.root"%(dirDC,dirDC))
+    #runCmd("combine -M FitDiagnostics  %s --out %s --robustHesse 1  --expectSignal 1 --plots --redefineSignalPOIs %s -v2 --cminDefaultMinimizerStrategy 0 --setParameterRanges WGammaSF=0,20:ZGammaSF=0,20 --rMin=%s --rMax=%s"%(pathT2W, dirDC, params, rMin, rMax))
+    #runCmd("combine -M FitDiagnostics  %s --out %s  --expectSignal 1 --plots --redefineSignalPOIs %s -v2  --setParameterRanges WGammaSF=0,20:ZGammaSF=0,20 --rMin=%s --rMax=%s"%(pathT2W, dirDC, params, rMin, rMax))
+    #runCmd("python diffNuisances.py --all %s/fitDiagnostics.root -g %s/diffNuisances.root"%(dirDC,dirDC))
     print dirDC
     #store rateparams in a json file 
     myfile = ROOT.TFile("%s/fitDiagnostics.root"%dirDC,"read")
     fit_s = myfile.Get("fit_s")
+    fit_s.Print()
     with open ('RateParams.json') as jsonFile:
         jsonData = json.load(jsonFile)
     jsonData[rateParamKey] = []
@@ -179,10 +175,8 @@ if isLimit:
 #Impacts of Systematics
 #----------------------------------------
 if isImpact:
-    #runCmd("combineTool.py -M Impacts -d %s  -m 125 -t -1 --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1 --redefineSignalPOIs %s "%(pathT2W, params)) 
-    #runCmd("combineTool.py -M Impacts -d %s  -m 125 -t -1 --doFits --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1 --redefineSignalPOIs %s --parallel 10"%(pathT2W, params))
-    runCmd("combineTool.py -M Impacts -d %s  -m 125 --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1  --redefineSignalPOIs %s "%(pathT2W, params)) 
-    runCmd("combineTool.py -M Impacts -d %s  -m 125  --doFits --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1  --redefineSignalPOIs %s --parallel 10"%(pathT2W, params))
+    runCmd("combineTool.py -M Impacts -d %s  -m 125 --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1  --redefineSignalPOIs %s --setParameterRanges r=0,20:WGammaSF=0,20:ZGammaSF=0,20 "%(pathT2W, params)) 
+    runCmd("combineTool.py -M Impacts -d %s  -m 125  --doFits --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1  --redefineSignalPOIs %s --setParameterRanges r=0,20:WGammaSF=0,20:ZGammaSF=0,20 --parallel 10"%(pathT2W, params))
     runCmd("combineTool.py -M Impacts -d %s -m 125 -o %s/nuisImpact.json --redefineSignalPOIs %s "%(pathT2W, dirDC, params))
     runCmd("python ./plotImpacts.py --cms-label \"   Internal\" -i %s/nuisImpact.json -o %s/nuisImpact.pdf"%(dirDC, dirDC))
 

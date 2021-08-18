@@ -70,7 +70,7 @@ def getRateParam(name, proc):
             if proc==key:
                 rateParam = val
     return rateParam
-dySF   = getRateParam(name,"r")
+dySF   = getRateParam(name,"r")[1]
 print dySF
 #-----------------------------------------
 #Make a plot for one histogram
@@ -223,7 +223,7 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     #chName = "#splitline{%s}{%s}"%(chName, region)
     chName = "%s, #bf{%s}"%(chName, region)
     crName = formatCRString(Regions[region])
-    crName = "%s, #color[4]{%s=%s}"%(crName, stage, str(dySF))
+    crName = "%s, #color[4]{%s=%s}"%(crName, stage, str(round(dySF, 3)))
     chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
     extraText   = "#splitline{Preliminary}{%s}"%chCRName
     if isData and isRatio:
