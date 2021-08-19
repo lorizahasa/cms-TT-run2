@@ -43,29 +43,35 @@ print inFile
 #Functions to read/write histograms
 #----------------------------------------
 if "le" in channel:
-    newBins = numpy.array([0,80,84,88,92,96,100,180.])
+    #newBins = numpy.array([0,80,84,88,92,96,100,180.])
+    newBins = numpy.array([0,80,100,200.])
 else:
-    newBins = numpy.array([0,90,180.])
+    newBins = numpy.array([0,100,200.])
 newBins = numpy.arange(0.,240.,20) #dont put space
-dySF   = 1.2 
+
+pathDY = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitDYSF/"
+nameDY  = "RP_%s_%s_%s_%s_%s"%(year, "Dilep", "Mu_Ele", "DY_Enriched_a2j_e0b_e0y", "Reco_mass_dilep")
+with open ("%s/RateParams.json"%pathDY) as jsonFileDY:
+    jsonDataDY = json.load(jsonFileDY)
 
 path = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitMisIDSF/"
+name  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, "Mu_Ele", CR, inHistName)
 with open ("%s/RateParams.json"%path) as jsonFile:
     jsonData = json.load(jsonFile)
 
-def getRateParam(name, proc):
-    paramDicts   = jsonData[name]
+def getRateParam(jsonData_, name, param):
+    paramDicts = jsonData_[name]
     rateParam = 1.0
     for paramDict in paramDicts:
         for key, val in paramDict.iteritems():
-            if proc==key:
+            if param==key:
                 rateParam = val
     return rateParam
-name  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, channel, CR, inHistName)
-misIDSF   = getRateParam(name,"r")[1]
-wGammaSF  = getRateParam(name,"WGammaSF")[1]
-zGammaSF  = getRateParam(name,"ZGammaSF")[1]
-print "%s: miIDSF = %s, wGammaSF = %s, zGammaSF = %s"%(CR, misIDSF, wGammaSF, zGammaSF)
+dySF      = getRateParam(jsonDataDY, nameDY,"r")[1]
+misIDSF   = getRateParam(jsonData, name,"r")[1]
+wGammaSF  = getRateParam(jsonData, name,"WGammaSF")[1]
+zGammaSF  = getRateParam(jsonData, name,"ZGammaSF")[1]
+print "%s: dySF = %s, miIDSF = %s, wGammaSF = %s, zGammaSF = %s"%(CR, dySF, misIDSF, wGammaSF, zGammaSF)
 
 def addHist(histList, name):
     if len(histList) ==0:

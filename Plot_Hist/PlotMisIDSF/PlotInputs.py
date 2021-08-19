@@ -16,10 +16,10 @@ SampleData = {
          "Data"   : [rt.kBlack, "Data"]
          }
 SampleBkg = {
-         "MisIDEle"    : [rt.kYellow, "MisIDEle"],
-         "OtherPhotons"    : [rt.kOrange, "OtherPhotons"],
-         "ZGamma"    : [rt.kMint, "ZGamma"],
-         "WGamma"    : [rt.kBeach, "WGamma"],
+         "MisIDEle"    : [rt.kRed, "MisIDEle"],
+         "OtherPhotons"    : [rt.kGreen, "OtherPhotons"],
+         "ZGamma"    : [rt.kBlue, "ZGamma"],
+         "WGamma"    : [rt.kOrange, "WGamma"],
          }
 Samples = SampleBkg 
 

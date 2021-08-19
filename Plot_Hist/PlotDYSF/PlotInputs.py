@@ -16,8 +16,8 @@ SampleData = {
          "Data"   : [rt.kBlack, "Data"]
          }
 SampleBkg = {
-         "DYJets"    : [rt.kYellow, "DY+jets"],
-         "OtherBkgs"    : [rt.kBlue, "OtherBkgs"]
+         "DYJets"    : [rt.kOrange, "DY+jets"],
+         "OtherBkgs"    : [rt.kGreen, "OtherBkgs"]
          }
 Samples = SampleBkg
 SampleSyst = SampleBkg

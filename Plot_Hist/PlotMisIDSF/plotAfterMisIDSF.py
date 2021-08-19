@@ -55,9 +55,9 @@ if not os.path.exists(outPlotFullDir):
 gROOT.SetBatch(True)
 
 #-----------------------------------------
-# Get dySF from the JSON file
+# Get SFs from the JSON file
 #-----------------------------------------
-name  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, channel, region, hName)
+name  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, "Mu_Ele", region, hName)
 path = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitMisIDSF/"
 with open ("%s/RateParams.json"%path) as jsonFile:
     jsonData = json.load(jsonFile)
@@ -108,16 +108,12 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     col_depth = 0
     col_year = SampleBkg["MisIDEle"][0]
     if "16" in year:
-        col_depth = -2
         lumi_13TeV = "35.9 fb^{-1} (#color[%i]{2016})"%(col_year+col_depth)
     if "17" in year:
-        col_depth = -1
         lumi_13TeV = "41.5 fb^{-1} (#color[%i]{2017})"%(col_year + col_depth)
     if "18" in year:
-        col_depth = 0
         lumi_13TeV = "59.7 fb^{-1} (#color[%i]{2018})"%(col_year + col_depth)
     if "Run2" in year:
-        col_depth = 1
         lumi_13TeV = "137.2 fb^{-1} (#color[%i]{Run2})"%(col_year + col_depth)
     yDict = {}
     sList = []
@@ -217,15 +213,15 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         chColor = rt.kCyan+col_depth
         chName = "1#color[%i]{#mu}, p_{T}^{miss} > 20"%chColor
     elif channel in ["ele", "Ele"]:
-        chColor = rt.kRust+col_depth
+        chColor = rt.kRust+col_depth -1
         chName = "1#color[%i]{e}, p_{T}^{miss}  > 20"%chColor
     else:
-        chColor = rt.kRed + col_depth
+        chColor = rt.kRed + col_depth +1
         chName = "1#color[%i]{#mu + e}, p_{T}^{miss}  > 20"%chColor
     #chName = "#splitline{%s}{%s}"%(chName, region)
     chName = "%s, #bf{%s}"%(chName, region)
     crName = formatCRString(Regions[region])
-    crName = "#splitline{(%s)}{#color[4]{%s=%s, ZGSF=%s, WGSF=%s}}"%(crName, stage, str(misIDSF), str(zGammaSF), str(wGammaSF))
+    crName = "#splitline{(%s)}{#color[4]{%s(#mu+e)=%s, ZGSF=%s, WGSF=%s}}"%(crName, stage, str(misIDSF), str(zGammaSF), str(wGammaSF))
     chCRName = "#splitline{#font[42]{%s}}{#font[42]{%s}}"%(chName, crName)
     extraText   = "#splitline{Preliminary}{%s}"%chCRName
     if isData and isRatio:

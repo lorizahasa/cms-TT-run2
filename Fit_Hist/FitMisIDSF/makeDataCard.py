@@ -63,25 +63,26 @@ cb.AddProcesses(["*"],["TT"],["13TeV"],[channel],AllBkgs,[(-1, hName)], False)
 #------------------
 #Add systematics
 #------------------
-cb.cp().process(allMC).AddSyst(cb, "lumi_$ERA", "lnN",ch.SystMap("era") (["13TeV"], 1.025))
-cb.cp().process(allMC).AddSyst(cb, "Weight_pu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_mu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_ele",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "lumi_$ERA", "lnN",ch.SystMap("era") (["13TeV"], 1.025))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_pu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_mu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_ele",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 #cb.cp().process(allMC).AddSyst(cb, "Weight_pho",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_btag_b", "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_btag_l", "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_prefire","shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_q2",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_btag_b", "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_btag_l", "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_prefire","shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_q2",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
 #cb.cp().process(allMC).AddSyst(cb, "Weight_pdf",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_isr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_fsr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_jes",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_jer",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_isr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_fsr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_jes",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_jer",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 #------------------
 #Add rateParam
 #------------------
 cb.cp().process(["ZGamma"]).bin([hName]).AddSyst(cb, 'ZGammaSF', 'rateParam', ch.SystMap()(1.0))
 cb.cp().process(["WGamma"]).bin([hName]).AddSyst(cb, 'WGammaSF', 'rateParam', ch.SystMap()(1.0))
+cb.cp().process(["OtherPhotons"]).bin([hName]).AddSyst(cb, 'OtherPhotonsSF', 'rateParam', ch.SystMap()(1.0))
 #------------------
 #Add syst groups
 #------------------
@@ -111,8 +112,9 @@ print outFilePath
 #Add param
 #------------------
 dc = open(datacardPath, "a")
-dc.write("WGammaSF    \t param \t 1.0 \t 0.10\n")
-dc.write("ZGammaSF    \t param \t 1.0 \t 0.10\n")
+#dc.write("WGammaSF    \t param \t 1.0 \t 0.10\n")
+#dc.write("ZGammaSF    \t param \t 1.0 \t 0.10\n")
+dc.write("OtherPhotonsSF    \t param \t 1.0 \t 0.20\n")
 dc.close()
 
 #------------------------

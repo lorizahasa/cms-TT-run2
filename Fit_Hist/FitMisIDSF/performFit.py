@@ -138,8 +138,7 @@ rMax = 20
 paramList = ["r", "WGammaSF", "ZGammaSF"]
 params    = ','.join([str(param) for param in paramList])
 if isFD:
-    #runCmd("combine -M FitDiagnostics  %s --out %s --robustHesse 1  --expectSignal 1 --plots --redefineSignalPOIs %s -v2 --cminDefaultMinimizerStrategy 0 --setParameterRanges WGammaSF=0,20:ZGammaSF=0,20 --rMin=%s --rMax=%s"%(pathT2W, dirDC, params, rMin, rMax))
-    #runCmd("combine -M FitDiagnostics  %s --out %s  --expectSignal 1 --plots --redefineSignalPOIs %s -v2  --setParameterRanges WGammaSF=0,20:ZGammaSF=0,20 --rMin=%s --rMax=%s"%(pathT2W, dirDC, params, rMin, rMax))
+    runCmd("combine -M FitDiagnostics  %s --out %s --robustHesse 1  --expectSignal 1 --plots --redefineSignalPOIs %s -v2 --cminDefaultMinimizerStrategy 0 --setParameterRanges WGammaSF=0,20:ZGammaSF=0,20 --rMin=%s --rMax=%s"%(pathT2W, dirDC, params, rMin, rMax))
     #runCmd("python diffNuisances.py --all %s/fitDiagnostics.root -g %s/diffNuisances.root"%(dirDC,dirDC))
     print dirDC
     #store rateparams in a json file 

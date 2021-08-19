@@ -43,11 +43,26 @@ print inFile
 #Functions to read/write histograms
 #----------------------------------------
 if "le" in channel:
-    newBins = numpy.array([0,80,84,88,92,96,100,180.])
+    #newBins = numpy.array([0,80,84,88,92,96,100,180.])
+    newBins = numpy.array([0,80,100,200.])
 else:
-    newBins = numpy.array([0,90,180.])
+    newBins = numpy.array([0,100,200.])
 newBins = numpy.arange(0.,240.,20) #dont put space
-dySF   = 1.2 
+pathDY = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitDYSF/"
+nameDY  = "RP_%s_%s_%s_%s_%s"%(year, "Dilep", "Mu_Ele", "DY_Enriched_a2j_e0b_e0y", "Reco_mass_dilep")
+with open ("%s/RateParams.json"%pathDY) as jsonFileDY:
+    jsonDataDY = json.load(jsonFileDY)
+def getRateParam(jsonData_, name, param):
+    paramDicts = jsonData_[name]
+    rateParam = 1.0
+    for paramDict in paramDicts:
+        for key, val in paramDict.iteritems():
+            if param==key:
+                rateParam = val
+    return rateParam
+dySF      = getRateParam(jsonDataDY, nameDY,"r")[1]
+print "dySF = %s"%dySF
+
 def addHist(histList, name):
     if len(histList) ==0:
         print "Hist list | %s, %s | is empty"%(histList, name)

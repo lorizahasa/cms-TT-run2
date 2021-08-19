@@ -29,7 +29,8 @@ channel         = options.channel
 inHistName      = options.inHistName
 CR              = options.CR
 
-name  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, channel, CR, inHistName)
+#name  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, channel, CR, inHistName)
+name  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, "Mu_Ele", CR, inHistName)
 #-----------------------------------------
 #Path of the I/O histograms/datacards
 #----------------------------------------
