@@ -43,24 +43,12 @@ outHistFullDir = "%s/%s"%(condorHistDir, outHistSubDir)
 runCmd("eos root://cmseos.fnal.gov rm -r %s"%outHistFullDir)
 runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%outHistFullDir)
 
-if channel in ["mu", "Mu", "MU", "mU"]:
-    Samples.remove("QCDEle")
-    Samples.remove("DataEle")
-    for sampleMu in Samples:
-        haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(outHistFullDir, sampleMu)
-        haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'%s_.*root\'`"%( inHistFullDir, sampleMu)
-        print haddIn
-        runCmd("hadd -f %s %s"%(haddOut, haddIn))
-else:
-    Samples.remove("QCDMu")
-    Samples.remove("DataMu")
-    for sampleEle in Samples:
-        haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(outHistFullDir, sampleEle)
-        haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'%s_.*root\'`"%( inHistFullDir, sampleEle)
-        runCmd("hadd -f %s %s"%(haddOut, haddIn))
+for sample in Samples:
+    haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(outHistFullDir, sample)
+    haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'%s_.*root\'`"%( inHistFullDir, sample)
+    print haddIn
+    runCmd("hadd -f %s %s"%(haddOut, haddIn))
 
-runCmd("eos root://cmseos.fnal.gov mv %s/Data%s.root %s/Data.root"%(outHistFullDir, channel, outHistFullDir))
-runCmd("eos root://cmseos.fnal.gov mv %s/QCD%s.root %s/QCD.root"%(outHistFullDir, channel, outHistFullDir))
 #Merge all histograms
 haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(outHistFullDir)
 haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'.*root\'`"%(outHistFullDir)

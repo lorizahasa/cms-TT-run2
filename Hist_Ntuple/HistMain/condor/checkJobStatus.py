@@ -33,12 +33,6 @@ condorLogDir = "tmpSub/log"
 #Get all submitted jobs
 #----------------------------------------
 submittedDict = {}
-if channel=="Mu": 
-    Samples.remove("QCDEle")
-    Samples.remove("DataEle")
-else: 
-    Samples.remove("QCDMu")
-    Samples.remove("DataMu")
 #Create for Base
 for sample, r in itertools.product(Samples, Regions.keys()):
     rootFile = "%s_%s_Base.root"%(sample, r)
@@ -49,7 +43,7 @@ for sample, r in itertools.product(Samples, Regions.keys()):
 for sample, syst, level, r in itertools.product(Samples, Systematics, SystLevels, Regions.keys()):
     rootFile = "%s_%s_%s_%s.root"%(sample, r, syst, level)
     arguments = "%s %s %s %s %s %s %s"%(year, decay, channel, sample, syst, level, r)
-    if not sample in ["DataMu", "DataEle", "QCD_DD"]:
+    if not sample in ["Data", "QCD_DD"]:
         submittedDict[rootFile] = arguments
 
 print "Total submitted jobs: %s"%len(submittedDict.keys())
@@ -102,7 +96,7 @@ common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
-Transfer_Input_Files = HistFromNtuple.tar.gz, runMakeHists.sh\n\
+Transfer_Input_Files = HistMain.tar.gz, runMakeHists.sh\n\
 use_x509userproxy = true\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\

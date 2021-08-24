@@ -1,7 +1,8 @@
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 import os
 import sys
-sys.path.insert(0, os.getcwd().replace("Plot_Hist", "Hist_Ntuple"))
+import json
+sys.path.insert(0, os.getcwd().replace("Plot_Hist/PlotMain", "Hist_Ntuple/HistMain"))
 from HistInputs import Regions
 from HistInfo import GetHistogramInfo
 from optparse import OptionParser
@@ -29,9 +30,9 @@ parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type=
                      help="Specify which decayMode moded of ttbar Semilep or DiLep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched",type='str', 
+parser.add_option("-r", "--region", dest="region", default="tty_Enriched_e4j_a2b_e1y",type='str', 
                      help="which control selection and region"), 
-parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
+parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_lgamma",type='str', 
                      help="which histogram to be plottted")
 (options, args) = parser.parse_args()
 year            = options.year
@@ -43,13 +44,41 @@ hName           = options.hName
 #-----------------------------------------
 #Path of the I/O histrograms/plots
 #----------------------------------------
-inHistSubDir = "/Hist_Ntuple/Raw/%s/%s/%s/Merged"%(year, decayMode, channel)
+inHistSubDir = "/Hist_Ntuple/HistMain/forMain/%s/%s/%s/Merged"%(year, decayMode, channel)
 inHistFullDir = "%s/%s"%(condorHistDir, inHistSubDir)
 inFile = TFile("%s/AllInc.root"%(inHistFullDir), "read")
-outPlotSubDir = "Plot_Hist/Raw/%s/%s/%s/%s"%(year, decayMode, channel, region)
+outPlotSubDir = "Plot_Hist/PlotMain/forMain/%s/%s/%s/%s"%(year, decayMode, channel, region)
 outPlotFullDir = "%s/%s"%(condorHistDir, outPlotSubDir)
 if not os.path.exists(outPlotFullDir):
     os.makedirs(outPlotFullDir)
+
+
+#-----------------------------------------
+#Read SFs
+#----------------------------------------
+pathDY = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitDYSF/"
+nameDY  = "RP_%s_%s_%s_%s_%s"%(year, "Dilep", "Mu_Ele", "DY_Enriched_a2j_e0b_e0y", "Reco_mass_dilep")
+with open ("%s/RateParams.json"%pathDY) as jsonFileDY:
+    jsonDataDY = json.load(jsonFileDY)
+
+path = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitMisIDSF/"
+name  = "RP_%s_%s_%s_%s_%s"%(year, "Semilep", "Mu_Ele", "MisID_Enriched_a2j_e0b_e1y", "Reco_mass_lgamma")
+with open ("%s/RateParams.json"%path) as jsonFile:
+    jsonData = json.load(jsonFile)
+
+def getRateParam(jsonData_, name, param):
+    paramDicts = jsonData_[name]
+    rateParam = 1.0
+    for paramDict in paramDicts:
+        for key, val in paramDict.iteritems():
+            if param==key:
+                rateParam = val
+    return rateParam
+DYJetsSF  = getRateParam(jsonDataDY, nameDY,"r")[1]
+MisIDSF   = getRateParam(jsonData, name,"r")[1]
+WGammaSF  = getRateParam(jsonData, name,"WGammaSF")[1]
+ZGammaSF  = getRateParam(jsonData, name,"ZGammaSF")[1]
+print "%s: DYJetsSF = %s, MisIDSF = %s, WGammaSF = %s, ZGammaSF = %s"%(region, DYJetsSF, MisIDSF, WGammaSF, ZGammaSF)
 
 gROOT.SetBatch(True)
 #-----------------------------------------
@@ -85,16 +114,12 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
     col_depth = 0
     col_year = SampleBkg["TTGamma"][0]
     if "16" in year:
-        col_depth = -2
         lumi_13TeV = "35.9 fb^{-1} (#color[%i]{2016})"%(col_year+col_depth)
     if "17" in year:
-        col_depth = -1
         lumi_13TeV = "41.5 fb^{-1} (#color[%i]{2017})"%(col_year + col_depth)
     if "18" in year:
-        col_depth = 0
         lumi_13TeV = "59.7 fb^{-1} (#color[%i]{2018})"%(col_year + col_depth)
     if "Run2" in year:
-        col_depth = 1
         lumi_13TeV = "137.2 fb^{-1} (#color[%i]{Run2})"%(col_year + col_depth)
     yDict = {}
     sList = []
@@ -183,8 +208,10 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         else:
             hStack.SetMaximum(500*hStack.GetMaximum())
     else: 
-        #hStack.SetMaximum(1.3*hStack.GetMaximum())
-        hStack.SetMaximum(1.5*dataHist[0].GetMaximum())
+        if isData:
+            hStack.SetMaximum(1.5*dataHist[0].GetMaximum())
+        else:
+            hStack.SetMaximum(1.3*hStack.GetMaximum())
     hStack.GetXaxis().SetTitle(xTitle)
     hStack.GetYaxis().SetTitle(yTitle)
 
@@ -194,20 +221,24 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
         chColor = rt.kCyan+col_depth
         chName = "1 #color[%i]{#mu}, p_{T}^{miss} > 20"%chColor
     elif channel in ["ele", "Ele"]:
-        chColor = rt.kRust+col_depth
-        chName = "2 #color[%i]{e}, p_{T}^{miss}  > 20"%chColor
+        chColor = rt.kRust - 1
+        chName = "1 #color[%i]{e}, p_{T}^{miss}  > 20"%chColor
     else:
-        chColor = rt.kRed + col_depth
+        chColor = rt.kRed + 1
         chName = "1 #color[%i]{#mu + e}, p_{T}^{miss}  > 20"%chColor
     #chName = "#splitline{%s}{%s}"%(chName, region)
     chName = "%s, #bf{%s}"%(chName, region)
     crName = formatCRString(Regions[region])
+    crName = "#splitline{(%s)}{#color[4]{DYSF=%s, MisIDSF=%s, ZGSF=%s, WGSF=%s}}"%(crName, round(DYJetsSF,2), round(MisIDSF, 2), round(ZGammaSF, 2), round(WGammaSF,2))
     chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
     extraText   = "#splitline{Preliminary}{%s}"%chCRName
     if isData and isRatio:
         nData  = str(int(dataHist[0].Integral()))
         nRatio = str(round(dataHist[0].Integral()/hSumAllBkg.Integral(),2))
         extraText   = "#splitline{Preliminary, Data = %s, Ratio = %s}{%s}"%(nData, nRatio, chCRName)
+    else:
+        nBkg  = str(round(hSumAllBkg.Integral(), 2))
+        extraText   = "#splitline{Preliminary, Bkgs = %s}{%s}"%(nBkg, chCRName)
     #CMS_lumi(canvas, iPeriod, iPosX, extraText)
     CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
 
@@ -252,10 +283,10 @@ def makePlot(hName, region, isSig, isData, isLog, isRatio, isUnc):
 #----------------------------------------
 isData   = True
 isRatio  = True
-if "SR" in region or len(region)==13:
+if "SR" in region: 
     isData  = False
     isRatio = False
 isSig    = True
 isUnc    = False
-isLog    = False
+isLog    = True
 makePlot(hName, region, isSig,  isData, isLog, isRatio, isUnc)

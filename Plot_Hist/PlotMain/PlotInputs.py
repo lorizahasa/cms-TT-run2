@@ -35,9 +35,9 @@ SampleBkg = {
          "TTbar"     : [rt.kRed, "t/t#bar{t}"],
          "WJets"     : [rt.kOrange, "W+jets"],
          "DYJets"    : [rt.kYellow, "DY+jets"],
-         "WGamma"    : [rt.kMint, "W+#gamma"],
-         "ZGamma"    : [rt.kBeach, "Z+#gamma"],
-         "QCD"       : [rt.kPink, "QCD"],
+         "WGamma"    : [rt.kGray, "W+#gamma"],
+         "ZGamma"    : [rt.kMagenta, "Z+#gamma"],
+         "QCD"       : [rt.kCyan, "QCD"],
          "Others"    : [rt.kBlue, "Others"]
          }
 SampleData = {
@@ -57,8 +57,3 @@ SamplePhoCat = {
          "hadronic_photon"   : [rt.kGreyScale,     "Nonprompt #gamma"],
          "hadronic_fake"     : [rt.kBeach,     "Multijet"],
          }
-SampleDYSF = {
-         "DYJets"    : [rt.kYellow, "DY+jets"],
-         "OtherBkgs"    : [rt.kBlue, "OtherBkgs"]
-         }
-SampleBkg = SampleDYSF

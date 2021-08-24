@@ -1,7 +1,7 @@
 NanoAOD_Gen
 Plot_Hist//PlotMain/PlotFromHist
-Plot_Hist/tex
-Fit_Hist/tex
+Plot_Hist/PlotMain/tex
+Fit_Hist/FitMain/tex
 Plot_Hist/PlotDYSF/tex
 Fit_Hist/FitDYSF/tex
 Plot_Hist/PlotMisIDSF/tex

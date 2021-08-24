@@ -9,7 +9,7 @@ def getDataHists(inFile, hName, CR):
     dataHist     = []
     for sample in SampleData.keys():
         #hPath = "data_obs/%s/Base/%s"%(CR, hName)
-        hPath = "data_obs/%s/%s/Base"%(CR, hName)
+        hPath = "data_obs/%s/Base/%s"%(CR, hName)
         try:
             hist = inFile.Get(hPath)
             hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
@@ -23,7 +23,7 @@ def getBkgBaseHists(inFile, hName, CR):
     bkgHists     = []
     for sample in SampleBkg.keys():
         #hPath = "%s/%s/Base/%s"%(sample, CR, hName)
-        hPath = "%s/%s/%s/Base"%(sample, CR, hName)
+        hPath = "%s/%s/Base/%s"%(sample, CR, hName)
         try:
             hist = inFile.Get(hPath)
             hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
@@ -37,7 +37,7 @@ def getSigBaseHists(inFile, hName, CR):
     sigHists     = []
     for sample in SampleSignal.keys():
         #hPath = "%s/%s/Base/%s"%(sample, CR, hName)
-        hPath = "%s/%s/%s/Base"%(sample, CR, hName)
+        hPath = "%s/%s/Base/%s"%(sample, CR, hName)
         try:
             hist = inFile.Get(hPath)
             hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
@@ -257,7 +257,7 @@ def getYield(h):
     err = Double(0.0)
     norm = h.IntegralAndError(1, h.GetNbinsX(), err)
     entry = h.GetEntries()
-    if(entry!=0):
+    if(norm!=0):
         y = [int(entry), round(norm, 1), str(round(100*err/norm, 1)) + " (---)"]
     else:
         y = ["0", "0", "0 (---)"]

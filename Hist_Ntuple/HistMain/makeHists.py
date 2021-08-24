@@ -20,7 +20,7 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
                      help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-s", "--sample", dest="sample", default="TT_tytg_M800",type='str',
                      help="Specify which sample to run on" )
-parser.add_option("-r", "--region", dest="region", default="tty_Enriched",type='str', 
+parser.add_option("-r", "--region", dest="region", default="tty_Enriched_a3j_e0b_e1y",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--level", "--level", dest="level", default="",type='str',
                      help="Specify up/down of systematic")
@@ -30,7 +30,7 @@ parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='
                      help="which histogram to be plottted")
 parser.add_option("--allHists","--allHists", dest="makeAllHists",action="store_true",default=False,
                      help="Make full list of hists in histogramDict" )
-parser.add_option("--isCat","--isCat", dest="isCat",action="store_true",default=False,
+parser.add_option("--isCat","--isCat", dest="isCat",action="store_true",default=True,
                      help="Make full list of hists in histogramDict" )
 (options, args) = parser.parse_args()
 year = options.year
@@ -96,9 +96,9 @@ histDirInFile = "%s/%s/Base"%(sample, region)
 variation = "Base"
 if "Data" in sample:
     histDirInFile = "data_obs/%s/Base"%(region)
-if "QCD%s"%channel in sample:
-    histDirInFile = "QCD/%s/Base"%(region)
-
+sample_ = sample
+if "Data" in sample or "QCD" in sample:
+    sample_ = "%s%s"%(sample, channel)
 #-----------------------------------------
 #For Systematics
 #----------------------------------------
@@ -110,8 +110,6 @@ else:
 	level = "Down"
 if not syst=="Base":
     histDirInFile = "%s/%s/%s%s"%(sample, region, syst,level) 
-    if "QCD%s"%channel in sample:
-        histDirInFile = "QCD/%s/%s%s"%(region, syst, level)
     variation = "%s_%s"%(syst,level) 
     toPrint("Running for systematics", syst+level)
     if syst=="Weight_pu":
@@ -171,18 +169,10 @@ if not syst=="Base":
 #Select channels
 #----------------------------------------
 if channel=="Mu":
-    if sample=="Data":
-        sample = "DataMu"
-    if sample=="QCD":
-        sample = "QCDMu"
     outFileFullDir = outFileMainDir+"/%s/%s/Mu"%(year,decayMode)
     extraCuts            = "(Event_pass_presel_mu && %s)*"%Regions[region]
 
 elif channel=="Ele":
-    if sample=="Data":
-        sample = "DataEle"
-    if sample=="QCD":
-        sample = "QCDEle"
     outFileFullDir = outFileMainDir+"/%s/%s/Ele"%(year,decayMode)
     extraCuts            = "(Event_pass_presel_ele && %s)*"%Regions[region]
 else:
@@ -206,12 +196,12 @@ for hist in histogramsToMake:
 # Fill histograms
 #----------------------------------------
 histograms=[]
-if not sample in samples:
+if not sample_ in samples:
     print "Sample isn't in list"
     print samples.keys()
     sys.exit()
 tree = TChain("AnalysisTree")
-fileList = samples[sample]
+fileList = samples[sample_]
 for fileName in fileList:
     fullPath = "%s/%s"%(analysisNtupleLocation, fileName)
     if "JE" in syst and levelUp:
@@ -275,35 +265,6 @@ for h in histograms:
     toPrint("Integral of Histogram %s = "%h.GetName(), h.Integral())
     outputFile.cd(histDirInFile)
     gDirectory.Delete("%s;*"%(h.GetName()))
-    #h.Write()
-    #toBeBinned = ['_pt', '_met', '_chi2', '_st', '_ht', '_mass']
-    toBeBinned = ['_st', '_ht', '_mass_T']
-    isRebin = False
-    for var in toBeBinned:
-        if var in h.GetName():
-            isRebin = True
-    if "TT" in h.GetName(): 
-        isRebin = False
-    if isRebin:
-        if "_pt" in h.GetName() or '_met' in h.GetName():
-            halfBins = numpy.arange(0,600,40.)
-            restBins = numpy.array([700.,1000.,2000.])
-            newBins  = numpy.concatenate((halfBins, restBins), axis=None)
-        elif "_chi2" in h.GetName():
-            halfBins = numpy.arange(0,300,20.)
-            restBins = numpy.array([400.,600.,1000.])
-            newBins  = numpy.concatenate((halfBins, restBins), axis=None)
-        elif "_mass_T" in h.GetName():
-            halfBins = numpy.arange(0,1700,100.)
-            restBins = numpy.array([1800.,2100.,2500.,3000.,6000.])
-            newBins  = numpy.concatenate((halfBins, restBins), axis=None)
-        else:
-            halfBins = numpy.arange(0,2200,200.)
-            restBins = numpy.array([2400.,2800.,3600.,4800.,6000.])
-            newBins  = numpy.concatenate((halfBins, restBins), axis=None)
-        hNew = h.Rebin(len(newBins) - 1, h.GetName(), newBins)
-        hNew.Write()
-    else:
-        h.Write()
+    h.Write()
 print("Path of output root file:\n%s/%s"%(os.getcwd(), outFileFullPath))
 outputFile.Close()

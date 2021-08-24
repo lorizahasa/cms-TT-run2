@@ -3,9 +3,9 @@ import ROOT as rt
 condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2"
 #-----------------------------------------------------------------
 Year 	      =	["2016", "2017", "2018"]
-#Year 	      =	["2016"]
+#Year 	      =	["2017", "2018"]
 Channel 	  =	["Mu", "Ele"]
-#Channel 	  =	["Mu"]
+#Channel 	  =	["Ele"]
 Decay 	  =	["Semilep"]
 Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"]
 

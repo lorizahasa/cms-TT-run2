@@ -37,11 +37,11 @@ isQCDMC         = options.isQCDMC
 #-----------------------------------------
 #Path of the I/O histograms/datacards
 #----------------------------------------
-inFileName = "%s/Hist_Ntuple/%s/%s/%s/Merged/AllInc_Norm.root"%(condorHistDir, year, decayMode, channel)
+inFileName = "%s/Hist_Ntuple/HistMain/forMain/%s/%s/%s/Merged/AllInc.root"%(condorHistDir, year, decayMode, channel)
 print inFileName
 inHistDirBase   = "$PROCESS/%s/Base/$BIN"%region
 inHistDirSys    = "$PROCESS/%s/$SYSTEMATIC/$BIN"%region
-outFileDir      = "%s/Fit_Hist/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, region, hName, mass)
+outFileDir      = "%s/Fit_Hist/HistMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, region, hName, mass)
 
 outFilePath     = "%s/Shapes_Inc.root"%(outFileDir)
 datacardPath    = "%s/Datacard_Inc.txt"%(outFileDir)
@@ -53,8 +53,8 @@ if not os.path.exists(outFileDir):
 #-----------------------------------
 cb = ch.CombineHarvester()
 #cb.SetVerbosity(4)
-#AllBkgs = ["TTbar", "Wjets", "ZJets", "Diboson", "SingleTop", "TTV","QCD"]
-AllBkgs = ["TTGamma", "TTbar", "SingleTop", "Others"] 
+AllBkgs = ["TTbar", "TTGamma", "WJets", "DYJets", "WGamma", "ZGamma", "Others","QCD"]
+#AllBkgs = ["TTGamma", "TTbar", "SingleTop", "Others"] 
 Signal  = ["TT_tytg_M%s"%mass]
 allMC   = Signal + AllBkgs
 #------------------
@@ -72,7 +72,6 @@ cb.AddProcesses(["*"],["TT"],["13TeV"],[channel],AllBkgs,[(-1, hName)], False)
 cb.cp().process(allMC).AddSyst(cb, "lumi_$ERA", "lnN",ch.SystMap("era") (["13TeV"], 1.025))
 cb.cp().process(["TTGamma"]).AddSyst(cb, "CMS_norm_tty", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
 cb.cp().process(["TTbar"]).AddSyst(cb, "CMS_norm_tt", "lnN",ch.SystMap("era") (["13TeV"], 1.055))
-cb.cp().process(["SingleTop"]).AddSyst(cb, "CMS_norm_t", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
 cb.cp().process(["Others"]).AddSyst(cb, "CMS_norm_o", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
 cb.cp().process(allMC).AddSyst(cb, "Weight_pu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_mu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
@@ -81,7 +80,7 @@ cb.cp().process(allMC).AddSyst(cb, "Weight_ele",    "shape",ch.SystMap("era") ([
 cb.cp().process(allMC).AddSyst(cb, "Weight_btag_b", "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_btag_l", "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_prefire","shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "Weight_q2",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "Weight_q2",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
 #cb.cp().process(allMC).AddSyst(cb, "Weight_pdf",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_isr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_fsr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))

@@ -9,16 +9,16 @@ if os.path.exists("tmpSub"):
 else:
     os.makedirs("tmpSub/log")
 condorLogDir = "log"
-tarFile = "tmpSub/Hist_Ntuple.tar.gz"
+tarFile = "tmpSub/HistMain.tar.gz"
 if os.path.exists("../hists"):
     os.system("rm -r ../hists")
-os.system("tar -zcvf %s ../../Hist_Ntuple --exclude condor"%tarFile)
+os.system("tar -zcvf %s ../../HistMain --exclude condor"%tarFile)
 os.system("cp runMakeHists.sh tmpSub/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
-Transfer_Input_Files = Hist_Ntuple.tar.gz, runMakeHists.sh\n\
+Transfer_Input_Files = HistMain.tar.gz, runMakeHists.sh\n\
 use_x509userproxy = true\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\
@@ -35,12 +35,6 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
     jdlFile = open('tmpSub/%s'%jdlName,'w')
     jdlFile.write('Executable =  runMakeHists.sh \n')
     jdlFile.write(common_command)
-    if channel=="Mu": 
-        Samples.remove("QCDEle")
-        Samples.remove("DataEle")
-    else: 
-        Samples.remove("QCDMu")
-        Samples.remove("DataMu")
     #Create for Base, Control region
     for sample in Samples:
         run_command =  \
@@ -53,15 +47,9 @@ queue 1\n\n' %(year, decay, channel, sample)
         run_command =  \
 		'arguments  = %s %s %s %s %s %s \n\
 queue 1\n\n' %(year, decay, channel, sample, syst, level)
-        if not sample in ["DataMu", "DataEle", "QCD_DD"]:
+        if not sample in ["Data", "QCD_DD"]:
             jdlFile.write(run_command)
 	#print "condor_submit jdl/%s"%jdlFile
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
-    if channel=="Mu": 
-        Samples.append("QCDEle")
-        Samples.append("DataEle")
-    else: 
-        Samples.append("QCDMu")
-        Samples.append("DataMu")
 subFile.close()

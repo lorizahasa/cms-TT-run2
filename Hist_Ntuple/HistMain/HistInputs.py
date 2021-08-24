@@ -1,22 +1,22 @@
 #-----------------------------------------------------------------
-condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple/Raw"
+condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple/HistMain/Raw"
 #-----------------------------------------------------------------
-#Years 	      =	["2016", "2017", "2018"]
-Years 	      =	["2016"]
-#Channels 	  =	["Mu", "Ele"]
-Channels 	  =	["Ele"]
-Decays 	      =	["Dilep"]
+Years 	      =	["2016", "2017", "2018"]
+#Years 	      =	["2017"]
+Channels 	  =	["Mu", "Ele"]
+#Channels 	  =	["Mu"]
+Decays 	      =	["Semilep"]
 
 Samples = []
-#Samples.append("TT_tytg_M700")
+Samples.append("TT_tytg_M700")
 Samples.append("TT_tytg_M800")
-#Samples.append("TT_tytg_M900")
-#Samples.append("TT_tytg_M1000")
+Samples.append("TT_tytg_M900")
+Samples.append("TT_tytg_M1000")
 ##Samples.append("TT_tytg_M1100")
 Samples.append("TT_tytg_M1200")
-#Samples.append("TT_tytg_M1300")
-#Samples.append("TT_tytg_M1400")
-#Samples.append("TT_tytg_M1500")
+Samples.append("TT_tytg_M1300")
+Samples.append("TT_tytg_M1400")
+Samples.append("TT_tytg_M1500")
 Samples.append("TT_tytg_M1600")
 #bkg and data
 Samples.append("TTbar")
@@ -26,10 +26,8 @@ Samples.append("DYJets")
 Samples.append("WGamma")
 Samples.append("ZGamma")
 Samples.append("Others")
-Samples.append("QCDEle")
-Samples.append("QCDMu")
-Samples.append("DataMu")
-Samples.append("DataEle")
+Samples.append("QCD")
+Samples.append("Data")
 
 Systematics   =	[]
 Systematics.append("Weight_pu")
@@ -60,17 +58,14 @@ phoCat["hadronic_fake"]    = "Photon_hadronic_fake"
 Regions = {}
 rForDYSF = {}
 isTT = False
-isTTY = False
-isTTYG = False
+isTTY = False 
+isTTYG = True 
 
 #--------------------------------
 #Validation region (0 photon) 
 #(TOP-18-010, AN2019_227_v20)
 #tt control regions
 #--------------------------------
-rForDYSF['tt_Enriched_e3j_e0b_e0y']              = "Jet_size==3 && Jet_b_size==0 && Photon_size==0" 
-#rForDYSF['tt_Enriched_a3j_e0b_e0y']              = "Jet_size>=3 && Jet_b_size==0 && Photon_size==0" 
-#rForDYSF['tt_Enriched_a4j_e0b_e0y']              = "Jet_size>=4 && Jet_b_size==0 && Photon_size==0" 
 if isTT:
     Regions['tt_Enriched_e2j_e0b_e0y']          = "Jet_size==2 && Jet_b_size==0 && Photon_size==0" 
     Regions['tt_Enriched_e3j_e0b_e0y']          = "Jet_size==3 && Jet_b_size==0 && Photon_size==0" 
@@ -96,20 +91,17 @@ if isTTY:
     Regions['tty_Enriched_e4j_a2b_e1y']             = "Jet_size ==4 && Jet_b_size >=2 && Photon_size==1 && FatJet_size==0"
     Regions['tty_Enriched_le4j_a1b_e1y']            = "Jet_size <=4 && Jet_b_size >=1 && Photon_size==1 && FatJet_size==0"
 
-    #Regions['tty_Enriched_a3j_a1b_e1y']            = "Jet_size >=3 && Jet_b_size >=1 && Photon_size==1 && FatJet_size==0"
 #--------------------------------
 #tt+gamma+gluon control regions
 #--------------------------------
 if isTTYG:
-    pass
     #Regions['ttyg_Enriched_CR']         = "((Jet_size>=5 && FatJet_size==0) || (Jet_size>=2 && FatJet_size==1)) && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75"
     #Regions['ttyg_Enriched_CR_Resolved']= "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75 && FatJet_size ==0"
     #Regions['ttyg_Enriched_CR_Boosted'] = "Jet_size >=2 && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75 && FatJet_size >=1"
-    #Regions['ttyg_Enriched']            = "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1"
 
     #--------------------------------
     #signal regions
     #--------------------------------
-    #Regions['ttyg_Enriched_SR']         = "((Jet_size>=5 && FatJet_size==0) || (Jet_size>=2 && FatJet_size==1)) && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100"
-    #Regions['ttyg_Enriched_SR_Resolved']= "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100 && FatJet_size ==0"
-    #Regions['ttyg_Enriched_SR_Boosted'] = "Jet_size >=2 && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100 && FatJet_size >=1"
+    Regions['ttyg_Enriched_SR']         = "((Jet_size>=5 && FatJet_size==0) || (Jet_size>=2 && FatJet_size==1)) && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100"
+    Regions['ttyg_Enriched_SR_Resolved']= "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100 && FatJet_size ==0"
+    Regions['ttyg_Enriched_SR_Boosted'] = "Jet_size >=2 && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100 && FatJet_size >=1"

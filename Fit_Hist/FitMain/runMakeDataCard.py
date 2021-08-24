@@ -1,7 +1,10 @@
 import os
 import itertools
 import json
+import sys
+sys.path.insert(0, os.getcwd().replace("Fit_Hist/FitMain", "Hist_Ntuple/HistMain"))
 from FitInputs import *
+from HistInputs import Regions
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
