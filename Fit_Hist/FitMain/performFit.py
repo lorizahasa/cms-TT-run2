@@ -12,16 +12,16 @@ from array import array
 #INPUT command-line arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016",type='str',
-                     help="Specify the year of the data taking" )
+parser.add_option("-y", "--years", dest="years", default="2016",type='str',
+                     help="Specify the years of the data taking" )
 parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
-parser.add_option("-c", "--channel", dest="channel", default="Ele",type='str',
-		  help="Specify which channel Mu or Ele? default is Mu" )
+parser.add_option("-c", "--channels", dest="channels", default="Ele",type='str',
+		  help="Specify which channels Mu or Ele? default is Mu" )
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",type='str', 
-                     help="which control selection and region"), 
+parser.add_option("-r", "--regions", dest="regions", default="ttyg_Enriched_SR",type='str', 
+                     help="which control selection and regions"), 
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
 parser.add_option("--isT2W","--isT2W",dest="isT2W", default=False, action="store_true",
@@ -38,25 +38,13 @@ parser.add_option("--isTP","--isTP",dest="isTP", default=False, action="store_tr
 		  help="generate toys")
 parser.add_option("--isPlotTP","--isPlotTP",dest="isPlotTP", default=False, action="store_true",
 		  help="plot generated toys")
-parser.add_option("--isCombCh","--isCombCh",dest="isCombCh", default=False, action="store_true",
-		  help="combine datacards")
-parser.add_option("--isCombCR","--isCombCR",dest="isCombCR", default=False, action="store_true",
-		  help="combine datacards")
-parser.add_option("--isCombYear","--isCombYear",dest="isCombYear", default=False, action="store_true",
-		  help="combine datacards")
-parser.add_option("--isCombChYear","--isCombChYear",dest="isCombChYear", default=False, action="store_true",
-		  help="combine datacards")
 (options, args) = parser.parse_args()
-year            = options.year
+years           = options.years
 decayMode       = options.decayMode
-channel         = options.channel
+channels        = options.channels
 mass            = options.mass
-region          = options.region
+regions          = options.regions
 hName           = options.hName
-isCombCh        = options.isCombCh
-isCombCR        = options.isCombCR
-isCombYear      = options.isCombYear
-isCombChYear    = options.isCombChYear
 
 isT2W 			= options.isT2W
 isFD            = options.isFD
@@ -71,64 +59,29 @@ isPlotTP        = options.isPlotTP
 def runCmd(cmd):
     print "\n\033[01;32m Excecuting: \033[00m %s"%cmd
     os.system(cmd)
-with open ("DataCards.json") as jsonFile:
-    jsonData = json.load(jsonFile)
 
 #-----------------------------------------
 #For separate datacards
 #----------------------------------------
 def getDataCard(year, decayMode, channel, region, hName):
-    name  = "DC_%s_%s_%s_%s_%s_mH%s"%(year, decayMode, channel, region, hName, mass)
-    pathDC   = jsonData[name][0]
-    if not os.path.exists(pathDC):
-        print "Datacard: %s does not exist"%pathDC
-        sys.exit()
-    return pathDC
+    args = "-y %s -d %s -c %s -m %s -r %s --hist %s"%(year, decayMode, channel, mass, region, hName)
+    runCmd("python makeDataCard.py  %s "%args)
+    #name  = "output/Datacard_%s_%s_%s_%s_%s_mH%s.txt"%(year, decayMode, channel, region, hName, mass)
+    inDirDC = "%s/Fit_Hist/FitMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, region, hName, mass)
+    name = "%s/Datacard_Alone.txt"%inDirDC
+    return name
 #-----------------------------------------
 #For combination of datacards
 #----------------------------------------
 dcList = []
-if isCombCh:
-    channels  = ["Mu", "Ele"]
-    combCh = '_'.join(channels)
-    for ch in channels:
-        pathDC = getDataCard(year, decayMode, ch, region, hName)
-        dcList.append(pathDC)
-    rateParamKey  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, combCh, region, hName)
-    dirDC = "%s/Fit_Hist/FitMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, combCh, region, hName, mass)
-if isCombCR:
-    regions  = ["ttyg_Enriched_SR_Resolved", "ttyg_Enriched_SR_Boosted"]
-    combCR = '_'.join(regions)
-    for cr in regions:
-        pathDC = getDataCard(year, decayMode, channel, cr , hName)
-        dcList.append(pathDC)
-    #rateParamKey  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, combCR, region, hName)
-    dirDC = "%s/Fit_Hist/FitMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, combCR, hName, mass)
-elif isCombYear:
-    years= ["2016", "2017", "2018"]
-    combYear = '_'.join(years)
-    for y in years:
-        pathDC = getDataCard(y, decayMode, channel, region, hName)
-        dcList.append(pathDC)
-    rateParamKey  = "RP_%s_%s_%s_%s_%s"%(combYear, decayMode, channel, region, hName)
-    dirDC = "%s/Fit_Hist/FitMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, combYear, decayMode, channel, region, hName, mass)
-elif isCombChYear:
-    channels  = ["Mu", "Ele"]
-    years= ["2016", "2017", "2018"]
-    combCh = '_'.join(channels)
-    combYear = '_'.join(years)
-    for y, ch in itertools.product(years, channels):
-        pathDC = getDataCard(y, decayMode, ch, region, hName)
-        dcList.append(pathDC)
-    rateParamKey  = "RP_%s_%s_%s_%s_%s"%(combYear, decayMode, combCh, region, hName)
-    dirDC = "%s/Fit_Hist/FitMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, combYear, decayMode, combCh, region, hName, mass)
-else:
-    pathDC = getDataCard(year, decayMode, channel, region, hName)
-    dcList.append(pathDC)
-    rateParamKey  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, channel, region, hName)
-    dirDC = "%s/Fit_Hist/FitMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, region, hName, mass)
-
+for y in years.split("__"):
+    for ch in channels.split("__"):
+        for r in regions.split("__"):
+            pathDC = getDataCard(y, decayMode, ch, r, hName)
+            dcList.append(pathDC)
 combDCText = ' '.join(dcList)
+#dirDC = "output"
+dirDC = "%s/Fit_Hist/FitMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, years, decayMode, channels, regions, hName, mass)
 if not os.path.exists(dirDC):
     os.makedirs(dirDC)
 pathDC  = "%s/Datacard.txt"%(dirDC)
@@ -159,6 +112,7 @@ if isFD:
     fit_s.Print()
     with open ('RateParams.json') as jsonFile:
         jsonData = json.load(jsonFile)
+    rateParamKey = "AAA"
     jsonData[rateParamKey] = []
     for param in paramList:
         fit_s.floatParsFinal().find(param).Print()

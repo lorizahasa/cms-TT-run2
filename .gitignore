@@ -6,6 +6,8 @@ Plot_Hist/PlotDYSF/tex
 Fit_Hist/FitDYSF/tex
 Plot_Hist/PlotMisIDSF/tex
 Fit_Hist/FitMisIDSF/tex
+Fit_Hist/FitMain/output/
+Fit_Hist/FitMain/combine_logger.out
 *.root
 */*.root
 

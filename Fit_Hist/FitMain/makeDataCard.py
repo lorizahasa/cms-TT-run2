@@ -41,10 +41,12 @@ inFileName = "%s/Hist_Ntuple/HistMain/forMain/%s/%s/%s/Merged/AllInc.root"%(cond
 print inFileName
 inHistDirBase   = "$PROCESS/%s/Base/$BIN"%region
 inHistDirSys    = "$PROCESS/%s/$SYSTEMATIC/$BIN"%region
-outFileDir      = "%s/Fit_Hist/HistMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, region, hName, mass)
+#outFileDir      = "output" 
+outFileDir      = "%s/Fit_Hist/FitMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, region, hName, mass)
 
-outFilePath     = "%s/Shapes_Inc.root"%(outFileDir)
-datacardPath    = "%s/Datacard_Inc.txt"%(outFileDir)
+#name  = "%s_%s_%s_%s_%s_mH%s"%(year, decayMode, channel, region, hName, mass)
+outFilePath     = "%s/Shapes.root"%(outFileDir)
+datacardPath    = "%s/Datacard_Alone.txt"%(outFileDir)
 if not os.path.exists(outFileDir):
     os.makedirs(outFileDir)
 
@@ -101,6 +103,10 @@ cb.SetAutoMCStats(cb, 0, True, 1)
 #------------------
 cb.cp().backgrounds().ExtractShapes(inFileName, inHistDirBase, inHistDirSys)
 cb.cp().signals().ExtractShapes(inFileName, inHistDirBase, inHistDirSys)
+#f_ = TFile.Open(inFileName)
+#print type(f_)
+#cb.cp().backgrounds().ExtractShapes(f_, inHistDirBase, inHistDirSys)
+#cb.cp().signals().ExtractShapes(f_, inHistDirBase, inHistDirSys)
 cb.WriteDatacard(datacardPath, outFilePath) 
 #------------------
 #print various info
@@ -121,18 +127,3 @@ print outFilePath
 #dc.write("WGSF    \t param \t 1.0 \t 0.10\n")
 #dc.write("ZGSF    \t param \t 1.0 \t 0.10\n")
 #dc.close()
-
-#------------------------
-#Save DC path in a file
-#------------------------
-name  = "DC_%s_%s_%s_%s_%s_mH%s"%(year, decayMode, channel, region, hName, mass)
-if not os.path.exists("./DataCards.json"):
-    with open("DataCards.json", "w") as f:
-        data = {}
-        json.dump(data, f)
-with open ('DataCards.json') as jsonFile:
-    jsonData = json.load(jsonFile)
-jsonData[name] = []
-jsonData[name].append(datacardPath)
-with open ('DataCards.json', 'w') as jsonFile:
-    json.dump(jsonData, jsonFile)
