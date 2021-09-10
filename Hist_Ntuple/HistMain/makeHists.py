@@ -30,7 +30,7 @@ parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='
                      help="which histogram to be plottted")
 parser.add_option("--allHists","--allHists", dest="makeAllHists",action="store_true",default=False,
                      help="Make full list of hists in histogramDict" )
-parser.add_option("--isCat","--isCat", dest="isCat",action="store_true",default=True,
+parser.add_option("--isCat","--isCat", dest="isCat",action="store_true",default=False,
                      help="Make full list of hists in histogramDict" )
 (options, args) = parser.parse_args()
 year = options.year

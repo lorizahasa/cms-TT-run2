@@ -1,4 +1,5 @@
 #include "interface/makeNtuple.h"
+#include "src/argparse.hpp"
 #define makeNtuple_cxx
 
 int jecvar012_g = 1; // 0:down, 1:norm, 2:up
@@ -15,15 +16,35 @@ bool qcdSample;
 auto startClock = std::chrono::high_resolution_clock::now();
 
 #ifdef makeNtuple_cxx
-makeNtuple::makeNtuple(int ac, char** av)
+makeNtuple::makeNtuple(int ac, const char** av)
 {
-    startClock = std::chrono::high_resolution_clock::now();
-    std::string eventStr = "-1";
-
-    if(ac < 5){
-	std::cout << "usage: ./makeNtuple year sampleName outputFileDir inputFile[s]" << std::endl;
+    // make a new ArgumentParser
+    // https://github.com/hbristow/argparse
+    ArgumentParser parser;
+    // add some arguments to search for
+    parser.addArgument("-d", "--decay",   1); 
+    parser.addArgument("-y", "--year",    1);
+    parser.addArgument("-s", "--sample",  1);
+    parser.addArgument("-j", "--jet",     1); 
+    parser.addArgument("-n", "--number",   1);
+    parser.addArgument("-o", "--out",     1);
+    parser.addArgument("-l", "--list",    1);
+    parser.addArgument("-c", "--isCutflow",    1);
+    parser.addArgument("-p", "--event",    1);
+    parser.parse(ac, av);
+    
+    // if we get here, the configuration is valid
+    std::string DECAY = parser.retrieve<std::string>("decay");
+    std::string list = parser.retrieve<std::string>("list");
+    std::cout<<DECAY<<std::endl;
+    std::cout<<list<<std::endl;
+    if(ac < 8){
+	std::cout << "./makeNtuple -d Semilep -y 2016 -s TTGamma_SingleLept -j JetBase -b 1of10 -o . -l TTGamma_SingleLept_FileList_2016 " << std::endl;
 	return;
     }
+
+    startClock = std::chrono::high_resolution_clock::now();
+    std::string eventStr = "-1";
 
     /*
     printf("Git Commit Number: %s\n", VERSION);
@@ -42,73 +63,29 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
     */
     bool saveCutflow=false;
-    if (std::string(av[1])=="cutflow"){
-	saveCutflow=true;
-	for (int i = 1; i < ac-1; i++){
-	    av[i] = av[i+1];
-	}
-	ac = ac-1;
-    }
-
-    if (std::string(av[1])=="event"){
-
-	std::string tempEventStr(av[2]);
-	eventNum = std::stoi(tempEventStr);
-	for (int i = 1; i < ac-2; i++){
-	    av[i] = av[i+2];
-	    //cout << av[i] << " ";
-	}
-	ac = ac-2;
-	//	cout  << endl;
-	eventStr = tempEventStr;
-	//cout << eventStr << "  "  << eventNum << endl;
-    }
+    if (isCutflow=="Yes") saveCutflow = true;
+	eventNum = std::stoi(EVENT);
     dilepSel    = false;
     semilepSel  = false;
     qcdSample   = false;
-
-    if (std::string(av[1])=="semilepton" || 
-        std::string(av[1])=="semilept" ||
-        std::string(av[1])=="semilep" ||
-        std::string(av[1])=="Semilepton" || 
-        std::string(av[1])=="Semilept" ||
-        std::string(av[1])=="Semilep"){
+    if (DECAY=="semilepton" || DECAY=="semilept" || DECAY=="semilep" ||
+        DECAY=="Semilepton" || DECAY=="Semilept" || DECAY=="Semilep"){
         semilepSel=true;
-        for (int i = 1; i < ac-1; i++){
-            av[i] = av[i+1];
-	}
-	ac = ac-1;
         cout << "---------------------------------------" << endl;
         cout << "Using Semilepton Selection" << endl;
         cout << "---------------------------------------" << endl;
     }
-    if (std::string(av[1])=="dilepton" || 
-        std::string(av[1])=="dilept" ||
-        std::string(av[1])=="dilep" ||
-        std::string(av[1])=="Dilepton" || 
-        std::string(av[1])=="Dilept" ||
-        std::string(av[1])=="Dilep"){
-        dilepSel=true;
-        for (int i = 1; i < ac-1; i++){
-            av[i] = av[i+1];
-	}
-	ac = ac-1;
+    if (DECAY=="dilepton" || DECAY=="dilept" || DECAY=="dilep" ||
+        DECAY=="Dilepton" || DECAY=="Dilept" || DECAY=="Dilep"){
+        DECAY=="Dilepton" || DECAY=="Dilept" |        dilepSel=true;
+        dilepSel = true;
         cout << "---------------------------------------" << endl;
         cout << "Using Dilepton Selection" << endl;
         cout << "---------------------------------------" << endl;
     }
-
-    if (std::string(av[1])=="qcd" || 
-        std::string(av[1])=="qcdCR" ||
-        std::string(av[1])=="QCDcr" ||
-        std::string(av[1])=="QCD" ||
-        std::string(av[1])=="QCDCR"){
-  
+    if (DECAY=="qcd" || DECAY=="qcdCR" || DECAY=="qcdCr" ||
+        DECAY=="QCDcr" || DECAY=="QCD" || DECAY=="QCDCR"){
         qcdSample=true;
-        for (int i = 1; i < ac-1; i++){
-            av[i] = av[i+1];
-	}
-	ac = ac-1;
         cout << "----------------------------------" << endl;
         cout << "Using QCD Control Region Selection" << endl;
         cout << "----------------------------------" << endl;
@@ -117,19 +94,14 @@ makeNtuple::makeNtuple(int ac, char** av)
     //check if NofM type format is before output name (for splitting jobs)
     int nJob = -1;
     int totJob = -1;
-    std::string checkJobs(av[3]);
+    std::string checkJobs(NUMBER);
     size_t pos = checkJobs.find("of");
     if (pos != std::string::npos){
 	nJob = std::stoi(checkJobs.substr(0,pos));
 	totJob = std::stoi(checkJobs.substr(pos+2,checkJobs.length()));
-	for (int i = 3; i < ac-1; i++){
-	    av[i] = av[i+1];
-	    //cout << av[i] << " ";
-	}
-	ac = ac-1;
     }
     cout << nJob << " of " << totJob << endl;
-    sampleType = av[2];
+    sampleType = SAMPLE;
     systematicType = "";
     cout << sampleType << endl;
 
@@ -137,7 +109,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (sampleType.find("Data") != std::string::npos){
 	isMC = false;
     }
-    std::string year(av[1]);
+    std::string year(YEAR);
     tree = new EventTree(ac-4, false, year, !isMC, av+4);
     isSystematicRun = false;
     pos = sampleType.find("__");
@@ -402,7 +374,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (saveCutflow) {
 	evtPick->init_cutflow_files(outputFileName);
     }
-    cout << "HERE" << endl;
+    cout << "HERE: " <<av[5]<<endl;
     PUReweight* PUweighter = new PUReweight(ac-4, av+4, PUfilename);
     PUReweight* PUweighterUp = new PUReweight(ac-4, av+4, PUfilename_up);
     PUReweight* PUweighterDown = new PUReweight(ac-4, av+4, PUfilename_down);
@@ -726,9 +698,11 @@ makeNtuple::makeNtuple(int ac, char** av)
 	    FillEvent(year); //HEM test
 
 	    if(isMC) {
+            /*
 		_PUweight    = PUweighter->getWeight(tree->nPUTrue_);
 		_PUweight_Up = PUweighterUp->getWeight(tree->nPUTrue_);
 		_PUweight_Do = PUweighterDown->getWeight(tree->nPUTrue_);
+        */
 
 		_btagWeight_1a      = getBtagSF_1a("central", reader, tree->event_==eventNum);
 		_btagWeight_1a_b_Up = getBtagSF_1a("b_up",    reader);
@@ -813,7 +787,6 @@ makeNtuple::makeNtuple(int ac, char** av)
             //if(_eleEffWeight_Trig_Up >1.0)cout<<_eleEffWeight_Trig_Up<<endl;
 		}
 	    }
-
 	    if (year=="2016" || year=="2017"){
 		float prefireSF[3] = {1.,1.,1.};
 
@@ -838,7 +811,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 		    cout <<"  phoEffWeight="<<_phoEffWeight.at(0);
 		}
 		cout << "  prefire="<<_prefireSF;
-		cout << "  PUscale="<<_PUweight;
+		//cout << "  PUscale="<<_PUweight;
 		cout<<endl;
 	    }
 	}
@@ -906,8 +879,8 @@ makeNtuple::makeNtuple(int ac, char** av)
     gitStatus.Write();
     */
     outputFile->Close();
-    
 }
+
 
 
 void makeNtuple::FillEvent(std::string year)
@@ -1683,7 +1656,7 @@ void makeNtuple::findPhotonCategory(int phoInd, EventTree* tree, bool* genuine, 
 
 
 #endif
-int main(int ac, char** av){
+int main(int ac, const char** av){
 
  /*
   if (std::string(av[1])=="git"){

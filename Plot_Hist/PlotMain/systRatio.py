@@ -3,11 +3,12 @@ import os
 import numpy
 import sys
 import math
+sys.path.insert(0, os.getcwd().replace("Plot_Hist/PlotMain", "Hist_Ntuple/HistMain"))
 from optparse import OptionParser
-from PlotInputs import *
 from PlotFunc import *
 from PlotCMSLumi import *
 from PlotTDRStyle import *
+from HistInputs import Regions, Systematics, SystLevels
 
 padGap = 0.01
 iPeriod = 4;
@@ -24,21 +25,21 @@ parser.add_option("-y", "--year", dest="year", default="2016",type='str',
                      help="Specifyi the year of the data taking" )
 parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decayMode moded of ttbar SemiLep or DiLep? default is SemiLep")
-parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
-		  help="Specify which channel Mu or Ele? default is Mu" )
+parser.add_option("-c", "--channel", dest="channel", default="Ele",type='str',
+		  help="Specify which channel Mu or Ele? default is Ele" )
 parser.add_option("-s", "--sample", dest="sample", default="TTGamma",type='str',
 		  help="name of the MC sample" )
-parser.add_option("--ps", "--phaseSpace", dest="phaseSpace", default="Boosted_SR",type='str', 
-                     help="which control selection and region")
-parser.add_option("--plot", "--plot", dest="hName", default="Reco_mass_T",type='str', 
-                     help="name of the histogram")
+parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",type='str', 
+                     help="which control selection and region"), 
+parser.add_option("--hist", "--hist", dest="hName", default="Photon_et",type='str', 
+                     help="which histogram to be plottted")
 (options, args) = parser.parse_args()
 year            = options.year
 decayMode       = options.decayMode
 channel         = options.channel
 sample          = options.sample
-hName            = options.hName
-phaseSpace = options.phaseSpace
+region = options.region
+hName           = options.hName
 
 isRebin = False
 print "------------------------------------"
@@ -47,9 +48,9 @@ print "------------------------------------"
 #-----------------------------------------
 #Path of the I/O histrograms/plots
 #----------------------------------------
-inHistSubDir = "Hist_Ntuple/%s/%s/%s/Merged"%(year, decayMode, channel)
+inHistSubDir = "Hist_Ntuple/HistMain/forMain/%s/%s/%s/Merged"%(year, decayMode, channel)
 inHistFullDir = "%s/%s"%(condorHistDir, inHistSubDir)
-outPlotSubDir = "Plot_Hist/%s/%s/%s/%s"%(year, decayMode, channel, phaseSpace)
+outPlotSubDir = "Plot_Hist/PlotMain/forMain/%s/%s/%s/%s"%(year, decayMode, channel, region)
 outPlotFullDir = "%s/%s"%(condorHistDir, outPlotSubDir)
 if not os.path.exists(outPlotFullDir):
     os.makedirs(outPlotFullDir)
@@ -65,7 +66,7 @@ gPad.SetLeftMargin(0.15);
 #gPad.SetTickx(0);
 #gPad.SetLogy(True);
 gPad.RedrawAxis();
-rootFile = TFile("%s/AllInc_Norm.root"%(inHistFullDir), "read")
+rootFile = TFile("%s/AllInc.root"%(inHistFullDir), "read")
 print rootFile
 #print("%10s %10s %10s %10s, %10s"%("Systematics", "Down", "Base", "Up", "RelativeUnc"))
 print("%10s %22s %22s %22s %10s"%("Syst", "Down", "Base", "Up", "Unc"))
@@ -84,10 +85,13 @@ def checkNanInBins(hist):
 allHistUp = []
 allHistDown = []
 allSystPercentage = {}
+print Systematics
 for index, syst in enumerate(Systematics):
-    hPathBase = "%s/%s/Base/%s"%(sample, phaseSpace, hName)
-    hPathUp   = "%s/%s/%sUp/%s"%(sample, phaseSpace, syst, hName)
-    hPathDown   = "%s/%s/%sDown/%s"%(sample, phaseSpace, syst, hName)
+    hPathBase   = "%s/%s/Base/%s"%(sample, region, hName)
+    hPathUp     = "%s/%s/%sUp/%s"%(sample, region, syst, hName)
+    hPathDown   = "%s/%s/%sDown/%s"%(sample, region, syst, hName)
+    #print hPathBase
+    #print hPathUp
     hBase = rootFile.Get(hPathBase).Clone("Base_")
     hUp   = rootFile.Get(hPathUp).Clone("%sUp_"%syst) 
     hDown = rootFile.Get(hPathDown).Clone("%sDown_"%syst) 
@@ -154,7 +158,7 @@ for index, syst in enumerate(Systematics):
     myColor = index+2
     if myColor >9:
         myColor = 32+index
-    decoHistRatio(hRatioUp, hName, "#frac{SystUp}{Nominal} (solid), #frac{SystDown}{Nominal} (dashed)", myColor)
+    decoHistRatio(hRatioUp, hName, "#frac{Up}{Nom} (solid), #frac{Down}{Nom} (dashed)", myColor)
     hRatioUp.GetXaxis().SetTitleSize(0.045)
     hRatioUp.GetXaxis().SetLabelSize(0.045)
     hRatioUp.GetYaxis().SetTitleSize(0.045)
@@ -167,7 +171,7 @@ for index, syst in enumerate(Systematics):
     #Ratio Down
     hRatioDown = hDown.Clone(syst)
     hRatioDown.Divide(hBase)
-    decoHistRatio(hRatioDown, hName, "#frac{SystUp}{Nominal} (solid), #frac{SystDown}{Nominal} (dashed)", myColor)
+    decoHistRatio(hRatioDown, hName, "#frac{Up}{Nom} (solid), #frac{Down}{Nom} (dashed)", myColor)
     hRatioDown.SetLineStyle(2)
     hRatioDown.SetLineWidth(2)
     hRatioDown.SetMarkerStyle(index)
@@ -189,9 +193,9 @@ for h in allHistUpSorted:
 yMax = max(maxRatio)
 print yMax
 for i, h in enumerate(allHistUpSorted):
-    h.GetYaxis().SetRangeUser(1-1.6*yMax, 1+1.6*yMax)
+    h.GetYaxis().SetRangeUser(1-0.5*yMax, 1+0.5*yMax)
     systPercentage = int(round(allSystPercentage[h.GetName()]))
-    legName = "%s (%s%%)"%(h.GetName(), str(systPercentage))
+    legName = "%s (%s%%)"%(h.GetName().split("_")[1], str(systPercentage))
     leg.AddEntry(h, legName, "L")
     if(i==0):
         h.Draw("hist")
@@ -216,13 +220,14 @@ chColor = 1
 col_depth = 0
 if channel in ["mu", "Mu", "m"]:
     chColor = rt.kCyan+col_depth
-    chName = "1 #color[%i]{#mu}, #geq 1 #gamma"%chColor
+    chName = "2#color[%i]{#mu}, p_{T}^{miss} #geq 20"%chColor
 else:
     chColor = rt.kPink+col_depth
-    chName = "1 #color[%i]{e}, #geq 1 #gamma"%chColor
-selName = formatCRString(phaseSpace)
-nBase = "#font[42]{%s, Nominal Events = %s}"%(sample, str(round(evtBase,2)))
-line1 = "Preliminary, %s, %s"%(chName, phaseSpace)
+    chName = "2#color[%i]{e}, p_{T}^{miss} #geq 20"%chColor
+selName = formatCRString(region)
+nBase = "#font[42]{%s (N=%s)}"%(sample, str(round(evtBase,2)))
+#line1 = "Preliminary, %s, %s"%(chName, region)
+line1 = "Preliminary, %s"%(chName)
 line2 = selName
 line3 = nBase
 extraText = "#splitline{%s}{#splitline{%s}{%s}}"%(line1, line2, line3)

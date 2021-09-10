@@ -24,10 +24,9 @@ PUReweight::PUReweight(int nFiles, char** fileNames, std::string PUfilename){
 
 	double PUweightInt = PUweightHist->Integral();
 
-
 	TH1F* mcPU = NULL;
 	for(int nmcfile = 0; nmcfile<nFiles; nmcfile++){
-		//		std::cout << "reading file " << std::string(fileNames[nmcfile]) << std::endl;
+		std::cout << "reading file " << std::string(fileNames[nmcfile]) << std::endl;
 		TFile* mcFile = TFile::Open(fileNames[nmcfile],"READ");
 		if(!(mcFile->Get("hPUTrue"))) {
 			std::cout << "no hPU histogram here!" << std::endl;
@@ -38,6 +37,7 @@ PUReweight::PUReweight(int nFiles, char** fileNames, std::string PUfilename){
 		if( mcPU==NULL) mcPU = (TH1F*)mcFile->Get("hPUTrue");
 		else mcPU->Add((TH1F*)mcFile->Get("hPUTrue"));
 		mcPU->SetDirectory(0);
+        std::cout<<mcFile->GetName()<<std::endl;
 		mcFile->Close();
 	}
 	// TCanvas *c1 = new TCanvas("c1","A Simple Graph Example",1000,500);
@@ -45,7 +45,9 @@ PUReweight::PUReweight(int nFiles, char** fileNames, std::string PUfilename){
 	// c1->SetGrid();
 
 	// mcPU for some reason seems to be 1000 bins, rebin by 1000/200 (factor of 5) to get same binning in both to allow the scaling to work
+    //std::cout<<"mcPU bins = "<<mcPU->GetNbinsX()<<std::endl;
 
+    /*
 	if (mcPU->GetNbinsX()!=PUweightHist->GetNbinsX()){
 		if (mcPU->GetNbinsX()>PUweightHist->GetNbinsX()){
 			mcPU->Rebin(mcPU->GetNbinsX()/PUweightHist->GetNbinsX());
@@ -65,6 +67,7 @@ PUReweight::PUReweight(int nFiles, char** fileNames, std::string PUfilename){
 	// PUweightHist->Draw();
 	// c1->SaveAs("PUReweight.png");	
 	delete mcPU;
+    */
 }
 
 PUReweight::~PUReweight(){

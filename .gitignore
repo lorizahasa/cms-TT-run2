@@ -1,4 +1,5 @@
 NanoAOD_Gen
+Hist_Ntuple/HistMain/hists
 Plot_Hist//PlotMain/PlotFromHist
 Plot_Hist/PlotMain/tex
 Fit_Hist/FitMain/tex
@@ -8,8 +9,8 @@ Plot_Hist/PlotMisIDSF/tex
 Fit_Hist/FitMisIDSF/tex
 Fit_Hist/FitMain/output/
 Fit_Hist/FitMain/combine_logger.out
-*.root
-*/*.root
+#*.root
+#*/*.root
 
 *.pyc
 */*.pyc

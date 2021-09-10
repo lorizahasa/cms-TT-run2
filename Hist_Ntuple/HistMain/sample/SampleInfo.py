@@ -53,15 +53,15 @@ def getSamples(y, d, syst):
                    "TGJets"
                    ]),
                "TTGamma": gs(y, d, syst, [
-                   'TTGamma_Dilepton', 
-                   'TTGamma_Hadronic', 
+                   #'TTGamma_Dilepton', 
+                   #'TTGamma_Hadronic', 
                    'TTGamma_SingleLept',
-                   'TTGamma_Dilepton_Pt100', 
-                   'TTGamma_Hadronic_Pt100', 
-                   'TTGamma_SingleLept_Pt100',
-                   'TTGamma_Dilepton_Pt200', 
-                   'TTGamma_Hadronic_Pt200', 
-                   'TTGamma_SingleLept_Pt200'
+                   #'TTGamma_Dilepton_Pt100', 
+                   #'TTGamma_Hadronic_Pt100', 
+                   #'TTGamma_SingleLept_Pt100',
+                   #'TTGamma_Dilepton_Pt200', 
+                   #'TTGamma_Hadronic_Pt200', 
+                   #'TTGamma_SingleLept_Pt200'
                    ]),
                "WJets": gs(y, d, syst, [
                    'W1jets', 
