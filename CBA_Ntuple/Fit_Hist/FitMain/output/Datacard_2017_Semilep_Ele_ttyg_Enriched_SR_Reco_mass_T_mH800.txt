@@ -1,0 +1,30 @@
+# Datacard produced by CombineHarvester with git status: analysis-HIG-16-006-freeze-080416-709-gcfa4283-dirty
+imax    1 number of bins
+jmax    8 number of processes minus 1
+kmax    * number of nuisance parameters
+--------------------------------------------------------------------------------
+shapes * Reco_mass_T Shapes_2017_Semilep_Ele_ttyg_Enriched_SR_Reco_mass_T_mH800.root Reco_mass_T/$PROCESS Reco_mass_T/$PROCESS_$SYSTEMATIC
+--------------------------------------------------------------------------------
+bin          Reco_mass_T     
+observation  197.0           
+--------------------------------------------------------------------------------
+bin                    Reco_mass_T     Reco_mass_T     Reco_mass_T     Reco_mass_T     Reco_mass_T     Reco_mass_T     Reco_mass_T     Reco_mass_T     Reco_mass_T     
+process                TT_tytg_M800    TTbar           TTGamma         WJets           DYJets          WGamma          ZGamma          Others          QCD             
+process                0               1               2               3               4               5               6               7               8               
+rate                   115.929         38.9514         187.815         0               14.0086         2.16005         2.24444         4.55428         1.10197         
+--------------------------------------------------------------------------------
+CMS_norm_o     lnN     -               -               -               -               -               -               -               1.07            -               
+CMS_norm_tt    lnN     -               1.055           -               -               -               -               -               -               -               
+CMS_norm_tty   lnN     -               -               1.07            -               -               -               -               -               -               
+Weight_btag_b  shape   1               1               1               1               1               1               1               1               1               
+Weight_btag_l  shape   1               1               1               1               1               1               1               1               1               
+Weight_ele     shape   1               1               1               1               1               1               1               1               1               
+Weight_fsr     shape   1               1               1               1               1               1               1               1               1               
+Weight_isr     shape   1               1               1               1               1               1               1               1               1               
+Weight_mu      shape   1               1               1               1               1               1               1               1               1               
+Weight_pho     shape   1               1               1               1               1               1               1               1               1               
+Weight_prefire shape   1               1               1               1               1               1               1               1               1               
+Weight_pu      shape   1               1               1               1               1               1               1               1               1               
+lumi_13TeV     lnN     1.025           1.025           1.025           1.025           1.025           1.025           1.025           1.025           1.025           
+Reco_mass_T autoMCStats 0 1 1
+mySyst group = Weight_pu lumi_13TeV

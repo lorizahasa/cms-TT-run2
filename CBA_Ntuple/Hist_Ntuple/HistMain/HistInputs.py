@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------
-condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple/HistMain/Raw"
+condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistMain/Raw"
 #-----------------------------------------------------------------
 Years 	      =	["2016", "2017", "2018"]
 #Years 	      =	["2017"]

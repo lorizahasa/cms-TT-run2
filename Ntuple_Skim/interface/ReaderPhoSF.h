@@ -14,7 +14,7 @@ class PhotonSF
         if (year==2016){
             eVetoHist_2D = (TH2F*) eVetoFile->Get("Scaling_Factors_HasPix_R9 Inclusive");
         } else if (year==2017){
-            eVetoHist_1D = (TH1F*) eVetoFile->Get("Medium_ID");
+            eVetoHist_1D = (TH1F*) eVetoFile->Get("MVA_ID");
         } else if (year==2018){
             eVetoHist_2D = (TH2F*) eVetoFile->Get("eleVeto_SF");
             eVetoHist_Unc_2D = (TH2F*) eVetoFile->Get("eleVeto_Unc");
@@ -45,6 +45,7 @@ double PhotonSF::getPhoSF(TH2F *h2, double pt, double eta, int systLevel){
     //Get the scale factor and error for that bin
     double sf = h2->GetBinContent(binX, binY);
     double err = h2->GetBinError(binX, binY);
+    if(err*100>100) err = err-1; //for 2018, eVetoHist_2D has 1+err (need to verify this)
     return sf + (systLevel -1)*err;
 }
 

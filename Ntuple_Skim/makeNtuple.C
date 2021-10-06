@@ -1321,6 +1321,7 @@ void makeNtuple::FillEvent(std::string year)
         if (topEvent.GoodCombinationTstarGluGamma()){
             blep = jetVectors[topEvent.getBLep()];
             topHad = fatJetVectors[topEvent.getTHad()];
+            //std::cout<<"jetHadFlvr_= "<<abs(tree->jetHadFlvr_[topEvent.getBLep()])<<std::endl;
 
             if (topEvent.getPhotonSide()){ //photon is on leptonic side
                 hadDecay = jetVectors[topEvent.getG()];
