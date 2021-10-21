@@ -6,9 +6,18 @@ CBA_Ntuple/Fit_Hist/FitMain/tex
 CBA_Ntuple/Plot_Hist/PlotDYSF/tex
 CBA_Ntuple/Fit_Hist/FitDYSF/tex
 CBA_Ntuple/Plot_Hist/PlotMisIDSF/tex
+
 CBA_Ntuple/Fit_Hist/FitMisIDSF/tex
-CBA_Ntuple/Fit_Hist/FitMain/output/
+CBA_Ntuple/Fit_Hist/FitMain/output
 CBA_Ntuple/Fit_Hist/FitMain/combine_logger.out
+
+MVA_Ntuple/Fit_Disc/FitMain/tex
+MVA_Ntuple/Fit_Disc/FitMain/output
+MVA_Ntuple/Fit_Disc/FitMain/combine_logger.out
+
+MVA_Ntuple/Disc_Ntuple/*.root
+MVA_Ntuple/Disc_Ntuple/dataset
+MVA_Ntuple/Disc_Ntuple/*_check*
 #*.root
 #*/*.root
 
