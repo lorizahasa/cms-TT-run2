@@ -19,6 +19,8 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
+parser.add_option("--method", "--method", dest="method", default="BDTP",type='str',
+                     help="Specify MVA method")
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
 parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",type='str', 
@@ -30,6 +32,7 @@ year            = options.year
 decayMode       = options.decayMode
 channel         = options.channel
 mass            = options.mass
+method            = options.method
 hName           = options.hName
 region          = options.region
 isQCDMC         = options.isQCDMC
@@ -37,19 +40,18 @@ isQCDMC         = options.isQCDMC
 #-----------------------------------------
 #Path of the I/O histograms/datacards
 #----------------------------------------
-#inFileName = "%s/Hist_Ntuple/HistMain/forMain/%s/%s/%s/Merged/AllInc.root"%(condorHistDir, year, decayMode, channel)
-inFileName = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/MVA_Ntuple/Disc_Ntuple/Disc_Ntuple.root"
-print inFileName
+inFile = "TMVA_Reader.root"
+inFileDir = "%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method)
+outFileDir      = "./output/Fit_Disc/%s/%s/%s"%(inFileDir, region, hName)
+os.system("mkdir -p %s"%outFileDir)
+os.system("xrdcp -rf root://cmseos.fnal.gov/%s/Disc_Ntuple/%s/%s %s"%(condorHistDir, inFileDir, inFile, outFileDir))
+inFileName = "%s/%s"%(outFileDir, inFile)
 inHistDirBase   = "$PROCESS/%s/Base/$BIN"%region
 inHistDirSys    = "$PROCESS/%s/$SYSTEMATIC/$BIN"%region
-#outFileDir      = "output" 
-outFileDir      = "%s/Fit_Disc/FitMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, region, hName, mass)
 
 #name  = "%s_%s_%s_%s_%s_mH%s"%(year, decayMode, channel, region, hName, mass)
 outFilePath     = "%s/Shapes.root"%(outFileDir)
 datacardPath    = "%s/Datacard_Alone.txt"%(outFileDir)
-if not os.path.exists(outFileDir):
-    os.makedirs(outFileDir)
 
 #-----------------------------------
 # Make datacard 

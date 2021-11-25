@@ -20,6 +20,8 @@ parser.add_option("-c", "--channels", dest="channels", default="Mu",type='str',
 		  help="Specify which channels Mu or Ele? default is Mu" )
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
+parser.add_option("--method", "--method", dest="method", default="BDTP",type='str',
+                     help="Specify MVA method") 
 parser.add_option("-r", "--regions", dest="regions", default="ttyg_Enriched_SR",type='str', 
                      help="which control selection and regions"), 
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
@@ -43,6 +45,7 @@ years           = options.years
 decayMode       = options.decayMode
 channels        = options.channels
 mass            = options.mass
+method            = options.method
 regions          = options.regions
 hName           = options.hName
 
@@ -64,10 +67,9 @@ def runCmd(cmd):
 #For separate datacards
 #----------------------------------------
 def getDataCard(year, decayMode, channel, region, hName):
-    args = "-y %s -d %s -c %s -m %s -r %s --hist %s"%(year, decayMode, channel, mass, region, hName)
+    args = "-y %s -d %s -c %s -m %s -r %s --hist %s --method %s"%(year, decayMode, channel, mass, region, hName, method)
     runCmd("python makeDataCard.py  %s "%args)
-    #name  = "output/Datacard_%s_%s_%s_%s_%s_mH%s.txt"%(year, decayMode, channel, region, hName, mass)
-    inDirDC = "%s/Fit_Disc/FitMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, year, decayMode, channel, region, hName, mass)
+    inDirDC = "./output/Fit_Disc/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method, region, hName)
     name = "%s/Datacard_Alone.txt"%inDirDC
     return name
 #-----------------------------------------
@@ -80,8 +82,7 @@ for y in years.split("__"):
             pathDC = getDataCard(y, decayMode, ch, r, hName)
             dcList.append(pathDC)
 combDCText = ' '.join(dcList)
-#dirDC = "output"
-dirDC = "%s/Fit_Disc/FitMain/forMain/%s/%s/%s/%s/%s/mH%s"%(condorHistDir, years, decayMode, channels, regions, hName, mass)
+dirDC = "./output/Fit_Disc/%s/%s/%s/%s/%s/%s/%s"%(years, decayMode, channels, mass, method, regions, hName)
 if not os.path.exists(dirDC):
     os.makedirs(dirDC)
 pathDC  = "%s/Datacard.txt"%(dirDC)

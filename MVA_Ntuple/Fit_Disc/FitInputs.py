@@ -1,22 +1,21 @@
 import ROOT as rt
 #-----------------------------------------------------------------
-#condorHistDir  = "root://cmsxrootd.fnal.gov//store/user/rverma/Output/cms-TT-run2" 
-#condorHistDir  = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2" 
-condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple"
+condorHistDir  = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple" 
 #-----------------------------------------------------------------
 Year = []
 Year.append("2016")
-Year.append("2017")
-Year.append("2018")
+#Year.append("2017")
+#Year.append("2018")
 #Year.append("2016__2017__2018")
 
 Channel = []
 Channel.append("Mu")
-Channel.append("Ele")
+#Channel.append("Ele")
 #Channel.append("Mu__Ele")
 
 Decay 	  =	["Semilep"]
-Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"]
+#Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"]
+Mass      = ["800", "1600"]
 
 regionList = []
 regionList.append("ttyg_Enriched_SR")
@@ -26,9 +25,9 @@ regionList.append("ttyg_Enriched_SR")
 
 histList = []
 histList.append("Reco_mass_T")
-histList.append("Photon_et")
-histList.append("Reco_st")
-histList.append("Reco_ht")
+#histList.append("Photon_et")
+#histList.append("Reco_st")
+#histList.append("Reco_ht")
 
 xss = {}
 xss["700"]   = 0.03*0.97*2*4.92
