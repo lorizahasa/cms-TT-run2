@@ -2,13 +2,16 @@
 from ROOT import gROOT, TGraph, TCanvas, TLegend
 import os
 import sys
-sys.path.insert(0, os.getcwd().replace("Fit_Hist/FitMain", "Plot_Hist/PlotMain"))
+sys.path.insert(0, os.getcwd().replace("MVA_Ntuple/Fit_Disc", "CBA_Ntuple/Plot_Hist/PlotMain"))
+sys.path.insert(0, os.getcwd().replace("Fit_Disc", "Disc_Ntuple"))
 import json
 from PlotCMSLumi import *
 from PlotTDRStyle import *
 from array import array
 from FitInputs import *
 from optparse import OptionParser
+from DiscInputs import methodList
+import pandas as pd
 
 padGap = 0.01
 iPeriod = 4;
@@ -22,7 +25,7 @@ parser.add_option("-y", "--year", dest="year", default="2016",type='str',
                      help="Specify the year of the data taking" )
 parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
-parser.add_option("-c", "--channel", dest="channel", default="Ele",type='str',
+parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",type='str', 
                      help="which control selection and region"), 
@@ -44,33 +47,63 @@ gROOT.SetBatch(True)
 
 limits = "tex/allLimits.json"
 gDict = {}
-with open (limits) as limFile:
-    jsonDota = json.load(limFile)
+limDict={}
+path = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Fit_Disc/%s/%s/%s"%(year, decayMode, channel)
+def getLimit(jsonFile, exp, m):
+    with open(jsonFile) as jsonFile_:
+        jsonData = json.load(jsonFile_)
+        paramDict   = jsonData["%s.0"%m]
+        lim = 1.0
+        for key, val in paramDict.iteritems():
+            if exp==key:
+                lim= val
+        return lim
+
+def roundMe(value, place):
+    upStr = '{:.%sf}'%place
+    upVal = round(value, place)
+    final = upStr.format(upVal)
+    return final
+
+for method in methodList.keys():
     x = array( 'd' )
+    y = array( 'd' )
     for m in Mass:
         x.append(float(m))
-    if byVar:
-        for h in histList:
-            y = array( 'd' )
-            for l in jsonDota[channel][year][h][region]:
-                y.append(float(l))
-            graph = TGraph(len(x), x, y)
-            gDict[h] = graph
-    elif byCR:
-        for r in regionList:
-            y = array( 'd' )
-            for l in jsonDota[channel][year][hName][r]:
-                y.append(float(l))
-            graph = TGraph(len(x), x, y)
-            gDict[r] = graph
-    else:
-        y = array( 'd' )
-        for l in jsonDota[channel][year][hName][region]:
-            y.append(float(l))
-        graph = TGraph(len(x), x, y)
-        gDict["%s__%s"%(hName, region)] = graph
+        limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, method, region, "Disc")
+        y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
+    graph = TGraph(len(x), x, y)
+    gDict[method] = graph
+    limDict["mT"] = x
+    limDict[method] = y
 
-print gDict
+for h in histList:
+    x = array( 'd' )
+    y = array( 'd' )
+    for m in Mass:
+        x.append(float(m))
+        limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, "MLP", region, h)
+        y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
+    graph = TGraph(len(x), x, y)
+    gDict[h] = graph
+    limDict["mT"] = x
+    limDict[h] = y
+
+print limDict
+df = pd.DataFrame.from_dict(limDict)
+print(df)
+roundDict = {}
+roundBy = 1
+for m in methodList.keys():
+    df[m] =100*(df[m] - df['Reco_mass_T'])/df['Reco_mass_T']
+    roundDict[m] = roundBy
+for h in histList:
+    if "Reco_mass_T" not in h:
+        df[h] =100*(df[h] - df['Reco_mass_T'])/df['Reco_mass_T']
+        roundDict[h] = roundBy
+df.set_index('mT')
+print df.round(roundDict)
+
 canvas = TCanvas()
 legend = TLegend(0.70,0.65,0.85,0.90);
 legend.SetFillStyle(0);
@@ -92,17 +125,13 @@ for index, s in enumerate(gDict.keys()):
     gDict[s].GetXaxis().SetTitle("m_{T} (GeV)")
     gDict[s].Draw("P")
     if index==0:
-        gDict[s].SetMaximum(0.004)
-        gDict[s].SetMinimum(0.0001)
+        #gDict[s].SetMaximum(0.004)
+        #gDict[s].SetMinimum(0.0001)
         gDict[s].Draw()
     else:
         gDict[s].Draw("same")
     #legName = "%s, mean = %i, int = %i"%(econDict[s][1], gDict[s].GetMean(), gDict[s].Integral())
-    legName = s 
-    if byVar:
-        legend.AddEntry(gDict[s], legName,  "LP")
-    if byCR:
-        legend.AddEntry(gDict[s], regionDict[s],  "LP")
+    legend.AddEntry(gDict[s], s,  "LP")
     canvas.Update()
     
 #Theory
@@ -155,5 +184,6 @@ elif byCR:
     name = "byCR"
 else:
     name = "by"
-canvas.SaveAs("%s/Fit_Hist/FitMain/forMain/%s/Semilep/%s/limit_%s.pdf"%(condorHistDir, year, channel, name))
+#canvas.SaveAs("%s/Fit_Hist/FitMain/forMain/%s/Semilep/%s/limit_%s.pdf"%(condorHistDir, year, channel, name))
+canvas.SaveAs("limit.pdf")
 

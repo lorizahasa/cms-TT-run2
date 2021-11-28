@@ -7,7 +7,8 @@ Years 	      =	["2016"]
 #Channels 	  =	["Mu", "Ele"]
 Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
-Mass          = ["800", "1600"]
+#Mass          = ["800", "1600"]
+Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"]
 
 Systematics   =	[]
 Systematics.append("Weight_pu")
@@ -67,11 +68,10 @@ methodList = {"BDTP":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=850","Max
               "LH":[ROOT.TMVA.Types.kLikelihood,"H:!V:TransformOutput:PDFInterpol=Spline2:NSmoothSig[0]=20:NSmoothBkg[0]=20:NSmoothBkg[1]=10:NSmooth=1:NAvEvtPerBin=50"],
               #"Cuts":[ROOT.TMVA.Types.kCuts,"H:!V:PopSize=500:Steps=50"],
               "MLP": [ROOT.TMVA.Types.kMLP, "H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator"],
-              "SVM": [ROOT.TMVA.Types.kSVM,"VarTransform=Norm"],
+              ##"SVM": [ROOT.TMVA.Types.kSVM,"VarTransform=Norm"],
               "BDTA": [ROOT.TMVA.Types.kBDT, "!H:!V:NTrees=850:MaxDepth=6:BoostType=AdaBoost:AdaBoostBeta=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30"],
               "DNN": [ROOT.TMVA.Types.kDNN, nnOptions],
               #"PyDNN":[ROOT.TMVA.Types.kPyKeras,":".join(["H","V","NumEpochs=700","TriesEarlyStopping=20","BatchSize="+str(batchs)])],
-              "SVM" : [ROOT.TMVA.Types.kSVM, "VarTransform=Norm"],
               #"Fish" : [ROOT.TMVA.Types.kFisher, "H:!V:Fisher:VarTransform=None:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" ],
               #"FishG" : [ROOT.TMVA.Types.kFisher, "H:!V:Fisher:VarTransform=Gauss:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:Boost_Num=20:Boost_Transform=log:Boost_Type=AdaBoost:Boost_AdaBoostBeta=0.2:!Boost_DetailedMonitoring" ],
 

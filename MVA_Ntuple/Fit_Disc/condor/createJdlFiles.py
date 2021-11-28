@@ -1,6 +1,8 @@
 import os
 import sys
 sys.path.insert(0, os.getcwd().replace("condor", ""))
+sys.path.insert(0, os.getcwd().replace("Fit_Disc/condor", "Disc_Ntuple"))
+from DiscInputs import methodList
 import itertools
 from FitInputs import *
 
@@ -25,7 +27,12 @@ Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\
 Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
 
-combList = ["BDTP"]
+discDict = {}
+discDict["Disc"] = methodList.keys()
+for hist in histList:
+    discDict[hist] = ["MLP"]
+
+print(discDict)
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
@@ -35,14 +42,12 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
     jdlFile = open('tmpSub/%s'%jdlName,'w')
     jdlFile.write('Executable =  runPerformFit.sh \n')
     jdlFile.write(common_command)
-    for mass, h, r, comb in itertools.product(Mass, histList, regionList, combList):
-        run_command =  'arguments  = %s %s %s %s %s %s %s \nqueue 1\n' %(year, decay, channel, mass,comb, r, h)
-        if comb == "isCombYear" and (year=="2017" or year=="2018"): continue
-        if comb == "isCombCh" and channel=="Ele": continue
-        if comb == "isCombChYear" and (year=="2017" or year=="2018" or channel =="Ele"): continue
-        jdlFile.write(run_command)
-        condorOutDir = "%s/Fit_Disc/%s/%s/%s/%s/%s/%s/%s"%(condorHistDir, year, decay, channel, mass, comb, r, h)
-        os.system("eos root://cmseos.fnal.gov mkdir -p %s"%condorOutDir)
+    for mass, r, h in itertools.product(Mass, regionList, discDict.keys()):
+        for method in discDict[h]:
+            run_command =  'arguments  = %s %s %s %s %s %s %s \nqueue 1\n' %(year, decay, channel, mass, method, r, h)
+            jdlFile.write(run_command)
+            condorOutDir = "%s/Fit_Disc/%s/%s/%s/%s/%s/%s/%s"%(condorHistDir, year, decay, channel, mass, method, r, h)
+            os.system("eos root://cmseos.fnal.gov mkdir -p %s"%condorOutDir)
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
 subFile.close()

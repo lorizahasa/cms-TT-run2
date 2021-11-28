@@ -1,7 +1,4 @@
 import ROOT as rt
-#-----------------------------------------------------------------
-condorHistDir  = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple" 
-#-----------------------------------------------------------------
 Year = []
 Year.append("2016")
 #Year.append("2017")

@@ -1,7 +1,7 @@
 import ROOT
 import os
 import sys
-import numpy
+import numpy as np
 from array import array
 sys.path.insert(0, "%s/%s"%(os.getcwd(), "sample"))
 from SampleInfo import getSamples
@@ -83,8 +83,8 @@ for var in vars.keys():
 reader.BookMVA(method, weightfile)
 
 #Declare histograms
-hSig_disc = ROOT.TH1D("Disc","Disc",20,-1,1)
-hBkg_disc = ROOT.TH1D("Disc","Disc",20,-1,1)
+hSig_disc = ROOT.TH1D("Disc","Disc",25,-1,1)
+hBkg_disc = ROOT.TH1D("Disc","Disc",25,-1,1)
 for var in vars.keys():
     nBins  = vars[var][1][0]
     xMin   = vars[var][1][1]
@@ -135,10 +135,15 @@ for ievt, e in enumerate(bkg):
 outputFile = ROOT.TFile("%s_Reader.root"%(package),"RECREATE")
 CR = "ttyg_Enriched_SR"
 dictRebin = {}
-dictRebin["Reco_mass_T"] = numpy.array([0,200,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1800.,2500.,6000.])
-dictRebin["Photon_et"]   = numpy.array([0,100,200,300,400,500,600,700,900,1200,2000.])
-dictRebin["Reco_ht"]     = numpy.array([0,500,700,900,1100,1300,1500,1700,1900,2200,2500,3000,5000,9000.])
-dictRebin["Reco_st"]     = numpy.array([0,500,700,900,1100,1300,1500,1700,1900,2200,2500,3000,5000,9000.])
+
+phoArray = np.array([(i)*100 for i in range(15)])
+stArray  = np.array([(i)*250 for i in range(20)])
+massArray = np.array([(i)*100 for i in range(20)])
+
+dictRebin["Reco_mass_T"] = np.concatenate((massArray, np.array([2300.,3000,6000.])))
+dictRebin["Reco_ht"]     = np.concatenate((stArray, np.array([5000,6000.,9000.])))
+dictRebin["Reco_st"]     = np.concatenate((stArray, np.array([5000,6000.,9000.])))
+dictRebin["Photon_et"]   = np.concatenate((phoArray, np.array([1700,2000.,2500.])))
 
 def getHistDir(sample, sysType, CR):
     histDir = "%s/%s/%s"%(sample, CR, sysType)
