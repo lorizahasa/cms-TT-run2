@@ -45,5 +45,6 @@ printf "Copying output files ..."
 condorOutDir=/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Disc_Ntuple
 eos root://cmseos.fnal.gov mkdir -p $condorOutDir/$1/$2/$3/$4/$5
 xrdcp -rf *.root root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/$4/$5
+xrdcp -rf *.txt root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/$4/$5
 rm *.root
 printf "Done ";/bin/date

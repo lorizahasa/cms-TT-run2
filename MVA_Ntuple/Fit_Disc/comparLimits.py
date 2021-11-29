@@ -65,29 +65,39 @@ def roundMe(value, place):
     final = upStr.format(upVal)
     return final
 
-for method in methodList.keys():
-    x = array( 'd' )
-    y = array( 'd' )
-    for m in Mass:
-        x.append(float(m))
-        limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, method, region, "Disc")
-        y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
-    graph = TGraph(len(x), x, y)
-    gDict[method] = graph
-    limDict["mT"] = x
-    limDict[method] = y
-
 for h in histList:
     x = array( 'd' )
     y = array( 'd' )
     for m in Mass:
         x.append(float(m))
         limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, "MLP", region, h)
+        print(limFile)
         y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
     graph = TGraph(len(x), x, y)
     gDict[h] = graph
     limDict["mT"] = x
     limDict[h] = y
+
+aucDict = {}
+for method in methodList.keys():
+    x = array( 'd' )
+    y = array( 'd' )
+    auc = []
+    for m in Mass:
+        x.append(float(m))
+        limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, method, region, "Disc")
+        print(limFile)
+        y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
+        aucFile      = open("%s/%s/%s/AUC.txt"%(path.replace("Fit_Disc", "Disc_Ntuple"), m, method))
+        for line in aucFile:
+            if "AUC" in line:
+                auc.append(roundMe(100*float(line.split(" ")[-1]), 1))
+    graph = TGraph(len(x), x, y)
+    gDict[method] = graph
+    limDict["mT"] = x
+    limDict[method] = y
+    aucDict[method] = auc
+    aucDict['mT'] = x
 
 print limDict
 df = pd.DataFrame.from_dict(limDict)
@@ -101,20 +111,24 @@ for h in histList:
     if "Reco_mass_T" not in h:
         df[h] =100*(df[h] - df['Reco_mass_T'])/df['Reco_mass_T']
         roundDict[h] = roundBy
-df.set_index('mT')
+df.set_index('mT', inplace=True)
 print df.round(roundDict)
 
+aucDF = pd.DataFrame.from_dict(aucDict)
+aucDF.set_index('mT', inplace=True)
+print(aucDF)
 canvas = TCanvas()
-legend = TLegend(0.70,0.65,0.85,0.90);
+legend = TLegend(0.70,0.60,0.85,0.90);
 legend.SetFillStyle(0);
 legend.SetBorderSize(0);
 legend.SetTextFont(42);
 legend.SetTextAngle(0);
-legend.SetTextSize(0.04);
+legend.SetTextSize(0.035);
 legend.SetTextAlign(12);
 canvas.cd()
 maxInt = 0.0;
 for index, s in enumerate(gDict.keys()):
+    if index==9: index=10
     gDict[s].SetLineColor(index+1)
     gDict[s].SetLineWidth(3)
     gDict[s].SetMarkerStyle(20+index);
@@ -125,8 +139,8 @@ for index, s in enumerate(gDict.keys()):
     gDict[s].GetXaxis().SetTitle("m_{T} (GeV)")
     gDict[s].Draw("P")
     if index==0:
-        #gDict[s].SetMaximum(0.004)
-        #gDict[s].SetMinimum(0.0001)
+        gDict[s].SetMaximum(0.02)
+        gDict[s].SetMinimum(0.0001)
         gDict[s].Draw()
     else:
         gDict[s].Draw("same")

@@ -58,7 +58,7 @@ for s in allSamples.keys():
         print("%s, files: %s"%(s, len(bkgs)))
         for b in bkgs:
             bkgList.append(b)
-bkgList = ["Semilep_JetBase__TTGamma_SingleLept_2016_Ntuple.root"]
+#bkgList = ["Semilep_JetBase__TTGamma_SingleLept_2016_Ntuple.root"]
 print("\nTotal files from all bkgs = %s"%len(bkgList))
 
 bkg = ROOT.TChain("AnalysisTree")
@@ -83,8 +83,11 @@ for var in vars.keys():
 reader.BookMVA(method, weightfile)
 
 #Declare histograms
-hSig_disc = ROOT.TH1D("Disc","Disc",25,-1,1)
-hBkg_disc = ROOT.TH1D("Disc","Disc",25,-1,1)
+nBins, xMin, xMax = 25, -1, 1
+if method in ["DNN", 'MLP']: xMin, xMax = 0, 1 
+if method in ['PDEFoam']: nBins, xMin, xMax = 4, -2, 2 
+hSig_disc = ROOT.TH1D("Disc","Disc",nBins, xMin, xMax)
+hBkg_disc = ROOT.TH1D("Disc","Disc",nBins, xMin, xMax)
 for var in vars.keys():
     nBins  = vars[var][1][0]
     xMin   = vars[var][1][1]
@@ -140,9 +143,9 @@ phoArray = np.array([(i)*100 for i in range(15)])
 stArray  = np.array([(i)*250 for i in range(20)])
 massArray = np.array([(i)*100 for i in range(20)])
 
-dictRebin["Reco_mass_T"] = np.concatenate((massArray, np.array([2300.,3000,6000.])))
+dictRebin["Reco_mass_T"] = np.concatenate((massArray, np.array([2200.,2500,3000,6000.])))
 dictRebin["Reco_ht"]     = np.concatenate((stArray, np.array([5000,6000.,9000.])))
-dictRebin["Reco_st"]     = np.concatenate((stArray, np.array([5000,6000.,9000.])))
+dictRebin["Reco_st"]     = np.concatenate((stArray, np.array([5000,5500,6500.,9000.])))
 dictRebin["Photon_et"]   = np.concatenate((phoArray, np.array([1700,2000.,2500.])))
 
 def getHistDir(sample, sysType, CR):

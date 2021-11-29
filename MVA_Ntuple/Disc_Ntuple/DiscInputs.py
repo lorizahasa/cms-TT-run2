@@ -65,7 +65,7 @@ nnOptions += ":" + layoutString + ":" +  trainingStrategyString + ":Architecture
 methodList = {"BDTP":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=850","MaxDepth=5","BoostType=Grad","Shrinkage=0.01","UseBaggedBoost","BaggedSampleFraction=0.50","SeparationType=GiniIndex","nCuts=50"])],
               "BDTCW":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=500","MaxDepth=8","BoostType=Grad","Shrinkage=0.01","UseBaggedBoost","BaggedSampleFraction=0.50","SeparationType=GiniIndex","nCuts=50"])],
               #"BDTFish":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=500","MaxDepth=4","BoostType=Grad","Shrinkage=0.01","UseFisherCuts","MinLinCorrForFisher=0.5","UseBaggedBoost","BaggedSampleFraction=0.50","SeparationType=GiniIndex","nCuts=50"])],
-              "LH":[ROOT.TMVA.Types.kLikelihood,"H:!V:TransformOutput:PDFInterpol=Spline2:NSmoothSig[0]=20:NSmoothBkg[0]=20:NSmoothBkg[1]=10:NSmooth=1:NAvEvtPerBin=50"],
+              ##"LH":[ROOT.TMVA.Types.kLikelihood,"H:!V:TransformOutput:PDFInterpol=Spline2:NSmoothSig[0]=20:NSmoothBkg[0]=20:NSmoothBkg[1]=10:NSmooth=1:NAvEvtPerBin=50"],
               #"Cuts":[ROOT.TMVA.Types.kCuts,"H:!V:PopSize=500:Steps=50"],
               "MLP": [ROOT.TMVA.Types.kMLP, "H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator"],
               ##"SVM": [ROOT.TMVA.Types.kSVM,"VarTransform=Norm"],
@@ -76,7 +76,7 @@ methodList = {"BDTP":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=850","Max
               #"FishG" : [ROOT.TMVA.Types.kFisher, "H:!V:Fisher:VarTransform=Gauss:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:Boost_Num=20:Boost_Transform=log:Boost_Type=AdaBoost:Boost_AdaBoostBeta=0.2:!Boost_DetailedMonitoring" ],
 
               "PDEFoam": [ROOT.TMVA.Types.kPDEFoam, "!H:!V::SigBgSeparate=F:MaxDepth=4:UseYesNoCell=T:DTLogic=MisClassificationError:FillFoamWithOrigWeights=F:TailCut=0:nActiveCells=500:nBin=20:Nmin=400:Compress=T"],
-              "LH":[ROOT.TMVA.Types.kLikelihood,"H:!V:TransformOutput:PDFInterpol=Spline2:NSmoothSig[0]=20:NSmoothBkg[0]=20:NSmoothBkg[1]=10:NSmooth=1:NAvEvtPerBin=50:VarTransform=Decorrelate"],
+              ##"LH":[ROOT.TMVA.Types.kLikelihood,"H:!V:TransformOutput:PDFInterpol=Spline2:NSmoothSig[0]=20:NSmoothBkg[0]=20:NSmoothBkg[1]=10:NSmooth=1:NAvEvtPerBin=50:VarTransform=Decorrelate"],
               #"PyGTB": [ROOT.TMVA.Types.kPyGTB,"!V:NEstimators=850:NJobs=4"],
               #"PyAda": [ROOT.TMVA.Types.kPyAdaBoost,"!V:NEstimators=1000"],
               #"PyForest": [ROOT.TMVA.Types.kPyRandomForest, "!V:VarTransform=None:NEstimators=850:Criterion=gini:MaxFeatures=auto:MaxDepth=4:MinSamplesLeaf=1:MinWeightFractionLeaf=0:Bootstrap=kTRUE"]

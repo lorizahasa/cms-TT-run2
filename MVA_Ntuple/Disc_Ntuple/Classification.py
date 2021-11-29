@@ -57,7 +57,7 @@ for s in allSamples.keys():
         print("%s, files: %s"%(s, len(bkgs)))
         for b in bkgs:
             bkgList.append(b)
-bkgList = ["Semilep_JetBase__TTGamma_SingleLept_2016_Ntuple.root"]
+#bkgList = ["Semilep_JetBase__TTGamma_SingleLept_2016_Ntuple.root"]
 print("\nTotal files from all bkgs = %s"%len(bkgList))
 
 bkg = ROOT.TChain("AnalysisTree")
@@ -92,16 +92,22 @@ m = method
 print("Method: %s"%m)
 ROOT.TMVA.Tools.Instance()
 ## For PYMVA methods
-ROOT.TMVA.PyMethodBase.PyInitialize();
+ROOT.TMVA.PyMethodBase.PyInitialize()
 outputFile = ROOT.TFile.Open("%s_Classification.root"%(package), "RECREATE")
 factory = ROOT.TMVA.Factory("%s_Classification_%s"%(package, mass), outputFile,
                       "!V:ROC:!Silent:Color:!DrawProgressBar:AnalysisType=Classification" )
 factory.BookMethod(loader, methodList[m][0], m, methodList[m][1])
-factory.TrainAllMethods();
-factory.TestAllMethods();
-factory.EvaluateAllMethods();
+factory.TrainAllMethods()
+factory.TestAllMethods()
+factory.EvaluateAllMethods()
 
 ROOT.gROOT.SetBatch(True)
-roc = factory.GetROCCurve(loader);
+roc = factory.GetROCCurve(loader)
 roc.Write()
+auc = factory.GetROCIntegral(loader, m)
+auc_ = "Year = %s\nDecay = %s\nChannel = %s\nRegion = %s\nMass = %s\nMethod = %s\nAUC = %s"%(year, decayMode, channel, region, mass, m, auc)
+print("RESULT:%s,%s,%s,%s,%s,%s,%s"%(year, decayMode, channel, region, mass, m, auc))
+aucFile = open("AUC.txt", "w")
+aucFile.write(auc_)
+aucFile.close()
 outputFile.Close()
