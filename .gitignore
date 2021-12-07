@@ -1,10 +1,9 @@
 NanoAOD_Gen
-CBA_Ntuple/Plot_Hist//PlotMain/PlotFromHist
 
-MVA_Ntuple/.root
-MVA_Ntuple/*/.root
-MVA_Ntuple/*/*/.root
-MVA_Ntuple/*/*/*/.root
+MVA_Ntuple/.*root
+MVA_Ntuple/*/.*root
+MVA_Ntuple/*/*/.*root
+MVA_Ntuple/*/*/*/.*root
 
 *.pyc
 */*.pyc
@@ -66,10 +65,10 @@ dataset
 */*/*/dataset
 */*/*/*/dataset
 
-.out
-*/.out
-*/*/.out
-*/*/*/.out
-*/*/*/*/.out
+.*out
+*/.*out
+*/*/.*out
+*/*/*/.*out
+*/*/*/*/.*out
 
 
