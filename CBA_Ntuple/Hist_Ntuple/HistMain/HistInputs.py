@@ -58,7 +58,7 @@ phoCat["hadronic_fake"]    = "Photon_hadronic_fake"
 Regions = {}
 rForDYSF = {}
 isTT = False
-isTTY = False 
+isTTY = True 
 isTTYG = True 
 
 #--------------------------------
