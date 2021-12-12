@@ -1166,7 +1166,6 @@ void makeNtuple::FillEvent(std::string year)
         }//isMC
         _dRPhotonLepton.push_back(phoVector.DeltaR(lepVector));
         _MPhotonLepton.push_back((phoVector+lepVector).M());
-        _AnglePhotonLepton.push_back(phoVector.Angle(lepVector.Vect())); 
     }//phoLoop
     
     for (int i_pho = 0; i_pho <_nLoosePho; i_pho++){
@@ -1222,6 +1221,7 @@ void makeNtuple::FillEvent(std::string year)
     for (int i_jet = 0; i_jet <_nJet; i_jet++){
         int jetInd = selector->Jets.at(i_jet);
         _jetPt.push_back(tree->jetPt_[jetInd]);
+        _jetQGL.push_back(tree->jetQGL_[jetInd]);
         _jetEta.push_back(tree->jetEta_[jetInd]);
         _jetPhi.push_back(tree->jetPhi_[jetInd]);
         _jetMass.push_back(tree->jetMass_[jetInd]);
@@ -1291,11 +1291,22 @@ void makeNtuple::FillEvent(std::string year)
             _M_jj  = ( Wj1 + Wj2 ).M();
             _TopHad_mass = (bhad + Wj1 + Wj2).M();
             _TopLep_mass = (blep + lepVector + METVector).M();
-            _TopStarHad_mass = (bhad + Wj1 + Wj2 + hadDecay).M();
-            _TopStarLep_mass = (blep + lepVector + METVector + lepDecay).M();
-            _TopStar_mass = (_TopStarHad_mass + _TopStarLep_mass)/2.;
-            _tgtg_mass = (bhad + Wj1 + Wj2 + hadDecay + blep + lepVector + METVector + lepDecay).M();
-
+            //Hadronic Tstar
+            TLorentzVector Reco_hadT = bhad + Wj1 + Wj2 + hadDecay;
+            _Reco_eta_hadT     = Reco_hadT.Eta();
+            _Reco_pt_hadT      = Reco_hadT.Pt();
+            _Reco_phi_hadT     = Reco_hadT.Phi();
+            _TopStarHad_mass   = Reco_hadT.M();
+            //Leptonic Tstar
+            TLorentzVector Reco_lepT = blep + lepVector + METVector + lepDecay;
+            _Reco_eta_lepT     = Reco_lepT.Eta();
+            _Reco_pt_lepT      = Reco_lepT.Pt();
+            _Reco_phi_lepT     = Reco_lepT.Phi();
+            _TopStarLep_mass   = Reco_lepT.M();
+            //Combined TT
+            _Reco_dr_TT     = Reco_hadT.DeltaR(Reco_lepT);
+            _tgtg_mass      = (Reco_hadT + Reco_lepT).M();
+            _TopStar_mass   = (_TopStarHad_mass + _TopStarLep_mass)/2.;
 
             if (tree->event_==eventNum){
                 cout << "  Resolved Case " << endl;
@@ -1335,10 +1346,22 @@ void makeNtuple::FillEvent(std::string year)
             _chi2 = topEvent.getChi2_TstarGluGamma();
             _TopHad_mass = (topHad).M();
             _TopLep_mass = (blep + lepVector + METVector).M();
-            _TopStarHad_mass = (topHad + hadDecay).M();
-            _TopStarLep_mass = (blep + lepVector + METVector + lepDecay).M();
-            _TopStar_mass = (_TopStarHad_mass + _TopStarLep_mass)/2.;
-            _tgtg_mass = (topHad + hadDecay + blep + lepVector + METVector + lepDecay).M();
+            //Hadronic Tstar
+            TLorentzVector Reco_hadT = topHad + hadDecay;
+            _Reco_eta_hadT     = Reco_hadT.Eta();
+            _Reco_pt_hadT      = Reco_hadT.Pt();
+            _Reco_phi_hadT     = Reco_hadT.Phi();
+            _TopStarHad_mass   = Reco_hadT.M();
+            //Leptonic Tstar
+            TLorentzVector Reco_lepT = blep + lepVector + METVector + lepDecay;
+            _Reco_eta_lepT     = Reco_lepT.Eta();
+            _Reco_pt_lepT      = Reco_lepT.Pt();
+            _Reco_phi_lepT     = Reco_lepT.Phi();
+            _TopStarLep_mass   = Reco_lepT.M();
+            //Combined TT
+            _Reco_dr_TT     = Reco_hadT.DeltaR(Reco_lepT);
+            _tgtg_mass      = (Reco_hadT + Reco_lepT).M();
+            _TopStar_mass   = (_TopStarHad_mass + _TopStarLep_mass)/2.;
             _M_jj  = -9999.0; //In the boosted category, we don't reconstruct W_had
 
             if (tree->event_==eventNum){
@@ -1360,6 +1383,21 @@ void makeNtuple::FillEvent(std::string year)
 
 
         }
+    }
+    _Reco_angle_lepton_met = lepVector.Angle(METVector.Vect()); 
+    if(phoVectors.size()>0){
+        _Reco_angle_leadPhoton_met = phoVectors.at(0).Angle(METVector.Vect()); 
+        _Reco_angle_leadPhoton_lepton = phoVectors.at(0).Angle(lepVector.Vect()); 
+        std::cout<<_Reco_angle_leadPhoton_lepton<<std::endl;
+    }
+    if(jetVectors.size()>0){
+        _Reco_angle_leadJet_met = jetVectors.at(0).Angle(METVector.Vect()); 
+        _Reco_ratio_leadJetPt_met = jetVectors.at(0).Pt()/_pfMET;
+        _Reco_ratio_leadJetPt_ht = jetVectors.at(0).Pt()/_HT;
+    }
+    if(bjetVectors.size()>0){
+        std::cout<<"BBBBBBBB"<<std::endl;
+        _Reco_angle_leadBjet_met = bjetVectors.at(0).Angle(METVector.Vect()); 
     }
     ljetVectors.clear();
     bjetVectors.clear();

@@ -141,6 +141,7 @@ class EventTree{
     // Jet
     UInt_t          nJet_;
     Float_t         jetPt_[200];
+    Float_t         jetQGL_[200];
     Float_t         jetEta_[200];
     Float_t         jetPhi_[200];
     Float_t         jetMass_[200];

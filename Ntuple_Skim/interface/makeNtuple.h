@@ -178,6 +178,20 @@ class makeNtuple {
     Float_t  _DilepMass;
     Float_t  _DiphoMass;
     Float_t  _DilepDelR;
+    Float_t  _Reco_dr_TT;
+    Float_t  _Reco_eta_hadT;
+    Float_t  _Reco_pt_hadT;
+    Float_t  _Reco_phi_hadT;
+    Float_t  _Reco_eta_lepT;
+    Float_t  _Reco_pt_lepT;
+    Float_t  _Reco_phi_lepT;
+    Float_t  _Reco_angle_leadPhoton_lepton;
+    Float_t  _Reco_angle_lepton_met;
+    Float_t  _Reco_angle_leadPhoton_met;
+    Float_t  _Reco_angle_leadJet_met;
+    Float_t  _Reco_angle_leadBjet_met;
+    Float_t  _Reco_ratio_leadJetPt_met;
+    Float_t  _Reco_ratio_leadJetPt_ht;
     Float_t  _Mt_blgammaMET;
     Float_t  _Mt_lgammaMET;
     Float_t  _M_bjj;
@@ -261,6 +275,7 @@ class makeNtuple {
     Int_t  _nJet;
     Int_t  _nBJet;
     std::vector<float>   _jetPt;
+    std::vector<float>   _jetQGL;
     std::vector<float>   _jetEta;
     std::vector<float>   _jetPhi;
     std::vector<float>   _jetMass;
@@ -483,6 +498,7 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Jet_size"   , &_nJet ); 
     outputTree->Branch("Jet_b_size"  , &_nBJet ); 
     outputTree->Branch("Jet_pt"  , &_jetPt );
+    outputTree->Branch("Jet_qgl"  , &_jetQGL );
     outputTree->Branch("Jet_eta" , &_jetEta); 
     outputTree->Branch("Jet_phi" , &_jetPhi); 
     outputTree->Branch("Jet_mass", &_jetMass );
@@ -512,25 +528,40 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Reco_ht"     , &_HT ); 
     outputTree->Branch("Reco_st"     , &_ST ); 
     outputTree->Branch("Reco_chi2"  , &_chi2 );
-    outputTree->Branch("Reco_mass_dipho"                  , &_DiphoMass                   ); 
-    outputTree->Branch("Reco_mass_dilep"                  , &_DilepMass                   );
+    outputTree->Branch("Reco_mass_dipho"                , &_DiphoMass                   ); 
+    outputTree->Branch("Reco_mass_dilep"                , &_DilepMass                   );
     outputTree->Branch("Reco_dr_dilep"                  , &_DilepDelR                   );
+    outputTree->Branch("Reco_dr_TT"                     , &_Reco_dr_TT                  );
+    outputTree->Branch("Reco_eta_hadT"                  , &_Reco_eta_hadT               );
+    outputTree->Branch("Reco_pt_hadT"                   , &_Reco_pt_hadT                );
+    outputTree->Branch("Reco_phi_hadT"                  , &_Reco_phi_hadT               );
+    outputTree->Branch("Reco_eta_lepT"                  , &_Reco_eta_lepT               );
+    outputTree->Branch("Reco_pt_lepT"                   , &_Reco_pt_lepT                );
+    outputTree->Branch("Reco_phi_lepT"                  , &_Reco_phi_lepT               );
     outputTree->Branch("Reco_mass_jj"  , &_M_jj );
     outputTree->Branch("Reco_mass_t_had"  , &_TopHad_mass );
     outputTree->Branch("Reco_mass_t_lep"  , &_TopLep_mass );
     outputTree->Branch("Reco_mass_tt"  , &_TopTop_mass );
-    outputTree->Branch("Reco_mass_T_had"     , &_TopStarHad_mass );
-    outputTree->Branch("Reco_mass_T_lep"     , &_TopStarLep_mass );
+    outputTree->Branch("Reco_mass_hadT"     , &_TopStarHad_mass );
+    outputTree->Branch("Reco_mass_lepT"     , &_TopStarLep_mass );
     outputTree->Branch("Reco_mass_T"     , &_TopStar_mass );
     outputTree->Branch("Reco_mass_TT"  , &_tgtg_mass );
     outputTree->Branch("Reco_mass_bjj" , &_M_bjj );
     outputTree->Branch("Reco_mass_bjjgamma"   , &_M_bjjgamma );
+
+    outputTree->Branch("Reco_angle_leadPhoton_lepton"   , &_Reco_angle_leadPhoton_lepton ); 
+    outputTree->Branch("Reco_angle_lepton_met"   , &_Reco_angle_lepton_met    ); 
+    outputTree->Branch("Reco_angle_leadPhoton_met"   , &_Reco_angle_leadPhoton_met    ); 
+    outputTree->Branch("Reco_angle_leadJet_met"   , &_Reco_angle_leadJet_met      ); 
+    outputTree->Branch("Reco_angle_leadBjet_met"   , &_Reco_angle_leadBjet_met     ); 
+    outputTree->Branch("Reco_ratio_leadJetPt_met"   , &_Reco_ratio_leadJetPt_met      ); 
+    outputTree->Branch("Reco_ratio_leadJetPt_ht"   , &_Reco_ratio_leadJetPt_ht      ); 
+
     outputTree->Branch("Reco_mass_lgamma"   , &_phoMassLepGamma ); 
     outputTree->Branch("Reco_mass_trans_blgammaMET", &_Mt_blgammaMET );
     outputTree->Branch("Reco_mass_trans_lgammaMET" , &_Mt_lgammaMET );
     outputTree->Branch("Reco_dr_photon_jet"   , &_dRPhotonJet );
     outputTree->Branch("Reco_dr_photon_lepton", &_dRPhotonLepton );
-    outputTree->Branch("Reco_angle_photon_lepton"    , &_AnglePhotonLepton );
     outputTree->Branch("Reco_mass_photon_lepton" , &_MPhotonLepton );
 
     if (!isSystematicRun){
@@ -581,6 +612,14 @@ void makeNtuple::InitVariables()
     _nu_pz    = -9999;
     _nu_pz_other     = -9999;
     _WtransMass      = -9999;
+    
+    _Reco_angle_leadPhoton_lepton  = -9999;
+    _Reco_angle_lepton_met  = -9999;
+    _Reco_angle_leadPhoton_met= -9999;
+    _Reco_angle_leadJet_met  = -9999;
+    _Reco_angle_leadBjet_met  = -9999;
+    _Reco_ratio_leadJetPt_met  = -9999;
+    _Reco_ratio_leadJetPt_ht  = -9999;
 
     _Mt_blgammaMET   = -9999;
     _Mt_lgammaMET    = -9999;
@@ -599,6 +638,13 @@ void makeNtuple::InitVariables()
     _ST		 = -9999;
     _DilepMass   = -9999;
     _DilepDelR   = -9999;
+    _Reco_dr_TT   = -9999;
+    _Reco_eta_hadT = -9999;
+    _Reco_pt_hadT = -9999;
+    _Reco_phi_hadT = -9999;
+    _Reco_eta_lepT = -9999;
+    _Reco_pt_lepT = -9999;
+    _Reco_phi_lepT = -9999;
     _DiphoMass       = -9999;
 
     _nPho		 = -9999;
@@ -693,6 +739,7 @@ void makeNtuple::InitVariables()
     _photonNoIDIsHadronicFake.clear();
 
     _jetPt.clear();
+    _jetQGL.clear();
     /* _jetEn.clear(); */
     _jetEta.clear();
     _jetPhi.clear();
@@ -725,7 +772,6 @@ void makeNtuple::InitVariables()
     _dRPhotonJet.clear();
     _dRPhotonLepton.clear();
     _MPhotonLepton.clear();
-    _AnglePhotonLepton.clear();
 	
     _genScaleSystWeights.clear();
     _pdfSystWeight.clear();
