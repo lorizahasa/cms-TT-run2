@@ -31,16 +31,16 @@ def gs(y, d, syst, s_array):
 
 def getSamples(y, d, syst):
     samples = {
-               #"TT_tytg_M700"  : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M700"]),  
+               "TT_tytg_M700"  : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M700"]),  
                "TT_tytg_M800"  : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M800"]),  
-               #"TT_tytg_M900"  : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M900"]),  
-               #"TT_tytg_M1000" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1000"]),  
-               #""TT_tytg_M1100" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1100"]),  
-               #"TT_tytg_M1200" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1200"]),  
-               #"TT_tytg_M1300" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1300"]),  
-               #"TT_tytg_M1400" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1400"]),  
-               #"TT_tytg_M1500" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1500"]),  
-               #"TT_tytg_M1600" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1600"]),  
+               "TT_tytg_M900"  : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M900"]),  
+               "TT_tytg_M1000" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1000"]),  
+               #"TT_tytg_M1100" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1100"]),  
+               "TT_tytg_M1200" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1200"]),  
+               "TT_tytg_M1300" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1300"]),  
+               "TT_tytg_M1400" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1400"]),  
+               "TT_tytg_M1500" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1500"]),  
+               "TT_tytg_M1600" : gs(y, d, syst, ["TstarTstarToTgammaTgluon_M1600"]),  
                "TTbar" : gs(y, d, syst, [
                    "TTbarPowheg_Hadronic" , 
                    "TTbarPowheg_Dilepton" , 

@@ -26,6 +26,7 @@ parser.add_option("--syst", "--systematic", dest="systematic", default="JetBase"
                      help="Specify which systematic to run on")
 parser.add_option("--method", "--method", dest="methodMVA", default="BDTP",type='str', 
                      help="Which MVA method to be used")
+parser.add_option("--isCheck", "--isCheck", dest="isCheck", action="store_true", default=False, help="")
 (options, args) = parser.parse_args()
 year = options.year
 decayMode = options.decayMode
@@ -34,6 +35,7 @@ region = options.region
 syst = options.systematic
 level =options.level
 method = options.methodMVA
+isCheck = options.isCheck
 print parser.parse_args()
 
 #-----------------------------------------
@@ -57,7 +59,8 @@ for s in allSamples.keys():
             print("%s, files: %s"%(s, len(bkgs)))
             for bkgF in bkgs:
                 bkgList.append(bkgF)
-bkgList = ["Semilep_JetBase__TTGamma_SingleLept_2016_Ntuple.root"]
+if isCheck:
+    bkgList = ["Semilep_JetBase__TTGamma_SingleLept_2016_Ntuple.root"]
 
 sig = ROOT.TChain("AnalysisTree")
 for s in sigList:
@@ -71,6 +74,7 @@ print("Total files from all sigs = %s, Entries = %s "%(len(sigList), sig.GetEntr
 
 
 loader = ROOT.TMVA.DataLoader("dataset")
+os.system("mkdir -p dataset/plots")
 sigWeight = 1.0
 bkgWeight = 1.0
 loader.AddSignalTree(sig, sigWeight)

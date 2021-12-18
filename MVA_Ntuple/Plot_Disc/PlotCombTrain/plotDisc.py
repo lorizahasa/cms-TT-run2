@@ -82,7 +82,10 @@ for index, s in enumerate(pDict.keys()):
     pDict[s].GetYaxis().SetTitle("Events (normalized to 1)")
     pDict[s].GetYaxis().SetLabelSize(.040)
     pDict[s].GetXaxis().SetLabelSize(.035)
-    pDict[s].GetXaxis().SetTitle("%s_%s"%(hName, method))
+    if "Disc" in hName:
+        pDict[s].GetXaxis().SetTitle("%s_%s"%(hName, method))
+    else:
+        pDict[s].GetXaxis().SetTitle("%s"%hName)
     if index==0:
         print s
         pDict[s].SetMaximum(1.0)

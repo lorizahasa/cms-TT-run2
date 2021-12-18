@@ -45,6 +45,7 @@ inFileDir = "%s/Disc_Ntuple/DiscCombTrain/%s/%s/%s/%s"%(condorHistDir, year, dec
 outFileDir      = "./output/Fit_Disc/FitCombTrain/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method, region, hName)
 os.system("mkdir -p %s"%outFileDir)
 inFileName = "%s/%s"%(outFileDir, inFile)
+print(inFileDir)
 os.system("xrdcp -rf root://cmseos.fnal.gov/%s/%s %s"%(inFileDir, inFile, outFileDir))
 inHistDirBase   = "$PROCESS/%s/Base/$BIN"%region
 inHistDirSys    = "$PROCESS/%s/$SYSTEMATIC/$BIN"%region

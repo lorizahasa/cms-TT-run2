@@ -70,7 +70,7 @@ for h in histList:
     y = array( 'd' )
     for m in Mass:
         x.append(float(m))
-        limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, "MLP", region, h)
+        limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, "DNN", region, h)
         print(limFile)
         y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
     graph = TGraph(len(x), x, y)

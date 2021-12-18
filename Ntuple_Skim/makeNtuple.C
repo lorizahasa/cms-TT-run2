@@ -1388,7 +1388,6 @@ void makeNtuple::FillEvent(std::string year)
     if(phoVectors.size()>0){
         _Reco_angle_leadPhoton_met = phoVectors.at(0).Angle(METVector.Vect()); 
         _Reco_angle_leadPhoton_lepton = phoVectors.at(0).Angle(lepVector.Vect()); 
-        std::cout<<_Reco_angle_leadPhoton_lepton<<std::endl;
     }
     if(jetVectors.size()>0){
         _Reco_angle_leadJet_met = jetVectors.at(0).Angle(METVector.Vect()); 
@@ -1396,7 +1395,6 @@ void makeNtuple::FillEvent(std::string year)
         _Reco_ratio_leadJetPt_ht = jetVectors.at(0).Pt()/_HT;
     }
     if(bjetVectors.size()>0){
-        std::cout<<"BBBBBBBB"<<std::endl;
         _Reco_angle_leadBjet_met = bjetVectors.at(0).Angle(METVector.Vect()); 
     }
     ljetVectors.clear();

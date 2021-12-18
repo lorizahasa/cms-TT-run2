@@ -27,6 +27,7 @@ parser.add_option("--syst", "--systematic", dest="systematic", default="JetBase"
                      help="Specify which systematic to run on")
 parser.add_option("--method", "--method", dest="methodMVA", default="BDTP",type='str', 
                      help="Which MVA method to be used")
+parser.add_option("--isCheck", "--isCheck", dest="isCheck", action="store_true", default=False, help="")
 (options, args) = parser.parse_args()
 year = options.year
 decayMode = options.decayMode
@@ -35,6 +36,7 @@ region = options.region
 syst = options.systematic
 level =options.level
 method = options.methodMVA
+isCheck = options.isCheck
 print parser.parse_args()
 
 #-----------------------------------------
@@ -46,21 +48,16 @@ dirFile = "%s/%s/%s"%(year, decayMode, syst)
 allSamples = getSamples(year, decayMode, syst)
 
 sigDict = {}
-bkgList = []
+bkgDict = {}
 for s in allSamples.keys():
     if 'TT_tytg' in s:
         sigDict[s] = allSamples[s] 
     else:
         if "Data" not in s:
-            bkgs = allSamples[s]
-            print("%s, files: %s"%(s, len(bkgs)))
-            for bkgF in bkgs:
-                bkgList.append(bkgF)
+            bkgDict[s] = allSamples[s]
+            print("%s, files: %s"%(s, len(bkgDict[s])))
+
 #bkgList = ["Semilep_JetBase__TTGamma_SingleLept_2016_Ntuple.root"]
-bkg = ROOT.TChain("AnalysisTree")
-for b in bkgList:
-    bkg.Add("%s/%s/%s"%(dirNtuple, dirFile, b))
-print("Total files from all bkgs = %s, Entries = %s "%(len(bkgList), bkg.GetEntries()))
 
 weightfile = "dataset/weights/%s_Classification_%s.weights.xml"%(package, method)
 ROOT.TMVA.Tools.Instance()
@@ -84,8 +81,11 @@ if method in ["DNN", 'MLP']: xMin, xMax = 0, 1
 if method in ['PDEFoam']: nBins, xMin, xMax = 4, -2, 2 
 hBkg_disc = ROOT.TH1D("Disc","Disc",nBins, xMin, xMax)
 for samp in sigDict.keys():
-    histsig = 'ROOT.TH1D("Disc", "Disc", %s, %s, %s)'%(nBins, xMin, xMax)
-    exec("hSig_%s_disc = %s"%(samp, histsig))
+    histSig = 'ROOT.TH1D("Disc", "Disc", %s, %s, %s)'%(nBins, xMin, xMax)
+    exec("hSig_%s_disc = %s"%(samp, histSig))
+for samp in bkgDict.keys():
+    histBkg = 'ROOT.TH1D("Disc", "Disc", %s, %s, %s)'%(nBins, xMin, xMax)
+    exec("hBkg_%s_disc = %s"%(samp, histSig))
 for var in vars.keys():
     nBins  = vars[var][1][0]
     xMin   = vars[var][1][1]
@@ -93,21 +93,24 @@ for var in vars.keys():
     #cuts = ["", "_cut"]
     cuts = [""]
     for cut in cuts:
-        histBkg = 'ROOT.TH1D("%s%s", "%s%s", %s, %s, %s)'%(var, cut, var, cut, nBins, xMin, xMax)
-        exec("hBkg_%s%s = %s"%(var, cut, histBkg))
-        print("hBkg_%s%s = %s"%(var, cut, histBkg))
         for samp in sigDict.keys():
             histSig = 'ROOT.TH1D("%s%s", "%s%s", %s, %s, %s)'%(var, cut, var, cut, nBins, xMin, xMax)
             exec("hSig_%s_%s%s = %s"%(samp, var, cut, histSig))
+        for samp in bkgDict.keys():
+            histBkg = 'ROOT.TH1D("%s%s", "%s%s", %s, %s, %s)'%(var, cut, var, cut, nBins, xMin, xMax)
+            exec("hBkg_%s_%s%s = %s"%(samp, var, cut, histBkg))
 
 #Fill hists for signal
 print("\nRunning for Sig...\n") 
 for samp in sigDict.keys():
-    sigFile = ROOT.TFile.Open("%s/%s/%s"%(dirNtuple, dirFile, sigDict[samp][0]))
-    sig = sigFile.Get("AnalysisTree")
+    sig = ROOT.TChain("AnalysisTree")
+    for s in sigDict[samp]:
+        sig.Add("%s/%s/%s"%(dirNtuple, dirFile, s))
     print("%s, Entries = %s "%(samp, sig.GetEntries()))
     for ievt, e in enumerate(sig):
         eventSel = int(e.Event_pass_presel_mu and ((e.Jet_size>=5 and e.FatJet_size==0) or (e.Jet_size>=2 and e.FatJet_size==1))  and e.Jet_b_size >=1 and e.Photon_size==1 and e.Photon_et[0] > 100)
+        if isCheck and ievt >1000:
+            break
         if eventSel>0:
             for var in vars.keys():
                 exec("%s[0] = e.%s"%(var, vars[var][0]))
@@ -120,25 +123,34 @@ for samp in sigDict.keys():
                     pass
             if (ievt%100)==0:
                 print('Event = %i/%i, Disc = %s'%(ievt, sig.GetEntries(), disc))
+                if isCheck:
+                    break
             
 #Fill hists for background
 print("\nRunning for Bkg...\n")    
-for ievt, e in enumerate(bkg):
-    eventSel = int(e.Event_pass_presel_mu and ((e.Jet_size>=5 and e.FatJet_size==0) or (e.Jet_size>=2 and e.FatJet_size==1))  and e.Jet_b_size >=1 and e.Photon_size==1 and e.Photon_et[0] > 100)
-    if eventSel>0:
-        for var in vars.keys():
-            exec("%s[0] = e.%s"%(var, vars[var][0]))
-            exec("hBkg_%s.Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
-        disc = reader.EvaluateMVA(method)
-        hBkg_disc.Fill(disc, e.Weight_lumi)
-        if disc>0:
+for samp in bkgDict.keys():
+    bkg = ROOT.TChain("AnalysisTree")
+    for b in bkgDict[samp]:
+        bkg.Add("%s/%s/%s"%(dirNtuple, dirFile, b))
+    bkg.Add("%s/%s/%s"%(dirNtuple, dirFile, b))
+    print("%s, Entries = %s "%(samp, bkg.GetEntries()))
+    for ievt, e in enumerate(bkg):
+        eventSel = int(e.Event_pass_presel_mu and ((e.Jet_size>=5 and e.FatJet_size==0) or (e.Jet_size>=2 and e.FatJet_size==1))  and e.Jet_b_size >=1 and e.Photon_size==1 and e.Photon_et[0] > 100)
+        if isCheck and ievt >1000:
+            break
+        if eventSel>0:
             for var in vars.keys():
-                #exec("hBkg_%s_cut.Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
-                pass
-        if (ievt%1000)==0:
-            progress = "%s%s"%(100*ievt/bkg.GetEntries(), "%")
-            print('Event(%s) = %i/%i, Disc = %s'%(progress, ievt, bkg.GetEntries(), disc)) 
-
+                exec("%s[0] = e.%s"%(var, vars[var][0]))
+                exec("hBkg_%s_%s.Fill(e.%s, e.Weight_lumi)"%(samp, var, vars[var][0]))
+            disc = reader.EvaluateMVA(method)
+            exec("hBkg_%s_disc.Fill(%s, e.Weight_lumi)"%(samp, disc))
+            if disc>0:
+                for var in vars.keys():
+                    #exec("hBkg_%s_%s_cut.Fill(e.%s, e.Weight_lumi)"%(samp, var, vars[var][0]))
+                    pass
+            if (ievt%1000)==0:
+                progress = "%s%s"%(100*ievt/bkg.GetEntries(), "%")
+                print('Event(%s) = %i/%i, Disc = %s'%(progress, ievt, bkg.GetEntries(), disc)) 
 
 outputFile = ROOT.TFile("%s_Reader.root"%(package),"RECREATE")
 CR = "ttyg_Enriched_SR"
@@ -147,8 +159,10 @@ dictRebin = {}
 phoArray = np.array([(i)*100 for i in range(15)])
 stArray  = np.array([(i)*250 for i in range(20)])
 massArray = np.array([(i)*100 for i in range(20)])
+massArrayTT = np.array([(2*i)*100 for i in range(25)])
 
 dictRebin["Reco_mass_T"] = np.concatenate((massArray, np.array([2200.,2500,3000,6000.])))
+dictRebin["Reco_mass_TT"] = np.concatenate((massArrayTT, np.array([5500.,6500,9000.])))
 dictRebin["Reco_ht"]     = np.concatenate((stArray, np.array([5000,6000.,9000.])))
 dictRebin["Reco_st"]     = np.concatenate((stArray, np.array([5000,5500,6500.,9000.])))
 dictRebin["Photon_et"]   = np.concatenate((phoArray, np.array([1700,2000.,2500.])))
@@ -172,19 +186,18 @@ def writeHist(hist, procDir, outputFile):
         hist.Write()
 
 writeList = []
-writeList.append([hBkg_disc, "Bkg", "Base"])
 for samp in sigDict.keys():
     exec("writeList.append([hSig_%s_disc, \"Sig_%s\", \"Base\"])"%(samp, samp))
-for var in vars.keys():
-    exec("writeList.append([hBkg_%s, \"Bkg\", \"Base\"])"%var)
-    #exec("writeList.append([hBkg_%s_cut, \"Bkg\", \"Base\"])"%var)
-    for samp in sigDict.keys():
+    for var in vars.keys():
         exec("writeList.append([hSig_%s_%s, \"Sig_%s\", \"Base\"])"%(samp, var, samp))
-        #exec("writeList.append([hSig_%s_%s_cut, \"Sig\", \"Base\"])"%(samp, var))
+for samp in bkgDict.keys():
+    exec("writeList.append([hBkg_%s_disc, \"Bkg_%s\", \"Base\"])"%(samp, samp))
+    for var in vars.keys():
+        exec("writeList.append([hBkg_%s_%s, \"Bkg_%s\", \"Base\"])"%(samp, var, samp))
 
 for write in writeList:
     writeHist(write[0], write[1], outputFile)
-    if "Bkg" in write[1]:
+    if "TTGamma" in write[1]:
         writeHist(write[0], "data_obs", outputFile)
 #outputFile.ls()
 outputFile.Close()

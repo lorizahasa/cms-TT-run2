@@ -6,6 +6,7 @@ from PlotInputs import *
 sys.path.insert(0, os.getcwd().replace('Plot_Hist/PlotMain', 'Hist_Ntuple/HistMain'))
 sys.path.insert(0, os.getcwd().replace("Plot_Disc/PlotCombTrain", "Disc_Ntuple/DiscCombTrain"))
 from DiscInputs import methodList
+from VarInfo import GetVarInfo
 from optparse import OptionParser
 import numpy as np
 
@@ -68,8 +69,9 @@ allPlotName = []
 
 discDict = {}
 discDict["Disc"] = methodList.keys()
-for hist in histList:
-    discDict[hist] = ["MLP"]
+histList_ = GetVarInfo().keys()
+for hist in histList_:
+    discDict[hist] = ["DNN"]
 
 for d, c, r, y in itertools.product(Decay, Channel, regionList, Year_):
     for m in Mass:

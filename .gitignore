@@ -1,9 +1,19 @@
 NanoAOD_Gen
 
-MVA_Ntuple/.*root
-MVA_Ntuple/*/.*root
-MVA_Ntuple/*/*/.*root
-MVA_Ntuple/*/*/*/.*root
+MVA_Ntuple/*.root
+MVA_Ntuple/*/*.root
+MVA_Ntuple/*/*/*.root
+MVA_Ntuple/*/*/*/*.root
+
+MVA_Ntuple/*.txt
+MVA_Ntuple/*/*.txt
+MVA_Ntuple/*/*/*.txt
+MVA_Ntuple/*/*/*/*.txt
+
+MVA_Ntuple/*.pdf
+MVA_Ntuple/*/*.pdf
+MVA_Ntuple/*/*/*.pdf
+MVA_Ntuple/*/*/*/*.pdf
 
 *.pyc
 */*.pyc

@@ -1,6 +1,0 @@
-Year = 2016
-Decay = Semilep
-Channel = Mu
-Region = ttyg_Enriched_SR
-Method = MLP
-AUC = 0.889809722793

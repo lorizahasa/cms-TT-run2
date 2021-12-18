@@ -26,7 +26,8 @@ echo "Number of arguements: "$#
 if [ $# -eq 4 ] 
 then
     python Classification.py -y $1 -d $2 -c $3 --method $4
-    python Reader.py -y $1 -d $2 -c $3 --method $4
+    #python Reader.py -y $1 -d $2 -c $3 --method $4
+    python runTMVAGui.py
 elif [ $# -eq 6 ] 
 then
     python Classification.py -y $1 -d $2 -c $3 --method $4  --syst $5 --level $6 
@@ -46,5 +47,8 @@ condorOutDir=/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Disc_Ntuple/DiscCo
 eos root://cmseos.fnal.gov mkdir -p $condorOutDir/$1/$2/$3/$4
 xrdcp -rf *.root root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/$4
 xrdcp -rf *.txt root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/$4
+xrdcp -rf dataset root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/$4
 rm *.root
+rm *.txt
+rm -r dataset
 printf "Done ";/bin/date
