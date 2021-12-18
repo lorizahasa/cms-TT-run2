@@ -8,6 +8,7 @@ from SampleInfo import getSamples
 from DiscInputs import *
 from VarInfo import GetVarInfo
 
+package = "TMVA"
 #-----------------------------------------
 #INPUT Command Line Arguments 
 #----------------------------------------
@@ -19,11 +20,13 @@ parser.add_option("-d", "--decay", dest="decayMode", default="Semilep",type='str
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
                      help="Specify which channel Mu or Ele? default is Mu" )
+parser.add_option("-s", "--sample", dest="sample", default="TT_tytg_M800",type='str',
+                     help="Specify which sample to run on" )
 parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--level", "--level", dest="level", default="",type='str',
                      help="Specify up/down of systematic")
-parser.add_option("--syst", "--systematic", dest="systematic", default="JetBase",type='str',
+parser.add_option("--syst", "--systematic", dest="systematic", default="Base",type='str',
                      help="Specify which systematic to run on")
 parser.add_option("--method", "--method", dest="methodMVA", default="BDTP",type='str', 
                      help="Which MVA method to be used")
@@ -32,6 +35,7 @@ parser.add_option("--isCheck", "--isCheck", dest="isCheck", action="store_true",
 year = options.year
 decayMode = options.decayMode
 channel = options.channel
+sample = options.sample
 region = options.region
 syst = options.systematic
 level =options.level
@@ -40,25 +44,31 @@ isCheck = options.isCheck
 print parser.parse_args()
 
 #-----------------------------------------
-#INPUT AnalysisNtuples Directory
+#I/O Ntuples/Disc Directory
 #----------------------------------------
-package = "TMVA"
+systDir = "JetBase"
+if "jes" in syst and "Up" in level:
+    systDir = "JECTotal_up"
+if "jes" in syst and "Down" in level:
+    systDir = "JECTotal_down"
+if "jer" in syst and "Up" in level:
+    systDir = "JER_up"
+if "jer" in syst and "Down" in level:
+    systDir = "JER_down"
+if "Data" in sample:
+    systDir = "JetBase"
 dirNtuple = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim/"
-dirFile = "%s/%s/%s"%(year, decayMode, syst) 
-allSamples = getSamples(year, decayMode, syst)
+dirFile = "%s/%s/%s"%(year, decayMode, systDir) 
+allSamples = getSamples(year, decayMode, systDir)
 
-sigDict = {}
-bkgDict = {}
-for s in allSamples.keys():
-    if 'TT_tytg' in s:
-        sigDict[s] = allSamples[s] 
-    else:
-        if "Data" not in s:
-            bkgDict[s] = allSamples[s]
-            print("%s, files: %s"%(s, len(bkgDict[s])))
+outFileMainDir = "./discs"
+outputFile = ROOT.TFile("%s_Reader.root"%(package),"RECREATE")
+ROOT.gROOT.SetBatch(True)
 
-#bkgList = ["Semilep_JetBase__TTGamma_SingleLept_2016_Ntuple.root"]
-
+#-----------------------------------------
+#TMVA specific
+#-----------------------------------------
+package = "TMVA"
 weightfile = "dataset/weights/%s_Classification_%s.weights.xml"%(package, method)
 ROOT.TMVA.Tools.Instance()
 reader = ROOT.TMVA.Reader("!Color:!Silent")
@@ -67,25 +77,135 @@ vars = GetVarInfo()
 #Convert strings to variables
 for var in vars.keys():
     exec('%s = %s'%(var, array('f',[0])))
-    print('%s = %s'%(var, eval(var)))
+    #print('%s = %s'%(var, eval(var)))
 Weight_lumi = array('f',[0])
-
 print("\nTotal vars = %s\n"%len(vars.keys()))
 for var in vars.keys():
     reader.AddVariable(vars[var][0], eval(var))
 reader.BookMVA(method, weightfile)
 
+
+#-----------------------------------------
+#Systematic specific
+#----------------------------------------
+isQCD = False
+w_lumi ="Weight_lumi"
+w_pu ="Weight_pu"
+w_mu = "Weight_mu"
+w_ele= "Weight_ele"
+w_q2 = 1.0 
+w_pdf = 1.0
+w_prefire ="Weight_prefire"
+w_isr = 1.
+w_fsr = 1.
+w_btag="Weight_btag"
+histDirInFile = "%s/%s/Base"%(sample, region)
+variation = "Base"
+if "Data" in sample:
+    histDirInFile = "data_obs/%s/Base"%(region)
+sample_ = sample
+if "Data" in sample or "QCD" in sample:
+    sample_ = "%s%s"%(sample, channel)
+
+#-----------------------------------------
+#For Systematics
+#----------------------------------------
+levelUp = False
+if level in ["up", "UP", "uP", "Up"]: 
+	levelUp = True
+	level= "Up"
+else:
+	level = "Down"
+if not syst=="Base":
+    histDirInFile = "%s/%s/%s%s"%(sample, region, syst,level) 
+    variation = "%s_%s"%(syst,level) 
+    print("Running for systematics", syst+level)
+    if syst=="Weight_pu":
+        if levelUp:
+            w_pu = "Weight_pu_up"
+        else:
+            w_pu = "Weight_pu_down"
+    elif 'Weight_q2' in syst:
+        if levelUp:
+            w_q2="Weight_q2_up"
+        else:
+            w_q2="Weight_q2_down"
+    elif 'Weight_pdf' in syst:
+    	if levelUp:
+    		w_pdf="Weight_pdf_up"
+    	else:
+    		w_pdf="Weight_pdf_down"
+    elif 'Weight_mu' in syst:
+        if levelUp:
+            w_mu = "Weight_mu_up"
+        else:
+            w_mu = "Weight_mu_down" 
+    elif 'Weight_ele' in syst:
+        if levelUp:
+            w_ele = "Weight_ele_up"
+        else:
+            w_ele = "Weight_ele_down"
+    elif 'Weight_fsr' in syst:
+    	if levelUp:
+    	    w_fsr = "Weight_fsr_up"
+    	else:
+    	    w_fsr = "Weight_fsr_down"
+    elif 'Weight_isr' in syst:
+    	if levelUp:
+    	    w_isr = "Weight_isr_up"
+    	else:
+    	    w_isr = "Weight_isr_down"
+    elif 'Weight_prefire' in syst:
+	if levelUp:
+	    w_prefire = "Weight_prefire_up"
+	else:
+	    w_prefire = "Weight_prefire_down"
+    elif 'Weight_btag_b' in syst:
+        if levelUp:
+			w_btag = "Weight_btag_b_up"
+        else:
+			w_btag = "Weight_btag_b_down"
+    elif 'Weight_btag_l' in syst:
+        if levelUp:
+			w_btag = "Weight_btag_l_up"
+        else:
+			w_btag = "Weight_btag_l_down" 
+    else:
+        print "Running Jet Syst"
+
+#-----------------------------------------
+#Select channels
+#----------------------------------------
+if channel=="Mu":
+    outFileFullDir = outFileMainDir+"/%s/%s/Mu"%(year,decayMode)
+    extraCuts            = "(Event_pass_presel_mu && %s)*"%Regions[region]
+
+elif channel=="Ele":
+    outFileFullDir = outFileMainDir+"/%s/%s/Ele"%(year,decayMode)
+    extraCuts            = "(Event_pass_presel_ele && %s)*"%Regions[region]
+else:
+    print "Unknown final state, options are Mu and Ele"
+    sys.exit()
+
+weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire)
+
+#-----------------------------------------
+#Final output Linux and ROOT directories
+#----------------------------------------
+if not os.path.exists(outFileFullDir):
+    os.makedirs(outFileFullDir)
+outFileFullPath = "%s/%s_%s_%s.root"%(outFileFullDir, sample, region, variation)
+outputFile = ROOT.TFile(outFileFullPath, "RECREATE")
+print("The histogram directory inside the root file is", histDirInFile) 
+
+#-----------------------------------------
 #Declare histograms
+#-----------------------------------------
 nBins, xMin, xMax = 25, -1, 1
 if method in ["DNN", 'MLP']: xMin, xMax = 0, 1 
 if method in ['PDEFoam']: nBins, xMin, xMax = 4, -2, 2 
-hBkg_disc = ROOT.TH1D("Disc","Disc",nBins, xMin, xMax)
-for samp in sigDict.keys():
-    histSig = 'ROOT.TH1D("Disc", "Disc", %s, %s, %s)'%(nBins, xMin, xMax)
-    exec("hSig_%s_disc = %s"%(samp, histSig))
-for samp in bkgDict.keys():
-    histBkg = 'ROOT.TH1D("Disc", "Disc", %s, %s, %s)'%(nBins, xMin, xMax)
-    exec("hBkg_%s_disc = %s"%(samp, histSig))
+dictHist = {}
+dictHist["Disc"] = ROOT.TH1D("Disc","Disc",nBins, xMin, xMax)
 for var in vars.keys():
     nBins  = vars[var][1][0]
     xMin   = vars[var][1][1]
@@ -93,67 +213,37 @@ for var in vars.keys():
     #cuts = ["", "_cut"]
     cuts = [""]
     for cut in cuts:
-        for samp in sigDict.keys():
-            histSig = 'ROOT.TH1D("%s%s", "%s%s", %s, %s, %s)'%(var, cut, var, cut, nBins, xMin, xMax)
-            exec("hSig_%s_%s%s = %s"%(samp, var, cut, histSig))
-        for samp in bkgDict.keys():
-            histBkg = 'ROOT.TH1D("%s%s", "%s%s", %s, %s, %s)'%(var, cut, var, cut, nBins, xMin, xMax)
-            exec("hBkg_%s_%s%s = %s"%(samp, var, cut, histBkg))
+        hist = 'ROOT.TH1D("%s%s", "%s%s", %s, %s, %s)'%(var, cut, var, cut, nBins, xMin, xMax)
+        exec("h%s%s = %s"%(var, cut, hist))
+        exec("dictHist[\"%s\"] = h%s%s"%(var, var, cut))
 
+#-----------------------------------------
 #Fill hists for signal
-print("\nRunning for Sig...\n") 
-for samp in sigDict.keys():
-    sig = ROOT.TChain("AnalysisTree")
-    for s in sigDict[samp]:
-        sig.Add("%s/%s/%s"%(dirNtuple, dirFile, s))
-    print("%s, Entries = %s "%(samp, sig.GetEntries()))
-    for ievt, e in enumerate(sig):
-        eventSel = int(e.Event_pass_presel_mu and ((e.Jet_size>=5 and e.FatJet_size==0) or (e.Jet_size>=2 and e.FatJet_size==1))  and e.Jet_b_size >=1 and e.Photon_size==1 and e.Photon_et[0] > 100)
-        if isCheck and ievt >1000:
-            break
-        if eventSel>0:
-            for var in vars.keys():
-                exec("%s[0] = e.%s"%(var, vars[var][0]))
-                exec("hSig_%s_%s.Fill(e.%s, e.Weight_lumi)"%(samp, var, vars[var][0]))
-            disc = reader.EvaluateMVA(method)
-            exec("hSig_%s_disc.Fill(%s, e.Weight_lumi)"%(samp, disc))
-            if disc>0:
-                for var in vars.keys():
-                    #exec("hSig_%s_%s_cut.Fill(e.%s, e.Weight_lumi)"%(samp, var, vars[var][0]))
-                    pass
-            if (ievt%100)==0:
-                print('Event = %i/%i, Disc = %s'%(ievt, sig.GetEntries(), disc))
-                if isCheck:
-                    break
-            
-#Fill hists for background
-print("\nRunning for Bkg...\n")    
-for samp in bkgDict.keys():
-    bkg = ROOT.TChain("AnalysisTree")
-    for b in bkgDict[samp]:
-        bkg.Add("%s/%s/%s"%(dirNtuple, dirFile, b))
-    bkg.Add("%s/%s/%s"%(dirNtuple, dirFile, b))
-    print("%s, Entries = %s "%(samp, bkg.GetEntries()))
-    for ievt, e in enumerate(bkg):
-        eventSel = int(e.Event_pass_presel_mu and ((e.Jet_size>=5 and e.FatJet_size==0) or (e.Jet_size>=2 and e.FatJet_size==1))  and e.Jet_b_size >=1 and e.Photon_size==1 and e.Photon_et[0] > 100)
-        if isCheck and ievt >1000:
-            break
-        if eventSel>0:
-            for var in vars.keys():
-                exec("%s[0] = e.%s"%(var, vars[var][0]))
-                exec("hBkg_%s_%s.Fill(e.%s, e.Weight_lumi)"%(samp, var, vars[var][0]))
-            disc = reader.EvaluateMVA(method)
-            exec("hBkg_%s_disc.Fill(%s, e.Weight_lumi)"%(samp, disc))
-            if disc>0:
-                for var in vars.keys():
-                    #exec("hBkg_%s_%s_cut.Fill(e.%s, e.Weight_lumi)"%(samp, var, vars[var][0]))
-                    pass
-            if (ievt%1000)==0:
-                progress = "%s%s"%(100*ievt/bkg.GetEntries(), "%")
-                print('Event(%s) = %i/%i, Disc = %s'%(progress, ievt, bkg.GetEntries(), disc)) 
+#-----------------------------------------
+print("\nRunning for sample: %s\n"%sample_) 
+tree = ROOT.TChain("AnalysisTree")
+for s in allSamples[sample_]:
+    tree.Add("%s/%s/%s"%(dirNtuple, dirFile, s))
+print("%s, Entries = %s "%(sample_, tree.GetEntries()))
 
-outputFile = ROOT.TFile("%s_Reader.root"%(package),"RECREATE")
-CR = "ttyg_Enriched_SR"
+for ievt, e in enumerate(tree):
+    eventSel = int(e.Event_pass_presel_mu and ((e.Jet_size>=5 and e.FatJet_size==0) or (e.Jet_size>=2 and e.FatJet_size==1))  and e.Jet_b_size >=1 and e.Photon_size==1 and e.Photon_et[0] > 100)
+    if eventSel>0:
+        for var in vars.keys():
+            exec("%s[0] = e.%s"%(var, vars[var][0]))
+            exec("dictHist[\"%s\"].Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
+        disc = reader.EvaluateMVA(method)
+        exec("dictHist[\"Disc\"].Fill(%s, e.Weight_lumi)"%disc)
+        if disc>0:
+            for var in vars.keys():
+                #exec("h%s_cut.Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
+                pass
+        if (ievt%100)==0:
+            print('Event = %i/%i, Disc = %s'%(ievt, tree.GetEntries(), disc))
+
+#-----------------------------------------
+#Rebin and write discs and hists
+#-----------------------------------------
 dictRebin = {}
 
 phoArray = np.array([(i)*100 for i in range(15)])
@@ -167,37 +257,22 @@ dictRebin["Reco_ht"]     = np.concatenate((stArray, np.array([5000,6000.,9000.])
 dictRebin["Reco_st"]     = np.concatenate((stArray, np.array([5000,5500,6500.,9000.])))
 dictRebin["Photon_et"]   = np.concatenate((phoArray, np.array([1700,2000.,2500.])))
 
-def getHistDir(sample, sysType, CR):
-    histDir = "%s/%s/%s"%(sample, CR, sysType)
-    return histDir
-
-def writeHist(hist, procDir, outputFile):
-    outHistDir = getHistDir(procDir, "Base", CR)
-    if not outputFile.GetDirectory(outHistDir):
-        outputFile.mkdir(outHistDir)
-    outputFile.cd(outHistDir)
-    hName = hist.GetName()
-    ROOT.gDirectory.Delete("%s;*"%(hName))
-    print "%20s, %10s, %10s"%(hName, procDir, round(hist.Integral()))
+#-----------------------------------
+# Write final histograms in the file
+#-----------------------------------
+if not outputFile.GetDirectory(histDirInFile):
+    outputFile.mkdir(histDirInFile)
+outputFile.cd(histDirInFile)
+print("Integral of Histogram =  %s"%dictHist["Disc"].Integral())
+for h in dictHist.values():
+    outputFile.cd(histDirInFile)
+    #ROOT.gDirectory.Delete("%s;*"%(h.GetName()))
+    hName = h.GetName()
     if hName in dictRebin.keys():
-        hNew = hist.Rebin(len(dictRebin[hName])-1, hName, dictRebin[hName]) 
+        hNew = h.Rebin(len(dictRebin[hName])-1, hName, dictRebin[hName]) 
         hNew.Write()
     else:
-        hist.Write()
-
-writeList = []
-for samp in sigDict.keys():
-    exec("writeList.append([hSig_%s_disc, \"Sig_%s\", \"Base\"])"%(samp, samp))
-    for var in vars.keys():
-        exec("writeList.append([hSig_%s_%s, \"Sig_%s\", \"Base\"])"%(samp, var, samp))
-for samp in bkgDict.keys():
-    exec("writeList.append([hBkg_%s_disc, \"Bkg_%s\", \"Base\"])"%(samp, samp))
-    for var in vars.keys():
-        exec("writeList.append([hBkg_%s_%s, \"Bkg_%s\", \"Base\"])"%(samp, var, samp))
-
-for write in writeList:
-    writeHist(write[0], write[1], outputFile)
-    if "TTGamma" in write[1]:
-        writeHist(write[0], "data_obs", outputFile)
-#outputFile.ls()
+        h.Write()
+print("Path of output root file:\n%s/%s"%(os.getcwd(), outFileFullPath))
 outputFile.Close()
+

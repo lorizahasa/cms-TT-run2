@@ -15,6 +15,11 @@ MVA_Ntuple/*/*.pdf
 MVA_Ntuple/*/*/*.pdf
 MVA_Ntuple/*/*/*/*.pdf
 
+MVA_Ntuple/*discs
+MVA_Ntuple/*/*discs
+MVA_Ntuple/*/*/*discs
+MVA_Ntuple/*/*/*/*discs
+
 *.pyc
 */*.pyc
 */*/*.pyc
