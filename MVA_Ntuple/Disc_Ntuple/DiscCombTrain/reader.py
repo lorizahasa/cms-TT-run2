@@ -28,9 +28,8 @@ parser.add_option("--level", "--level", dest="level", default="",type='str',
                      help="Specify up/down of systematic")
 parser.add_option("--syst", "--systematic", dest="systematic", default="Base",type='str',
                      help="Specify which systematic to run on")
-parser.add_option("--method", "--method", dest="methodMVA", default="BDTP",type='str', 
+parser.add_option("--method", "--method", dest="method", default="BDTP",type='str', 
                      help="Which MVA method to be used")
-parser.add_option("--isCheck", "--isCheck", dest="isCheck", action="store_true", default=False, help="")
 (options, args) = parser.parse_args()
 year = options.year
 decayMode = options.decayMode
@@ -39,8 +38,7 @@ sample = options.sample
 region = options.region
 syst = options.systematic
 level =options.level
-method = options.methodMVA
-isCheck = options.isCheck
+method = options.method
 print parser.parse_args()
 
 #-----------------------------------------
@@ -61,18 +59,26 @@ dirNtuple = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple
 dirFile = "%s/%s/%s"%(year, decayMode, systDir) 
 allSamples = getSamples(year, decayMode, systDir)
 
-outFileMainDir = "./discs"
-outputFile = ROOT.TFile("%s_Reader.root"%(package),"RECREATE")
-ROOT.gROOT.SetBatch(True)
+#-----------------------------------------
+#Path of the I/O histograms/datacards
+#----------------------------------------
+inFileName = "%s_Classification_%s.weights.xml"%(package, method)
+inFileDir = "%s/Classification/%s/%s/%s/CombMass/%s/%s/weights"%(condorOutDir, year, decayMode, channel, method, region)
+outFileDir      = "./discs/Read/Reader/%s/%s/%s/CombMass/%s/%s"%(year, decayMode, channel, method, region)
+os.system("mkdir -p %s"%outFileDir)
+print(inFileDir)
+print(outFileDir)
+method = options.method
+os.system("xrdcp -rf root://cmseos.fnal.gov/%s/%s %s"%(inFileDir, inFileName, outFileDir))
+weightFile = "%s/%s"%(outFileDir, inFileName)
 
 #-----------------------------------------
 #TMVA specific
 #-----------------------------------------
+ROOT.gROOT.SetBatch(True)
 package = "TMVA"
-weightfile = "dataset/weights/%s_Classification_%s.weights.xml"%(package, method)
 ROOT.TMVA.Tools.Instance()
 reader = ROOT.TMVA.Reader("!Color:!Silent")
-
 vars = GetVarInfo()
 #Convert strings to variables
 for var in vars.keys():
@@ -82,8 +88,7 @@ Weight_lumi = array('f',[0])
 print("\nTotal vars = %s\n"%len(vars.keys()))
 for var in vars.keys():
     reader.AddVariable(vars[var][0], eval(var))
-reader.BookMVA(method, weightfile)
-
+reader.BookMVA(method, weightFile)
 
 #-----------------------------------------
 #Systematic specific
@@ -99,6 +104,7 @@ w_prefire ="Weight_prefire"
 w_isr = 1.
 w_fsr = 1.
 w_btag="Weight_btag"
+w_pho= "Weight_pho[0]"
 histDirInFile = "%s/%s/Base"%(sample, region)
 variation = "Base"
 if "Data" in sample:
@@ -108,7 +114,7 @@ if "Data" in sample or "QCD" in sample:
     sample_ = "%s%s"%(sample, channel)
 
 #-----------------------------------------
-#For Systematics
+#For up/down 
 #----------------------------------------
 levelUp = False
 if level in ["up", "UP", "uP", "Up"]: 
@@ -156,10 +162,10 @@ if not syst=="Base":
     	else:
     	    w_isr = "Weight_isr_down"
     elif 'Weight_prefire' in syst:
-	if levelUp:
-	    w_prefire = "Weight_prefire_up"
-	else:
-	    w_prefire = "Weight_prefire_down"
+        if levelUp:
+            w_prefire = "Weight_prefire_up"
+        else:
+            w_prefire = "Weight_prefire_down"
     elif 'Weight_btag_b' in syst:
         if levelUp:
 			w_btag = "Weight_btag_b_up"
@@ -170,31 +176,23 @@ if not syst=="Base":
 			w_btag = "Weight_btag_l_up"
         else:
 			w_btag = "Weight_btag_l_down" 
+    elif 'Weight_pho' in syst:
+        if levelUp:
+            w_pho = "Weight_pho_up[0]"
+        else:
+            w_pho = "Weight_pho_down[0]"
     else:
         print "Running Jet Syst"
 
-#-----------------------------------------
-#Select channels
-#----------------------------------------
-if channel=="Mu":
-    outFileFullDir = outFileMainDir+"/%s/%s/Mu"%(year,decayMode)
-    extraCuts            = "(Event_pass_presel_mu && %s)*"%Regions[region]
-
-elif channel=="Ele":
-    outFileFullDir = outFileMainDir+"/%s/%s/Ele"%(year,decayMode)
-    extraCuts            = "(Event_pass_presel_ele && %s)*"%Regions[region]
-else:
-    print "Unknown final state, options are Mu and Ele"
-    sys.exit()
-
-weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire)
+#evtWeights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire, w_pho)
+evtWeights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_mu,w_ele,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire, w_pho)
 
 #-----------------------------------------
 #Final output Linux and ROOT directories
 #----------------------------------------
-if not os.path.exists(outFileFullDir):
-    os.makedirs(outFileFullDir)
-outFileFullPath = "%s/%s_%s_%s.root"%(outFileFullDir, sample, region, variation)
+if not os.path.exists(outFileDir):
+    os.makedirs(outFileDir)
+outFileFullPath = "%s/%s_%s.root"%(outFileDir, sample, variation)
 outputFile = ROOT.TFile(outFileFullPath, "RECREATE")
 print("The histogram directory inside the root file is", histDirInFile) 
 
@@ -223,17 +221,30 @@ for var in vars.keys():
 print("\nRunning for sample: %s\n"%sample_) 
 tree = ROOT.TChain("AnalysisTree")
 for s in allSamples[sample_]:
+    print("%s/%s/%s"%(dirNtuple, dirFile, s))
     tree.Add("%s/%s/%s"%(dirNtuple, dirFile, s))
 print("%s, Entries = %s "%(sample_, tree.GetEntries()))
 
+#-----------------------------------------
+#Event selection and loop
+#-----------------------------------------
+if "u" in channel: 
+    selStr = "e.Event_pass_presel_mu && %s"%Regions[region]
+else:
+    selStr = "e.Event_pass_presel_ele && %s"%Regions[region]
+selStr = selStr.replace("&&", "and")
+selStr = selStr.replace("||", "or")
+print(selStr)
+
 for ievt, e in enumerate(tree):
-    eventSel = int(e.Event_pass_presel_mu and ((e.Jet_size>=5 and e.FatJet_size==0) or (e.Jet_size>=2 and e.FatJet_size==1))  and e.Jet_b_size >=1 and e.Photon_size==1 and e.Photon_et[0] > 100)
+    exec("eventSel = int(%s)"%selStr)
+    evtWt = evtWeights.replace("Weight", "e.Weight")
     if eventSel>0:
         for var in vars.keys():
             exec("%s[0] = e.%s"%(var, vars[var][0]))
-            exec("dictHist[\"%s\"].Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
+            exec("dictHist[\"%s\"].Fill(e.%s, %s)"%(var, vars[var][0], evtWt))
         disc = reader.EvaluateMVA(method)
-        exec("dictHist[\"Disc\"].Fill(%s, e.Weight_lumi)"%disc)
+        exec("dictHist[\"Disc\"].Fill(%s, %s)"%(disc, evtWt))
         if disc>0:
             for var in vars.keys():
                 #exec("h%s_cut.Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
@@ -245,7 +256,6 @@ for ievt, e in enumerate(tree):
 #Rebin and write discs and hists
 #-----------------------------------------
 dictRebin = {}
-
 phoArray = np.array([(i)*100 for i in range(15)])
 stArray  = np.array([(i)*250 for i in range(20)])
 massArray = np.array([(i)*100 for i in range(20)])

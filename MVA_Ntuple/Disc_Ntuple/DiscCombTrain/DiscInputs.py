@@ -1,6 +1,6 @@
 import ROOT
 #-----------------------------------------------------------------
-condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Disc_Ntuple/DiscCombTrain"
+condorOutDir = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Disc_Ntuple/DiscMain"
 #-----------------------------------------------------------------
 #Years 	      =	["2016", "2017", "2018"]
 Years 	      =	["2016"]
@@ -22,7 +22,7 @@ Systematics.append("Weight_q2")
 Systematics.append("Weight_pdf")
 Systematics.append("Weight_isr")
 Systematics.append("Weight_fsr")
-Systematics.append("Weight_jes")
+#Systematics.append("Weight_jes")
 Systematics.append("Weight_jer")
 Systematics   =	[]
 
@@ -36,18 +36,16 @@ isTTYG = True
 #tt+gamma+gluon control regions
 #--------------------------------
 if isTTYG:
-    Regions['ttyg_Enriched_CR']         = "((Jet_size>=5 && FatJet_size==0) || (Jet_size>=2 && FatJet_size==1)) && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75"
-    Regions['ttyg_Enriched_CR_Resolved']= "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75 && FatJet_size ==0"
-    Regions['ttyg_Enriched_CR_Boosted'] = "Jet_size >=2 && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75 && FatJet_size >=1"
+    #Regions['ttyg_Enriched_CR']         = "((e.Jet_size>=5 && e.FatJet_size==0) || (e.Jet_size>=2 && e.FatJet_size==1)) && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et < 75"
+    #Regions['ttyg_Enriched_CR_Resolved']= "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et < 75 && e.FatJet_size ==0"
+    #Regions['ttyg_Enriched_CR_Boosted'] = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et < 75 && e.FatJet_size >=1"
 
     #--------------------------------
     #signal regions
     #--------------------------------
-    Regions['ttyg_Enriched_SR']         = "((Jet_size>=5 && FatJet_size==0) || (Jet_size>=2 && FatJet_size==1)) && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100"
-    Regions['ttyg_Enriched_SR_Resolved']= "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100 && FatJet_size ==0"
-    Regions['ttyg_Enriched_SR_Boosted'] = "Jet_size >=2 && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100 && FatJet_size >=1"
-
-
+    Regions['ttyg_Enriched_SR']         = "((e.Jet_size>=5 && e.FatJet_size==0) || (e.Jet_size>=2 && e.FatJet_size==1)) && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et > 100"
+    Regions['ttyg_Enriched_SR_Resolved']= "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et > 100 && e.FatJet_size ==0"
+    Regions['ttyg_Enriched_SR_Boosted'] = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et > 100 && e.FatJet_size >=1"
 
 #https://github.com/ViniciusMikuni/ttbb-analysis/blob/5d48e5e03bdd0ca162d3dd058f4ee02ef33a8460/python/MVA_cfg.py
 batchs = 64
@@ -81,6 +79,4 @@ methodList = {"BDTP":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=850","Max
               #"PyAda": [ROOT.TMVA.Types.kPyAdaBoost,"!V:NEstimators=1000"],
               #"PyForest": [ROOT.TMVA.Types.kPyRandomForest, "!V:VarTransform=None:NEstimators=850:Criterion=gini:MaxFeatures=auto:MaxDepth=4:MinSamplesLeaf=1:MinWeightFractionLeaf=0:Bootstrap=kTRUE"]
               }
-
-
 
