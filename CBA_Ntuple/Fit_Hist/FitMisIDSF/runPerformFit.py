@@ -35,6 +35,7 @@ def runCmd(cmd):
 os.system("mkdir -p tex")
 texFile = open("tex/performFit.tex", "w")
 allPlotPath = []
+'''
 for y, d, c, r in itertools.product(Year, Decay, Channel, Regions): 
     args = "-y %s -d %s -c %s -r %s --hist %s "%(y, d, c, r, hName)
     print args
@@ -45,7 +46,9 @@ for y, d, c, r in itertools.product(Year, Decay, Channel, Regions):
         runCmd("python performFit.py %s --isT2W --isImpact"%args)
     plotPath = "%s/nuisImpact.pdf"%(plotDir)
     allPlotPath.append(plotPath)
+'''
 if isComb:
+    Regions = ['MisID_Enriched_a2j_e0b_e1y']
     for y, d, r in itertools.product(Year, Decay, Regions): 
         args = "-y %s -d %s --isCombCh -r %s --hist %s "%(y, d, r, hName)
         print args
@@ -56,7 +59,7 @@ if isComb:
             runCmd("python performFit.py %s --isT2W --isImpact"%args)
         plotPath = "%s/nuisImpact.pdf"%(plotDir)
         allPlotPath.append(plotPath)
-
+    '''
     for d, c, r in itertools.product(Decay, Channel, Regions): 
         args = "--isCombYear -d %s -c %s -r %s --hist %s "%(d, c, r, hName)
         print args
@@ -78,7 +81,7 @@ if isComb:
             runCmd("python performFit.py %s --isT2W --isImpact"%args)
         plotPath = "%s/nuisImpact.pdf"%(plotDir)
         allPlotPath.append(plotPath)
-
+        '''
 showPerFig = 1
 figWidth = 1.0
 nPage = len(allPlotPath)/showPerFig

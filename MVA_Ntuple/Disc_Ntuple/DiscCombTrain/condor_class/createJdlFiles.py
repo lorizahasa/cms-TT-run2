@@ -33,18 +33,18 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
     jdlFile.write('Executable =  runClassification.sh \n')
     jdlFile.write(common_command)
     #Create for Base, Control region
-    for method in methodList.keys():
+    for method in methodDict.keys():
         run_command =  \
 		'arguments  = %s %s %s %s %s\n\
 queue 1\n\n' %(year, decay, channel, method, condorOutDir)
         jdlFile.write(run_command)
     
     #Create for Syst, Control region
-    for method, syst, level in itertools.product(methodList.keys(), Systematics, SystLevels):
+    for method, syst, level in itertools.product(methodDict.keys(), Systematics, SystLevels):
         run_command =  \
 		'arguments  = %s %s %s %s %s %s %s\n\
 queue 1\n\n' %(year, decay, channel, method, syst, level, condorOutDir)
-        jdlFile.write(run_command)
+        #jdlFile.write(run_command)
 	#print "condor_submit jdl/%s"%jdlFile
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 

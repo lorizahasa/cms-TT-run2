@@ -20,9 +20,9 @@ parser.add_option("-c", "--channels", dest="channels", default="Mu",type='str',
 		  help="Specify which channels Mu or Ele? default is Mu" )
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
-parser.add_option("--method", "--method", dest="method", default="BDTP",type='str',
+parser.add_option("--method", "--method", dest="method", default="BDTG",type='str',
                      help="Specify MVA method") 
-parser.add_option("-r", "--regions", dest="regions", default="ttyg_Enriched_SR",type='str', 
+parser.add_option("-r", "--regions", dest="regions", default="ttyg_Enriched_SR_Resolved",type='str', 
                      help="which control selection and regions"), 
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
@@ -69,7 +69,7 @@ def runCmd(cmd):
 def getDataCard(year, decayMode, channel, region, hName):
     args = "-y %s -d %s -c %s -m %s -r %s --hist %s --method %s"%(year, decayMode, channel, mass, region, hName, method)
     runCmd("python makeDataCard.py  %s "%args)
-    inDirDC = "./output/Fit_Disc/FitCombTrain/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method, region, hName)
+    inDirDC = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method, region, hName)
     name = "%s/Datacard_Alone.txt"%inDirDC
     return name
 #-----------------------------------------
@@ -82,7 +82,7 @@ for y in years.split("__"):
             pathDC = getDataCard(y, decayMode, ch, r, hName)
             dcList.append(pathDC)
 combDCText = ' '.join(dcList)
-dirDC = "./output/Fit_Disc/FitCombTrain/%s/%s/%s/%s/%s/%s/%s"%(years, decayMode, channels, mass, method, regions, hName)
+dirDC = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s"%(years, decayMode, channels, mass, method, regions, hName)
 if not os.path.exists(dirDC):
     os.makedirs(dirDC)
 pathDC  = "%s/Datacard.txt"%(dirDC)

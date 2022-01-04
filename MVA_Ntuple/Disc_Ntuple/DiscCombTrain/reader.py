@@ -64,7 +64,7 @@ allSamples = getSamples(year, decayMode, systDir)
 #----------------------------------------
 inFileName = "%s_Classification_%s.weights.xml"%(package, method)
 inFileDir = "%s/Classification/%s/%s/%s/CombMass/%s/%s/weights"%(condorOutDir, year, decayMode, channel, method, region)
-outFileDir      = "./discs/Read/Reader/%s/%s/%s/CombMass/%s/%s"%(year, decayMode, channel, method, region)
+outFileDir      = "./discs/Read/Reader/%s/%s/%s/CombMass/%s"%(year, decayMode, channel, method)
 os.system("mkdir -p %s"%outFileDir)
 print(inFileDir)
 print(outFileDir)
@@ -192,7 +192,7 @@ evtWeights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_mu,w_ele,w_q2,w_pdf,w_isr
 #----------------------------------------
 if not os.path.exists(outFileDir):
     os.makedirs(outFileDir)
-outFileFullPath = "%s/%s_%s.root"%(outFileDir, sample, variation)
+outFileFullPath = "%s/%s_%s_%s.root"%(outFileDir, sample, variation, region)
 outputFile = ROOT.TFile(outFileFullPath, "RECREATE")
 print("The histogram directory inside the root file is", histDirInFile) 
 
@@ -252,21 +252,6 @@ for ievt, e in enumerate(tree):
         if (ievt%100)==0:
             print('Event = %i/%i, Disc = %s'%(ievt, tree.GetEntries(), disc))
 
-#-----------------------------------------
-#Rebin and write discs and hists
-#-----------------------------------------
-dictRebin = {}
-phoArray = np.array([(i)*100 for i in range(15)])
-stArray  = np.array([(i)*250 for i in range(20)])
-massArray = np.array([(i)*100 for i in range(20)])
-massArrayTT = np.array([(2*i)*100 for i in range(25)])
-
-dictRebin["Reco_mass_T"] = np.concatenate((massArray, np.array([2200.,2500,3000,6000.])))
-dictRebin["Reco_mass_TT"] = np.concatenate((massArrayTT, np.array([5500.,6500,9000.])))
-dictRebin["Reco_ht"]     = np.concatenate((stArray, np.array([5000,6000.,9000.])))
-dictRebin["Reco_st"]     = np.concatenate((stArray, np.array([5000,5500,6500.,9000.])))
-dictRebin["Photon_et"]   = np.concatenate((phoArray, np.array([1700,2000.,2500.])))
-
 #-----------------------------------
 # Write final histograms in the file
 #-----------------------------------
@@ -277,12 +262,7 @@ print("Integral of Histogram =  %s"%dictHist["Disc"].Integral())
 for h in dictHist.values():
     outputFile.cd(histDirInFile)
     #ROOT.gDirectory.Delete("%s;*"%(h.GetName()))
-    hName = h.GetName()
-    if hName in dictRebin.keys():
-        hNew = h.Rebin(len(dictRebin[hName])-1, hName, dictRebin[hName]) 
-        hNew.Write()
-    else:
-        h.Write()
+    h.Write()
 print("Path of output root file:\n%s/%s"%(os.getcwd(), outFileFullPath))
 outputFile.Close()
 

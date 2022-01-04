@@ -10,7 +10,7 @@ from PlotTDRStyle import *
 from array import array
 from FitInputs import *
 from optparse import OptionParser
-from DiscInputs import methodList
+from DiscInputs import methodDict
 import pandas as pd
 
 padGap = 0.01
@@ -27,7 +27,7 @@ parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type=
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",type='str', 
+parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
@@ -48,7 +48,7 @@ gROOT.SetBatch(True)
 limits = "tex/allLimits.json"
 gDict = {}
 limDict={}
-path = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Fit_Disc/FitCombTrain/%s/%s/%s"%(year, decayMode, channel)
+path = "/eos/uscms/%s/Fit_Disc/FitMain/%s/%s/%s"%(condorOutDir, year, decayMode, channel)
 def getLimit(jsonFile, exp, m):
     with open(jsonFile) as jsonFile_:
         jsonData = json.load(jsonFile_)
@@ -79,7 +79,7 @@ for h in histList:
     limDict[h] = y
 
 aucDict = {}
-for method in methodList.keys():
+for method in methodDict.keys():
     x = array( 'd' )
     y = array( 'd' )
     auc = []
@@ -88,7 +88,8 @@ for method in methodList.keys():
         limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, method, region, "Disc")
         print(limFile)
         y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
-        aucFile      = open("%s/%s/AUC.txt"%(path.replace("Fit_Disc/Fit", "Disc_Ntuple/Disc"), method))
+        aucFile      = open("/eos/uscms/%s/Disc_Ntuple/DiscMain/Classification/%s/%s/%s/CombMass/%s/%s/AUC.txt"%(condorOutDir,year, decayMode, channel, method, region), 'r')
+        print(aucFile)
         for line in aucFile:
             if "AUC" in line:
                 auc.append(roundMe(100*float(line.split(" ")[-1]), 1))
@@ -104,7 +105,7 @@ df = pd.DataFrame.from_dict(limDict)
 print(df)
 roundDict = {}
 roundBy = 1
-for m in methodList.keys():
+for m in methodDict.keys():
     df[m] =100*(df[m] - df['Reco_mass_T'])/df['Reco_mass_T']
     roundDict[m] = roundBy
 for h in histList:
@@ -114,6 +115,7 @@ for h in histList:
 df.set_index('mT', inplace=True)
 print df.round(roundDict)
 
+print(aucDict)
 aucDF = pd.DataFrame.from_dict(aucDict)
 aucDF.set_index('mT', inplace=True)
 print(aucDF)
@@ -199,5 +201,5 @@ elif byCR:
 else:
     name = "by"
 #canvas.SaveAs("%s/Fit_Hist/FitMain/forMain/%s/Semilep/%s/limit_%s.pdf"%(condorHistDir, year, channel, name))
-canvas.SaveAs("limit.pdf")
+canvas.SaveAs("limit_%s.pdf"%region)
 

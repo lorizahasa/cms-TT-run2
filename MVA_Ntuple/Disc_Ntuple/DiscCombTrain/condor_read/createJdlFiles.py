@@ -1,8 +1,6 @@
 import os
 import sys
 sys.path.insert(0, os.getcwd().replace("condor_read", ""))
-sys.path.insert(0, os.getcwd().replace("condor_read", "sample"))
-from SampleInfo import getSamples
 import itertools
 from DiscInputs import *
 
@@ -35,20 +33,19 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
     jdlFile.write('Executable =  runReader.sh \n')
     jdlFile.write(common_command)
     #Create for Base, Control region
-    allSamples = getSamples(year, decay, "JetBase")
-    for sample, method in itertools.product(allSamples.keys(), methodList.keys()):
+    for sample, method in itertools.product(Samples, methodDict.keys()):
         run_command =  \
 		'arguments  = %s %s %s %s %s %s\n\
 queue 1\n\n' %(year, decay, channel, sample, method, condorOutDir)
         jdlFile.write(run_command)
     
     #Create for Syst, Control region
-    for sample, method, syst, level in itertools.product(allSamples.keys(), methodList.keys(), Systematics, SystLevels):
+    for sample, method, syst, level in itertools.product(Samples, methodDict.keys(), Systematics, SystLevels):
         run_command =  \
 		'arguments  = %s %s %s %s %s %s %s %s\n\
 queue 1\n\n' %(year, decay, channel, sample, method, syst, level, condorOutDir)
-        jdlFile.write(run_command)
-	#print "condor_submit jdl/%s"%jdlFile
+        if not sample in ["Data"]:
+            jdlFile.write(run_command)
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
 subFile.close()

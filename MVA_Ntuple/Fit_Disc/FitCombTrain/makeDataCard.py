@@ -19,11 +19,11 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
-parser.add_option("--method", "--method", dest="method", default="BDTP",type='str',
+parser.add_option("--method", "--method", dest="method", default="BDTG",type='str',
                      help="Specify MVA method")
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",type='str', 
+parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--isQCDMC","--qcdMC",dest="isQCDMC", default=False, action="store_true",
 		  help="")
@@ -40,9 +40,9 @@ isQCDMC         = options.isQCDMC
 #-----------------------------------------
 #Path of the I/O histograms/datacards
 #----------------------------------------
-inFile = "TMVA_Reader.root"
-inFileDir = "%s/Disc_Ntuple/DiscCombTrain/%s/%s/%s/%s"%(condorHistDir, year, decayMode, channel, method)
-outFileDir      = "./output/Fit_Disc/FitCombTrain/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method, region, hName)
+inFile = "AllInc_forMain.root"
+inFileDir = "%s/Disc_Ntuple/DiscMain/Reader/%s/%s/%s/CombMass/%s/Merged"%(condorOutDir, year, decayMode, channel, method)
+outFileDir      = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method, region, hName)
 os.system("mkdir -p %s"%outFileDir)
 inFileName = "%s/%s"%(outFileDir, inFile)
 print(inFileDir)
@@ -58,9 +58,8 @@ datacardPath    = "%s/Datacard_Alone.txt"%(outFileDir)
 #-----------------------------------
 cb = ch.CombineHarvester()
 #cb.SetVerbosity(4)
-#AllBkgs = ["TTbar", "TTGamma", "WJets", "DYJets", "WGamma", "ZGamma", "Others","QCD"]
-AllBkgs = ["Bkg"]
-Signal  = ["Sig_TT_tytg_M%s"%mass]
+AllBkgs = ["TTbar", "TTGamma", "WJets", "DYJets", "WGamma", "ZGamma", "Others","QCD"]
+Signal  = ["TT_tytg_M%s"%mass]
 allMC   = Signal + AllBkgs
 #------------------
 #Add observed data
@@ -75,20 +74,20 @@ cb.AddProcesses(["*"],["TT"],["13TeV"],[channel],AllBkgs,[(-1, hName)], False)
 #Add systematics
 #------------------
 cb.cp().process(allMC).AddSyst(cb, "lumi_$ERA", "lnN",ch.SystMap("era") (["13TeV"], 1.025))
-cb.cp().process(["Background"]).AddSyst(cb, "CMS_norm_tty", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
-## cb.cp().process(["TTbar"]).AddSyst(cb, "CMS_norm_tt", "lnN",ch.SystMap("era") (["13TeV"], 1.055))
-## cb.cp().process(["Others"]).AddSyst(cb, "CMS_norm_o", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
-## cb.cp().process(allMC).AddSyst(cb, "Weight_pu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
-## cb.cp().process(allMC).AddSyst(cb, "Weight_mu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
-## ##cb.cp().process(allMC).AddSyst(cb, "Weight_pho",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-## cb.cp().process(allMC).AddSyst(cb, "Weight_ele",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-## cb.cp().process(allMC).AddSyst(cb, "Weight_btag_b", "shape",ch.SystMap("era") (["13TeV"], 1.0))
-## cb.cp().process(allMC).AddSyst(cb, "Weight_btag_l", "shape",ch.SystMap("era") (["13TeV"], 1.0))
-## cb.cp().process(allMC).AddSyst(cb, "Weight_prefire","shape",ch.SystMap("era") (["13TeV"], 1.0))
-## #cb.cp().process(allMC).AddSyst(cb, "Weight_q2",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
-## #cb.cp().process(allMC).AddSyst(cb, "Weight_pdf",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-## cb.cp().process(allMC).AddSyst(cb, "Weight_isr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-## cb.cp().process(allMC).AddSyst(cb, "Weight_fsr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(["TTbar"]).AddSyst(cb, "CMS_norm_tt", "lnN",ch.SystMap("era") (["13TeV"], 1.055))
+cb.cp().process(["TTGamma"]).AddSyst(cb, "CMS_norm_tty", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
+cb.cp().process(["Others"]).AddSyst(cb, "CMS_norm_others", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
+##cb.cp().process(allMC).AddSyst(cb, "Weight_pu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
+##cb.cp().process(allMC).AddSyst(cb, "Weight_mu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
+##cb.cp().process(allMC).AddSyst(cb, "Weight_pho",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_ele",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+##cb.cp().process(allMC).AddSyst(cb, "Weight_btag_b", "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_btag_l", "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_prefire","shape",ch.SystMap("era") (["13TeV"], 1.0))
+##cb.cp().process(allMC).AddSyst(cb, "Weight_q2",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
+##cb.cp().process(allMC).AddSyst(cb, "Weight_pdf",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_isr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_fsr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 #------------------
 #Add rateParam
 #------------------

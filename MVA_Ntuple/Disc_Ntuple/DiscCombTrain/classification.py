@@ -28,7 +28,7 @@ parser.add_option("--syst", "--systematic", dest="systematic", default="JetBase"
                      help="Specify which systematic to run on")
 parser.add_option("--level", "--level", dest="level", default="",type='str',
                      help="Specify up/down of systematic")
-parser.add_option("--isCheck", "--isCheck", dest="isCheck", action="store_true", default=True, help="")
+parser.add_option("--isCheck", "--isCheck", dest="isCheck", action="store_true", default=False, help="")
 parser.add_option("--isSep", "--isSep", dest="isSep", action="store_true", default=False, help="")
 (options, args) = parser.parse_args()
 year        = options.year
@@ -136,7 +136,7 @@ fName ="%s/%s_Classification.root"%(outDir, package)
 outputFile = ROOT.TFile.Open(fName, "RECREATE")
 factory = ROOT.TMVA.Factory("%s_Classification"%(package), outputFile,
                       "!V:ROC:!Silent:Color:!DrawProgressBar:AnalysisType=Classification" )
-factory.BookMethod(loader, methodList[m][0], m, methodList[m][1])
+factory.BookMethod(loader, methodDict[m][0], m, methodDict[m][1])
 factory.TrainAllMethods()
 factory.TestAllMethods()
 factory.EvaluateAllMethods()

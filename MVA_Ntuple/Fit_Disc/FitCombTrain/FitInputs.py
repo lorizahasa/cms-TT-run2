@@ -1,6 +1,6 @@
 import ROOT as rt
 #-----------------------------------------------------------------
-condorHistDir  = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple" 
+condorOutDir  = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple" 
 #-----------------------------------------------------------------
 Year = []
 Year.append("2016")
@@ -18,17 +18,17 @@ Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"
 #Mass      = ["800", "1600"]
 
 regionList = []
-regionList.append("ttyg_Enriched_SR")
-#regionList.append("ttyg_Enriched_SR_Boosted")
-#regionList.append("ttyg_Enriched_SR_Resolved")
+#regionList.append("ttyg_Enriched_SR")
+regionList.append("ttyg_Enriched_SR_Boosted")
+regionList.append("ttyg_Enriched_SR_Resolved")
 #regionList.append("ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved")
 
 histList = []
 #histList.append("Reco_mass_TT")
 histList.append("Reco_mass_T")
-histList.append("Photon_et")
+#histList.append("Photon_et")
 histList.append("Reco_st")
-histList.append("Reco_ht")
+#histList.append("Reco_ht")
 
 xss = {}
 xss["700"]   = 0.03*0.97*2*4.92
@@ -43,7 +43,7 @@ xss["1500"]  = 0.03*0.97*2*0.00677
 xss["1600"]  = 0.03*0.97*2*0.00359
 
 regionDict = {}
-regionDict["ttyg_Enriched_SR"] = "Inclusive"
+#regionDict["ttyg_Enriched_SR"] = "Inclusive"
 regionDict["ttyg_Enriched_SR_Boosted"] = "Boosted"
 regionDict["ttyg_Enriched_SR_Resolved"]= "Resolved"
-regionDict["ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved"]="Boosted+Resolved"
+#regionDict["ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved"]="Boosted+Resolved"
