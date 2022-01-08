@@ -22,13 +22,13 @@ parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
                      help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-s", "--sample", dest="sample", default="TT_tytg_M800",type='str',
                      help="Specify which sample to run on" )
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",type='str', 
+parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--level", "--level", dest="level", default="",type='str',
                      help="Specify up/down of systematic")
 parser.add_option("--syst", "--systematic", dest="systematic", default="Base",type='str',
                      help="Specify which systematic to run on")
-parser.add_option("--method", "--method", dest="method", default="BDTP",type='str', 
+parser.add_option("--method", "--method", dest="method", default="BDTG",type='str', 
                      help="Which MVA method to be used")
 (options, args) = parser.parse_args()
 year = options.year
@@ -203,7 +203,7 @@ nBins, xMin, xMax = 25, -1, 1
 if method in ["DNN", 'MLP']: xMin, xMax = 0, 1 
 if method in ['PDEFoam']: nBins, xMin, xMax = 4, -2, 2 
 dictHist = {}
-dictHist["Disc"] = ROOT.TH1D("Disc","Disc",nBins, xMin, xMax)
+dictHist["Disc"] = ROOT.TH1F("Disc","Disc",nBins, xMin, xMax)
 for var in vars.keys():
     nBins  = vars[var][1][0]
     xMin   = vars[var][1][1]
@@ -211,12 +211,12 @@ for var in vars.keys():
     #cuts = ["", "_cut"]
     cuts = [""]
     for cut in cuts:
-        hist = 'ROOT.TH1D("%s%s", "%s%s", %s, %s, %s)'%(var, cut, var, cut, nBins, xMin, xMax)
+        hist = 'ROOT.TH1F("%s%s", "%s%s", %s, %s, %s)'%(var, cut, var, cut, nBins, xMin, xMax)
         exec("h%s%s = %s"%(var, cut, hist))
         exec("dictHist[\"%s\"] = h%s%s"%(var, var, cut))
 
 #-----------------------------------------
-#Fill hists for signal
+#Add all trees
 #-----------------------------------------
 print("\nRunning for sample: %s\n"%sample_) 
 tree = ROOT.TChain("AnalysisTree")
@@ -239,6 +239,7 @@ print(selStr)
 for ievt, e in enumerate(tree):
     exec("eventSel = int(%s)"%selStr)
     evtWt = evtWeights.replace("Weight", "e.Weight")
+    #print(ievt, eventSel)
     if eventSel>0:
         for var in vars.keys():
             exec("%s[0] = e.%s"%(var, vars[var][0]))

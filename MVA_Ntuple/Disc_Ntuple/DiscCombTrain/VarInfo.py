@@ -9,6 +9,7 @@ def GetVarInfo():
              "Electron_phi"         : ["Electron_phi"   , [20,-5.0,5.0], True],
              "Photon_et"             : ["Photon_et"    , [100,0,2000], True],
              "Photon_size"          : ["Photon_size"     , [10,-0.5,9.5], True],
+             "Photon_h_over_e"       : ["Photon_h_over_e[0]"    , [20,0,0.4], True],
              "Jet_size"             : ["Jet_size"     , [16,-0.5,15.5], True],
              "Jet_b_size"           : ["Jet_b_size"     , [10,-0.5,9.5], True],
              "Jet_pt"               : ["Jet_pt"    , [30,-20,1480], True],
@@ -36,25 +37,15 @@ def GetVarInfo():
              "FatJet_deepTag_WvsQCD"   : ["FatJet_deepTag_WvsQCD"  , [20,-0.5,1.5], True],
              }
     varDictTemp = {
-             "Muon_pt"              : ["Muon_pt[0]"     , [30,0,1650], True],
-             "Muon_eta"             : ["Muon_eta[0]"    , [12,-2.88,2.88], True],
-             "Muon_iso"             : ["Muon_iso[0]"    , [20,0,0.2], True],
-             #"Electron_pt"          : ["Electron_pt"    , [30,0,1500], True],
-             #"Electron_eta_sc"      : ["Electron_eta_sc" , [12,-2.88,2.88], True],
              "Photon_et"             : ["Photon_et[0]"    , [100,0,2000], True],
-             "Photon_eta"            : ["Photon_eta[0]"    , [12,-2.88,2.88], True],
-             "Photon_sieie"          : ["Photon_sieie[0]"    , [20,0,0.02], True],
-             "Photon_h_over_e"       : ["Photon_h_over_e[0]"    , [20,0,0.4], True],
              "Jet_pt"                : ["Jet_pt[0]"    , [30,-20,1480], True],
              "Jet_eta"               : ["Jet_eta[0]"    , [12,-2.88,2.88], True],
              "Jet_size"             : ["Jet_size"     , [16,-0.5,15.5], True],
-             "Jet_b_size"           : ["Jet_b_size"     , [10,-0.5,9.5], True],
              "Reco_mass_lgamma"     : ["Reco_mass_lgamma[0]", [30,0,3000], True],
              "Reco_met"             : ["Reco_met"      , [30,-20,1180], True],
              "Reco_ht"              : ["Reco_ht"        , [300,0,9000], True],
              "Reco_st"              : ["Reco_st"        , [300,0,9000], True],
              "Reco_chi2"            : ["Reco_chi2", [20,0,100], True],
-             "Reco_mass_trans_w"    : ["Reco_mass_trans_w", [30,0,600], True],
              "Reco_mass_T"          : ["Reco_mass_T", [300,0,6000], True],
              "Reco_mass_TT"          : ["Reco_mass_TT", [300,0,9000], True],
              "Reco_dr_photon_lepton" : ["Reco_dr_photon_lepton[0]", [20,0,5], True],
@@ -67,19 +58,15 @@ def GetVarInfo():
              "Reco_angle_leadJet_met"           : ["Reco_angle_leadJet_met", [20,0,5], True],
              "Reco_angle_leadBjet_met"          : ["Reco_angle_leadBjet_met", [20,0,5], True],
              "Reco_ratio_leadJetPt_met"         : ["Reco_ratio_leadJetPt_met", [20,0,20], True],
-             "Reco_ratio_leadJetPt_ht"          : ["Reco_ratio_leadJetPt_ht", [20,0,1], True],
              "Reco_pt_hadT"     : ["Reco_pt_hadT" , [30,0,3000], True],
              "Reco_pt_lepT"     : ["Reco_pt_lepT" , [30,0,3000], True],
              "Reco_eta_hadT"    : ["Reco_eta_hadT", [20,-5,5], True],
-             "Reco_eta_lepT"    : ["Reco_eta_lepT", [20,-5,5], True],
-             "Reco_phi_lepT"    : ["Reco_phi_lepT", [20,-4,4], True],
-             "Reco_phi_hadT"    : ["Reco_phi_hadT", [20,-4,4], True],
              "Photon_phi"       : ["Photon_phi[0]", [20,-4,4], True],
              "Muon_phi"         : ["Muon_phi[0]"  , [20,-4,4], True],
-             "Reco_met_phi"     : ["Reco_met_phi" , [20,-4,4], True],
              }
     return varDictTemp
     #return hDict 
     #return hDictWeight 
 
-allVarList = GetVarInfo().keys()
+#allVarList = GetVarInfo().keys()
+#print(len(allVarList))

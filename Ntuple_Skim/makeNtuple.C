@@ -482,6 +482,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 			   "weight/MuSF/muon_16.root", "h2D_SF"); 
 	
 	eleSF = new ElectronSF("weight/EleSF/EGM2D_MiniIso_SF_2016.root",
+
 			       "weight/EleSF/EGM2D_RECO_SF_2016.root",
 			       "weight/EleSF/electron_16.root");
 	

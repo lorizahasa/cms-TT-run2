@@ -47,7 +47,6 @@ PUReweight::PUReweight(int nFiles, char** fileNames, std::string PUfilename){
 	// mcPU for some reason seems to be 1000 bins, rebin by 1000/200 (factor of 5) to get same binning in both to allow the scaling to work
     //std::cout<<"mcPU bins = "<<mcPU->GetNbinsX()<<std::endl;
 
-    /*
 	if (mcPU->GetNbinsX()!=PUweightHist->GetNbinsX()){
 		if (mcPU->GetNbinsX()>PUweightHist->GetNbinsX()){
 			mcPU->Rebin(mcPU->GetNbinsX()/PUweightHist->GetNbinsX());
@@ -67,7 +66,6 @@ PUReweight::PUReweight(int nFiles, char** fileNames, std::string PUfilename){
 	// PUweightHist->Draw();
 	// c1->SaveAs("PUReweight.png");	
 	delete mcPU;
-    */
 }
 
 PUReweight::~PUReweight(){
@@ -80,9 +78,7 @@ double PUReweight::getWeight(Float_t puTrue){
 	std::cout << "you are calling getWeight by mistake" << std::endl; 
 	return 1.0;
     }
-    
     PUweight = PUweightHist->GetBinContent(PUweightHist->GetXaxis()->FindBin(puTrue));
-    
     events++;
     PUweightSum+=PUweight;
     return PUweight;

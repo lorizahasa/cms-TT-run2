@@ -22,7 +22,7 @@ parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",ty
                      help="which control selection and region"), 
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
-parser.add_option("--method", "--method", dest="methodMVA", default="BDTP",type='str', 
+parser.add_option("--method", "--method", dest="methodMVA", default="BDTG",type='str', 
                      help="Which MVA method to be used")
 parser.add_option("--syst", "--systematic", dest="systematic", default="JetBase",type='str',
                      help="Specify which systematic to run on")

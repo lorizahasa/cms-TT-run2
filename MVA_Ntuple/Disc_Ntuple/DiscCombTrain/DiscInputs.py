@@ -59,16 +59,16 @@ isTTYG = True
 #tt+gamma+gluon control regions
 #--------------------------------
 if isTTYG:
-    #Regions['ttyg_Enriched_CR']         = "((e.Jet_size>=5 && e.FatJet_size==0) || (e.Jet_size>=2 && e.FatJet_size==1)) && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et < 75"
-    #Regions['ttyg_Enriched_CR_Resolved']= "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et < 75 && e.FatJet_size ==0"
-    #Regions['ttyg_Enriched_CR_Boosted'] = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et < 75 && e.FatJet_size >=1"
+    #Regions['ttyg_Enriched_CR']         = "((e.Jet_size>=5 && e.FatJet_size==0) || (e.Jet_size>=2 && e.FatJet_size==1)) && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0] < 75"
+    #Regions['ttyg_Enriched_CR_Resolved']= "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0] < 75 && e.FatJet_size ==0"
+    #Regions['ttyg_Enriched_CR_Boosted'] = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0] < 75 && e.FatJet_size >=1"
 
     #--------------------------------
     #signal regions
     #--------------------------------
-    #Regions['ttyg_Enriched_SR']         = "((e.Jet_size>=5 && e.FatJet_size==0) || (e.Jet_size>=2 && e.FatJet_size==1)) && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et > 100"
-    Regions['ttyg_Enriched_SR_Resolved']= "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et > 100 && e.FatJet_size ==0"
-    Regions['ttyg_Enriched_SR_Boosted'] = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et > 100 && e.FatJet_size >=1"
+    #Regions['ttyg_Enriched_SR']         = "((e.Jet_size>=5 && e.FatJet_size==0) || (e.Jet_size>=2 && e.FatJet_size==1)) && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0] > 100"
+    Regions['ttyg_Enriched_SR_Resolved']= "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]>100 && e.FatJet_size ==0"
+    Regions['ttyg_Enriched_SR_Boosted'] = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0] >100 && e.FatJet_size >=1"
 
 #https://github.com/ViniciusMikuni/ttbb-analysis/blob/5d48e5e03bdd0ca162d3dd058f4ee02ef33a8460/python/MVA_cfg.py
 batchs = 64
