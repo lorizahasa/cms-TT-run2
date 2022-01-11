@@ -4,7 +4,7 @@ import itertools
 import collections
 from PlotInputs import *
 sys.path.insert(0, os.getcwd().replace('Plot_Hist/PlotMain', 'Hist_Ntuple/HistMain'))
-sys.path.insert(0, os.getcwd().replace("Plot_Disc/PlotCombTrain", "Disc_Ntuple/DiscCombTrain"))
+sys.path.insert(0, os.getcwd().replace("Plot_Disc", "Disc_Ntuple"))
 from DiscInputs import methodDict
 from VarInfo import GetVarInfo
 from optparse import OptionParser

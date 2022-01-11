@@ -17,24 +17,24 @@ else
     cd CMSSW_10_2_14/src
     eval `scramv1 runtime -sh`
 	cd ../..
-	tar --strip-components=1 -zxvf DiscCombTrain.tar.gz
+	tar --strip-components=1 -zxvf Disc_Ntuple.tar.gz
 fi
 
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-if [ $# -eq 5 ] 
+if [ $# -eq 6 ] 
 then
-    python runClass.py -y $1 -d $2 -c $3 --method $4 
-    outDir=$5
-elif [ $# -eq 7 ] 
+    python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5
+    outDir=$6
+elif [ $# -eq 8 ] 
 then
-    python runClass.py -y $1 -d $2 -c $3 --method $4  --syst $5 --level $6 
-    outDir=$7
+    python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5  --syst $6 --level $7 
+    outDir=$8
 
 #For over/under flow of arguments
 else
-    echo "The number of command line areguments should be 5 or 7" 
+    echo "The number of command line areguments should be 6 or 8" 
 fi
 printf "Done Histogramming at ";/bin/date
 
@@ -42,6 +42,6 @@ printf "Done Histogramming at ";/bin/date
 #Copy the ouput root files
 #---------------------------------------------
 printf "Copying output files ..."
-xrdcp -rf discs/Class root://cmseos.fnal.gov/$outDir
+xrdcp -rf discs/Read root://cmseos.fnal.gov/$outDir
 rm -r discs
 printf "Done ";/bin/date

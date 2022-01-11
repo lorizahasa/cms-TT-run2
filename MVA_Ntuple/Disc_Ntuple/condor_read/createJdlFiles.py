@@ -7,16 +7,16 @@ from DiscInputs import *
 tmpDir = "tmpSub"
 condorLogDir = "log"
 os.system("mkdir -p %s/%s"%(tmpDir, condorLogDir))
-tarFile = "%s/DiscCombTrain.tar.gz"%tmpDir
-exDir = '../../DiscCombTrain'
+tarFile = "%s/Disc_Ntuple.tar.gz"%tmpDir
+exDir = '../Disc_Ntuple'
 ex = '--exclude=%s/discs --exclude=%s/condor_read --exclude=%s/condor_class'%(exDir, exDir, exDir)
-os.system("tar %s -zcvf %s ../../DiscCombTrain "%(ex, tarFile))
+os.system("tar %s -zcvf %s ../Disc_Ntuple "%(ex, tarFile))
 os.system("cp runReader.sh %s"%tmpDir)
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
-Transfer_Input_Files = DiscCombTrain.tar.gz, runReader.sh\n\
+Transfer_Input_Files = Disc_Ntuple.tar.gz, runReader.sh\n\
 use_x509userproxy = true\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\

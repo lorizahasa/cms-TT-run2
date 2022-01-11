@@ -28,9 +28,6 @@ echo "Number of arguements: "$#
 
 python performFit.py -y $1 -d $2 -c $3 --mass $4 --method $5 -r $6 --hist $7 --isT2W --isLimit 
 printf "Done fitting at ";/bin/date
-condorOutDir=/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Fit_Disc
-xrdcp -rf ./output/Fit_Disc/$1/$2/$3/$4/$5/$6/$7/* root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/$4/$5/$6/$7/
-rm *.root
-rm *.json
+xrdcp -rf ./output/ root://cmseos.fnal.gov/$8
 rm -r ./output
 printf "Done ";/bin/date

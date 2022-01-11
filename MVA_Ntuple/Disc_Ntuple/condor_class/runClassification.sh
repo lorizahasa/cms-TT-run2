@@ -25,12 +25,12 @@ echo "All arguements: "$@
 echo "Number of arguements: "$#
 if [ $# -eq 5 ] 
 then
-    python Classification.py -y $1 -d $2 -c $3 --mass $4 --method $5
-    python Reader.py -y $1 -d $2 -c $3 --mass $4 --method $5
+    python runClass.py -y $1 -d $2 -c $3 --method $4 
+    outDir=$5
 elif [ $# -eq 7 ] 
 then
-    python Classification.py -y $1 -d $2 -c $3 --mass $4 --method $5  --syst $5 --level $6 
-    python Reader.py -y $1 -d $2 -c $3 --mass $4 --method $5 --syst $5 --level $6 
+    python runClass.py -y $1 -d $2 -c $3 --method $4  --syst $5 --level $6 
+    outDir=$7
 
 #For over/under flow of arguments
 else
@@ -42,9 +42,6 @@ printf "Done Histogramming at ";/bin/date
 #Copy the ouput root files
 #---------------------------------------------
 printf "Copying output files ..."
-condorOutDir=/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Disc_Ntuple
-eos root://cmseos.fnal.gov mkdir -p $condorOutDir/$1/$2/$3/$4/$5
-xrdcp -rf *.root root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/$4/$5
-xrdcp -rf *.txt root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/$4/$5
-rm *.root
+xrdcp -rf discs/Class root://cmseos.fnal.gov/$outDir
+rm -r discs
 printf "Done ";/bin/date

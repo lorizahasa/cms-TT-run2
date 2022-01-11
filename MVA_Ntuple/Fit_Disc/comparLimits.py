@@ -2,15 +2,15 @@
 from ROOT import gROOT, TGraph, TCanvas, TLegend
 import os
 import sys
-sys.path.insert(0, os.getcwd().replace("MVA_Ntuple/Fit_Disc/FitSepTrain", "CBA_Ntuple/Plot_Hist/PlotMain"))
-sys.path.insert(0, os.getcwd().replace("Fit_Disc/FitSepTrain", "Disc_Ntuple/DiscSepTrain"))
+sys.path.insert(0, os.getcwd().replace("MVA_Ntuple/Fit_Disc", "CBA_Ntuple/Plot_Hist/PlotMain"))
+sys.path.insert(0, os.getcwd().replace("Fit_Disc", "Disc_Ntuple"))
 import json
 from PlotCMSLumi import *
 from PlotTDRStyle import *
 from array import array
 from FitInputs import *
 from optparse import OptionParser
-from DiscInputs import methodList
+from DiscInputs import methodDict
 import pandas as pd
 
 padGap = 0.01
@@ -27,7 +27,7 @@ parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type=
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",type='str', 
+parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
@@ -48,7 +48,7 @@ gROOT.SetBatch(True)
 limits = "tex/allLimits.json"
 gDict = {}
 limDict={}
-path = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Fit_Disc/%s/%s/%s"%(year, decayMode, channel)
+path = "/eos/uscms/%s/Fit_Disc/FitMain/%s/%s/%s"%(condorOutDir, year, decayMode, channel)
 def getLimit(jsonFile, exp, m):
     with open(jsonFile) as jsonFile_:
         jsonData = json.load(jsonFile_)
@@ -70,7 +70,7 @@ for h in histList:
     y = array( 'd' )
     for m in Mass:
         x.append(float(m))
-        limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, "MLP", region, h)
+        limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, "BDTA", region, h)
         print(limFile)
         y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
     graph = TGraph(len(x), x, y)
@@ -79,7 +79,7 @@ for h in histList:
     limDict[h] = y
 
 aucDict = {}
-for method in methodList.keys():
+for method in methodDict.keys():
     x = array( 'd' )
     y = array( 'd' )
     auc = []
@@ -88,7 +88,9 @@ for method in methodList.keys():
         limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, method, region, "Disc")
         print(limFile)
         y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
-        aucFile      = open("%s/%s/%s/AUC.txt"%(path.replace("Fit_Disc", "Disc_Ntuple"), m, method))
+        #aucFile      = open("/eos/uscms/%s/Disc_Ntuple/DiscMain/Classification/%s/%s/%s/CombMass/%s/%s/AUC.txt"%(condorOutDir,year, decayMode, channel, method, region), 'r')
+        aucFile      = open("/eos/uscms/%s/Disc_Ntuple/DiscMain/Classification/2016/Semilep/Mu/CombMass/BDTA/ttyg_Enriched_SR_Resolved/AUC.txt"%(condorOutDir), 'r')
+        print(aucFile)
         for line in aucFile:
             if "AUC" in line:
                 auc.append(roundMe(100*float(line.split(" ")[-1]), 1))
@@ -104,16 +106,18 @@ df = pd.DataFrame.from_dict(limDict)
 print(df)
 roundDict = {}
 roundBy = 1
-for m in methodList.keys():
+for m in methodDict.keys():
     df[m] =100*(df[m] - df['Reco_mass_T'])/df['Reco_mass_T']
     roundDict[m] = roundBy
 for h in histList:
     if "Reco_mass_T" not in h:
         df[h] =100*(df[h] - df['Reco_mass_T'])/df['Reco_mass_T']
         roundDict[h] = roundBy
-df.set_index('mT', inplace=True)
+df.set_index(['mT', 'Reco_mass_T'], inplace=True)
+#df.rename(columns={"BDTA": "BDTA (%)"}, inplace=True)
 print df.round(roundDict)
 
+print(aucDict)
 aucDF = pd.DataFrame.from_dict(aucDict)
 aucDF.set_index('mT', inplace=True)
 print(aucDF)
@@ -140,6 +144,8 @@ for index, s in enumerate(gDict.keys()):
     gDict[s].Draw("P")
     if index==0:
         gDict[s].SetMaximum(0.02)
+        if "Boosted" in region:
+            gDict[s].SetMaximum(0.04)
         gDict[s].SetMinimum(0.0001)
         gDict[s].Draw()
     else:
@@ -166,7 +172,7 @@ legend.Draw()
 #---------------------------
 chColor = 1
 if channel in ["mu", "Mu", "m"]:
-    chColor = 3 #ROOT.kCyan
+    chColor = 4 #ROOT.kCyan
     chName = "1 #color[%i]{#mu}, p_{T}^{miss} > 20"%chColor
 elif channel in ["ele", "Ele"]:
     chColor = 2#ROOT.kRust - 1
@@ -181,12 +187,12 @@ crName = region
 chCRName = "#splitline{#font[42]{%s}}{#font[42]{%s}}"%(chName, "95% CL expected upper limit")
 extraText   = "#splitline{Preliminary}{%s}"%chCRName
 lumi_13TeV = "35.9 fb^{-1}"
-col_year = 3 
+col_year = 1 
 if year=="2016":
     lumi_13TeV = "35.9 fb^{-1} (#color[%i]{2016})"%(col_year)
-elif year=="2016":
+elif year=="2017":
     lumi_13TeV = "41.5 fb^{-1} (#color[%i]{2017})"%(col_year)
-elif year=="2016":
+elif year=="2018":
     lumi_13TeV = "59.7 fb^{-1} (#color[%i]{2018})"%(col_year)
 else:
     lumi_13TeV = "137.2 fb^{-1} (#color[%i]{Run2})"%(col_year)
@@ -198,6 +204,18 @@ elif byCR:
     name = "byCR"
 else:
     name = "by"
-#canvas.SaveAs("%s/Fit_Hist/FitMain/forMain/%s/Semilep/%s/limit_%s.pdf"%(condorHistDir, year, channel, name))
-canvas.SaveAs("limit.pdf")
-
+canvas.SaveAs("/eos/uscms/%s/Fit_Disc/FitMain/%s/%s/%s/limit_%s.pdf"%(condorOutDir, year, decayMode, channel, region))
+#canvas.SaveAs("limit_%s.pdf"%region)
+latex = "/eos/uscms/%s/Fit_Disc/FitMain/%s/%s/%s/limit_%s.tex"%(condorOutDir, year, decayMode, channel, region)
+with open(latex, 'w') as f:
+    table = "\\begin{minipage}[c]{0.32\\textwidth}\n"
+    table += "\\centering\n"
+    table += "\\tiny{\n"
+    f.write(table)
+    f.write(df.round(roundDict).to_latex())
+    #print df.round(roundDict)
+    table  = "}\n"
+    table += "\\end{minipage}\n"
+    f.write(table)
+print(latex)
+f.close()
