@@ -70,7 +70,7 @@ for h in histList:
     y = array( 'd' )
     for m in Mass:
         x.append(float(m))
-        limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, "DNN", region, h)
+        limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, "BDTA", region, h)
         print(limFile)
         y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
     graph = TGraph(len(x), x, y)
@@ -88,7 +88,8 @@ for method in methodDict.keys():
         limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, method, region, "Disc")
         print(limFile)
         y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
-        aucFile      = open("/eos/uscms/%s/Disc_Ntuple/DiscMain/Classification/%s/%s/%s/CombMass/%s/%s/AUC.txt"%(condorOutDir,year, decayMode, channel, method, region), 'r')
+        #aucFile      = open("/eos/uscms/%s/Disc_Ntuple/DiscMain/Classification/%s/%s/%s/CombMass/%s/%s/AUC.txt"%(condorOutDir,year, decayMode, channel, method, region), 'r')
+        aucFile      = open("/eos/uscms/%s/Disc_Ntuple/DiscMain/Classification/2016/Semilep/Mu/CombMass/BDTA/ttyg_Enriched_SR_Resolved/AUC.txt"%(condorOutDir), 'r')
         print(aucFile)
         for line in aucFile:
             if "AUC" in line:
@@ -112,7 +113,8 @@ for h in histList:
     if "Reco_mass_T" not in h:
         df[h] =100*(df[h] - df['Reco_mass_T'])/df['Reco_mass_T']
         roundDict[h] = roundBy
-df.set_index('mT', inplace=True)
+df.set_index(['mT', 'Reco_mass_T'], inplace=True)
+#df.rename(columns={"BDTA": "BDTA (%)"}, inplace=True)
 print df.round(roundDict)
 
 print(aucDict)
@@ -142,6 +144,8 @@ for index, s in enumerate(gDict.keys()):
     gDict[s].Draw("P")
     if index==0:
         gDict[s].SetMaximum(0.02)
+        if "Boosted" in region:
+            gDict[s].SetMaximum(0.04)
         gDict[s].SetMinimum(0.0001)
         gDict[s].Draw()
     else:
@@ -168,7 +172,7 @@ legend.Draw()
 #---------------------------
 chColor = 1
 if channel in ["mu", "Mu", "m"]:
-    chColor = 3 #ROOT.kCyan
+    chColor = 4 #ROOT.kCyan
     chName = "1 #color[%i]{#mu}, p_{T}^{miss} > 20"%chColor
 elif channel in ["ele", "Ele"]:
     chColor = 2#ROOT.kRust - 1
@@ -183,12 +187,12 @@ crName = region
 chCRName = "#splitline{#font[42]{%s}}{#font[42]{%s}}"%(chName, "95% CL expected upper limit")
 extraText   = "#splitline{Preliminary}{%s}"%chCRName
 lumi_13TeV = "35.9 fb^{-1}"
-col_year = 3 
+col_year = 1 
 if year=="2016":
     lumi_13TeV = "35.9 fb^{-1} (#color[%i]{2016})"%(col_year)
-elif year=="2016":
+elif year=="2017":
     lumi_13TeV = "41.5 fb^{-1} (#color[%i]{2017})"%(col_year)
-elif year=="2016":
+elif year=="2018":
     lumi_13TeV = "59.7 fb^{-1} (#color[%i]{2018})"%(col_year)
 else:
     lumi_13TeV = "137.2 fb^{-1} (#color[%i]{Run2})"%(col_year)
@@ -200,6 +204,18 @@ elif byCR:
     name = "byCR"
 else:
     name = "by"
-#canvas.SaveAs("%s/Fit_Hist/FitMain/forMain/%s/Semilep/%s/limit_%s.pdf"%(condorHistDir, year, channel, name))
-canvas.SaveAs("limit_%s.pdf"%region)
-
+canvas.SaveAs("/eos/uscms/%s/Fit_Disc/FitMain/%s/%s/%s/limit_%s.pdf"%(condorOutDir, year, decayMode, channel, region))
+#canvas.SaveAs("limit_%s.pdf"%region)
+latex = "/eos/uscms/%s/Fit_Disc/FitMain/%s/%s/%s/limit_%s.tex"%(condorOutDir, year, decayMode, channel, region)
+with open(latex, 'w') as f:
+    table = "\\begin{minipage}[c]{0.32\\textwidth}\n"
+    table += "\\centering\n"
+    table += "\\tiny{\n"
+    f.write(table)
+    f.write(df.round(roundDict).to_latex())
+    #print df.round(roundDict)
+    table  = "}\n"
+    table += "\\end{minipage}\n"
+    f.write(table)
+print(latex)
+f.close()

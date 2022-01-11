@@ -10,7 +10,7 @@ from PlotTDRStyle import *
 from array import array
 from PlotInputs import *
 from optparse import OptionParser
-from DiscInputs import methodList
+from DiscInputs import methodDict
 
 padGap = 0.01
 iPeriod = 4;
@@ -26,13 +26,13 @@ parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type=
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
 		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",type='str', 
+parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
 parser.add_option("--mass","--mass",dest="mass", default='800', type='str', 
 		  help="mass of the Tprime")
-parser.add_option("--method","--method",dest="method", default='MLP', type='str', 
+parser.add_option("--method","--method",dest="method", default='DNN', type='str', 
 		  help="MVA method")
 (options, args) = parser.parse_args()
 year            = options.year
@@ -49,17 +49,17 @@ pDict = {}
 #-----------------------------------------------------------------
 condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple" 
 #-----------------------------------------------------------------
-path = "%s/Disc_Ntuple/DiscCombTrain/%s/%s/%s"%(condorHistDir, year, decayMode, channel)
+path = "%s/Disc_Ntuple/DiscMain/Reader/%s/%s/%s"%(condorHistDir, year, decayMode, channel)
 print path
-discFile = TFile.Open("%s/%s/TMVA_Reader.root"%(path, method))
+discFile = TFile.Open("%s/CombMass/%s/Merged/AllInc_forMain.root"%(path, method))
 
 plotPath = path.replace("Disc_Ntuple/Disc", "Plot_Disc/Plot")
 plotPath = "%s/%s/%s/%s"%(plotPath, mass, method, region)
 os.system("mkdir -p %s"%plotPath)
 
-sigDisc = discFile.Get("Sig_TT_tytg_M%s/%s/Base/%s"%(mass, region, hName))
+sigDisc = discFile.Get("TT_tytg_M%s/%s/Base/%s"%(mass, region, hName))
 sigDisc.Scale(1/sigDisc.Integral())
-bkgDisc = discFile.Get("Bkg/%s/Base/%s"%(region, hName))
+bkgDisc = discFile.Get("TTGamma/%s/Base/%s"%(region, hName))
 bkgDisc.Scale(1/bkgDisc.Integral())
 pDict["Signal, M%s"%mass] = sigDisc
 pDict["All Background"] = bkgDisc

@@ -2,10 +2,10 @@ import ROOT
 #-----------------------------------------------------------------
 condorOutDir = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Disc_Ntuple/DiscMain"
 #-----------------------------------------------------------------
-#Years 	      =	["2016", "2017", "2018"]
-Years 	      =	["2016"]
-#Channels 	  =	["Mu", "Ele"]
-Channels 	  =	["Mu"]
+Years 	      =	["2016", "2017", "2018"]
+#Years 	      =	["2016"]
+Channels 	  =	["Mu", "Ele"]
+#Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 #Mass          = ["800", "1600"]
 Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"]
@@ -34,7 +34,7 @@ Samples.append("QCD")
 Samples.append("Data")
 
 Systematics   =	[]
-#Systematics.append("Weight_pu")
+Systematics.append("Weight_pu")
 Systematics.append("Weight_mu")
 Systematics.append("Weight_pho")
 Systematics.append("Weight_ele")
@@ -46,7 +46,7 @@ Systematics.append("Weight_pdf")
 Systematics.append("Weight_isr")
 Systematics.append("Weight_fsr")
 #Systematics.append("Weight_jes")
-#Systematics.append("Weight_jer")
+Systematics.append("Weight_jer")
 #Systematics   =	[]
 
 SystLevels = []
@@ -83,7 +83,7 @@ trainingStrategyString += training0
 nnOptions = "!H:V:ErrorStrategy=CROSSENTROPY:VarTransform=None:WeightInitialization=XAVIERUNIFORM"
 nnOptions += ":" + layoutString + ":" +  trainingStrategyString + ":Architecture=CPU"
 
-methodDict = {"BDTG":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=850","MaxDepth=5","BoostType=Grad","Shrinkage=0.01","UseBaggedBoost","BaggedSampleFraction=0.50","SeparationType=GiniIndex","nCuts=50"])],
+methodDict = {#"BDTG":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=850","MaxDepth=5","BoostType=Grad","Shrinkage=0.01","UseBaggedBoost","BaggedSampleFraction=0.50","SeparationType=GiniIndex","nCuts=50"])],
               #"BDTCW":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=500","MaxDepth=8","BoostType=Grad","Shrinkage=0.01","UseBaggedBoost","BaggedSampleFraction=0.50","SeparationType=GiniIndex","nCuts=50"])],
               #"BDTFish":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=500","MaxDepth=4","BoostType=Grad","Shrinkage=0.01","UseFisherCuts","MinLinCorrForFisher=0.5","UseBaggedBoost","BaggedSampleFraction=0.50","SeparationType=GiniIndex","nCuts=50"])],
               ##"LH":[ROOT.TMVA.Types.kLikelihood,"H:!V:TransformOutput:PDFInterpol=Spline2:NSmoothSig[0]=20:NSmoothBkg[0]=20:NSmoothBkg[1]=10:NSmooth=1:NAvEvtPerBin=50"],
@@ -91,7 +91,7 @@ methodDict = {"BDTG":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=850","Max
               #"MLP": [ROOT.TMVA.Types.kMLP, "H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator"],
               ##"SVM": [ROOT.TMVA.Types.kSVM,"VarTransform=Norm"],
               "BDTA": [ROOT.TMVA.Types.kBDT, "!H:!V:NTrees=850:MaxDepth=6:BoostType=AdaBoost:AdaBoostBeta=0.05:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=30"],
-              "DNN": [ROOT.TMVA.Types.kDNN, nnOptions],
+              #"DNN": [ROOT.TMVA.Types.kDNN, nnOptions],
               #"PyDNN":[ROOT.TMVA.Types.kPyKeras,":".join(["H","V","NumEpochs=700","TriesEarlyStopping=20","BatchSize="+str(batchs)])],
               #"Fish" : [ROOT.TMVA.Types.kFisher, "H:!V:Fisher:VarTransform=None:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:NbinsMVAPdf=50:NsmoothMVAPdf=10" ],
               #"FishG" : [ROOT.TMVA.Types.kFisher, "H:!V:Fisher:VarTransform=Gauss:CreateMVAPdfs:PDFInterpolMVAPdf=Spline2:Boost_Num=20:Boost_Transform=log:Boost_Type=AdaBoost:Boost_AdaBoostBeta=0.2:!Boost_DetailedMonitoring" ],

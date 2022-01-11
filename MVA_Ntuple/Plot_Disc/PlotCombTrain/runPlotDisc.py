@@ -5,7 +5,7 @@ import collections
 from PlotInputs import *
 sys.path.insert(0, os.getcwd().replace('Plot_Hist/PlotMain', 'Hist_Ntuple/HistMain'))
 sys.path.insert(0, os.getcwd().replace("Plot_Disc/PlotCombTrain", "Disc_Ntuple/DiscCombTrain"))
-from DiscInputs import methodList
+from DiscInputs import methodDict
 from VarInfo import GetVarInfo
 from optparse import OptionParser
 import numpy as np
@@ -68,8 +68,10 @@ allPlotPath = []
 allPlotName = []
 
 discDict = {}
-discDict["Disc"] = methodList.keys()
+discDict["Disc"] = methodDict.keys()
 histList_ = GetVarInfo().keys()
+#histList_ = ["Reco_mass_T"] 
+histList_ = []
 for hist in histList_:
     discDict[hist] = ["DNN"]
 
@@ -95,7 +97,7 @@ for d, c, r, y in itertools.product(Decay, Channel, regionList, Year_):
                     continue
                 if "tty_Enriched" in r and "Reco_mass_T" in h:
                     continue
-                plotDir  = "%s/Plot_Disc/PlotCombTrain/%s/%s/%s/%s/%s/%s"%(condorHistDir, y, d, c, m, method, r)
+                plotDir  = "%s/Plot_Disc/PlotMain/Reader/%s/%s/%s/%s/%s/%s"%(condorHistDir, y, d, c, m, method, r)
                 if isMake: 
                     os.system("python plotDisc.py %s"%(args1))
                 plotPath = "%s/%s.pdf"%(plotDir, h)

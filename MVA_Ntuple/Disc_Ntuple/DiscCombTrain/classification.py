@@ -72,7 +72,7 @@ for s in allSamples.keys():
             for bkgF in bkgs:
                 bkgList.append(bkgF)
 if isCheck:
-    bkgList = ["Semilep_JetBase__TTGamma_SingleLept_2016_Ntuple.root"]
+    bkgList = ["Semilep_JetBase__TTGamma_SingleLept_%s_Ntuple.root"%year]
 
 #-----------------------------------------
 #Add trees in the TChain
@@ -87,6 +87,7 @@ else:
         sigTree.Add("%s/%s/%s"%(dirNtuple, dirFile, s))
 bkgTree = ROOT.TChain("AnalysisTree")
 for b in bkgList:
+    print("%s/%s/%s"%(dirNtuple, dirFile, b))
     bkgTree.Add("%s/%s/%s"%(dirNtuple, dirFile, b))
 print(sigList)
 print("Total files from all bkgs = %s, Entries = %s "%(len(bkgList), bkgTree.GetEntries()))

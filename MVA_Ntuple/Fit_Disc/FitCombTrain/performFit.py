@@ -20,7 +20,7 @@ parser.add_option("-c", "--channels", dest="channels", default="Mu",type='str',
 		  help="Specify which channels Mu or Ele? default is Mu" )
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
-parser.add_option("--method", "--method", dest="method", default="BDTG",type='str',
+parser.add_option("--method", "--method", dest="method", default="BDTA",type='str',
                      help="Specify MVA method") 
 parser.add_option("-r", "--regions", dest="regions", default="ttyg_Enriched_SR_Resolved",type='str', 
                      help="which control selection and regions"), 
@@ -143,8 +143,10 @@ if isLimit:
 #Impacts of Systematics
 #----------------------------------------
 if isImpact:
-    runCmd("combineTool.py -M Impacts -d %s  -m 125 --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1 -t -1  --redefineSignalPOIs %s --setParameterRanges r=0,20"%(pathT2W, params)) 
-    runCmd("combineTool.py -M Impacts -d %s  -m 125  --doFits --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1 -t -1  --redefineSignalPOIs %s --setParameterRanges r=0,20 --parallel 10"%(pathT2W, params))
+    runCmd("combineTool.py -M Impacts -d %s  -m 125 --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 -t -1  --redefineSignalPOIs %s --setParameterRanges r=0,20"%(pathT2W, params)) 
+    runCmd("combineTool.py -M Impacts -d %s  -m 125  --doFits --robustFit 1 --cminDefaultMinimizerStrategy 0  -t -1  --redefineSignalPOIs %s --setParameterRanges r=0,20 --parallel 10"%(pathT2W, params))
+    #runCmd("combineTool.py -M Impacts -d %s  -m 125 --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1 -t -1  --redefineSignalPOIs %s --setParameterRanges r=0,20"%(pathT2W, params)) 
+    #runCmd("combineTool.py -M Impacts -d %s  -m 125  --doFits --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1 -t -1  --redefineSignalPOIs %s --setParameterRanges r=0,20 --parallel 10"%(pathT2W, params))
     runCmd("combineTool.py -M Impacts -d %s -m 125 -o %s/nuisImpact.json --redefineSignalPOIs %s "%(pathT2W, dirDC, params))
     runCmd("python ./plotImpacts.py --cms-label \"   Internal\" -i %s/nuisImpact.json -o %s/nuisImpact.pdf"%(dirDC, dirDC))
 

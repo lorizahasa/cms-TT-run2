@@ -4,13 +4,13 @@ condorOutDir  = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple"
 #-----------------------------------------------------------------
 Year = []
 Year.append("2016")
-#Year.append("2017")
-#Year.append("2018")
+Year.append("2017")
+Year.append("2018")
 #Year.append("2016__2017__2018")
 
 Channel = []
 Channel.append("Mu")
-#Channel.append("Ele")
+Channel.append("Ele")
 #Channel.append("Mu__Ele")
 
 Decay 	  =	["Semilep"]

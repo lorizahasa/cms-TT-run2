@@ -28,7 +28,7 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 discDict = {}
 discDict["Disc"] = methodDict.keys()
 for hist in histList:
-    discDict[hist] = ["DNN"]
+    discDict[hist] = ["BDTA"]
 
 print(discDict)
 #----------------------------------------

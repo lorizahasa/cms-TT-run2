@@ -497,6 +497,7 @@ void makeNtuple::InitBranches(){
     //jets
     outputTree->Branch("Jet_size"   , &_nJet ); 
     outputTree->Branch("Jet_b_size"  , &_nBJet ); 
+	outputTree->Branch("Jet_deep_b"  , &_jetDeepB );
     outputTree->Branch("Jet_pt"  , &_jetPt );
     outputTree->Branch("Jet_qgl"  , &_jetQGL );
     outputTree->Branch("Jet_eta" , &_jetEta); 
@@ -567,7 +568,6 @@ void makeNtuple::InitBranches(){
     if (!isSystematicRun){
 	/* outputTree->Branch("jetCMVA"  , &_jetCMVA ); */
 	/* outputTree->Branch("jetCSVV2"  , &_jetCSVV2 ); */
-	outputTree->Branch("Jet_deep_b"  , &_jetDeepB );
 	/* outputTree->Branch("jetDeepC"  , &_jetDeepC ); */
     }
 	

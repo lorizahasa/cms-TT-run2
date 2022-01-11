@@ -59,19 +59,21 @@ texFile = open("tex/plotClass%s.tex"%ext, "w")
 allPlotPath = []
 allPlotName = []
 histList = GetVarInfo().keys()
-for y, d, c, r, method in itertools.product(Year_, Decays, Channels, Regions.keys(), methodDict.keys()):
+for r, d, c, y, method in itertools.product(Regions.keys(), Decays, Channels, Year_, methodDict.keys()):
     plotDir  = "/eos/uscms/%s/Classification/%s/%s/%s/CombMass/%s/%s/plots"%(condorOutDir, y, d, c, method, r)
     nVarPlots = len(histList)/6 + len(histList)%6
+    '''
     for i in range(nVarPlots):
         allPlotPath.append("%s/variables_id_c%s.png"%(plotDir, i+1))
     allPlotPath.append("%s/mva_%s.png"%(plotDir, method))
-    allPlotPath.append("%s/overtrain_%s.png"%(plotDir, method))
     allPlotPath.append("%s/rejBvsS.png"%(plotDir))
     allPlotPath.append("%s/CorrelationMatrixB.png"%(plotDir))
+    '''
+    allPlotPath.append("%s/overtrain_%s.png"%(plotDir, method))
     allPlotName.append("%s, %s, %s, %s"%(y, c, r.replace("_", "\_"), method))
 
 figWidth = 0.38
-showPerFig = 11
+showPerFig = 12
 if isRun2:
     figWidth=0.24
     showPerFig = 24

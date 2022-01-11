@@ -3,6 +3,8 @@ import os
 import sys
 import numpy as np
 from array import array
+import time
+start_time = time.time()
 sys.path.insert(0, "%s/%s"%(os.getcwd(), "sample"))
 from SampleInfo import getSamples
 from DiscInputs import *
@@ -28,7 +30,7 @@ parser.add_option("--level", "--level", dest="level", default="",type='str',
                      help="Specify up/down of systematic")
 parser.add_option("--syst", "--systematic", dest="systematic", default="Base",type='str',
                      help="Specify which systematic to run on")
-parser.add_option("--method", "--method", dest="method", default="BDTG",type='str', 
+parser.add_option("--method", "--method", dest="method", default="BDTA",type='str', 
                      help="Which MVA method to be used")
 (options, args) = parser.parse_args()
 year = options.year
@@ -186,6 +188,8 @@ if not syst=="Base":
 
 #evtWeights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire, w_pho)
 evtWeights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_mu,w_ele,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire, w_pho)
+if "Data" in sample_:
+    evtWeights = "1.0"
 
 #-----------------------------------------
 #Final output Linux and ROOT directories
@@ -242,17 +246,18 @@ for ievt, e in enumerate(tree):
     #print(ievt, eventSel)
     if eventSel>0:
         for var in vars.keys():
-            exec("%s[0] = e.%s"%(var, vars[var][0]))
-            exec("dictHist[\"%s\"].Fill(e.%s, %s)"%(var, vars[var][0], evtWt))
+            #exec("%s[0] = e.%s"%(var, vars[var][0]))
+            #exec("dictHist[\"%s\"].Fill(e.%s, %s)"%(var, vars[var][0], evtWt))
+            pass
         disc = reader.EvaluateMVA(method)
-        exec("dictHist[\"Disc\"].Fill(%s, %s)"%(disc, evtWt))
+        #exec("dictHist[\"Disc\"].Fill(%s, %s)"%(disc, evtWt))
         if disc>0:
             for var in vars.keys():
                 #exec("h%s_cut.Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
                 pass
         if (ievt%100)==0:
             print('Event = %i/%i, Disc = %s'%(ievt, tree.GetEntries(), disc))
-
+    
 #-----------------------------------
 # Write final histograms in the file
 #-----------------------------------
@@ -266,4 +271,4 @@ for h in dictHist.values():
     h.Write()
 print("Path of output root file:\n%s/%s"%(os.getcwd(), outFileFullPath))
 outputFile.Close()
-
+print("--- %s seconds ---" % (time.time() - start_time))

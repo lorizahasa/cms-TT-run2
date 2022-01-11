@@ -1,7 +1,7 @@
-#fix pu scale factors (they are too large)
 #the JECTotal_up ntuples are empty (fix it)
-#the JER_up does not have Jet_deep_b branch (fix it)
 #the muUp and phoUp/down for Boosted region for TTbar is too low
 #the integral of q2Down is zero for Boosted region
 #the integral for pdfUp/Down is nan for QCD in the resolved and boosted regions
 #Bogus norm for btagUp for Boosted region
+
+#Put DiscInputs, FitInputs, PlotInputs in a central directory 

@@ -41,6 +41,7 @@ def GetVarInfo():
              "Jet_pt"                : ["Jet_pt[0]"    , [30,-20,1480], True],
              "Jet_eta"               : ["Jet_eta[0]"    , [12,-2.88,2.88], True],
              "Jet_size"             : ["Jet_size"     , [16,-0.5,15.5], True],
+             "Jet_b_size"           : ["Jet_b_size"     , [10,-0.5,9.5], True],
              "Reco_mass_lgamma"     : ["Reco_mass_lgamma[0]", [30,0,3000], True],
              "Reco_met"             : ["Reco_met"      , [30,-20,1180], True],
              "Reco_ht"              : ["Reco_ht"        , [300,0,9000], True],
@@ -62,7 +63,6 @@ def GetVarInfo():
              "Reco_pt_lepT"     : ["Reco_pt_lepT" , [30,0,3000], True],
              "Reco_eta_hadT"    : ["Reco_eta_hadT", [20,-5,5], True],
              "Photon_phi"       : ["Photon_phi[0]", [20,-4,4], True],
-             "Muon_phi"         : ["Muon_phi[0]"  , [20,-4,4], True],
              }
     return varDictTemp
     #return hDict 
