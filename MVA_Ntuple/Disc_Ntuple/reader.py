@@ -32,6 +32,7 @@ parser.add_option("--syst", "--systematic", dest="systematic", default="Base",ty
                      help="Specify which systematic to run on")
 parser.add_option("--method", "--method", dest="method", default="BDTA",type='str', 
                      help="Which MVA method to be used")
+parser.add_option("--isCut", "--isCut", dest="isCut", action="store_true", default=False, help="")
 (options, args) = parser.parse_args()
 year = options.year
 decayMode = options.decayMode
@@ -41,6 +42,7 @@ region = options.region
 syst = options.systematic
 level =options.level
 method = options.method
+isCut     = options.isCut
 print parser.parse_args()
 
 #-----------------------------------------
@@ -246,12 +248,11 @@ for ievt, e in enumerate(tree):
     #print(ievt, eventSel)
     if eventSel>0:
         for var in vars.keys():
-            #exec("%s[0] = e.%s"%(var, vars[var][0]))
-            #exec("dictHist[\"%s\"].Fill(e.%s, %s)"%(var, vars[var][0], evtWt))
-            pass
+            exec("%s[0] = e.%s"%(var, vars[var][0]))
+            exec("dictHist[\"%s\"].Fill(e.%s, %s)"%(var, vars[var][0], evtWt))
         disc = reader.EvaluateMVA(method)
         #exec("dictHist[\"Disc\"].Fill(%s, %s)"%(disc, evtWt))
-        if disc>0:
+        if isCut and disc>0:
             for var in vars.keys():
                 #exec("h%s_cut.Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
                 pass

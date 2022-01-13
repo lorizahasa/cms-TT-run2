@@ -32,7 +32,7 @@ parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='
                      help="which histogram to be used for making datacard")
 parser.add_option("--mass","--mass",dest="mass", default='800', type='str', 
 		  help="mass of the Tprime")
-parser.add_option("--method","--method",dest="method", default='DNN', type='str', 
+parser.add_option("--method","--method",dest="method", default='BDTA', type='str', 
 		  help="MVA method")
 (options, args) = parser.parse_args()
 year            = options.year

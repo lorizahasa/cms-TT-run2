@@ -10,9 +10,9 @@ tmpDir = "tmpSub"
 condorLogDir = "log"
 os.system("mkdir -p %s/%s"%(tmpDir, condorLogDir))
 tarFile = "tmpSub/Fit_Disc.tar.gz"
-exDir = '../Fit_Disc'
+exDir = '../../Fit_Disc'
 ex = '--exclude=%s/output --exclude=%s/condor'%(exDir, exDir)
-os.system("tar %s -zcvf %s ../Fit_Disc"%(ex, tarFile))
+os.system("tar %s -zcvf %s ../../Fit_Disc"%(ex, tarFile))
 os.system("cp runPerformFit.sh %s"%tmpDir)
 os.system("cp /uscms_data/d3/rverma/codes/limitTools/CMSSW_10_2_13.tar.gz %s"%tmpDir)
 common_command = \

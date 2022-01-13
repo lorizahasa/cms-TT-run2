@@ -18,11 +18,11 @@ parser.add_option("-d", "--decay", dest="decayMode", default="Semilep",type='str
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
                      help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR",type='str', 
+parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
                      help="which control selection and region"), 
 parser.add_option("-m", "--mass", dest="mass", default="800",type='str',
                      help="Specify the mass of charged Higgs")
-parser.add_option("--method", "--method", dest="methodMVA", default="BDTG",type='str', 
+parser.add_option("--method", "--method", dest="methodMVA", default="BDTA",type='str', 
                      help="Which MVA method to be used")
 parser.add_option("--syst", "--systematic", dest="systematic", default="JetBase",type='str',
                      help="Specify which systematic to run on")
