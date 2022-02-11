@@ -4,11 +4,15 @@ import itertools
 import collections
 from PlotInputs import *
 sys.path.insert(0, os.getcwd().replace('Plot_Hist/PlotMain', 'Hist_Ntuple/HistMain'))
-from HistInfo import allHistList
-from HistInputs import Regions
+sys.path.insert(0, os.getcwd().replace("Plot_Disc", "Disc_Ntuple"))
+from DiscInputs import methodDict
+from VarInfo import GetVarInfo
 from optparse import OptionParser
 import numpy as np
 
+#-----------------------------------------------------------------
+condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple" 
+#-----------------------------------------------------------------
 #-----------------------------------------
 #INPUT command-line arguments 
 #----------------------------------------
@@ -54,7 +58,7 @@ if isMerge:
     merge = ["", "Cat"]
     ext += "Merged"
 os.system("mkdir -p tex")
-texFile = open("tex/plotBySample%s.tex"%ext, "w")
+texFile = open("tex/plotDisc%s.tex"%ext, "w")
 
 #texFile.write("\documentclass{article}\n")
 #texFile.write("\usepackage{graphicx}\n")
@@ -62,39 +66,43 @@ texFile = open("tex/plotBySample%s.tex"%ext, "w")
 #texFile.write("\\begin{document}\n")
 allPlotPath = []
 allPlotName = []
-for plot in allHistList:
-    print "================================="
-    print "Making plot for: ", plot
-    print "================================="
-    for d, c in itertools.product(Decay, Channel):
-        for r in Regions.keys():
-            for m in merge:
-                for y in Year_:
-                    args1 = "-y %s -d %s -c %s --hist %s -r %s "%(y, d, c, plot, r)
-                    if "Mu" in c and "Ele" in plot:
-                        continue
-                    if "Ele" in c and "Mu" in plot:
-                        continue
-                    if "Resolved" in r and "FatJet" in plot:
-                        continue
-                    if "tt_Enriched" in r and "Photon" in plot: 
-                        continue
-                    if "tt_Enriched" in r and "Reco_mass_T" in plot:
-                        continue
-                    if "tt_Enriched" in r and "Reco_mass_lgamma" in plot:
-                        continue
-                    if "tty_Enriched" in r and "Reco_mass_T" in plot:
-                        continue
-                    plotDir  = "%s/Plot_Hist/PlotMain/%s/%s/%s/%s/%s"%(condorHistDir, m, y, d, c, r)
-                    plotName  = "%s_%s_%s"%(plot, y, c)
-                    if isMake: 
-                        if "for" in m:
-                            os.system("python plotBySampleForMain.py %s"%(args1))
-                        else:
-                            os.system("python plotBySampleRebin.py %s"%(args1))
-                    plotPath = "%s/%s.pdf"%(plotDir, plotName)
-                    allPlotPath.append(plotPath)
-                    allPlotName.append(plot)
+
+discDict = {}
+#discDict["Disc"] = methodDict.keys()
+discDict["Disc"] = ["BDTA"] 
+#histList_ = GetVarInfo().keys()
+histList_ = ["Reco_mass_T", "Reco_st"] 
+#histList_ = []
+for hist in histList_:
+    discDict[hist] = ["BDTA"]
+Mass = ["800"]
+samples = ["AllBkgs"]
+for h, r, d, c, y in itertools.product(discDict.keys(), regionList, Decay, Channel, Year_):
+    for m in Mass:
+       for method in discDict[h]:
+           print "================================="
+           print "Making plot for: ", y, c, m, method, h
+           print "================================="
+           #args1 = "-y %s -d %s -c %s  --mass  %s --method %s --hist %s -r %s "%(y, d, c, m, method, h, r)
+           args1 = "-y %s -d %s -c %s --hist %s -r %s "%(y, d, c, h, r)
+           if "Ele" in c and "Mu" in h:
+               continue
+           if "Resolved" in r and "FatJet" in h:
+               continue
+           if "tt_Enriched" in r and "Photon" in h: 
+               continue
+           if "tt_Enriched" in r and "Reco_mass_T" in h:
+               continue
+           if "tt_Enriched" in r and "Reco_mass_lgamma" in h:
+               continue
+           if "tty_Enriched" in r and "Reco_mass_T" in h:
+               continue
+           plotDir  = "%s/Plot_Disc/PlotMain/Reader/%s/%s/%s/%s/%s"%(condorHistDir, y, d, c, m, method)
+           if isMake: 
+               os.system("python overlayDisc.py %s"%(args1))
+           plotPath = "%s/%s/%s.pdf"%(plotDir, r, h)
+           allPlotPath.append(plotPath)
+           allPlotName.append(h)
 
 showPerFig = 3
 figWidth = 0.32

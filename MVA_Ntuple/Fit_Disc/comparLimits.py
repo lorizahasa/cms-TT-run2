@@ -71,35 +71,25 @@ for h in histList:
     for m in Mass:
         x.append(float(m))
         limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, "BDTA", region, h)
-        print(limFile)
+        #print(limFile)
         y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
     graph = TGraph(len(x), x, y)
     gDict[h] = graph
     limDict["mT"] = x
     limDict[h] = y
 
-aucDict = {}
 for method in methodDict.keys():
     x = array( 'd' )
     y = array( 'd' )
-    auc = []
     for m in Mass:
         x.append(float(m))
         limFile      = "%s/%s/%s/%s/%s/limits.json"%(path, m, method, region, "Disc")
-        print(limFile)
+        #print(limFile)
         y.append(float(xss[m]*getLimit(limFile, "exp0", m)))
-        #aucFile      = open("/eos/uscms/%s/Disc_Ntuple/DiscMain/Classification/%s/%s/%s/CombMass/%s/%s/AUC.txt"%(condorOutDir,year, decayMode, channel, method, region), 'r')
-        aucFile      = open("/eos/uscms/%s/Disc_Ntuple/DiscMain/Classification/2016/Semilep/Mu/CombMass/BDTA/ttyg_Enriched_SR_Resolved/AUC.txt"%(condorOutDir), 'r')
-        print(aucFile)
-        for line in aucFile:
-            if "AUC" in line:
-                auc.append(roundMe(100*float(line.split(" ")[-1]), 1))
     graph = TGraph(len(x), x, y)
     gDict[method] = graph
     limDict["mT"] = x
     limDict[method] = y
-    aucDict[method] = auc
-    aucDict['mT'] = x
 
 print limDict
 df = pd.DataFrame.from_dict(limDict)
@@ -117,10 +107,6 @@ df.set_index(['mT', 'Reco_mass_T'], inplace=True)
 #df.rename(columns={"BDTA": "BDTA (%)"}, inplace=True)
 print df.round(roundDict)
 
-print(aucDict)
-aucDF = pd.DataFrame.from_dict(aucDict)
-aucDF.set_index('mT', inplace=True)
-print(aucDF)
 canvas = TCanvas()
 legend = TLegend(0.70,0.60,0.85,0.90);
 legend.SetFillStyle(0);

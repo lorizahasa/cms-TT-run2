@@ -16,8 +16,10 @@ Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"
 
 regionList = []
 #regionList.append("ttyg_Enriched_SR")
-regionList.append("ttyg_Enriched_SR_Boosted")
-regionList.append("ttyg_Enriched_SR_Resolved")
+#regionList.append("ttyg_Enriched_SR_Boosted")
+#regionList.append("ttyg_Enriched_SR_Resolved")
+regionList.append("ttyg_Enriched_CR_Boosted")
+regionList.append("ttyg_Enriched_CR_Resolved")
 #regionList.append("ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved")
 
 histList = []

@@ -7,6 +7,7 @@ from DiscInputs import *
 from VarInfo import GetVarInfo
 from optparse import OptionParser
 import numpy as np
+import pandas as pd
 
 #-----------------------------------------
 #INPUT command-line arguments 
@@ -58,22 +59,30 @@ texFile = open("tex/plotClass%s.tex"%ext, "w")
 #texFile.write("\\begin{document}\n")
 allPlotPath = []
 allPlotName = []
-histList = GetVarInfo().keys()
+aucDict = {}
 for r, d, c, y, method in itertools.product(Regions.keys(), Decays, Channels, Year_, methodDict.keys()):
+    histList = GetVarInfo(r, c).keys()
     plotDir  = "/eos/uscms/%s/Classification/%s/%s/%s/CombMass/%s/%s/plots"%(condorOutDir, y, d, c, method, r)
-    nVarPlots = len(histList)/6 + len(histList)%6
-    '''
+    nVarPlots = int(np.ceil(len(histList)/6.0))
+    print(nVarPlots, len(histList))
     for i in range(nVarPlots):
         allPlotPath.append("%s/variables_id_c%s.png"%(plotDir, i+1))
     allPlotPath.append("%s/mva_%s.png"%(plotDir, method))
-    allPlotPath.append("%s/rejBvsS.png"%(plotDir))
-    allPlotPath.append("%s/CorrelationMatrixB.png"%(plotDir))
-    '''
     allPlotPath.append("%s/overtrain_%s.png"%(plotDir, method))
+    allPlotPath.append("%s/CorrelationMatrixB.png"%(plotDir))
+    allPlotPath.append("%s/CorrelationMatrixS.png"%(plotDir))
+    allPlotPath.append("%s/rejBvsS.png"%(plotDir))
     allPlotName.append("%s, %s, %s, %s"%(y, c, r.replace("_", "\_"), method))
+    #Get Area Under Curve
+    aucFile = open("%s/AUC.txt"%plotDir.replace("plots", ""))
+    for line in aucFile:
+        if "AUC" in line:
+            aucDict["%s_%s_%s"%(y, c, r)] = [line.split(" ")[-1]]
 
+auc_df = pd.DataFrame.from_dict(aucDict)
+print(auc_df.T)
 figWidth = 0.38
-showPerFig = 12
+showPerFig = 7
 if isRun2:
     figWidth=0.24
     showPerFig = 24
@@ -97,7 +106,7 @@ for page in np.arange(nPage):
             figWidth = 0.95
         texFile.write("\includegraphics[width=%s\linewidth]{%s}\n"%(figWidth, plotPath))
     plotNames = "PLOT" 
-    texFile.write("\caption{Distribution for: $%s$}\n"%allPlotName[page])
+    #texFile.write("\caption{Distribution for: $%s$}\n"%allPlotName[page])
     texFile.write("\end{figure}\n")
     texFile.write("\n")
 #texFile.write("\end{document}")

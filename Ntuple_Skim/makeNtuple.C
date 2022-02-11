@@ -1395,8 +1395,12 @@ void makeNtuple::FillEvent(std::string year)
         _Reco_ratio_leadJetPt_met = jetVectors.at(0).Pt()/_pfMET;
         _Reco_ratio_leadJetPt_ht = jetVectors.at(0).Pt()/_HT;
     }
+    std::cout<<"------------"<<std::endl;
+    std::cout<<"_nBJet = " << _nBJet<<std::endl;
+    std::cout<<"bjetVectors = " << bjetVectors.size()<<std::endl;
     if(bjetVectors.size()>0){
         _Reco_angle_leadBjet_met = bjetVectors.at(0).Angle(METVector.Vect()); 
+        std::cout<<_Reco_angle_leadBjet_met<<std::endl;
     }
     ljetVectors.clear();
     bjetVectors.clear();

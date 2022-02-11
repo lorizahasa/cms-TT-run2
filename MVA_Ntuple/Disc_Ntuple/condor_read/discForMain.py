@@ -28,9 +28,6 @@ decayMode       = options.decayMode
 channel         = options.channel
 method          = options.method
 
-hists           = GetVarInfo().keys()
-hists.append("Disc")
-
 #-----------------------------------------
 #Path of the I/O histograms/datacards
 #----------------------------------------
@@ -116,31 +113,34 @@ for syst, level in itertools.product(Systematics, SystLevels):
     allSysType.append(sysType)
 
 #for sample, region, hName in itertools.product(['TTbar'], Regions.keys(), ['Disc']): 
-for sample, region, hName in itertools.product(Samples, Regions.keys(), hists): 
-    if "Data" in sample:
-        histDir = getHistDir("data_obs", region, "Base")
-        hist = inFile.Get("%s/%s"%(histDir, hName))
-        writeHist("data_obs", region, "Base", hist, outputFile)
-    else:
-        for sysType in allSysType:
-           histDir = getHistDir(sample, region, sysType)
-           hist = inFile.Get("%s/%s"%(histDir, hName))
-           if "DYJets" in sample:
-               hist.Scale(DYJetsSF)
-           if "ZGamma" in sample:
-               hist.Scale(ZGammaSF)
-           if "WGamma" in sample:
-               hist.Scale(WGammaSF)
-           #write
-           hist.Scale(MisIDSF)#Need to fix this
-           if sysType in systToNorm:
-               histBase = inFile.Get("%s/%s"%(getHistDir(sample, region, "Base"), hName))
-               histBase.Scale(MisIDSF)#Need to fix this
-               sysInt = hist.Integral()
-               if sysInt ==0 or math.isnan(sysInt):
-                   print("\nWarning: %s, %s, %s, %s, syst = %s, integral = %s\n"%(year, channel, sample, region, sysType, sysInt))
-               else:
-                   hist.Scale(histBase.Integral()/sysInt)
-           writeHist(sample, region, sysType, hist,  outputFile)
+for sample, region in itertools.product(Samples, Regions.keys()): 
+    hists = GetVarInfo(region, channel).keys()
+    hists.append("Disc")
+    for hName in hists:
+        if "Data" in sample:
+            histDir = getHistDir("data_obs", region, "Base")
+            hist = inFile.Get("%s/%s"%(histDir, hName))
+            writeHist("data_obs", region, "Base", hist, outputFile)
+        else:
+            for sysType in allSysType:
+               histDir = getHistDir(sample, region, sysType)
+               hist = inFile.Get("%s/%s"%(histDir, hName))
+               if "DYJets" in sample:
+                   hist.Scale(DYJetsSF)
+               if "ZGamma" in sample:
+                   hist.Scale(ZGammaSF)
+               if "WGamma" in sample:
+                   hist.Scale(WGammaSF)
+               #write
+               hist.Scale(MisIDSF)#Need to fix this
+               if sysType in systToNorm:
+                   histBase = inFile.Get("%s/%s"%(getHistDir(sample, region, "Base"), hName))
+                   histBase.Scale(MisIDSF)#Need to fix this
+                   sysInt = hist.Integral()
+                   if sysInt ==0 or math.isnan(sysInt):
+                       print("\nWarning: %s, %s, %s, %s, syst = %s, integral = %s\n"%(year, channel, sample, region, sysType, sysInt))
+                   else:
+                       hist.Scale(histBase.Integral()/sysInt)
+               writeHist(sample, region, sysType, hist,  outputFile)
 outputFile.Close()
 print "%s/AllInc_forMain.root"%inDir

@@ -64,6 +64,7 @@ void Selector::clear_vectors(){
     Jets.clear();
     FatJets.clear();
     bJets.clear();
+    jet_isTagged.clear();
     Photons.clear();
     PhoPassChHadIso.clear();
     PhoPassPhoIso.clear();
@@ -270,7 +271,7 @@ void Selector::filter_jets(){
                     jet_isTagged.push_back(true);
                 } 
                 else {
-                    jet_isTagged.push_back(false);
+                    //jet_isTagged.push_back(false);
                 }
             }
             else {
@@ -279,7 +280,7 @@ void Selector::filter_jets(){
                     jet_isTagged.push_back(true);
                 } 
                 else {
-                    jet_isTagged.push_back(false);
+                    //jet_isTagged.push_back(false);
                 }
             }				
         }// if jetPresel

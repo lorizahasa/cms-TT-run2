@@ -27,23 +27,33 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 os.system("mkdir -p /eos/uscms/%s"%condorOutDir)
 subFile = open('%s/condorSubmit.sh'%tmpDir,'w')
+
+sepSyst = ["TTbar", "TTGamma", "WJets", "Others", "Data"]
+allSyst = list(set(Samples) - set(sepSyst))
 for year, decay, channel in itertools.product(Years, Decays, Channels):
     jdlName = 'submitJobs_%s%s%s.jdl'%(year, decay, channel)
     jdlFile = open('%s/%s'%(tmpDir, jdlName),'w')
     jdlFile.write('Executable =  runReader.sh \n')
     jdlFile.write(common_command)
-    #Create for Base, Control region
-    for sample, method in itertools.product(Samples, methodDict.keys()):
+    #Create for Base
+    for sample, method, r in itertools.product(Samples, methodDict.keys(), Regions.keys()):
         run_command =  \
-		'arguments  = %s %s %s %s %s %s\n\
-queue 1\n\n' %(year, decay, channel, sample, method, condorOutDir)
+		'arguments  = %s %s %s %s %s %s %s\n\
+queue 1\n\n' %(year, decay, channel, sample, method, r, condorOutDir)
         jdlFile.write(run_command)
     
-    #Create for Syst, Control region
-    for sample, method, syst, level in itertools.product(Samples, methodDict.keys(), Systematics, SystLevels):
+    #Create for allSyst
+    for sample, method, r in itertools.product(allSyst, methodDict.keys(), Regions.keys()):
         run_command =  \
-		'arguments  = %s %s %s %s %s %s %s %s\n\
-queue 1\n\n' %(year, decay, channel, sample, method, syst, level, condorOutDir)
+		'arguments  = %s %s %s %s %s %s --allSyst  %s\n\
+queue 1\n\n' %(year, decay, channel, sample, method, r, condorOutDir)
+        jdlFile.write(run_command)
+
+    #Create for sepSyst
+    for sample, method, r, syst, level in itertools.product(sepSyst, methodDict.keys(), Regions.keys(), Systematics, SystLevels):
+        run_command =  \
+		'arguments  = %s %s %s %s %s %s %s %s %s\n\
+queue 1\n\n' %(year, decay, channel, sample, method, r, syst, level, condorOutDir)
         if not sample in ["Data"]:
             jdlFile.write(run_command)
     subFile.write("condor_submit %s\n"%jdlName)

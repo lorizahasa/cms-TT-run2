@@ -23,14 +23,18 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-if [ $# -eq 6 ] 
+if [ $# -eq 7 ] 
 then
-    python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5
-    outDir=$6
+    python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5 -r $6
+    outDir=$7
 elif [ $# -eq 8 ] 
 then
-    python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5  --syst $6 --level $7 
+    python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5 -r $6 --allSyst
     outDir=$8
+elif [ $# -eq 9 ] 
+then
+    python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5 -r $6 --syst $7 --level $8 
+    outDir=$9
 
 #For over/under flow of arguments
 else

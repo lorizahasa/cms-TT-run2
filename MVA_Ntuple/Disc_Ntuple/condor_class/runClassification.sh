@@ -23,14 +23,14 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-if [ $# -eq 5 ] 
+if [ $# -eq 6 ] 
 then
-    python runClass.py -y $1 -d $2 -c $3 --method $4 
-    outDir=$5
-elif [ $# -eq 7 ] 
+    python runClass.py -y $1 -d $2 -c $3 --method $4 -r $5
+    outDir=$6
+elif [ $# -eq 8 ] 
 then
-    python runClass.py -y $1 -d $2 -c $3 --method $4  --syst $5 --level $6 
-    outDir=$7
+    python runClass.py -y $1 -d $2 -c $3 --method $4 -r $5 --syst $6 --level $7 
+    outDir=$8
 
 #For over/under flow of arguments
 else

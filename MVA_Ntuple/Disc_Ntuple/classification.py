@@ -66,7 +66,8 @@ for s in allSamples.keys():
         for sigF in sigs:
             sigList.append(sigF)
     else:
-        if "Data" not in s:
+        #if "Data" not in s:
+        if s in ['TTbar', 'TTGamma']:
             bkgs = allSamples[s]
             print("%s, files: %s"%(s, len(bkgs)))
             for bkgF in bkgs:
@@ -102,16 +103,16 @@ bkgWeight = 1.0
 loader.AddSignalTree(sigTree, sigWeight)
 loader.AddBackgroundTree(bkgTree, bkgWeight)
 
-varDict = GetVarInfo()
+varDict = GetVarInfo(region, channel)
 print("\nTotal vars = %s \n"%len(varDict.keys()))
 for var in varDict.keys():
     print(varDict[var][0])
     loader.AddVariable(varDict[var][0], 'F')
 
-#evtWeights = "Weight_lumi*Weight_pu*Weight_mu*Weight_ele*Weight_prefire*Weight_btag*Weight_pho[0]"
-evtWeights = "Weight_lumi*Weight_mu*Weight_ele*Weight_prefire*Weight_btag*Weight_pho[0]"
-loader.SetSignalWeightExpression(evtWeights)
-loader.SetBackgroundWeightExpression(evtWeights)
+evtWeights_sig = "Weight_pu*Weight_mu*Weight_ele*Weight_prefire*Weight_btag*Weight_pho[0]"
+evtWeights_bkg = "Weight_lumi*%s"%evtWeights_sig
+loader.SetSignalWeightExpression(evtWeights_sig)
+loader.SetBackgroundWeightExpression(evtWeights_bkg)
 
 #-----------------------------------------
 #Apply event selection

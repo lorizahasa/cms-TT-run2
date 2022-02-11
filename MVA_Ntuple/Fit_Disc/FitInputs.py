@@ -4,13 +4,13 @@ condorOutDir  = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple"
 #-----------------------------------------------------------------
 Year = []
 Year.append("2016")
-Year.append("2017")
-Year.append("2018")
+#Year.append("2017")
+#Year.append("2018")
 #Year.append("2016__2017__2018")
 
 Channel = []
 Channel.append("Mu")
-Channel.append("Ele")
+#Channel.append("Ele")
 #Channel.append("Mu__Ele")
 
 Decay 	  =	["Semilep"]
@@ -24,11 +24,8 @@ regionList.append("ttyg_Enriched_SR_Resolved")
 #regionList.append("ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved")
 
 histList = []
-#histList.append("Reco_mass_TT")
 histList.append("Reco_mass_T")
-#histList.append("Photon_et")
 histList.append("Reco_st")
-#histList.append("Reco_ht")
 
 xss = {}
 xss["700"]   = 0.03*0.97*2*4.92

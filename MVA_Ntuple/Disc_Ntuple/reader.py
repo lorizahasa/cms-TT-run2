@@ -73,7 +73,7 @@ os.system("mkdir -p %s"%outFileDir)
 print(inFileDir)
 print(outFileDir)
 method = options.method
-os.system("xrdcp -rf root://cmseos.fnal.gov/%s/%s %s"%(inFileDir, inFileName, outFileDir))
+os.system("xrdcp -rf root://cmseos.fnal.gov/%s/%s %s"%(inFileDir.replace("CR", "SR"), inFileName, outFileDir))#Evaluation in CR from SR's xml file
 weightFile = "%s/%s"%(outFileDir, inFileName)
 
 #-----------------------------------------
@@ -83,7 +83,7 @@ ROOT.gROOT.SetBatch(True)
 package = "TMVA"
 ROOT.TMVA.Tools.Instance()
 reader = ROOT.TMVA.Reader("!Color:!Silent")
-vars = GetVarInfo()
+vars = GetVarInfo(region, channel)
 #Convert strings to variables
 for var in vars.keys():
     exec('%s = %s'%(var, array('f',[0])))
@@ -205,7 +205,7 @@ print("The histogram directory inside the root file is", histDirInFile)
 #-----------------------------------------
 #Declare histograms
 #-----------------------------------------
-nBins, xMin, xMax = 25, -1, 1
+nBins, xMin, xMax = 15, -1, 1
 if method in ["DNN", 'MLP']: xMin, xMax = 0, 1 
 if method in ['PDEFoam']: nBins, xMin, xMax = 4, -2, 2 
 dictHist = {}
@@ -251,7 +251,7 @@ for ievt, e in enumerate(tree):
             exec("%s[0] = e.%s"%(var, vars[var][0]))
             exec("dictHist[\"%s\"].Fill(e.%s, %s)"%(var, vars[var][0], evtWt))
         disc = reader.EvaluateMVA(method)
-        #exec("dictHist[\"Disc\"].Fill(%s, %s)"%(disc, evtWt))
+        exec("dictHist[\"Disc\"].Fill(%s, %s)"%(disc, evtWt))
         if isCut and disc>0:
             for var in vars.keys():
                 #exec("h%s_cut.Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))

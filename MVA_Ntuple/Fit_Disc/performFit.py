@@ -143,8 +143,8 @@ if isLimit:
 #Impacts of Systematics
 #----------------------------------------
 if isImpact:
-    runCmd("combineTool.py -M Impacts -d %s  -m 125 --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 -t -1  --redefineSignalPOIs %s --setParameterRanges r=0,20"%(pathT2W, params)) 
-    runCmd("combineTool.py -M Impacts -d %s  -m 125  --doFits --robustFit 1 --cminDefaultMinimizerStrategy 0  -t -1  --redefineSignalPOIs %s --setParameterRanges r=0,20 --parallel 10"%(pathT2W, params))
+    runCmd("combineTool.py -M Impacts -d %s  -m 125 --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 -t -1  --redefineSignalPOIs %s --setParameterRanges r=-1,1"%(pathT2W, params)) 
+    runCmd("combineTool.py -M Impacts -d %s  -m 125  --doFits --robustFit 1 --cminDefaultMinimizerStrategy 0  -t -1  --redefineSignalPOIs %s --setParameterRanges r=-1,1 --parallel 10"%(pathT2W, params))
     #runCmd("combineTool.py -M Impacts -d %s  -m 125 --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1 -t -1  --redefineSignalPOIs %s --setParameterRanges r=0,20"%(pathT2W, params)) 
     #runCmd("combineTool.py -M Impacts -d %s  -m 125  --doFits --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1 -t -1  --redefineSignalPOIs %s --setParameterRanges r=0,20 --parallel 10"%(pathT2W, params))
     runCmd("combineTool.py -M Impacts -d %s -m 125 -o %s/nuisImpact.json --redefineSignalPOIs %s "%(pathT2W, dirDC, params))
