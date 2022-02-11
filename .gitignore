@@ -1,4 +1,4 @@
-NanoAOD_Gen
+NanoAOD_Gen/Others
 
 MVA_Ntuple/*.root
 MVA_Ntuple/*/*.root

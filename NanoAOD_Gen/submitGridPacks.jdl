@@ -1,0 +1,27 @@
+universe = vanilla
+Executable = makeGridPacks.sh
+
+should_transfer_files = YES
+WhenToTransferOutput  = ON_EXIT
+notification = never
+
+request_memory = 8000
+
+Transfer_Input_Files = productionFiles.tgz
+
+Output = log/gridPacks_$(cluster)_$(process).stdout
+Error  = log/gridPacks_$(cluster)_$(process).stderr
+Log    = log/gridPacks_$(cluster)_$(process).condor
+
+Arguments = "0 $(mass)"
+Queue 1 mass in 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2250, 2500, 2750, 3000
+
+Arguments = "1 $(mass)"
+Queue 1 mass in 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2250, 2500, 2750, 3000
+
+Arguments = "2 $(mass)"
+Queue 1 mass in 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2250, 2500, 2750, 3000
+
+
+#Arguments = "VVTo2L2Nu $(year)"
+#Queue 1
