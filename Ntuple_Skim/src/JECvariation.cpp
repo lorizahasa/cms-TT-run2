@@ -60,13 +60,13 @@ void JECvariation::applyJEC(EventTree* tree, int scaleDownNormUp012){
 		double unc = jecUnc->getUncertainty(true);
 		if(scaleDownNormUp012==0) correction-=unc;
 		if(scaleDownNormUp012==2) correction+=unc;
+        double jes = (1.-tree->jetRawFactor_[jetInd]) * correction;
 		
-		tree->jetPt_[jetInd] = tree->jetPt_[jetInd] * (1.-tree->jetRawFactor_[jetInd]) * correction;
+		tree->jetPt_[jetInd] = tree->jetPt_[jetInd] * jes; 
 		//tree->jetEn_[jetInd] = tree->jetRawEn_[jetInd] * correction;
-		
+        tree->jetmuEF_[jetInd] = jes; //ad-hoc way of storing jes in other var
 		tjet.SetPtEtaPhiM(tree->jetPt_[jetInd], tree->jetEta_[jetInd], tree->jetPhi_[jetInd], 0.0);		       
 		tMET-=tjet;
-		
 	}
 	tree->MET_pt_ = tMET.Pt();
 	tree->MET_phi_ = tMET.Phi();

@@ -67,6 +67,7 @@ public:
 	std::vector<int> bJets;
     std::vector<int> FatJets;
 	std::vector<double> jet_resolution;
+	std::vector<double> jet_smear;
 	std::vector<bool>   jet_isTagged;
 	
 	std::vector<double> PhoChHadIso_corr;

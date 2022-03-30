@@ -40,7 +40,8 @@ isQCDMC         = options.isQCDMC
 #-----------------------------------------
 #Path of the I/O histograms/datacards
 #----------------------------------------
-inFile = "AllInc_forMain.root"
+#inFile = "AllInc_forMain.root"
+inFile = "AllInc.root"
 inFileDir = "%s/Disc_Ntuple/DiscMain/Reader/%s/%s/%s/CombMass/%s/Merged"%(condorOutDir, year, decayMode, channel, method)
 outFileDir      = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method, region, hName)
 os.system("mkdir -p %s"%outFileDir)

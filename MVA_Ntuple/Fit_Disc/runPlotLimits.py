@@ -24,10 +24,10 @@ texFile = open("tex/limitPlot.tex", "w")
 #texFile.write("\\begin{document}\n")
 allPlotPath = []
 allPlotName = []
-for r in Regions:
+for r in regionList:
     for decay, channel in itertools.product(Decay, Channel):
         for year in Year:
-            dirDC = "%s/Fit_Hist/%s/%s/%s/%s/%s"%(condorHistDir, year, decay, channel, r, hName)
+            dirDC = "%s/Fit_Hist/%s/%s/%s/%s/%s"%(condorOutDir, year, decay, channel, r, hName)
             nameDC = "mH*/higgsCombine_TT_run2.AsymptoticLimits.mH*.root" 
             print hName
             runCmd("combineTool.py -M CollectLimits %s/%s -o %s/limits.json"%(dirDC, nameDC, dirDC))

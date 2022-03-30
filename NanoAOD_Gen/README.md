@@ -1,6 +1,6 @@
 ## Signal generation and grid-pack prodcution
 
-Clone the genproduction repo (do everyting outside of CMMSW)
+Clone the genproduction repo (do everyting outside of CMSSW)
 * git clone https://github.com/cms-sw/genproductions.git
 
 Copy the UFO and python script which will create MG cards

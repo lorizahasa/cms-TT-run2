@@ -21,8 +21,8 @@ isComb        = options.isComb
 #-----------------------------------------
 # Get dySF from the JSON file
 #-----------------------------------------
-path = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitDYSF/"
-with open ("%s/RateParams.json"%path) as jsonFile:
+#path = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitDYSF/"
+with open ("./RateParams.json") as jsonFile:
     jsonData = json.load(jsonFile)
 
 def getRateParam(name, proc):

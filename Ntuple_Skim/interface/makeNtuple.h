@@ -280,6 +280,8 @@ class makeNtuple {
     std::vector<float>   _jetPhi;
     std::vector<float>   _jetMass;
     std::vector<float>   _jetRes;
+    std::vector<float>   _jerWeight;
+    std::vector<float>   _jesWeight;
 
     std::vector<float>   _jetCMVA;
     std::vector<float>   _jetCSVV2;
@@ -409,6 +411,8 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Weight_pho"     , &_phoEffWeight );
     outputTree->Branch("Weight_pho_id"  , &_phoEffWeight_Id );
     outputTree->Branch("Weight_pho_e_veto", &_phoEffWeight_eVeto );
+    outputTree->Branch("Weight_jer" , &_jerWeight);
+    outputTree->Branch("Weight_jes" , &_jesWeight);
     //Weights: up/down
     if (!isSystematicRun){
 	    outputTree->Branch("Weight_pu_up"       , &_PUweight_Up );
@@ -744,7 +748,9 @@ void makeNtuple::InitVariables()
     _jetEta.clear();
     _jetPhi.clear();
     _jetMass.clear();
+    _jesWeight.clear();
     _jetRes.clear();
+    _jerWeight.clear();
     /* _jetRawPt.clear(); */
     /* _jetArea.clear(); */
     _jetCMVA.clear();

@@ -1232,7 +1232,15 @@ void makeNtuple::FillEvent(std::string year)
         _jetDeepC.push_back(tree->jetBtagDeepC_[jetInd]);
         _jetGenJetIdx.push_back(tree->jetGenJetIdx_[jetInd]);
         double resolution = selector->jet_resolution.at(i_jet);
+        double weight_jer = selector->jet_smear.at(i_jet);
         _jetRes.push_back(resolution);
+        _jerWeight.push_back(weight_jer);
+	    if (jecvar012_g == 1){
+            _jesWeight.push_back(1.0);
+        }
+        else{
+            _jesWeight.push_back(tree->jetmuEF_[jetInd]);
+        }
         jetResolutionVectors.push_back(resolution);
         jetBtagVectors.push_back(tree->jetBtagDeepB_[jetInd]);
         jetVector.SetPtEtaPhiM(tree->jetPt_[jetInd], 
@@ -1395,13 +1403,15 @@ void makeNtuple::FillEvent(std::string year)
         _Reco_ratio_leadJetPt_met = jetVectors.at(0).Pt()/_pfMET;
         _Reco_ratio_leadJetPt_ht = jetVectors.at(0).Pt()/_HT;
     }
+    /*
     std::cout<<"------------"<<std::endl;
     std::cout<<"_nBJet = " << _nBJet<<std::endl;
     std::cout<<"bjetVectors = " << bjetVectors.size()<<std::endl;
     if(bjetVectors.size()>0){
         _Reco_angle_leadBjet_met = bjetVectors.at(0).Angle(METVector.Vect()); 
-        std::cout<<_Reco_angle_leadBjet_met<<std::endl;
+        std::cout<<_Reco_angle_leadBjet_met<<std::endl; //FIXME
     }
+    */
     ljetVectors.clear();
     bjetVectors.clear();
     ljetResVectors.clear();

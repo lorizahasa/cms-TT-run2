@@ -64,7 +64,6 @@ void Selector::clear_vectors(){
     Jets.clear();
     FatJets.clear();
     bJets.clear();
-    jet_isTagged.clear();
     Photons.clear();
     PhoPassChHadIso.clear();
     PhoPassPhoIso.clear();
@@ -197,6 +196,7 @@ void Selector::filter_jets(){
         bool jetID_pass = (tree->jetID_[jetInd] & 2)==2;
 
         double resolution = 0.;
+        double jetSmear = 1;
         if (tree->event_==printEvent){
             cout << "------Jet "<<jetInd<< "------" << endl;
         }
@@ -210,7 +210,6 @@ void Selector::filter_jets(){
             if (JERsystLevel==1) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::NOMINAL);
             if (JERsystLevel==0) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::DOWN);
             if (JERsystLevel==2) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::UP);
-            double jetSmear = 1;
             int genIdx = tree->jetGenJetIdx_[jetInd];
             if ( (genIdx>-1) && (genIdx < tree->nGenJet_)){
 	        double genJetPt = tree->GenJet_pt_[genIdx];
@@ -265,13 +264,14 @@ void Selector::filter_jets(){
         if(jetPresel){
             Jets.push_back(jetInd);
             jet_resolution.push_back(resolution);
+            jet_smear.push_back(jetSmear);
             if (!useDeepCSVbTag){
                 if( tree->jetBtagCSVV2_[jetInd] > btag_cut){
                     bJets.push_back(jetInd);
                     jet_isTagged.push_back(true);
                 } 
                 else {
-                    //jet_isTagged.push_back(false);
+                    jet_isTagged.push_back(false);
                 }
             }
             else {
@@ -280,7 +280,7 @@ void Selector::filter_jets(){
                     jet_isTagged.push_back(true);
                 } 
                 else {
-                    //jet_isTagged.push_back(false);
+                    jet_isTagged.push_back(false);
                 }
             }				
         }// if jetPresel
