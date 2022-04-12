@@ -1,3 +1,4 @@
+#Swtich to the ultra legacy (UL) samples
 #the JECTotal_up ntuples are empty (fix it)
 #the muUp and phoUp/down for Boosted region for TTbar is too low
 #the integral of q2Down is zero for Boosted region
