@@ -28,18 +28,21 @@ class EventTree{
     Float_t genWeight_;
     
     UInt_t   nJet_;  
+    UInt_t   nMu_;  
+    UInt_t   nEle_;  
+    Int_t   nGoodVtx_;  
     Int_t   jetID_[200];
+    Float_t MET_pt_;
     
-    Bool_t  HLT_IsoMu24_;
-    Bool_t  HLT_IsoTkMu24_;
-    Bool_t  HLT_IsoMu27_;
     Bool_t  HLT_Mu50_;
+    Bool_t  HLT_TkMu50_;
+    Bool_t  HLT_TkMu100_;
+    Bool_t  HLT_OldMu100_;
     Bool_t  HLT_Ele27_WPTight_Gsf_;
-    Bool_t  HLT_Ele32_WPTight_Gsf_;
     Bool_t  HLT_Ele35_WPTight_Gsf_;
     Bool_t  HLT_Ele115_CaloIdVT_GsfTrkIdT_;
     Bool_t  HLT_Photon175_;
-    Bool_t  HLT_Ele32_WPTight_Gsf_L1DoubleEG_;
+    Bool_t  HLT_Photon200_;
     
     Bool_t   Flag_goodVertices_ ;
     Bool_t   Flag_globalSuperTightHalo2016Filter_ ;
@@ -47,6 +50,6 @@ class EventTree{
     Bool_t   Flag_HBHENoiseIsoFilter_ ;
     Bool_t   Flag_EcalDeadCellTriggerPrimitiveFilter_ ;
     Bool_t   Flag_BadPFMuonFilter_ ;
-    Bool_t   Flag_ecalBadCalibFilterV2_ ;
+    Bool_t   Flag_ecalBadCalibFilter_ ;
 };
 #endif

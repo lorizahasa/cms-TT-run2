@@ -28,26 +28,24 @@ sample=$2
 job=$3
 nJobTotal=$4
 varname=${sample}_FileList_${year}
-cd sample
-source NanoAOD_Gen_FileLists_cff.sh 
-cd -
+source sample/FilesNano_cff.sh
 if [ -z $job ] ; then
     jobNum=""
 else
     jobNum=" ${job}of${nJobTotal}"
 fi
-echo "./makeSkim ${year}${jobNum} ${sample}_Skim_NanoAOD.root ${!varname}"
-./makeSkim ${year}$jobNum ${sample}_Skim_NanoAOD.root ${!varname}
+echo "./makeSkim ${year}${jobNum} ${sample}_Skim.root ${!varname}"
+./makeSkim ${year}$jobNum ${sample}_Skim.root ${!varname}
 
 printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-condorOutDir=/store/user/rverma/Output/cms-TT-run2/Skim_NanoAOD
+condorOutDir=/store/user/lpctop/Output/cms-TT-run2/Skim_NanoAOD
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
-    xrdcp -f ${sample}_Skim_NanoAOD*.root root://cmseos.fnal.gov/${condorOutDir}/${year}
+    xrdcp -f ${sample}_Skim*.root root://cmseos.fnal.gov/${condorOutDir}/${year}
     echo "Cleanup"
     rm -rf CMSSW_10_2_14
     rm *.root

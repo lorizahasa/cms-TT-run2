@@ -4,8 +4,7 @@ import sys
 
 #IMPORT MODULES FROM OTHER DIR
 sys.path.insert(0, os.getcwd().replace("condor","sample"))
-from NanoAOD_Gen_SplitJobs_cff import Samples_2016, Samples_2017, Samples_2018 
-#from NanoAOD_Gen_SplitJobs_cff import Samples_2016
+from JobsNano_cff import Samples_2016PreVFP, Samples_2016PostVFP,  Samples_2017, Samples_2018 
 
 if not os.path.exists("tmpSub/log"):
     os.makedirs("tmpSub/log")
@@ -29,18 +28,19 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #Create jdl files
 #----------------------------------------
 subFile = open('tmpSub/condorSubmit.sh','w')
-for year in [2016,2017,2018]:
-#for year in [2016]:
-    sampleList = eval("Samples_%i"%year)
+#for year in ['2016PreVFP', '2016PostVFP', '2017', '2018']:
+for year in ['2017']:
+    samples = eval("Samples_%s"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
     jdlFile = open('tmpSub/%s'%jdlName,'w')
     jdlFile.write('Executable =  runMakeSkims.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/store/user/rverma/Output/cms-TT-run2/Skim_NanoAOD"
+    condorOutDir="/store/user/lpctop/Output/cms-TT-run2/Skim_NanoAOD"
     os.system("eos root://cmseos.fnal.gov mkdir -p %s/%s"%(condorOutDir, year))
     jdlFile.write("X=$(step)+1\n")
     
-    for sampleName, nJob in sampleList.items():
+    for sampleName, nJobEvt in samples.items():
+        nJob = nJobEvt[0]
         if nJob==1:
             run_command =  'Arguments  = %s %s \nQueue 1\n\n' %(year, sampleName)
         else:

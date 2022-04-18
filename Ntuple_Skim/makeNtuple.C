@@ -919,8 +919,6 @@ void makeNtuple::FillEvent(std::string year)
     _event           = tree->event_;
     _lumis           = tree->lumis_;
     _isData	         = !isMC;
-    _nVtx		 = tree->nVtx_;
-    _nGoodVtx	 = tree->nGoodVtx_;
     // _isPVGood	 = tree->isPVGood_;
     // _rho		 = tree->rho_;
     if (useGenWeightScaling){
@@ -1226,10 +1224,8 @@ void makeNtuple::FillEvent(std::string year)
         _jetEta.push_back(tree->jetEta_[jetInd]);
         _jetPhi.push_back(tree->jetPhi_[jetInd]);
         _jetMass.push_back(tree->jetMass_[jetInd]);
-        _jetCMVA.push_back(tree->jetBtagCMVA_[jetInd]);
         _jetCSVV2.push_back(tree->jetBtagCSVV2_[jetInd]);
         _jetDeepB.push_back(tree->jetBtagDeepB_[jetInd]);
-        _jetDeepC.push_back(tree->jetBtagDeepC_[jetInd]);
         _jetGenJetIdx.push_back(tree->jetGenJetIdx_[jetInd]);
         double resolution = selector->jet_resolution.at(i_jet);
         double weight_jer = selector->jet_smear.at(i_jet);

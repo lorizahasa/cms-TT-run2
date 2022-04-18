@@ -38,15 +38,6 @@ class EventTree{
     Float_t LHEWeight_originalXWGTUP_;
     
     bool isData_;
-
-    Int_t    nVtx_;
-    Int_t    nGoodVtx_;
-    Float_t    pvNDOF_;
-    Float_t    pvX_;
-    Float_t    pvY_;
-    Float_t    pvZ_;
-    Float_t    pvChi2_;
-    
     // genParticle
     UInt_t    nLHEPart_;
     Float_t   LHEPart_pt_[300];
@@ -79,8 +70,6 @@ class EventTree{
     Float_t  nPUTrue_;  
     Float_t  MET_pt_;
     Float_t  MET_phi_;
-    Float_t  GenMET_pt_;
-    Float_t  GenMET_phi_;
 
     // Electron
     UInt_t          nEle_;
@@ -93,8 +82,6 @@ class EventTree{
     Float_t         eleMiniPFRelIso_[25];
     Bool_t          eleMVAFall17V2noIso_WP90_[25];
     Bool_t          eleMVAFall17V2noIso_WPL_[25];
-    Float_t         eleD0_[25];
-    Float_t         eleDz_[25];
 
     // Photon
     UInt_t          nPho_;
@@ -149,11 +136,8 @@ class EventTree{
     Int_t           jetID_[200];
     Float_t         jetArea_[200];
     Float_t         fatJetArea_[200];
-    Float_t         jetBtagCMVA_[200];
     Float_t         jetBtagCSVV2_[200];
     Float_t         jetBtagDeepB_[200];
-    Float_t         jetBtagDeepC_[200];
-    Float_t         jetBtagDeepFlavB_[200];
     Float_t         jetchEmEF_[200];
     Float_t         jetneEmEF_[200];
     Float_t         jetmuEF_[200];

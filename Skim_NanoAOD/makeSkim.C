@@ -8,11 +8,10 @@
 #include<TObject.h>
 #include<TH1F.h>
 #include<TCanvas.h>
+#include<iomanip>
 #include <boost/program_options.hpp>
 
-
 int main(int ac, char** av){
-
     if (std::string(av[1])=="git"){
         printf("Git Commit Number: %s\n", VERSION);
         printf("Git Commit Time: %s\n", COMMITTIME);
@@ -141,19 +140,9 @@ int main(int ac, char** av){
 	}
 
 	char** fileList(av+3+startFile);
-
 	cout << "HERE" << endl;
 	EventTree* tree;
-
 	tree = new EventTree(nFiles, xRootDAccess, year, fileList, isMC);
-
-
-	// if (xRootDAccess){
-	//     tree = new EventTree(ac-5, xRootDAccess, year, av+5);
-	// } else {
-	//     tree = new EventTree(ac-4, xRootDAccess, year, av+4);
-	// }
-
 	tree->isData_ = !isMC;
 
 	if (eventNum > -1) {
@@ -166,10 +155,6 @@ int main(int ac, char** av){
 	evtPick->year = year;
 	auto startClock = std::chrono::high_resolution_clock::now();
 
-	// std::clock_t startClock;
-	// double duration;
-	// startClock = clock();
-
 	if (nJob>0 && totJob>0){
 	    pos = outFileName.find(".root");
 	    outFileName = outFileName.substr(0,pos) + "_" + checkJobs + ".root";
@@ -181,9 +166,7 @@ int main(int ac, char** av){
 	newTree->SetCacheSize(50*1024*1024);
 
 	Long64_t nEntr = tree->GetEntries();
-
 	std::cout << "Sample has "<<nEntr << " entries" << std::endl;
-
 	if( outFileName.find("Test") != std::string::npos || outFileName.find("test") != std::string::npos || outFileName.find("TEST") != std::string::npos){
 	    std::cout << "-------------------------------------------------------------------------" << std::endl;
 	    std::cout << "Since this is a Test (based on output name) only running on 10,000 events" << std::endl;
@@ -192,7 +175,6 @@ int main(int ac, char** av){
 		nEntr = 10000;
 	    }
 	}
-
 
 	int startEntry = 0;
 	int endEntry = nEntr;
@@ -219,12 +201,15 @@ int main(int ac, char** av){
 	TH1F* hPU_        = new TH1F("hPU",        "number of pileup",      200,  0, 200);
 	TH1F* hPUTrue_    = new TH1F("hPUTrue",    "number of true pilepu", 200, 0, 200);
 	TH1D* hEvents_    = new TH1D("hEvents",    "number of events (+/- event weight)",      3,  -1.5, 1.5);
+    double totalTime = 0.0;
+    std::cout<<"---------------------------"<<std::endl;
+    std::cout<<setw(10)<<"Progress (%)"<<setw(10)<<"Time(m)"<<std::endl;
+    std::cout<<"---------------------------"<<std::endl;
 	for(Long64_t entry= startEntry; entry < endEntry; entry++){
 		if(entry%dumpFreq == 0) {
             //if(entry>1000) break;
-			std::cout << "processing entry " << entry << " out of " << endEntry << " : " 
-				  << std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count()
-				  << " seconds since last progress" << std::endl;
+            totalTime+= std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count();
+			std::cout<<setw(10)<<100*entry/endEntry<<setw(10)<<(int)(totalTime/60)<<std::endl;
 			startClock = std::chrono::high_resolution_clock::now();			
 		}
 		tree->GetEntry(entry);
@@ -243,8 +228,9 @@ int main(int ac, char** av){
 			newTree->Fill();
 		}
 	}
-
-	newTree->Write();
+    TTree* newT = newTree;
+    //newTree->Write();
+    newT->Write();
 	hPU_->Write();
 	hPUTrue_->Write();
 	hEvents_->Write();

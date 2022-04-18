@@ -11,45 +11,60 @@ EventPick::~EventPick(){
 }
 
 void EventPick::process_event(EventTree* tree){
-    //	clear_vectors();
     passSkim = false;
-    passPresel_ele = false;
-    passPresel_mu = false;
-    passAll_ele = false;
-    passAll_mu = false;
-
-    bool applyMetFilter   = false;
-    bool Pass_trigger_mu  = false;
-    bool Pass_trigger_ele = false;
-
-    if (year=="2016") {
-	    Pass_trigger_mu = (tree->HLT_IsoMu24_ || tree->HLT_IsoTkMu24_ || tree->HLT_Mu50_);
-	    //Pass_trigger_mu = (tree->HLT_Mu50_);
-        Pass_trigger_ele = (tree->HLT_Ele27_WPTight_Gsf_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_ || tree->HLT_Photon175_);
+    bool passTrigMu  = false;
+    bool passTrigEle = false;
+    //Check muon and electron triggers
+    if (year.find("2016")!=std::string::npos){
+        passTrigMu = 
+            tree->HLT_Mu50_ || 
+            tree->HLT_TkMu50_;                 
+        passTrigEle = 
+            tree->HLT_Ele27_WPTight_Gsf_ ||
+            tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_||
+            tree->HLT_Photon175_ ;
+    }                                                                           
+    if (year=="2017"){                                                          
+        passTrigMu = 
+            tree->HLT_Mu50_ || 
+            tree->HLT_TkMu100_ || 
+            tree->HLT_OldMu100_;
+        passTrigEle = 
+            tree->HLT_Ele35_WPTight_Gsf_ ||
+            tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_||
+            tree->HLT_Photon200_;
+    }                                                                           
+    if (year=="2018"){                                                          
+        passTrigMu = 
+            tree->HLT_Mu50_ || 
+            tree->HLT_TkMu100_||
+            tree->HLT_OldMu100_;
+        passTrigEle = 
+            tree->HLT_Ele35_WPTight_Gsf_ ||
+            tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_||
+            tree->HLT_Photon200_ ;
     }
-    if (year=="2017"){
-        Pass_trigger_mu = (tree->HLT_IsoMu24_ || tree->HLT_IsoMu27_ || tree->HLT_Mu50_);
-        Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_L1DoubleEG_ || tree->HLT_Ele32_WPTight_Gsf_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_ || tree->HLT_Photon175_);
-    }
-    if (year=="2018"){
-        Pass_trigger_mu = (tree->HLT_IsoMu24_ || tree->HLT_IsoMu27_ || tree->HLT_Mu50_);
-        Pass_trigger_ele = (tree->HLT_Ele32_WPTight_Gsf_ || tree->HLT_Ele35_WPTight_Gsf_ || tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_ || tree->HLT_Photon175_);
-
-    }
-
-    bool filters = (tree->Flag_goodVertices_ &&
+    //Check MET filters    
+    bool filters = 
+            (tree->Flag_goodVertices_ &&
 		    tree->Flag_globalSuperTightHalo2016Filter_ &&
 		    tree->Flag_HBHENoiseFilter_ &&
 		    tree->Flag_HBHENoiseIsoFilter_ && 
 		    tree->Flag_EcalDeadCellTriggerPrimitiveFilter_ &&
 		    tree->Flag_BadPFMuonFilter_ );
-
-    if (year=="2017" || year=="2018"){ filters = filters && tree->Flag_ecalBadCalibFilterV2_ ;}
-
-    if(applyMetFilter){
-	    Pass_trigger_mu = Pass_trigger_mu && filters ;     
-	    Pass_trigger_ele = Pass_trigger_ele && filters ;     
+    if (year=="2017" || year=="2018"){ 
+        filters = filters && tree->Flag_ecalBadCalibFilter_ ;
     }
-    passSkim = (Pass_trigger_ele || Pass_trigger_mu) && filters;
+    //To reject events where neither muon nor electron is present
+    bool zeroLep = (tree->nMu_ == 0) && (tree->nEle_ ==0);
+    
+    //Apply above selections along with additional cuts on PV, nJet, and MET
+    passSkim = 
+        (passTrigEle || passTrigMu) && 
+        filters && 
+        !zeroLep && 
+        tree->nGoodVtx_>0 &&
+        tree->nJet_>0 &&
+        tree->MET_pt_>15;
 }
 

@@ -167,10 +167,7 @@ class makeNtuple {
     Float_t  _evtWeight;
     Float_t  _lumiWeight;
 
-    Int_t    _nVtx;
-    Int_t    _nGoodVtx;
     Float_t  _pfMET;
-    Float_t  _genMET;
     Float_t  _pfMETPhi;
     Float_t  _nu_pz;
     Float_t  _nu_pz_other;
@@ -283,10 +280,8 @@ class makeNtuple {
     std::vector<float>   _jerWeight;
     std::vector<float>   _jesWeight;
 
-    std::vector<float>   _jetCMVA;
     std::vector<float>   _jetCSVV2;
     std::vector<float>   _jetDeepB;
-    std::vector<float>   _jetDeepC;
     std::vector<Int_t>   _jetGenJetIdx;
 
     Int_t  _nGenJet;
@@ -387,8 +382,6 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Event_number"   , &_event );
     outputTree->Branch("Event_lumi"     , &_lumis );
     outputTree->Branch("Event_is_data"  , &_isData ); 
-    outputTree->Branch("Event_vtx_size"  , &_nVtx ); 
-    outputTree->Branch("Event_good_vtx_size"     , &_nGoodVtx ); 
     outputTree->Branch("Event_pass_presel_ele", &_passPresel_Ele ); 
     outputTree->Branch("Event_pass_presel_mu" , &_passPresel_Mu);
     outputTree->Branch("Event_pass_all_ele"   , &_passAll_Ele ); 
@@ -570,9 +563,7 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Reco_mass_photon_lepton" , &_MPhotonLepton );
 
     if (!isSystematicRun){
-	/* outputTree->Branch("jetCMVA"  , &_jetCMVA ); */
 	/* outputTree->Branch("jetCSVV2"  , &_jetCSVV2 ); */
-	/* outputTree->Branch("jetDeepC"  , &_jetDeepC ); */
     }
 	
     if (!tree->isData_ && !isSystematicRun){
@@ -593,7 +584,6 @@ void makeNtuple::InitBranches(){
 	    outputTree->Branch("Gen_jet_phi"	, &_genJetPhi	 ); 
 	    outputTree->Branch("Gen_jet_mass"	, &_genJetMass	 ); 
         */
-	    outputTree->Branch("Gen_met", &_genMET ); 
     }
 }
 
@@ -604,13 +594,6 @@ void makeNtuple::InitVariables()
     _event    = -9999;
     _lumis		     = -9999;
     _isData		     = false;
-    _nVtx		     = -9999;
-    _nGoodVtx	     = -9999;
-    /* _isPVGood	     = false; */
-    /* _rho		     = -9999; */
-
-    _genMET		     = -9999;
-
     _pfMET		     = -9999;
     _pfMETPhi	     = -9999;
     _nu_pz    = -9999;
@@ -753,10 +736,8 @@ void makeNtuple::InitVariables()
     _jerWeight.clear();
     /* _jetRawPt.clear(); */
     /* _jetArea.clear(); */
-    _jetCMVA.clear();
     _jetCSVV2.clear();
     _jetDeepB.clear();
-    _jetDeepC.clear();
 
     _jetGenJetIdx.clear();
     _fatJetPt.clear();

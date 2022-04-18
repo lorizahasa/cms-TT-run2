@@ -23,49 +23,20 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 	}
     }
     chain->SetBranchStatus("*",0);
-	
-    // keep some important branches
-    chain->SetBranchStatus("PV_ndof",1);
-    chain->SetBranchAddress("PV_ndof", &pvNDOF_);
-
-    chain->SetBranchStatus("PV_x",1);
-    chain->SetBranchAddress("PV_x", &pvX_);
-
-    chain->SetBranchStatus("PV_y",1);
-    chain->SetBranchAddress("PV_y", &pvY_);
-
-    chain->SetBranchStatus("PV_z",1);
-    chain->SetBranchAddress("PV_z", &pvZ_);
-
-    chain->SetBranchStatus("PV_chi2",1);
-    chain->SetBranchAddress("PV_chi2", &pvChi2_);
-
     if (!isData_){
 	chain->SetBranchStatus("Pileup_nPU",1);
 	chain->SetBranchAddress("Pileup_nPU", &nPU_);
-	
 	chain->SetBranchStatus("Pileup_nTrueInt",1);
 	chain->SetBranchAddress("Pileup_nTrueInt", &nPUTrue_);
     }
 
-	
     // event
-	
     chain->SetBranchStatus("run",1);
     chain->SetBranchAddress("run", &run_);
-
     chain->SetBranchStatus("event",1);
     chain->SetBranchAddress("event", &event_);
-	
     chain->SetBranchStatus("luminosityBlock",1);
     chain->SetBranchAddress("luminosityBlock", &lumis_);
-
-    chain->SetBranchStatus("PV_npvs",1);
-    chain->SetBranchAddress("PV_npvs", &nVtx_);
-
-    chain->SetBranchStatus("PV_npvsGood",1);
-    chain->SetBranchAddress("PV_npvsGood", &nGoodVtx_);
-
 
     if (!isData_){
 	chain->SetBranchStatus("Generator_weight",1);
@@ -101,13 +72,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("MET_phi",1);
     chain->SetBranchAddress("MET_phi", &MET_phi_);
 
-    if (!isData_){
-	chain->SetBranchStatus("GenMET_pt",1);
-	chain->SetBranchAddress("GenMET_pt", &GenMET_pt_);
-	
-	chain->SetBranchStatus("GenMET_phi",1);
-	chain->SetBranchAddress("GenMET_phi", &GenMET_phi_);
-    }
 
     // electrons	
     chain->SetBranchStatus("nElectron",1);
@@ -139,12 +103,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
     chain->SetBranchStatus("Electron_mvaFall17V2noIso_WPL",1);
     chain->SetBranchAddress("Electron_mvaFall17V2noIso_WPL", &eleMVAFall17V2noIso_WPL_);
-
-    chain->SetBranchStatus("Electron_dxy",1);
-    chain->SetBranchAddress("Electron_dxy", &eleD0_);
-
-    chain->SetBranchStatus("Electron_dz",1);
-    chain->SetBranchAddress("Electron_dz", &eleDz_);
 
 
     // muons
@@ -208,20 +166,11 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Jet_area",1);
     chain->SetBranchAddress("Jet_area", &jetArea_);
 
-    chain->SetBranchStatus("Jet_btagCMVA",1);
-    chain->SetBranchAddress("Jet_btagCMVA", &jetBtagCMVA_);
-
     chain->SetBranchStatus("Jet_btagCSVV2",1);
     chain->SetBranchAddress("Jet_btagCSVV2", &jetBtagCSVV2_);
 
     chain->SetBranchStatus("Jet_btagDeepB",1);
     chain->SetBranchAddress("Jet_btagDeepB", &jetBtagDeepB_);
-
-    chain->SetBranchStatus("Jet_btagDeepC",1);
-    chain->SetBranchAddress("Jet_btagDeepC", &jetBtagDeepC_);
-
-    chain->SetBranchStatus("Jet_btagDeepFlavB",1);
-    chain->SetBranchAddress("Jet_btagDeepFlavB", &jetBtagDeepFlavB_);
 
     chain->SetBranchStatus("Jet_chEmEF",1);
     chain->SetBranchAddress("Jet_chEmEF", &jetchEmEF_);
@@ -313,16 +262,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
 	chain->SetBranchStatus("Photon_cutBased",1);
 	chain->SetBranchAddress("Photon_cutBased", &phoIDcutbased_);
-    /*
-    if (year=="2016"){
-	chain->SetBranchStatus("Photon_cutBased",1);
-	chain->SetBranchAddress("Photon_cutBased", &phoIDcutbased_);
-    }
-    if (year=="2017" || year=="2018"){
-	chain->SetBranchStatus("Photon_cutBasedBitmap",1);//these does not exist
-	chain->SetBranchAddress("Photon_cutBasedBitmap", &phoIDcutbased_);
-    }
-	*/
+
     chain->SetBranchStatus("Photon_pfRelIso03_all",1);
     chain->SetBranchAddress("Photon_pfRelIso03_all", &phoPFRelIso_);
 
@@ -426,73 +366,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 	chain->SetBranchAddress("GenJetAK8_mass", &GenJetAK8_mass_);
     }
 
-    //Fliters
-    chain->SetBranchStatus("Flag_goodVertices",1);
-    chain->SetBranchAddress("Flag_goodVertices",&Flag_goodVertices_);
-    chain->SetBranchStatus("Flag_globalSuperTightHalo2016Filter",1);
-    chain->SetBranchAddress("Flag_globalSuperTightHalo2016Filter", &Flag_globalSuperTightHalo2016Filter_);
-    chain->SetBranchStatus("Flag_HBHENoiseFilter",1);
-    chain->SetBranchAddress("Flag_HBHENoiseFilter", &Flag_HBHENoiseFilter_);
-    chain->SetBranchStatus("Flag_HBHENoiseIsoFilter",1);
-    chain->SetBranchAddress("Flag_HBHENoiseIsoFilter", &Flag_HBHENoiseIsoFilter_);
-    chain->SetBranchStatus("Flag_EcalDeadCellTriggerPrimitiveFilter",1);
-    chain->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter_);
-    chain->SetBranchStatus("Flag_BadPFMuonFilter",1);
-    chain->SetBranchAddress("Flag_BadPFMuonFilter",&Flag_BadPFMuonFilter_);
-    if(year =="2017" || year == "2018"){
-	    chain->SetBranchStatus("Flag_ecalBadCalibFilterV2",1);
-	    chain->SetBranchAddress("Flag_ecalBadCalibFilterV2",&Flag_ecalBadCalibFilterV2_);
-    }
-
-    //TRIGGERS
-    if (year=="2016"){
-        //muon
-	    chain->SetBranchStatus("HLT_Mu50",1);
-	    chain->SetBranchAddress("HLT_Mu50",&HLT_Mu50_);
-	    chain->SetBranchStatus("HLT_TkMu50",1);
-	    chain->SetBranchAddress("HLT_TkMu50",&HLT_TkMu50_);
-        //electron
-	    chain->SetBranchStatus("HLT_Ele27_WPTight_Gsf",1);
-	    chain->SetBranchAddress("HLT_Ele27_WPTight_Gsf",&HLT_Ele27_WPTight_Gsf_);
-	    chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
-	    chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
-	    chain->SetBranchStatus("HLT_Photon175",1);
-	    chain->SetBranchAddress("HLT_Photon175",&HLT_Photon175_);
-    }
-    if (year=="2017"){
-        //muon
-	    chain->SetBranchStatus("HLT_Mu50",1);
-	    chain->SetBranchAddress("HLT_Mu50",&HLT_Mu50_);
-	    chain->SetBranchStatus("HLT_OldMu100",1);
-	    chain->SetBranchAddress("HLT_OldMu100",&HLT_OldMu100_);
-	    chain->SetBranchStatus("HLT_TkMu100",1);
-	    chain->SetBranchAddress("HLT_TkMu100",&HLT_TkMu100_);
-        //electron
-	    chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
-	    chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
-	    chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
-	    chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
-	    chain->SetBranchStatus("HLT_Photon200",1);
-	    chain->SetBranchAddress("HLT_Photon200",&HLT_Photon200_);
-    }
-    if (year=="2018"){
-        //muons
-	    chain->SetBranchStatus("HLT_Mu50",1);
-	    chain->SetBranchAddress("HLT_Mu50",&HLT_Mu50_);
-	    chain->SetBranchStatus("HLT_OldMu100",1);
-	    chain->SetBranchAddress("HLT_OldMu100",&HLT_OldMu100_);
-	    chain->SetBranchStatus("HLT_TkMu100",1);
-	    chain->SetBranchAddress("HLT_TkMu100",&HLT_TkMu100_);
-        //electrons
-	    chain->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
-	    chain->SetBranchAddress("HLT_Ele32_WPTight_Gsf",&HLT_Ele32_WPTight_Gsf_);
-	    chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
-	    chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
-	    chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
-	    chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
-	    chain->SetBranchStatus("HLT_Photon200",1);
-	    chain->SetBranchAddress("HLT_Photon200",&HLT_Photon200_);
-    }	
     chain->SetBranchStatus("fixedGridRhoFastjetAll",1);
     chain->SetBranchAddress("fixedGridRhoFastjetAll", &rho_);
 

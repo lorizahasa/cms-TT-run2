@@ -12,8 +12,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
 	for(int fileI=0; fileI<nFiles; fileI++){
 	    string fName = (string) fileNames[fileI];
 	    chain->Add( (dir + fileNames[fileI]).c_str() );
-	    //cout << dir+fName << "  " << chain->GetEntries() << endl;
 	    cout << (dir + fileNames[fileI]).c_str() << "  " << chain->GetEntries() << endl;
+	    //cout << dir+fName << "  " << chain->GetEntries() << endl;
 	}
     }
     else{
@@ -26,14 +26,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("*",0);
 	
     // keep some important branches
-    chain->SetBranchStatus("PV_ndof",1);
-    chain->SetBranchStatus("PV_x",1);
-    chain->SetBranchStatus("PV_y",1);
-    chain->SetBranchStatus("PV_z",1);
-    chain->SetBranchStatus("PV_chi2",1);
-    chain->SetBranchStatus("PV_npvs",1);
     chain->SetBranchStatus("PV_npvsGood",1);
-
+    chain->SetBranchAddress("PV_npvsGood",&nGoodVtx_);
 
     if (isMC){
 	chain->SetBranchStatus("Pileup_nPU",1);
@@ -49,15 +43,12 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
 
     // MET
     chain->SetBranchStatus("MET_pt",1);
+    chain->SetBranchAddress("MET_pt",&MET_pt_);
     chain->SetBranchStatus("MET_phi",1);
-
-    if (isMC){
-	chain->SetBranchStatus("GenMET_pt",1);
-	chain->SetBranchStatus("GenMET_phi",1);
-    }
 
     // electrons	
     chain->SetBranchStatus("nElectron",1);
+    chain->SetBranchAddress("nElectron",&nEle_);
     chain->SetBranchStatus("Electron_charge",1);
     chain->SetBranchStatus("Electron_pt",1);
     chain->SetBranchStatus("Electron_deltaEtaSC",1);
@@ -73,15 +64,11 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("Electron_mvaFall17V2noIso_WP90",1); 
     chain->SetBranchStatus("Electron_mvaFall17V2noIso_WPL",1);
     chain->SetBranchStatus("Electron_vidNestedWPBitmap",1);
-    chain->SetBranchStatus("Electron_dxy",1);
-    chain->SetBranchStatus("Electron_dz",1);
-    chain->SetBranchStatus("Electron_dr03EcalRecHitSumEt",1);
-    chain->SetBranchStatus("Electron_dr03HcalDepth1TowerSumEt",1);
-    chain->SetBranchStatus("Electron_dr03TkSumPt",1);
     chain->SetBranchStatus("Electron_photonIdx",1);
 
     // muons
     chain->SetBranchStatus("nMuon",1);
+    chain->SetBranchAddress("nMuon",&nMu_);
     chain->SetBranchStatus("Muon_charge",1);
     chain->SetBranchStatus("Muon_pt",1);
     chain->SetBranchStatus("Muon_eta",1);
@@ -97,7 +84,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("Muon_isTracker",1);
 
     // jets
-    chain->SetBranchStatus("nJet",1);
+    chain->SetBranchAddress("nJet",&nJet_);
     chain->SetBranchStatus("Jet_pt",1);
     chain->SetBranchStatus("Jet_rawFactor",1);
     chain->SetBranchStatus("Jet_eta",1);
@@ -105,13 +92,9 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("Jet_mass",1);
     chain->SetBranchStatus("Jet_jetId",1);
     chain->SetBranchStatus("Jet_area",1);
-    chain->SetBranchStatus("Jet_btagCMVA",1);
+    chain->SetBranchStatus("Jet_qgl",1);
     chain->SetBranchStatus("Jet_btagCSVV2",1);
     chain->SetBranchStatus("Jet_btagDeepB",1);
-    chain->SetBranchStatus("Jet_btagDeepC",1);
-    chain->SetBranchStatus("Jet_btagDeepFlavB",1);
-    chain->SetBranchStatus("Jet_chEmEF",1);
-    chain->SetBranchStatus("Jet_neEmEF",1);
     if (isMC){
         chain->SetBranchStatus("Jet_hadronFlavour",1);
         chain->SetBranchStatus("Jet_genJetIdx",1);
@@ -123,40 +106,29 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("FatJet_eta",1);
     chain->SetBranchStatus("FatJet_phi",1);
     chain->SetBranchStatus("FatJet_mass",1);
-    chain->SetBranchStatus("FatJet_msoftdrop",1);
     chain->SetBranchStatus("FatJet_jetId",1);
-    chain->SetBranchStatus("FatJet_btagDeepB",1);
+    chain->SetBranchStatus("FatJet_area",1);
+    chain->SetBranchStatus("FatJet_msoftdrop",1);
     chain->SetBranchStatus("FatJet_deepTagMD_TvsQCD",1);
-    chain->SetBranchStatus("FatJet_deepTagMD_WvsQCD",1);
     chain->SetBranchStatus("FatJet_deepTag_TvsQCD",1);
-    chain->SetBranchStatus("FatJet_deepTag_WvsQCD",1);
-    chain->SetBranchStatus("FatJet_electronIdx3SJ",1);
-    chain->SetBranchStatus("FatJet_muonIdx3SJ",1);
-    chain->SetBranchStatus("FatJet_tau1",1);
-    chain->SetBranchStatus("FatJet_tau2",1);
-    chain->SetBranchStatus("FatJet_tau3",1);
-    chain->SetBranchStatus("FatJet_tau4",1);
+    chain->SetBranchStatus("FatJet_particleNet_TvsQCD",1);
     if (isMC){
         chain->SetBranchStatus("FatJet_hadronFlavour",1);
         chain->SetBranchStatus("FatJet_genJetAK8Idx",1);
     }
+    chain->SetBranchStatus("fixedGridRhoFastjetAll",1);
 
     //photons
     chain->SetBranchStatus("nPhoton",1);
     chain->SetBranchStatus("Photon_pt",1);
     chain->SetBranchStatus("Photon_eta",1);
     chain->SetBranchStatus("Photon_phi",1);
-    chain->SetBranchStatus("Photon_isScEtaEB",1);
-    chain->SetBranchStatus("Photon_isScEtaEE",1);
     chain->SetBranchStatus("Photon_cutBased*",1);
     chain->SetBranchStatus("Photon_mvaID*",1);
     chain->SetBranchStatus("Photon_pfRelIso03_all",1);
     chain->SetBranchStatus("Photon_pfRelIso03_chg",1);
     chain->SetBranchStatus("Photon_vidNestedWPBitmap",1);
     chain->SetBranchStatus("Photon_pixelSeed",1);
-    chain->SetBranchStatus("Photon_r9",1);
-    chain->SetBranchStatus("Photon_sieie",1);
-    chain->SetBranchStatus("Photon_hoe",1);
     if (isMC){
         chain->SetBranchStatus("Photon_genPartIdx",1);
     }
@@ -186,13 +158,15 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchStatus("nLHEScaleWeight",1);
         chain->SetBranchStatus("LHEScaleWeight",1);
         chain->SetBranchStatus("nLHEPdfWeight",1);
+        chain->SetBranchStatus("nLHEPart",1);
+        chain->SetBranchStatus("LHEPart_pt",1);
+        chain->SetBranchStatus("LHEPart_pdgId",1);
         chain->SetBranchStatus("LHEPdfWeight",1);
         chain->SetBranchStatus("PSWeight",1);
         chain->SetBranchStatus("nPSWeight",1);
-        chain->SetBranchStatus("LHEWeight_originalXWGTUP",1);
-        if (year=="2016" || year=="2017"){
-        chain->SetBranchStatus("L1PreFiringWeight*",1);
-        }
+        chain->SetBranchStatus("L1PreFiringWeight_Dn",1);
+        chain->SetBranchStatus("L1PreFiringWeight_Nom",1);
+        chain->SetBranchStatus("L1PreFiringWeight_Up",1);
     }
 
     //Fliters
@@ -209,101 +183,60 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("Flag_BadPFMuonFilter",1);
     chain->SetBranchAddress("Flag_BadPFMuonFilter",&Flag_BadPFMuonFilter_);
     if(year =="2017" || year == "2018"){
-	    chain->SetBranchStatus("Flag_ecalBadCalibFilterV2",1);
-	    chain->SetBranchAddress("Flag_ecalBadCalibFilterV2",&Flag_ecalBadCalibFilterV2_);
+	    chain->SetBranchStatus("Flag_ecalBadCalibFilter",1);
+	    chain->SetBranchAddress("Flag_ecalBadCalibFilter",&Flag_ecalBadCalibFilter_);
     }
-
-    //L1 Triggers
-	chain->SetBranchStatus("L1_SingleEG24");
-	chain->SetBranchStatus("L1_SingleEG26");
-	chain->SetBranchStatus("L1_SingleEG30");
-	chain->SetBranchStatus("L1_SingleEG32");
-	chain->SetBranchStatus("L1_SingleEG34");
-	chain->SetBranchStatus("L1_SingleEG36");
-	chain->SetBranchStatus("L1_SingleEG38");
-	chain->SetBranchStatus("L1_SingleEG40");
-	chain->SetBranchStatus("L1_SingleEG42");
-	chain->SetBranchStatus("L1_SingleEG45");
-	chain->SetBranchStatus("L1_SingleEG50");
-	chain->SetBranchStatus("L1_SingleEG34er2p1");
-	chain->SetBranchStatus("L1_SingleEG36er2p1");
-	chain->SetBranchStatus("L1_SingleEG38er2p1");
-	chain->SetBranchStatus("L1_SingleIsoEG24er2p1");
-	chain->SetBranchStatus("L1_SingleIsoEG26er2p1");
-	chain->SetBranchStatus("L1_SingleIsoEG28er2p1");
-	chain->SetBranchStatus("L1_SingleIsoEG30er2p1");
-	chain->SetBranchStatus("L1_SingleIsoEG32er2p1");
-	chain->SetBranchStatus("L1_SingleIsoEG34er2p1");
-	chain->SetBranchStatus("L1_SingleIsoEG36er2p1");
-	chain->SetBranchStatus("L1_SingleIsoEG24");
-	chain->SetBranchStatus("L1_SingleIsoEG26");
-	chain->SetBranchStatus("L1_SingleIsoEG28");
-	chain->SetBranchStatus("L1_SingleIsoEG30");
-	chain->SetBranchStatus("L1_SingleIsoEG32");
-	chain->SetBranchStatus("L1_SingleIsoEG34");
-	chain->SetBranchStatus("L1_SingleIsoEG36");
-	chain->SetBranchStatus("L1_SingleIsoEG38");
 
     //High Level Triggers
     std::cout << "Triggers" << std::endl;
-    if (year=="2016"){
+    if (year.find("2016")!=std::string::npos){
         //muon
-        chain->SetBranchStatus("HLT_IsoMu24",1);
-        chain->SetBranchAddress("HLT_IsoMu24",&HLT_IsoMu24_);
-        chain->SetBranchStatus("HLT_IsoTkMu24",1);
-        chain->SetBranchAddress("HLT_IsoTkMu24",&HLT_IsoTkMu24_);
         chain->SetBranchStatus("HLT_Mu50",1);
         chain->SetBranchAddress("HLT_Mu50",&HLT_Mu50_);
+        chain->SetBranchStatus("HLT_TkMu50",1);
+        chain->SetBranchAddress("HLT_TkMu50",&HLT_TkMu50_);
         //electron
         chain->SetBranchStatus("HLT_Ele27_WPTight_Gsf",1);
         chain->SetBranchAddress("HLT_Ele27_WPTight_Gsf",&HLT_Ele27_WPTight_Gsf_);
         chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
         chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
-        //photon
         chain->SetBranchStatus("HLT_Photon175",1);
         chain->SetBranchAddress("HLT_Photon175",&HLT_Photon175_);
     }
     
     if (year=="2017"){
         //muon
-        chain->SetBranchStatus("HLT_IsoMu24",1);
-        chain->SetBranchAddress("HLT_IsoMu24",&HLT_IsoMu24_);
-        chain->SetBranchStatus("HLT_IsoMu27",1);
-        chain->SetBranchAddress("HLT_IsoMu27",&HLT_IsoMu27_);
         chain->SetBranchStatus("HLT_Mu50",1);
         chain->SetBranchAddress("HLT_Mu50",&HLT_Mu50_);
+        chain->SetBranchStatus("HLT_TkMu100",1);
+        chain->SetBranchAddress("HLT_TkMu100",&HLT_TkMu100_);
+        chain->SetBranchStatus("HLT_OldMu100",1);
+        chain->SetBranchAddress("HLT_OldMu100",&HLT_OldMu100_);
         //electron
-        chain->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
-        chain->SetBranchAddress("HLT_Ele32_WPTight_Gsf",&HLT_Ele32_WPTight_Gsf_);
-        chain->SetBranchStatus("HLT_Ele32_WPTight_Gsf_L1DoubleEG",1);
-        chain->SetBranchAddress("HLT_Ele32_WPTight_Gsf_L1DoubleEG",&HLT_Ele32_WPTight_Gsf_L1DoubleEG_);
-        chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
-        chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
-        //photon
-        chain->SetBranchStatus("HLT_Photon175",1);
-        chain->SetBranchAddress("HLT_Photon175",&HLT_Photon175_);
-    }
-
-    if (year=="2018"){
-        //muon
-        chain->SetBranchStatus("HLT_IsoMu24",1);
-        chain->SetBranchAddress("HLT_IsoMu24",&HLT_IsoMu24_);
-        chain->SetBranchStatus("HLT_IsoMu27",1);
-        chain->SetBranchAddress("HLT_IsoMu27",&HLT_IsoMu27_);
-        chain->SetBranchStatus("HLT_Mu50",1);
-        chain->SetBranchAddress("HLT_Mu50",&HLT_Mu50_);
-        //electrom
-        chain->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
-        chain->SetBranchAddress("HLT_Ele32_WPTight_Gsf",&HLT_Ele32_WPTight_Gsf_);
         chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
         chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
         chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
         chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
-        //electron
-        chain->SetBranchStatus("HLT_Photon175",1);
-        chain->SetBranchAddress("HLT_Photon175",&HLT_Photon175_);
+        chain->SetBranchStatus("HLT_Photon200",1);
+        chain->SetBranchAddress("HLT_Photon200",&HLT_Photon200_);
+    }
+
+    if (year=="2018"){
+        //muon
+        chain->SetBranchStatus("HLT_Mu50",1);
+        chain->SetBranchAddress("HLT_Mu50",&HLT_Mu50_);
+        chain->SetBranchStatus("HLT_TkMu100",1);
+        chain->SetBranchAddress("HLT_TkMu100",&HLT_TkMu100_);
+        chain->SetBranchStatus("HLT_OldMu100",1);
+        chain->SetBranchAddress("HLT_OldMu100",&HLT_OldMu100_);
+        //electrom
+        chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
+        chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
+        chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
+        chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
+        chain->SetBranchStatus("HLT_Photon200",1);
+        chain->SetBranchAddress("HLT_Photon200",&HLT_Photon200_);
     }	
-        chain->SetBranchStatus("fixedGridRhoFastjetAll",1);
 }
 
 EventTree::~EventTree(){
