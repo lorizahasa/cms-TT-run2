@@ -11,7 +11,6 @@ int elescale012_g = 1;
 bool dilepSel;
 bool semilepSel;
 bool semileptonsample;
-bool qcdSample;
 auto startClock = std::chrono::high_resolution_clock::now();
 
 #ifdef makeNtuple_cxx
@@ -41,17 +40,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 	cout << endl;
     }
     */
-    bool saveCutflow=false;
-    if (std::string(av[1])=="cutflow"){
-	saveCutflow=true;
-	for (int i = 1; i < ac-1; i++){
-	    av[i] = av[i+1];
-	}
-	ac = ac-1;
-    }
-
     if (std::string(av[1])=="event"){
-
 	std::string tempEventStr(av[2]);
 	eventNum = std::stoi(tempEventStr);
 	for (int i = 1; i < ac-2; i++){
@@ -65,7 +54,6 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
     dilepSel    = false;
     semilepSel  = false;
-    qcdSample   = false;
 
     if (std::string(av[1])=="semilepton" || 
         std::string(av[1])=="semilept" ||
@@ -104,7 +92,6 @@ makeNtuple::makeNtuple(int ac, char** av)
         std::string(av[1])=="QCD" ||
         std::string(av[1])=="QCDCR"){
   
-        qcdSample=true;
         for (int i = 1; i < ac-1; i++){
             av[i] = av[i+1];
 	}
@@ -191,19 +178,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     evtPick->Njet_ge = 2;
     evtPick->NBjet_ge = 0;
 
-    evtPick->applyMetFilter = true; 
     bool applyHemVeto=true; 
-    //bool applyHemVeto=false; //test
-    if (saveCutflow){
-	selector->smearJetPt=false;
-	evtPick->saveCutflows=true;
-	evtPick->Njet_ge = 4;
-	evtPick->NBjet_ge = 1;
-    }
-
-    if (eventNum > -1){
-        //	selector->smearJetPt=false;
-    }
     selector->looseJetID = false;
     selector->useDeepCSVbTag = true;
     if (isMC){
@@ -351,12 +326,11 @@ makeNtuple::makeNtuple(int ac, char** av)
     //	if( systematicType=="elesmear_down"){elesmear012_g = 0;}
 
     if(dilepSel)     {evtPick->Nmu_eq=2; evtPick->Nele_eq=2;}
-    if(qcdSample)       {selector->QCDselect = true; evtPick->QCDselect = true;}
     //    if( systematicType=="QCDcr")       {selector->QCDselect = true; evtPick->ZeroBExclusive=true; evtPick->QCDselect = true;}
     std::cout << "Dilepton Sample :" << dilepSel << std::endl;
     std::cout << "JEC: " << jecvar012_g << "  JER: " << jervar012_g << " eleScale "<< elescale012_g << " phoScale" << phoscale012_g << "   ";
     std::cout << "  PhoSmear: " << phosmear012_g << "  muSmear: " << musmear012_g << "  eleSmear: " << elesmear012_g << std::endl;
-    if (dilepSel && saveCutflow){
+    if (dilepSel){
 	evtPick->Njet_ge = 2;
 	evtPick->NBjet_ge = 0;
     }
@@ -385,12 +359,6 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (dilepSel){
 	    outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/Dilep_");
     }
-    if (qcdSample){
-	outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/QCDcr_");
-    }
-    if (saveCutflow) {
-	//outputFileName.replace(outputFileName.find("Ntuple"),14, "Cutflow");
-    }
 
     cout << av[3] << " " << sampleType << " " << systematicType << endl;
     cout << outputFileName << endl;
@@ -399,9 +367,6 @@ makeNtuple::makeNtuple(int ac, char** av)
     //outputTree->SetAutoFlush(1000000000);
     //outputTree->SetAutoSave(10000000000);//Save to disk after 1000 GB
 
-    if (saveCutflow) {
-	evtPick->init_cutflow_files(outputFileName);
-    }
     cout << "HERE" << endl;
     PUReweight* PUweighter = new PUReweight(ac-4, av+4, PUfilename);
     PUReweight* PUweighterUp = new PUReweight(ac-4, av+4, PUfilename_up);
@@ -717,12 +682,9 @@ makeNtuple::makeNtuple(int ac, char** av)
             cout << "EventSelection:" << endl;
             cout << "  PassPresel e " << evtPick->passPreselEle << endl;
             cout << "  PassPresel mu" << evtPick->passPreselMu<< endl;
-            cout << "  PassPhoton e " << evtPick->passAllEle << endl;
-            cout << "  PassPhoton mu" << evtPick->passAllMu << endl;
         }
 
 	if ( evtPick->passPreselEle || evtPick->passPreselMu || saveAllEntries) {
-	    if (saveCutflow && !(evtPick->passAllEle || evtPick->passAllMu) ) continue;
 	    InitVariables();
 	    FillEvent(year); //HEM test
 
@@ -870,31 +832,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
     std:cout << "Total number of HEM events removed from Data  = "<<count_HEM<<std::endl;
     outputFile->cd();
-
     outputTree->Write();
-
-    if (saveCutflow){
-	std::cout << "e+jets cutflow" << std::endl;
-	evtPick->print_cutflow_ele(evtPick->cutFlow_ele);
-
-	std::cout << "mu+jets cutflow" << std::endl;
-	evtPick->print_cutflow_mu(evtPick->cutFlow_mu);
-
-	std::cout << "e+jets cutflow Weighted" << std::endl;
-	evtPick->print_cutflow_ele(evtPick->cutFlowWeight_ele);
-
-	std::cout << "mu+jets cutflow Weighted" << std::endl;
-	evtPick->print_cutflow_mu(evtPick->cutFlowWeight_mu);
-
-	evtPick->cutFlow_mu->Write();
-	evtPick->cutFlow_ele->Write();
-	evtPick->cutFlowWeight_mu->Write();
-	evtPick->cutFlowWeight_ele->Write();
-    }
-
-    if (saveCutflow) {
-	evtPick->close_cutflow_files();
-    }
    /* 
     TNamed gitCommit("Git_Commit", VERSION);
     TNamed gitTime("Git_Commit_Time", COMMITTIME);
@@ -940,9 +878,6 @@ void makeNtuple::FillEvent(std::string year)
     }
 
 
-
-
-    _genMET		     = tree->GenMET_pt_;
     _pfMET		     = tree->MET_pt_;
     _pfMETPhi    	     = tree->MET_phi_;
     
@@ -1055,8 +990,6 @@ void makeNtuple::FillEvent(std::string year)
 	
     _passPresel_Ele  = evtPick->passPreselEle;
     _passPresel_Mu   = evtPick->passPreselMu;
-    _passAll_Ele     = evtPick->passAllEle;
-    _passAll_Mu      = evtPick->passAllMu;
     _nPhoBarrel=0.;
     _nPhoEndcap=0.;
 
@@ -1139,29 +1072,6 @@ void makeNtuple::FillEvent(std::string year)
             _photonIsHadronicPhoton.push_back(isHadronicPhoton);
             _photonIsHadronicFake.push_back(isHadronicFake || isPUPhoton);
             
-            if (evtPick->saveCutflows){
-                string run_lumi_event = to_string(tree->run_)+","+to_string(tree->lumis_)+","+to_string(tree->event_)+"\n";     
-                if (isGenuine){
-                    if (evtPick->passAllMu) {evtPick->cutFlow_mu->Fill(15); evtPick->dump_photon_GenPho_mu << run_lumi_event;}
-                    if (evtPick->passAllEle) {evtPick->cutFlow_ele->Fill(15); evtPick->dump_photon_GenPho_ele << run_lumi_event;}
-                }
-                if (isMisIDEle){
-                    if (evtPick->passAllMu) {evtPick->cutFlow_mu->Fill(16); evtPick->dump_photon_MisIDEle_mu << run_lumi_event;}
-                    if (evtPick->passAllEle) {evtPick->cutFlow_ele->Fill(16); evtPick->dump_photon_MisIDEle_ele << run_lumi_event;}
-                }
-                if (isHadronicPhoton){
-                    if (evtPick->passAllMu) {evtPick->cutFlow_mu->Fill(17); evtPick->dump_photon_HadPho_mu << run_lumi_event;}
-                    if (evtPick->passAllEle) {evtPick->cutFlow_ele->Fill(17); evtPick->dump_photon_HadPho_ele << run_lumi_event;}
-                }
-                if (isHadronicFake){
-                    if (evtPick->passAllMu) {evtPick->cutFlow_mu->Fill(18); evtPick->dump_photon_HadFake_mu << run_lumi_event;}
-                    if (evtPick->passAllEle) {evtPick->cutFlow_ele->Fill(18); evtPick->dump_photon_HadFake_ele << run_lumi_event;}
-                }
-                if (isPUPhoton){
-                    if (evtPick->passAllMu) {evtPick->cutFlow_mu->Fill(19); evtPick->dump_photon_PU_mu << run_lumi_event;}
-                    if (evtPick->passAllEle) {evtPick->cutFlow_ele->Fill(19); evtPick->dump_photon_PU_ele << run_lumi_event;}
-                }
-            }//saveCutflows
         }//isMC
         _dRPhotonLepton.push_back(phoVector.DeltaR(lepVector));
         _MPhotonLepton.push_back((phoVector+lepVector).M());

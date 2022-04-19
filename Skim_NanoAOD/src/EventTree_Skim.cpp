@@ -92,6 +92,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("Jet_mass",1);
     chain->SetBranchStatus("Jet_jetId",1);
     chain->SetBranchStatus("Jet_area",1);
+    chain->SetBranchStatus("Jet_muEF",1);
     chain->SetBranchStatus("Jet_qgl",1);
     chain->SetBranchStatus("Jet_btagCSVV2",1);
     chain->SetBranchStatus("Jet_btagDeepB",1);

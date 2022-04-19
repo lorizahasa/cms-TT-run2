@@ -30,6 +30,9 @@ def getEvents(sample):
 #Store the ouputs in two separate files
 f1 = open("FilesNano_cff.sh", "w")
 f2 = open("JobsNano_cff.py", "w")
+f2.write("import sys\n")
+f2.write("sys.dont_write_bytecode = True\n")
+
 allJobs = 0
 for year in ['2016PreVFP', '2016PostVFP', '2017', '2018']:
     splitJobs = {}

@@ -59,10 +59,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 	
 	chain->SetBranchStatus("nPSWeight",1);
 	chain->SetBranchAddress("nPSWeight", &nPSWeight_);
-	
-	chain->SetBranchStatus("LHEWeight_originalXWGTUP",1);
-	chain->SetBranchAddress("LHEWeight_originalXWGTUP", &LHEWeight_originalXWGTUP_);
-	
     }
 
     // MET
@@ -166,20 +162,15 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Jet_area",1);
     chain->SetBranchAddress("Jet_area", &jetArea_);
 
+    chain->SetBranchStatus("Jet_muEF",1);
+    chain->SetBranchAddress("Jet_muEF", &jetmuEF_);
+
     chain->SetBranchStatus("Jet_btagCSVV2",1);
     chain->SetBranchAddress("Jet_btagCSVV2", &jetBtagCSVV2_);
 
     chain->SetBranchStatus("Jet_btagDeepB",1);
     chain->SetBranchAddress("Jet_btagDeepB", &jetBtagDeepB_);
 
-    chain->SetBranchStatus("Jet_chEmEF",1);
-    chain->SetBranchAddress("Jet_chEmEF", &jetchEmEF_);
-
-    chain->SetBranchStatus("Jet_neEmEF",1);
-    chain->SetBranchAddress("Jet_neEmEF", &jetneEmEF_);
-
-    chain->SetBranchStatus("Jet_neEmEF",1);
-    chain->SetBranchAddress("Jet_muEF", &jetmuEF_);
 
     if (!isData_){
 	chain->SetBranchStatus("Jet_hadronFlavour",1);
@@ -213,26 +204,12 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("FatJet_jetId",1);
     chain->SetBranchAddress("FatJet_jetId", &fatJetID_);
 
-    chain->SetBranchStatus("FatJet_btagDeepB",1);
-    chain->SetBranchAddress("FatJet_btagDeepB", &fatJetBtagDeepB_);
-
     chain->SetBranchStatus("FatJet_deepTagMD_TvsQCD",1);
     chain->SetBranchAddress("FatJet_deepTagMD_TvsQCD", &fatJetDeepTagMDT_);
-
-    chain->SetBranchStatus("FatJet_deepTagMD_WvsQCD",1);
-    chain->SetBranchAddress("FatJet_deepTagMD_WvsQCD", &fatJetDeepTagMDW_);
 
     chain->SetBranchStatus("FatJet_deepTag_TvsQCD",1);
     chain->SetBranchAddress("FatJet_deepTag_TvsQCD", &fatJetDeepTagT_);
 
-    chain->SetBranchStatus("FatJet_deepTag_WvsQCD",1);
-    chain->SetBranchAddress("FatJet_deepTag_WvsQCD", &fatJetDeepTagW_);
-
-    chain->SetBranchStatus("FatJet_electronIdx3SJ",1);
-    chain->SetBranchAddress("FatJet_electronIdx3SJ", &fatJetEleIdx_);
-
-    chain->SetBranchStatus("FatJet_muonIdx3SJ",1);
-    chain->SetBranchAddress("FatJet_muonIdx3SJ", &fatJetMuIdx_);
 
     if (!isData_){
         chain->SetBranchStatus("FatJet_genJetAK8Idx",1);
@@ -254,12 +231,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Photon_phi",1);
     chain->SetBranchAddress("Photon_phi", &phoPhi_);
 	
-    chain->SetBranchStatus("Photon_isScEtaEB",1);
-    chain->SetBranchAddress("Photon_isScEtaEB", &phoIsEB_);
-
-    chain->SetBranchStatus("Photon_isScEtaEE",1);
-    chain->SetBranchAddress("Photon_isScEtaEE", &phoIsEE_);
-
 	chain->SetBranchStatus("Photon_cutBased",1);
 	chain->SetBranchAddress("Photon_cutBased", &phoIDcutbased_);
 
@@ -274,15 +245,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
     chain->SetBranchStatus("Photon_pixelSeed",1);
     chain->SetBranchAddress("Photon_pixelSeed", &phoPixelSeed_);
-
-    chain->SetBranchStatus("Photon_r9",1);
-    chain->SetBranchAddress("Photon_r9", &phoR9_);
-
-    chain->SetBranchStatus("Photon_sieie",1);
-    chain->SetBranchAddress("Photon_sieie", &phoSIEIE_);
-
-    chain->SetBranchStatus("Photon_hoe",1);
-    chain->SetBranchAddress("Photon_hoe", &phoHoverE_);
 
     if (!isData_){
 	chain->SetBranchStatus("Photon_genPartIdx",1);

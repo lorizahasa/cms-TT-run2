@@ -203,13 +203,13 @@ int main(int ac, char** av){
 	TH1D* hEvents_    = new TH1D("hEvents",    "number of events (+/- event weight)",      3,  -1.5, 1.5);
     double totalTime = 0.0;
     std::cout<<"---------------------------"<<std::endl;
-    std::cout<<setw(10)<<"Progress (%)"<<setw(10)<<"Time(m)"<<std::endl;
+    std::cout<<setw(10)<<"Progress"<<setw(10)<<"Time"<<std::endl;
     std::cout<<"---------------------------"<<std::endl;
 	for(Long64_t entry= startEntry; entry < endEntry; entry++){
 		if(entry%dumpFreq == 0) {
             //if(entry>1000) break;
             totalTime+= std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count();
-			std::cout<<setw(10)<<100*entry/endEntry<<setw(10)<<(int)(totalTime/60)<<std::endl;
+			std::cout<<setw(10)<<100*entry/endEntry<<"%"<<setw(10)<<(int)(totalTime/60)<<"m"<<std::endl;
 			startClock = std::chrono::high_resolution_clock::now();			
 		}
 		tree->GetEntry(entry);

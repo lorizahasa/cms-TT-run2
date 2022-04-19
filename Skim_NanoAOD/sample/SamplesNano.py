@@ -1,5 +1,5 @@
-#import sys
-#sys.dont_write_bytecode = True
+import sys
+sys.dont_write_bytecode = True
 def sampleDict(year):
     # MCv1
     mcTypes = {}

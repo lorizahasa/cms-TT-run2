@@ -5,6 +5,8 @@
 #the integral for pdfUp/Down is nan for QCD in the resolved and boosted regions
 #Bogus norm for btagUp for Boosted region
 #Add Weight_jer for AK8
+#Update the DY_Enriched selection where we require the two muons of opposite 
+charge and mass window in 91.18+-10 GeV
 
 #The Reco_angle_leadBjet_met is not correct using bjetVectors as the size of bJets and it is different
 
