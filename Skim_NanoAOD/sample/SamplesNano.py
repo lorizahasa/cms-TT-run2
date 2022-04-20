@@ -59,9 +59,9 @@ def sampleDict(year):
     # tty samples
     #--------------------------
     #Inclusive
-    #'TTGamma_SingleLept' : '/TTGamma_SingleLept_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
-    #'TTGamma_Dilepton'     : '/TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
-    #'TTGamma_Hadronic'   : '/TTGamma_Hadronic_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
+    'TTGamma_SingleLept' : '/TTGamma_SingleLept_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
+    'TTGamma_Dilepton'     : '/TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
+    'TTGamma_Hadronic'   : '/TTGamma_Hadronic_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
     #pT binned 
     'TTGamma_SingleLept_Pt100' : '/TTGamma_SingleLept_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
     'TTGamma_SingleLept_Pt200' : '/TTGamma_SingleLept_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
@@ -69,18 +69,12 @@ def sampleDict(year):
     'TTGamma_Dilepton_Pt200' : '/TTGamma_Dilept_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
     'TTGamma_Hadronic_Pt100' : '/TTGamma_Hadronic_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
     'TTGamma_Hadronic_Pt200' : '/TTGamma_Hadronic_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM', #UL not avial for 2017
-    ##Inclusive 1lep syst # ALL AVAILABLE, WILL CONSIDER THEM LATER
-    #'TTGamma_SingleLept_TuneDown' : '/TTGamma_SingleLept_TuneCP5Down_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_SingleLept_TuneUp'   : '/TTGamma_SingleLept_TuneCP5Up_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_SingleLept_erdOn'    : '/TTGamma_SingleLept_TuneCP5_erdON_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_SingleLept_CR1'      : '/TTGamma_SingleLept_TuneCP5CR1_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_SingleLept_CR2'      : '/TTGamma_SingleLept_TuneCP5CR2_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    ##Inclusive 2lep syst
-    #'TTGamma_Dilepton_TuneDown' : '/TTGamma_Dilept_TuneCP5Down_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_Dilepton_TuneUp'   : '/TTGamma_Dilept_TuneCP5Up_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_Dilepton_erdOn'    : '/TTGamma_Dilept_TuneCP5_erdON_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_Dilepton_CR2'      : '/TTGamma_Dilept_TuneCP5CR1_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_Dilepton_CR1'      : '/TTGamma_Dilept_TuneCP5CR2_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
+    #Inclusive 1lep syst 
+    'TTGamma_SingleLept_TuneDown' : '/TTGamma_SingleLept_TuneCP5Down_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
+    'TTGamma_SingleLept_TuneUp'   : '/TTGamma_SingleLept_TuneCP5Up_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
+    #Inclusive 2lep syst
+    'TTGamma_Dilepton_TuneDown' : '/TTGamma_Dilept_TuneCP5Down_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
+    'TTGamma_Dilepton_TuneUp'   : '/TTGamma_Dilept_TuneCP5Up_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
     #--------------------------
     # tt samples
     #--------------------------

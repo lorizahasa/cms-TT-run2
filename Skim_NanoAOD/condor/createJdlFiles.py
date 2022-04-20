@@ -37,15 +37,15 @@ for year in Years:
     jdlFile = open('tmpSub/%s'%jdlName,'w')
     jdlFile.write('Executable =  runMakeSkims.sh \n')
     jdlFile.write(common_command)
-    os.system("eos root://cmseos.fnal.gov mkdir -p %s/%s"%(condorOutDir, year))
+    os.system("eos root://cmseos.fnal.gov mkdir -p %s/%s"%(outSkimDir, year))
     jdlFile.write("X=$(step)+1\n")
     
     for sampleName, nJobEvt in samples.items():
         nJob = nJobEvt[0]
         if nJob==1:
-            run_command =  'Arguments  = %s %s %s \nQueue 1\n\n' %(condorOutDir, year, sampleName)
+            run_command =  'Arguments  = %s %s %s \nQueue 1\n\n' %(outSkimDir, year, sampleName)
         else:
-            run_command =  'Arguments  = %s %s %s $INT(X) %i\nQueue %i\n\n' %(condorOutDir, year, sampleName, nJob, nJob)
+            run_command =  'Arguments  = %s %s %s $INT(X) %i\nQueue %i\n\n' %(outSkimDir, year, sampleName, nJob, nJob)
 	jdlFile.write(run_command)
     
 	#print "condor_submit jdl/%s"%jdlFile

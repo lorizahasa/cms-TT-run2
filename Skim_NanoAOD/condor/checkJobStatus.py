@@ -18,7 +18,7 @@ for year in Years:
     #-----------------------------------------
     #Path of the output histrograms
     #----------------------------------------
-    inHistFullDir = "/eos/uscms/%s/%s"%(condorOutDir, year)
+    inHistFullDir = "/eos/uscms/%s/%s"%(outSkimDir, year)
     #inHistFullDir = "%s/%s"%(condorHistDir, inHistSubDir)
     condorLogDir = "tmpSub/log"
 

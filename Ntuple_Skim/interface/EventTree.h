@@ -36,6 +36,10 @@ class EventTree{
     Float_t PSWeight_[200];
 
     Float_t LHEWeight_originalXWGTUP_;
+
+    Float_t prefireDn_;
+    Float_t prefireNom_;
+    Float_t prefireUp_;
     
     bool isData_;
     // genParticle

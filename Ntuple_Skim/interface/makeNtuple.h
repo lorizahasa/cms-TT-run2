@@ -42,7 +42,6 @@
 #include "TopEventCombinatorics.h"
 
 #include "ReaderPileupSF.h"
-#include "ReaderPrefireSF.h"
 #include "ReaderLumiSF.h"
 #include "ReaderMuSF.h"
 #include "ReaderEleSF.h"
@@ -86,8 +85,6 @@ class makeNtuple {
     ElectronSF* eleSF;
     PhotonSF* phoSF;
 
-    PrefireWeights* l1PrefireSF;
-    
     TH2D* l_eff;
     TH2D* c_eff;
     TH2D* b_eff;

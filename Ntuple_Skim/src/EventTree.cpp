@@ -296,7 +296,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 	chain->SetBranchStatus("GenPart_statusFlags",1);
 	chain->SetBranchAddress("GenPart_statusFlags", &GenPart_statusFlags_);
     
-
 	chain->SetBranchStatus("nGenJet",1);
 	chain->SetBranchAddress("nGenJet", &nGenJet_);
 	
@@ -330,6 +329,15 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
     chain->SetBranchStatus("fixedGridRhoFastjetAll",1);
     chain->SetBranchAddress("fixedGridRhoFastjetAll", &rho_);
+
+    chain->SetBranchStatus("L1PreFiringWeight_Dn",1);
+    chain->SetBranchAddress("L1PreFiringWeight_Dn", &prefireDn_);
+
+    chain->SetBranchStatus("L1PreFiringWeight_Nom",1);
+    chain->SetBranchAddress("L1PreFiringWeight_Nom",&prefireNom_);
+
+    chain->SetBranchStatus("L1PreFiringWeight_Up",1);
+    chain->SetBranchAddress("L1PreFiringWeight_Up",&prefireUp_);
 
 }
 

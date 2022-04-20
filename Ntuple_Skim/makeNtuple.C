@@ -454,11 +454,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 	phoSF = new PhotonSF("weight/PhoSF/Fall17V2_2016_MVAwp90_photons.root",
 			     "weight/PhoSF/ScalingFactors_80X_Summer16.root",
 			     2016);
-    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
-	l1PrefireSF = new PrefireWeights("weight/Prefire/L1prefiring_photonpt_2016BtoH.root", "L1prefiring_photonpt_2016BtoH",
-					 "weight/Prefire/L1prefiring_jetpt_2016BtoH.root", "L1prefiring_jetpt_2016BtoH");
-
-
     } else if (year=="2017") {
 	
 	muSFa = new MuonSF("weight/MuSF/Mu_RunBCDEF_SF_ID_2017.root", "NUM_TightID_DEN_genTracks_pt_abseta",
@@ -473,10 +468,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 			     "weight/PhoSF/PixelSeed_ScaleFactors_2017.root",
 			     2017);
 	
-	
-	l1PrefireSF = new PrefireWeights("weight/Prefire/L1prefiring_photonpt_2017BtoF.root", "L1prefiring_photonpt_2017BtoF",
-					"weight/Prefire/L1prefiring_jetpt_2017BtoF.root", "L1prefiring_jetpt_2017BtoF");
-
     } else if (year=="2018") {
 
 	muSFa = new MuonSF("weight/MuSF/Mu_RunABCD_SF_ID_2018.root",  "NUM_TightID_DEN_TrackerMuons_pt_abseta",
@@ -776,20 +767,16 @@ makeNtuple::makeNtuple(int ac, char** av)
             //if(_eleEffWeight_Trig_Up >1.0)cout<<_eleEffWeight_Trig_Up<<endl;
 		}
 	    }
-
+        //https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
 	    if (year=="2016" || year=="2017"){
-		float prefireSF[3] = {1.,1.,1.};
-
-		l1PrefireSF->getPrefireSF(tree, prefireSF);
-
-		_prefireSF = prefireSF[1];
-		_prefireSF_Do = prefireSF[0];
-		_prefireSF_Up = prefireSF[2];
+            _prefireSF_Do   = tree->prefireDn_;
+            _prefireSF      = tree->prefireNom_; 
+            _prefireSF_Up   = tree->prefireUp_; 
 	    }
 	    else{
-		_prefireSF = 1;
-		_prefireSF_Do = 1.;
-		_prefireSF_Up = 1.;
+            _prefireSF_Do = 1.;
+            _prefireSF = 1;
+            _prefireSF_Up = 1.;
 	    }
 
 	    outputTree->Fill();
