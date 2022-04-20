@@ -50,22 +50,25 @@ def sampleDict(year):
     'Signal_M1600': '/TstarTstarTo'+leg[year][0]+'_M-1600_'+leg[year][1]+'_13TeV-madgraph-pythia8/'+leg[year][2]+'/NANOAODSIM',  
     }
 
+    TTGamma17 = {
+    'TTGamma_Hadronic_Pt200' : '/TTGamma_Hadronic_ptGamma200inf_TuneCP5_PSweights_13TeV-madgraph-pythia8/'+leg[year][2]+'/NANOAODSIM', 
+    'TTGamma_Dilepton_Pt100'  : '/TTGamma_Dilept_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year].replace('v2', 'v3')+'/NANOAODSIM',
+    }
     commonSamp = {
     #--------------------------
     # tty samples
     #--------------------------
     #Inclusive
-    'TTGamma_SingleLept' : '/TTGamma_SingleLept_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
-    'TTGamma_Dilepton'     : '/TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
-    'TTGamma_Hadronic'   : '/TTGamma_Hadronic_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
-    #pT binned # NOT CONSIDERING FOR NOW since one is not available for 2017
-    #'TTGamma_SingleLept_Pt100' : '/TTGamma_SingleLept_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_SingleLept_Pt200' : '/TTGamma_SingleLept_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_Dilepton_Pt100'  : '/TTGamma_Dilept_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_Dilepton_Pt200' : '/TTGamma_Dilept_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_Hadronic_Pt100' : '/TTGamma_Hadronic_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_Hadronic_Pt200' : '/TTGamma_Hadronic_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
-    #'TTGamma_Hadronic_Pt200' : '/TTGamma_Hadronic_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM', # NA for 2017
+    #'TTGamma_SingleLept' : '/TTGamma_SingleLept_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
+    #'TTGamma_Dilepton'     : '/TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
+    #'TTGamma_Hadronic'   : '/TTGamma_Hadronic_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
+    #pT binned 
+    'TTGamma_SingleLept_Pt100' : '/TTGamma_SingleLept_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
+    'TTGamma_SingleLept_Pt200' : '/TTGamma_SingleLept_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
+    'TTGamma_Dilepton_Pt100'  : '/TTGamma_Dilept_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
+    'TTGamma_Dilepton_Pt200' : '/TTGamma_Dilept_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
+    'TTGamma_Hadronic_Pt100' : '/TTGamma_Hadronic_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
+    'TTGamma_Hadronic_Pt200' : '/TTGamma_Hadronic_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM', #UL not avial for 2017
     ##Inclusive 1lep syst # ALL AVAILABLE, WILL CONSIDER THEM LATER
     #'TTGamma_SingleLept_TuneDown' : '/TTGamma_SingleLept_TuneCP5Down_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
     #'TTGamma_SingleLept_TuneUp'   : '/TTGamma_SingleLept_TuneCP5Up_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
@@ -245,6 +248,7 @@ def sampleDict(year):
             allSamples.update(dataSamp16Post)
     if '2017' in year:
         allSamples.update(commonSamp)
+        allSamples.update(TTGamma17)
         allSamples.update(sigSamp)
         allSamples.update(dataSamp17)
     if '2018' in year:

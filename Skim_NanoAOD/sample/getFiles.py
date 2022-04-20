@@ -1,7 +1,10 @@
+import os
 import sys
 import subprocess
 sys.dont_write_bytecode = True
 from SamplesNano import sampleDict 
+sys.path.insert(0, os.getcwd().replace("sample",""))
+from SkimInputs import *
 
 #Function to fetch the name of all files in one string
 def getFileList(sample, isDAS=True):
@@ -30,11 +33,10 @@ def getEvents(sample):
 #Store the ouputs in two separate files
 f1 = open("FilesNano_cff.sh", "w")
 f2 = open("JobsNano_cff.py", "w")
-f2.write("import sys\n")
-f2.write("sys.dont_write_bytecode = True\n")
 
 allJobs = 0
-for year in ['2016PreVFP', '2016PostVFP', '2017', '2018']:
+#for year in ['2016PreVFP', '2016PostVFP', '2017', '2018']:
+for year in Years: 
     splitJobs = {}
     print '---------------------------------------'
     print  year 
