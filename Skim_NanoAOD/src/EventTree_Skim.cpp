@@ -82,6 +82,10 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("Muon_isPFcand",1);
     chain->SetBranchStatus("Muon_isGlobal",1);
     chain->SetBranchStatus("Muon_isTracker",1);
+    chain->SetBranchStatus("Muon_highPtId",1);
+    chain->SetBranchStatus("Muon_highPurity",1);
+    chain->SetBranchStatus("Muon_tkIsoId",1);
+    chain->SetBranchStatus("Muon_tkRelIso",1);
 
     // jets
     chain->SetBranchAddress("nJet",&nJet_);

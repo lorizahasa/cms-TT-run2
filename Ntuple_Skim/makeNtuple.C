@@ -435,17 +435,38 @@ makeNtuple::makeNtuple(int ac, char** av)
 	if (nEntr > 1000) nEntr = 10;
 	saveAllEntries = true;
     }
-    //    nEntr = 4000;
-    //https://github.com/adeiorio/nanoAOD-tools/tree/master/python/postprocessing/data/leptonSF
+    //--------------------------
+    //Muon SFs
+    //--------------------------
+    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2016#High_pT_above_120_GeV
+    //https://gitlab.cern.ch/cms-muonPOG/muonefficiencies/-/tree/master/Run2/UL
+    //ID files
+    std::map<std::string, string> muIDFiles;
+    string common = "Efficiencies_muon_generalTracks_Z_"; 
+    muIDFiles["2016PreVFP"]  = "weight/MuSF/"+common+"Run2016_UL_HIPM_ID.root";
+    muIDFiles["2016PostVFP"] = "weight/MuSF/"+common+"Run2016_UL_ID.root";
+    muIDFiles["2017"]        = "weight/MuSF/"+common+"Run2017_UL_ID.root";
+    muIDFiles["2018"]        = "weight/MuSF/"+common+"Run2018_UL_ID.root";
+    //Iso files
+    std::map<std::string, string> muIsoFiles;
+    muIsoFiles["2016PreVFP"]  = "weight/MuSF/"+common+"Run2016_UL_HIPM_ISO.root";
+    muIsoFiles["2016PostVFP"] = "weight/MuSF/"+common+"Run2016_UL_ISO.root";
+    muIsoFiles["2017"]        = "weight/MuSF/"+common+"Run2017_UL_ISO.root";
+    muIsoFiles["2018"]        = "weight/MuSF/"+common+"Run2018_UL_ISO.root";
+    //Trig file
+    string muTrigFile = "weight/MuSF/OutFile-v20190510-Combined-Run2016BtoH_Run2017BtoF_Run2018AtoD-M120to10000.root";
+    //Name of the histograms
+    string muIDHist     = "NUM_HighPtID_DEN_TrackerMuons_abseta_pt";
+    string muIsoHist    = "NUM_TightRelTkIso_DEN_HighPtIDandIPCut_abseta_pt";
+    std::map<std::string, string> muTrigHists;
+    muTrigHists["2016PreVFP"]  = "SF_2016";
+    muTrigHists["2016PostVFP"] = "SF_2016";
+    muTrigHists["2017"]        = "SF_2017";
+    muTrigHists["2018"]        = "SF_2018";
+    //Initiate the muon SF reader
+	muSF = new MuonSF(muIDFiles[year], muIDHist, muIsoFiles[year], muIsoHist, muTrigFile, muTrigHists[year]);
+
     if (year=="2016"){
-	muSFa = new MuonSF("weight/MuSF/Mu_RunBCDEF_SF_ID_2016.root", "NUM_TightID_DEN_genTracks_eta_pt",
-			   "weight/MuSF/Mu_RunBCDEFGH_SF_MiniIso_2016.root", "NUM_TightMiniIso_DEN_TightIDandIPCut/pt_abseta_ratio",
-			   "weight/MuSF/muon_16.root", "h2D_SF");
-	
-	muSFb = new MuonSF("weight/MuSF/Mu_RunGH_SF_ID_2016.root", "NUM_TightID_DEN_genTracks_eta_pt",
-			   "weight/MuSF/Mu_RunBCDEFGH_SF_MiniIso_2016.root", "NUM_TightMiniIso_DEN_TightIDandIPCut/pt_abseta_ratio",
-			   "weight/MuSF/muon_16.root", "h2D_SF"); 
-	
 	eleSF = new ElectronSF("weight/EleSF/EGM2D_MiniIso_SF_2016.root",
 
 			       "weight/EleSF/EGM2D_RECO_SF_2016.root",
@@ -455,11 +476,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 			     "weight/PhoSF/ScalingFactors_80X_Summer16.root",
 			     2016);
     } else if (year=="2017") {
-	
-	muSFa = new MuonSF("weight/MuSF/Mu_RunBCDEF_SF_ID_2017.root", "NUM_TightID_DEN_genTracks_pt_abseta",
-			   "weight/MuSF/Mu_RunBCDEF_SF_MiniIso_2017.root", "NUM_TightMiniIso_DEN_TightIDandIPCut/pt_abseta_ratio",
-			   "weight/MuSF/muon_17.root", "h2D_SF");
-	
 	eleSF = new ElectronSF("weight/EleSF/EGM2D_MiniIso_SF_2017.root",
 			       "weight/EleSF/EGM2D_RECO_SF_2017.root",
 			       "weight/EleSF/electron_17.root");
@@ -469,11 +485,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 			     2017);
 	
     } else if (year=="2018") {
-
-	muSFa = new MuonSF("weight/MuSF/Mu_RunABCD_SF_ID_2018.root",  "NUM_TightID_DEN_TrackerMuons_pt_abseta",
-			   "weight/MuSF/Mu_RunABCD_SF_MiniIso_2018.root", "NUM_TightMiniIso_DEN_TightIDandIPCut/pt_abseta_ratio",
-			   "weight/MuSF/muon_18.root", "h2D_SF");
-	
 	eleSF = new ElectronSF("weight/EleSF/EGM2D_MiniIso_SF_2018.root",
 			       "weight/EleSF/EGM2D_RECO_SF_2018.root",
 			       "weight/EleSF/electron_18.root");
@@ -694,29 +705,9 @@ makeNtuple::makeNtuple(int ac, char** av)
 		    vector<double> muWeights_Do;
 		    vector<double> muWeights_Up;    
 		    int muInd_ = selector->Muons.at(0);
-		    if (year=="2016"){
-		        vector<double> muWeights_a    = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2016, tree->event_==eventNum);
-		        vector<double> muWeights_b    = muSFb->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2016, tree->event_==eventNum);
-		        vector<double> muWeights_a_Do = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2016);
-		        vector<double> muWeights_b_Do = muSFb->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2016);
-		        vector<double> muWeights_a_Up = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2016);
-		        vector<double> muWeights_b_Up = muSFb->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2016);
-			    for (int _i=0; _i < muWeights_a.size(); _i++){
-			        muWeights.push_back( muWeights_a.at(_i) * 19.695422959/35.921875595 + muWeights_b.at(_i) * 16.226452636/35.921875595);
-			        muWeights_Do.push_back( muWeights_a_Do.at(_i) * 19.695422959/35.921875595 + muWeights_b_Do.at(_i) * 16.226452636/35.921875595);
-			        muWeights_Up.push_back( muWeights_a_Up.at(_i) * 19.695422959/35.921875595 + muWeights_b_Up.at(_i) * 16.226452636/35.921875595);
-			    }
-		    }
-		    if (year=="2017"){    
-		        muWeights    = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2017, tree->event_==eventNum);
-			    muWeights_Do = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2017);
-			    muWeights_Up = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2017);
-		    }
-            if(year=="2018"){
-		        muWeights    = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, 2018, tree->event_==eventNum);
-			    muWeights_Do = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0, 2018);
-			    muWeights_Up = muSFa->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2, 2018);
-		    }
+		    muWeights    = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, tree->event_==eventNum);
+			muWeights_Do = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0);
+			muWeights_Up = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2);
 		    _muEffWeight    = muWeights.at(0);
 		    _muEffWeight_Up = muWeights_Up.at(0);
 		    _muEffWeight_Do = muWeights_Do.at(0);
@@ -912,7 +903,7 @@ void makeNtuple::FillEvent(std::string year)
         _muPt.push_back(tree->muPt_[muInd]);
         _muPhi.push_back(tree->muPhi_[muInd]);
         _muEta.push_back(tree->muEta_[muInd]);
-        _muPFRelIso.push_back(tree->muMiniPFRelIso_[muInd]);
+        _muTkRelIso.push_back(tree->muTkRelIso_[muInd]);
         
         lepVector.SetPtEtaPhiM(tree->muPt_[muInd],
         		       tree->muEta_[muInd],
@@ -1325,7 +1316,7 @@ void makeNtuple::FillEvent(std::string year)
 
 	_q2weight_Up = 1.;
 	_q2weight_Do = 1.;
-
+    std::vector<float>   _genScaleSystWeights;
 	if (tree->nLHEScaleWeight_==9){
 	    for (int i = 0; i < 9; i++){
 		if(i==2||i==6){continue;}
@@ -1337,7 +1328,6 @@ void makeNtuple::FillEvent(std::string year)
                 _q2weight_Do = *min_element(_genScaleSystWeights.begin(), _genScaleSystWeights.end())/nomWeight;
             }
 	}
-
 	if (tree->nLHEScaleWeight_==44){
 	    _genScaleSystWeights.push_back(tree->LHEScaleWeight_[0]);
 	    _genScaleSystWeights.push_back(tree->LHEScaleWeight_[5]);
@@ -1351,6 +1341,7 @@ void makeNtuple::FillEvent(std::string year)
 	}
 
 	double pdfMean = 0.;
+    std::vector<float> _pdfSystWeight;
 	for (int j=0; j < tree->nLHEPdfWeight_; j++ ){
 	    _pdfSystWeight.push_back(tree->LHEPdfWeight_[j]);
         //std::cout<<tree->LHEPdfWeight_[j]<<std::endl;
@@ -1363,25 +1354,28 @@ void makeNtuple::FillEvent(std::string year)
 	    pdfVariance += pow((_pdfSystWeight[j]-pdfMean),2.);
 	}
         if (pdfMean==0) pdfMean=1;
+    float _pdfuncer = 0.;
 	_pdfuncer = sqrt(pdfVariance/_pdfSystWeight.size())/pdfMean;
 	_pdfweight_Up = (1. + _pdfuncer);
 	_pdfweight_Do = (1. - _pdfuncer);
 
-	_ISRweight_Up = 1.;
 	_ISRweight_Do = 1.;
+	_ISRweight    = 1.;
+	_ISRweight_Up = 1.;
 
-	_FSRweight_Up = 1.;
+	_FSRweight_Do = 1.;
+	_FSRweight    = 1.;
 	_FSRweight_Do = 1.;
 	
 	if (tree->nPSWeight_==4){
             if (tree->genWeight_ != 0){
                 double scaleWeight=tree->PSWeight_[4];
                 if (scaleWeight==0) scaleWeight=1.;
-                _ISRweight_Up = tree->PSWeight_[2]/scaleWeight;
-                _ISRweight_Do = tree->PSWeight_[0]/scaleWeight;
+                _ISRweight_Up = tree->PSWeight_[0]/scaleWeight;
+                _ISRweight_Do = tree->PSWeight_[2]/scaleWeight;
 
-                _FSRweight_Up = tree->PSWeight_[3]/scaleWeight;
-                _FSRweight_Do = tree->PSWeight_[1]/scaleWeight;
+                _FSRweight_Up = tree->PSWeight_[1]/scaleWeight;
+                _FSRweight_Do = tree->PSWeight_[3]/scaleWeight;
             }
         }
 

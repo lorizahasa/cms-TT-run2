@@ -123,8 +123,11 @@ class EventTree{
     Float_t         muEta_[25];
     Int_t           muCharge_[25];
     Float_t         muMass_[25];
-    Float_t         muMiniPFRelIso_[25];
+    Float_t         muTkRelIso_[25];
     Bool_t          muTightId_[25];
+    UChar_t         muHighPtId_[25];
+    Bool_t          muHighPurity_[25];
+    UChar_t         muTkIsoId_[25];
     Bool_t          muIsPFMuon_[25];
     Bool_t          muIsGlobal_[25];
     Bool_t          muIsTracker_[25];

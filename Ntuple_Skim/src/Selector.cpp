@@ -43,6 +43,7 @@ void Selector::init_JER(std::string inputPrefix){
     jetResolutionScaleFactorAK8 = new JME::JetResolutionScaleFactor((inputPrefix+"_MC_SF_AK8PFchs.txt").c_str());
 }
 
+//https://cms-nanoaod-integration.web.cern.ch/integration/cms-swCMSSW_10_6_19/mc102X_doc.html#Muon
 void Selector::process_objects(EventTree* inp_tree){
     tree = inp_tree;
     clear_vectors();
@@ -75,31 +76,37 @@ void Selector::clear_vectors(){
     PhoPhoIso_corr.clear();
     PhoRandConeChHadIso_corr.clear();
 }
-
+//https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2016#High_pT_above_120_GeV
+//https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideMuonSelection#HighPt_Tracker_Muon
 void Selector::filter_muons(){
     if (tree->event_==printEvent){
 	    cout << "Found Event, Starting Muons" << endl;
 	    cout << " nMu=" << tree->nMuon_ << endl;
     }
-    for(int muInd = 0; muInd < tree->nMuon_; ++muInd){
-        double eta = tree->muEta_[muInd];
-        double pt = tree->muPt_[muInd];
-        double muMiniIso = tree->muMiniPFRelIso_[muInd];
-        bool looseMuonID = tree->muIsPFMuon_[muInd] && (tree->muIsTracker_[muInd] || tree->muIsGlobal_[muInd]);
-        bool tightMuonID = tree->muTightId_[muInd];
-        bool passTight = (pt >= 55.0 &&
+    for(UInt_t m = 0; m < tree->nMuon_; ++m){
+        double eta = tree->muEta_[m];
+        double pt = tree->muPt_[m];
+        int tkIsoID = (int)tree->muTkIsoId_[m];//1 for loose, 2 for tight
+        bool looseMuonID = tree->muIsPFMuon_[m] && 
+            (tree->muIsTracker_[m] || tree->muIsGlobal_[m]);
+        bool passPromptID = tree->muHighPurity_[m] && (int)tree->muHighPtId_[m]==2;
+        //highPtID has IP cuts too:
+        //https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonReco/src/MuonSelectors.cc#L933-L960
+        bool passPrompt = (pt >= 55.0 &&
         		  TMath::Abs(eta) <= 2.4 &&
-        		  tightMuonID && muMiniIso < 0.1
+        		  passPromptID && 
+                  tkIsoID == 2 
         		  );
         bool passLoose = (pt >= 30.0 &&
-        		  TMath::Abs(eta) <= 2.4 &&
-                          looseMuonID && !passTight &&
-                          muMiniIso < 0.4
+                  TMath::Abs(eta) <= 2.4 &&
+                  looseMuonID && 
+                  !passPrompt &&
+                  tkIsoID == 1
         		  );
-        if(passTight) Muons.push_back(muInd);
-        else if (passLoose) MuonsLoose.push_back(muInd);
+        if(passPrompt) Muons.push_back(m);
+        else if (passLoose) MuonsLoose.push_back(m);
         if (tree->event_==printEvent){
-            cout << "-- " << muInd << " passTight="<<passTight<< " passLoose="<<passLoose << " pt="<<pt<< " eta="<<eta<< " phi="<<tree->muPhi_[muInd]<< " tightID="<<tightMuonID<< " looseID="<<looseMuonID << " pfRelIso="<<muMiniIso << endl;
+            cout << "-- " << m << " passPrompt="<<passPrompt<< " passLoose="<<passLoose << " pt="<<pt<< " eta="<<eta<< " phi="<<tree->muPhi_[m]<< " tightID="<<passPromptID<< " looseID="<<looseMuonID << " tkRelIsoID="<<tkIsoID << endl;
         } 
     }
 }

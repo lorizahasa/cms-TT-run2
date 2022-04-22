@@ -15,6 +15,7 @@ void EventPick::process_event(EventTree* tree){
     bool passTrigMu  = false;
     bool passTrigEle = false;
     //Check muon and electron triggers
+    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2016
     if (year.find("2016")!=std::string::npos){
         passTrigMu = 
             tree->HLT_Mu50_ || 
@@ -24,21 +25,23 @@ void EventPick::process_event(EventTree* tree){
             tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_||
             tree->HLT_Photon175_ ;
     }                                                                           
+    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2017
     if (year=="2017"){                                                          
         passTrigMu = 
             tree->HLT_Mu50_ || 
-            tree->HLT_TkMu100_ || 
-            tree->HLT_OldMu100_;
+            tree->HLT_OldMu100_||
+            tree->HLT_TkMu100_ ; 
         passTrigEle = 
             tree->HLT_Ele35_WPTight_Gsf_ ||
             tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_||
             tree->HLT_Photon200_;
     }                                                                           
+    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2018
     if (year=="2018"){                                                          
         passTrigMu = 
             tree->HLT_Mu50_ || 
-            tree->HLT_TkMu100_||
-            tree->HLT_OldMu100_;
+            tree->HLT_OldMu100_||
+            tree->HLT_TkMu100_;
         passTrigEle = 
             tree->HLT_Ele35_WPTight_Gsf_ ||
             tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_||

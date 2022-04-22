@@ -26,7 +26,7 @@ PUReweight::PUReweight(int nFiles, char** fileNames, std::string PUfilename){
 
 	TH1F* mcPU = NULL;
 	for(int nmcfile = 0; nmcfile<nFiles; nmcfile++){
-		std::cout << "reading file " << std::string(fileNames[nmcfile]) << std::endl;
+		//std::cout << "reading file " << std::string(fileNames[nmcfile]) << std::endl;
 		TFile* mcFile = TFile::Open(fileNames[nmcfile],"READ");
 		if(!(mcFile->Get("hPUTrue"))) {
 			std::cout << "no hPU histogram here!" << std::endl;
@@ -37,7 +37,6 @@ PUReweight::PUReweight(int nFiles, char** fileNames, std::string PUfilename){
 		if( mcPU==NULL) mcPU = (TH1F*)mcFile->Get("hPUTrue");
 		else mcPU->Add((TH1F*)mcFile->Get("hPUTrue"));
 		mcPU->SetDirectory(0);
-        std::cout<<mcFile->GetName()<<std::endl;
 		mcFile->Close();
 	}
 	// TCanvas *c1 = new TCanvas("c1","A Simple Graph Example",1000,500);

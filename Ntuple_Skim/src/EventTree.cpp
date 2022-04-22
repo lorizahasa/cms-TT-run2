@@ -120,11 +120,20 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Muon_mass",1);
     chain->SetBranchAddress("Muon_mass", &muMass_);
 
-    chain->SetBranchStatus("Muon_miniPFRelIso_all",1);
-    chain->SetBranchAddress("Muon_miniPFRelIso_all", &muMiniPFRelIso_);
-
     chain->SetBranchStatus("Muon_tightId",1);
     chain->SetBranchAddress("Muon_tightId", &muTightId_);
+
+    chain->SetBranchStatus("Muon_highPtId",1);
+    chain->SetBranchAddress("Muon_highPtId", &muHighPtId_);
+    
+    chain->SetBranchStatus("Muon_highPurity",1);
+    chain->SetBranchAddress("Muon_highPurity", &muHighPurity_);
+
+    chain->SetBranchStatus("Muon_tkIsoId",1);
+    chain->SetBranchAddress("Muon_tkIsoId", &muTkIsoId_);
+
+    chain->SetBranchStatus("Muon_tkRelIso",1);
+    chain->SetBranchAddress("Muon_tkRelIso", &muTkRelIso_);
 
     chain->SetBranchStatus("Muon_isPFcand",1);
     chain->SetBranchAddress("Muon_isPFcand", &muIsPFMuon_);
@@ -134,7 +143,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
     chain->SetBranchStatus("Muon_isTracker",1);
     chain->SetBranchAddress("Muon_isTracker", &muIsTracker_);
-
 
     // jets
     chain->SetBranchStatus("nJet",1);

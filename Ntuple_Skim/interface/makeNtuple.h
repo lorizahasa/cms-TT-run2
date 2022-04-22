@@ -80,8 +80,7 @@ class makeNtuple {
     bool applypdfweight;
     bool applyqsquare;
 
-    MuonSF* muSFa;
-    MuonSF* muSFb;
+    MuonSF* muSF;
     ElectronSF* eleSF;
     PhotonSF* phoSF;
 
@@ -102,20 +101,19 @@ class makeNtuple {
     Float_t  _q2weight_Up;
     Float_t  _q2weight_Do;
     Float_t  _q2weight_nominal;
-    std::vector<float>   _genScaleSystWeights;
     Float_t   _genWeight;
 	
     Float_t   _pdfWeight;
-    Float_t   _pdfuncer;
     Float_t   _pdfweight_Up;
     Float_t	  _pdfweight_Do;
-    std::vector<float> _pdfSystWeight;
 
-    Float_t  _ISRweight_Up;
     Float_t  _ISRweight_Do;
+    Float_t  _ISRweight;
+    Float_t  _ISRweight_Up;
 
-    Float_t  _FSRweight_Up;
     Float_t  _FSRweight_Do;
+    Float_t  _FSRweight;
+    Float_t  _FSRweight_Up;
 
 
     float _prefireSF;
@@ -264,7 +262,7 @@ class makeNtuple {
     std::vector<float>   _muPt;
     std::vector<float>   _muEta;
     std::vector<float>   _muPhi;
-    std::vector<float>   _muPFRelIso;
+    std::vector<float>   _muTkRelIso;
 	
     Int_t  _nJet;
     Int_t  _nBJet;
@@ -438,24 +436,23 @@ void makeNtuple::InitBranches(){
 	    outputTree->Branch("Weight_q2"  , &_q2weight_nominal );
 	    outputTree->Branch("Weight_q2_up"       , &_q2weight_Up );
 	    outputTree->Branch("Weight_q2_down"     , &_q2weight_Do );
-	    outputTree->Branch("Weight_lhe_scale"   , &_genScaleSystWeights );
 	    outputTree->Branch("Weight_gen"         , &_genWeight );
 	    outputTree->Branch("Weight_pdf"         , &_pdfWeight );
 	    outputTree->Branch("Weight_pdf_up"      , &_pdfweight_Up );
 	    outputTree->Branch("Weight_pdf_down"    , &_pdfweight_Do );
-	    outputTree->Branch("Weight_pdf_syst"    , &_pdfSystWeight );
-	    outputTree->Branch("Weight_pdf_unc"     , &_pdfuncer );
-	    outputTree->Branch("Weight_isr_up"      , &_ISRweight_Up );
 	    outputTree->Branch("Weight_isr_down"    , &_ISRweight_Do );
-	    outputTree->Branch("Weight_fsr_up"      , &_FSRweight_Up );
+	    outputTree->Branch("Weight_isr"         , &_ISRweight );
+	    outputTree->Branch("Weight_isr_up"      , &_ISRweight_Up );
 	    outputTree->Branch("Weight_fsr_down"    , &_FSRweight_Do );
+	    outputTree->Branch("Weight_fsr"         , &_FSRweight );
+	    outputTree->Branch("Weight_fsr_up"      , &_FSRweight_Up );
     }
     //muons
     outputTree->Branch("Muon_size"    , &_nMu ); 
     outputTree->Branch("Muon_pt"   , &_muPt ); 
     outputTree->Branch("Muon_eta"  , &_muEta );
     outputTree->Branch("Muon_phi"  , &_muPhi );
-    outputTree->Branch("Muon_iso"    , &_muPFRelIso );
+    outputTree->Branch("Muon_iso"    , &_muTkRelIso );
     //electrons
     outputTree->Branch("Electron_size"   , &_nEle ); 
     outputTree->Branch("Electron_pt"  , &_elePt );
@@ -559,10 +556,6 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Reco_dr_photon_lepton", &_dRPhotonLepton );
     outputTree->Branch("Reco_mass_photon_lepton" , &_MPhotonLepton );
 
-    if (!isSystematicRun){
-	/* outputTree->Branch("jetCSVV2"  , &_jetCSVV2 ); */
-    }
-	
     if (!tree->isData_ && !isSystematicRun){
         /*
 	    outputTree->Branch("Gen_part_size"  	  , &_nGenPart ); 
@@ -652,7 +645,6 @@ void makeNtuple::InitVariables()
     _pdfWeight    = 1.;
     _pdfweight_Up = 1.;
     _pdfweight_Do = 1.;
-    _pdfuncer = 0.;
     _genWeight = 0.;
 
     _q2weight_nominal = 1.;
@@ -698,7 +690,7 @@ void makeNtuple::InitVariables()
     _muPt.clear();
     _muEta.clear();
     _muPhi.clear();
-    _muPFRelIso.clear();
+    _muTkRelIso.clear();
 
     _phoEt.clear();
     _phoR9.clear();
@@ -757,9 +749,6 @@ void makeNtuple::InitVariables()
     _dRPhotonLepton.clear();
     _MPhotonLepton.clear();
 	
-    _genScaleSystWeights.clear();
-    _pdfSystWeight.clear();
-
     _genPt.clear();
     _genPhi.clear();
     _genEta.clear();

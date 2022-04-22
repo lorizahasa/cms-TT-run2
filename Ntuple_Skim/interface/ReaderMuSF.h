@@ -17,20 +17,45 @@ class MuonSF
 	isoHist = (TH2D*) isoFile->Get(iso_histName.c_str());
 
 	TFile* trigFile = TFile::Open(trig_filename.c_str(),"READ");
-	trigHist = (TH2D*) trigFile->Get(trig_histName.c_str());
+	trigHist = (TH2D*) trigFile->Get((trig_histName+"_var").c_str());
+	trigHistLo = (TH2D*) trigFile->Get((trig_histName+"_errorLower").c_str());
+	trigHistUp = (TH2D*) trigFile->Get((trig_histName+"_errorUpper").c_str());
 	
     }
+    double getMuTrigSF(double pt, double eta, int systLevel);
     double getMuSF(TH2D *h2, double pt, double eta, int systLevel);
-    vector<double> getMuSFs(double pt, double eta, int systLevel, int year, bool print=false);
+    vector<double> getMuSFs(double pt, double eta, int systLevel, bool print=false);
 
  private:
     TH2D* idHist;
     TH2D* isoHist;
     TH2D* trigHist;
+    TH2D* trigHistLo;
+    TH2D* trigHistUp;
 };
 
+double MuonSF::getMuTrigSF(double pt, double eta, int systLevel){
+    //Get max of x and y range
+    double maxX = trigHist->GetXaxis()->GetBinLowEdge(trigHist->GetNbinsX());
+    double maxY = trigHist->GetYaxis()->GetBinLowEdge(trigHist->GetNbinsY());
+    TAxis *axisX = trigHist->GetXaxis();
+    TAxis *axisY = trigHist->GetYaxis();
+    //Get the bin numbers for a given pt, eta
+    //If pt or eta value is out of hist range, choose the last bin
+    Int_t binX = (pt<= maxX) ? axisX->FindBin(pt): axisX->FindBin(maxX);
+    Int_t binY = (eta <= maxY) ? axisY->FindBin(eta): axisY->FindBin(maxY);
+    //Get the scale factor and error for that bin
+    double sf = trigHist->GetBinContent(binX, binY);
+    double errLo = trigHistLo->GetBinContent(binX, binY);
+    double errUp = trigHistUp->GetBinContent(binX, binY);
+    if (sf==0.0) return 1.0;
+    else if (systLevel==0) return sf-errLo;
+    else if (systLevel==1) return sf;
+    else if (systLevel==2) return sf+errUp;
+    else return 1.0;
+}
 
-double MuonSF::getMuSF(TH2D *h2, double pt, double eta, int systLevel){
+double MuonSF::getMuSF(TH2D *h2, double eta, double pt, int systLevel){
     //Get max of x and y range
     double maxX = h2->GetXaxis()->GetBinLowEdge(h2->GetNbinsX());
     double maxY = h2->GetYaxis()->GetBinLowEdge(h2->GetNbinsY());
@@ -48,20 +73,15 @@ double MuonSF::getMuSF(TH2D *h2, double pt, double eta, int systLevel){
     else
         return sf + (systLevel -1)*err;
 }
-vector<double> MuonSF::getMuSFs(double pt, double eta, int systLevel, int year, bool print){
+vector<double> MuonSF::getMuSFs(double pt, double eta, int systLevel, bool print){
     double idSF    = 1.0;
     double isoSF   = 1.0; 
     double trigSF  = 1.0;
-    if (year==2017 || year==2018){//axes are interchanged
-        idSF    = getMuSF(idHist, abs(eta), pt, systLevel);//eta: 0, 2.4
-        isoSF   = getMuSF(isoHist, pt, abs(eta), systLevel);
-    }
-    else{
-        idSF    = getMuSF(idHist, pt, eta, systLevel);//eta: -2.4, 2.4
-        isoSF   = getMuSF(isoHist, abs(eta), pt, systLevel);
-    }
-    trigSF  = getMuSF(trigHist, abs(eta), pt, systLevel);//eta: 0, 2.4
+    idSF    = getMuSF(idHist, abs(eta), pt, systLevel);//axes interchanged
+    isoSF   = getMuSF(isoHist, abs(eta), pt, systLevel);
+    trigSF  = getMuTrigSF(pt, abs(eta), systLevel);
     vector<double> muSFs {idSF*isoSF*trigSF, idSF, isoSF, trigSF};
+    print=true;
     if (print){ 
         cout<<"----------------------------"<<endl;
         cout << "Muon Scale Factors: " << endl;
