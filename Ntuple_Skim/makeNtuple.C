@@ -348,20 +348,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
     // char outputFileName[100];
     cout << av[3] << " " << sampleType << " " << systematicType << endl;
-    if (systematicType!=""){
-	outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/"+systematicType + "__");
-	//	outputFileName.replace(outputFileName.begin(),outputDirectory.size()+1, outputDirectory + "/"+systematicType + "_");
-	//	outputFileName = outputDirectory + "/"+systematicType + "_" +sampleType+"_"+year+"_Ntuple.root";
-    }
-    if (semilepSel){
-	    outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/Semilep_");
-    }
-    if (dilepSel){
-	    outputFileName.replace(0,outputDirectory.size()+1, outputDirectory + "/Dilep_");
-    }
-
-    cout << av[3] << " " << sampleType << " " << systematicType << endl;
-    cout << outputFileName << endl;
+    cout << outputDirectory<<"/"<<outputFileName << endl;
     TFile *outputFile = new TFile(outputFileName.c_str(),"recreate");
     outputTree = new TTree("AnalysisTree","AnalysisTree");
     //outputTree->SetAutoFlush(1000000000);
@@ -435,6 +422,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 	if (nEntr > 1000) nEntr = 10;
 	saveAllEntries = true;
     }
+    nEntr = 100000;
     //--------------------------
     //Muon SFs
     //--------------------------
@@ -466,10 +454,22 @@ makeNtuple::makeNtuple(int ac, char** av)
     //Initiate the muon SF reader
 	muSF = new MuonSF(muIDFiles[year], muIDHist, muIsoFiles[year], muIsoHist, muTrigFile, muTrigHists[year]);
 
+    //--------------------------
+    //Electron SFs
+    //--------------------------
+    //https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018
+    //ID files
+    std::map<std::string, string> eleRecoFiles;
+    string comEle = "egammaEffi_ptAbove20.txt_EGM2D_"; 
+    eleRecoFiles["2016PreVFP"]  = "weight/EleSF/"+comEle+"UL2016preVFP.root"; 
+    eleRecoFiles["2016PostVFP"] = "weight/EleSF/"+comEle+"UL2016postVFP.root"; 
+    eleRecoFiles["2017"]        = "weight/EleSF/"+comEle+"UL2017.root"; 
+    eleRecoFiles["2018"]        = "weight/EleSF/"+comEle+"UL2018.root"; 
+
     if (year=="2016"){
 	eleSF = new ElectronSF("weight/EleSF/EGM2D_MiniIso_SF_2016.root",
 
-			       "weight/EleSF/EGM2D_RECO_SF_2016.root",
+			       eleRecoFiles[year],
 			       "weight/EleSF/electron_16.root");
 	
 	phoSF = new PhotonSF("weight/PhoSF/Fall17V2_2016_MVAwp90_photons.root",
@@ -477,7 +477,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 			     2016);
     } else if (year=="2017") {
 	eleSF = new ElectronSF("weight/EleSF/EGM2D_MiniIso_SF_2017.root",
-			       "weight/EleSF/EGM2D_RECO_SF_2017.root",
+			       eleRecoFiles[year],
 			       "weight/EleSF/electron_17.root");
 	
 	phoSF = new PhotonSF("weight/PhoSF/2017_PhotonsMVAwp90.root",
@@ -486,7 +486,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 	
     } else if (year=="2018") {
 	eleSF = new ElectronSF("weight/EleSF/EGM2D_MiniIso_SF_2018.root",
-			       "weight/EleSF/EGM2D_RECO_SF_2018.root",
+			       eleRecoFiles[year],
 			       "weight/EleSF/electron_18.root");
 
 	phoSF = new PhotonSF("weight/PhoSF/2018_PhotonsMVAwp90.root",
@@ -723,18 +723,25 @@ makeNtuple::makeNtuple(int ac, char** av)
             _muEffWeight_Trig    = muWeights.at(3);
 		    _muEffWeight_Trig_Up = muWeights_Up.at(3);
 		    _muEffWeight_Trig_Do = muWeights_Do.at(3);
-
+            //set electron weights to 1 for muon channel
 		    _eleEffWeight    = 1.;
 		    _eleEffWeight_Up = 1.;
 		    _eleEffWeight_Do = 1.;
+		    _eleEffWeight_Id    = 1.; 
+		    _eleEffWeight_Id_Do = 1.; 
+		    _eleEffWeight_Id_Up = 1.; 
+
+		    _eleEffWeight_Reco    = 1.; 
+		    _eleEffWeight_Reco_Do = 1.; 
+		    _eleEffWeight_Reco_Up = 1.; 
+
+		    _eleEffWeight_Trig    = 1.; 
+		    _eleEffWeight_Trig_Do = 1.; 
+		    _eleEffWeight_Trig_Up = 1.; 
+
 		}
 		if (evtPick->passPreselEle) {
 		    int eleInd_ = selector->Electrons.at(0);
-		    _muEffWeight    = 1.;
-		    _muEffWeight_Do = 1.;
-		    _muEffWeight_Up = 1.;
-
-		    
 		    vector<double> eleWeights    = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],1, tree->event_==eventNum);
 		    vector<double> eleWeights_Do = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],0);
 		    vector<double> eleWeights_Up = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],2);
@@ -755,7 +762,21 @@ makeNtuple::makeNtuple(int ac, char** av)
 		    _eleEffWeight_Trig    = eleWeights.at(3);
 		    _eleEffWeight_Trig_Do = eleWeights_Do.at(3);
 		    _eleEffWeight_Trig_Up = eleWeights_Up.at(3);
-            //if(_eleEffWeight_Trig_Up >1.0)cout<<_eleEffWeight_Trig_Up<<endl;
+            //set muon weights to 1 for electron channel
+		    _muEffWeight    = 1.; 
+		    _muEffWeight_Up = 1.; 
+		    _muEffWeight_Do = 1.; 
+		    _muEffWeight_Id    = 1.; 
+		    _muEffWeight_Id_Up = 1.; 
+		    _muEffWeight_Id_Do = 1.; 
+		    
+            _muEffWeight_Iso    = 1.; 
+		    _muEffWeight_Iso_Up = 1.; 
+		    _muEffWeight_Iso_Do = 1.; 
+            
+            _muEffWeight_Trig    = 1.; 
+		    _muEffWeight_Trig_Up = 1.; 
+		    _muEffWeight_Trig_Do = 1.; 
 		}
 	    }
         //https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe

@@ -174,7 +174,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchStatus("L1PreFiringWeight_Up",1);
     }
 
-    //Fliters
+    //Filters
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2
     chain->SetBranchStatus("Flag_goodVertices",1);
     chain->SetBranchAddress("Flag_goodVertices",&Flag_goodVertices_);
     chain->SetBranchStatus("Flag_globalSuperTightHalo2016Filter",1);
@@ -187,12 +188,18 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchAddress("Flag_EcalDeadCellTriggerPrimitiveFilter", &Flag_EcalDeadCellTriggerPrimitiveFilter_);
     chain->SetBranchStatus("Flag_BadPFMuonFilter",1);
     chain->SetBranchAddress("Flag_BadPFMuonFilter",&Flag_BadPFMuonFilter_);
+    chain->SetBranchStatus("Flag_eeBadScFilter",1);
+    chain->SetBranchAddress("Flag_eeBadScFilter", &Flag_eeBadScFilter_);
     if(year =="2017" || year == "2018"){
 	    chain->SetBranchStatus("Flag_ecalBadCalibFilter",1);
 	    chain->SetBranchAddress("Flag_ecalBadCalibFilter",&Flag_ecalBadCalibFilter_);
     }
 
     //High Level Triggers
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgHLTRunIISummary
+    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2016
+    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2017
+    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2018
     std::cout << "Triggers" << std::endl;
     if (year.find("2016")!=std::string::npos){
         //muon

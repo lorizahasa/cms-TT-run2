@@ -77,7 +77,9 @@ void Selector::clear_vectors(){
     PhoRandConeChHadIso_corr.clear();
 }
 //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2016#High_pT_above_120_GeV
+//https://twiki.cern.ch/twiki/bin/viewauth/CMS/SWGuideMuonIdRun2#HighPt_Muon
 //https://twiki.cern.ch/twiki/bin/view/CMS/SWGuideMuonSelection#HighPt_Tracker_Muon
+//https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonReco/src/MuonSelectors.cc#L933-L960
 void Selector::filter_muons(){
     if (tree->event_==printEvent){
 	    cout << "Found Event, Starting Muons" << endl;
@@ -91,7 +93,6 @@ void Selector::filter_muons(){
             (tree->muIsTracker_[m] || tree->muIsGlobal_[m]);
         bool passPromptID = tree->muHighPurity_[m] && (int)tree->muHighPtId_[m]==2;
         //highPtID has IP cuts too:
-        //https://github.com/cms-sw/cmssw/blob/master/DataFormats/MuonReco/src/MuonSelectors.cc#L933-L960
         bool passPrompt = (pt >= 55.0 &&
         		  TMath::Abs(eta) <= 2.4 &&
         		  passPromptID && 

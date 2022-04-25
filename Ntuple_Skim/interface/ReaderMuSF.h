@@ -81,7 +81,6 @@ vector<double> MuonSF::getMuSFs(double pt, double eta, int systLevel, bool print
     isoSF   = getMuSF(isoHist, abs(eta), pt, systLevel);
     trigSF  = getMuTrigSF(pt, abs(eta), systLevel);
     vector<double> muSFs {idSF*isoSF*trigSF, idSF, isoSF, trigSF};
-    print=true;
     if (print){ 
         cout<<"----------------------------"<<endl;
         cout << "Muon Scale Factors: " << endl;

@@ -15,6 +15,7 @@ void EventPick::process_event(EventTree* tree){
     bool passTrigMu  = false;
     bool passTrigEle = false;
     //Check muon and electron triggers
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgHLTRunIISummary
     //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2016
     if (year.find("2016")!=std::string::npos){
         passTrigMu = 
@@ -43,18 +44,20 @@ void EventPick::process_event(EventTree* tree){
             tree->HLT_OldMu100_||
             tree->HLT_TkMu100_;
         passTrigEle = 
-            tree->HLT_Ele35_WPTight_Gsf_ ||
+            tree->HLT_Ele32_WPTight_Gsf_ ||
             tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_||
             tree->HLT_Photon200_ ;
     }
     //Check MET filters    
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2
     bool filters = 
             (tree->Flag_goodVertices_ &&
 		    tree->Flag_globalSuperTightHalo2016Filter_ &&
 		    tree->Flag_HBHENoiseFilter_ &&
 		    tree->Flag_HBHENoiseIsoFilter_ && 
 		    tree->Flag_EcalDeadCellTriggerPrimitiveFilter_ &&
-		    tree->Flag_BadPFMuonFilter_ );
+		    tree->Flag_BadPFMuonFilter_ &&
+		    tree->Flag_eeBadScFilter_ );
     if (year=="2017" || year=="2018"){ 
         filters = filters && tree->Flag_ecalBadCalibFilter_ ;
     }

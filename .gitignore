@@ -1,4 +1,6 @@
 NanoAOD_Gen/Others
+Skim_NanoAOD/*.root
+Ntuple_Skim/*.root
 
 MVA_Ntuple/*.root
 MVA_Ntuple/*/*.root

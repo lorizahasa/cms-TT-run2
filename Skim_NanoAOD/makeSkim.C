@@ -209,7 +209,7 @@ int main(int ac, char** av){
 		if(entry%dumpFreq == 0) {
             //if(entry>1000) break;
             totalTime+= std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count();
-			std::cout<<setw(10)<<100*entry/endEntry<<"%"<<setw(10)<<(int)(totalTime/60)<<"m"<<std::endl;
+			std::cout<<setw(10)<<100*entry/endEntry<<" %"<<setw(10)<<(int)(totalTime/60)<<" m"<<std::endl;
 			startClock = std::chrono::high_resolution_clock::now();			
 		}
 		tree->GetEntry(entry);
