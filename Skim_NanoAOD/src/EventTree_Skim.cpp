@@ -61,8 +61,12 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("Electron_miniPFRelIso_chg",1);
     chain->SetBranchStatus("Electron_sieie",1);
     chain->SetBranchStatus("Electron_cutBased",1); 
+    chain->SetBranchStatus("Electron_mvaFall17V2noIso_WP80",1); 
     chain->SetBranchStatus("Electron_mvaFall17V2noIso_WP90",1); 
     chain->SetBranchStatus("Electron_mvaFall17V2noIso_WPL",1);
+    chain->SetBranchStatus("Electron_mvaFall17V2Iso_WP80",1); 
+    chain->SetBranchStatus("Electron_mvaFall17V2Iso_WP90",1); 
+    chain->SetBranchStatus("Electron_mvaFall17V2Iso_WPL",1);
     chain->SetBranchStatus("Electron_vidNestedWPBitmap",1);
     chain->SetBranchStatus("Electron_photonIdx",1);
 

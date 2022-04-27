@@ -94,11 +94,11 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Electron_miniPFRelIso_all",1);
     chain->SetBranchAddress("Electron_miniPFRelIso_all", &eleMiniPFRelIso_);
 
-    chain->SetBranchStatus("Electron_mvaFall17V2noIso_WP90",1);
-    chain->SetBranchAddress("Electron_mvaFall17V2noIso_WP90", &eleMVAFall17V2noIso_WP90_);
+    chain->SetBranchStatus("Electron_mvaFall17V2Iso_WP80",1);
+    chain->SetBranchAddress("Electron_mvaFall17V2Iso_WP80", &eleMVAFall17V2Iso_WP80_);
 
-    chain->SetBranchStatus("Electron_mvaFall17V2noIso_WPL",1);
-    chain->SetBranchAddress("Electron_mvaFall17V2noIso_WPL", &eleMVAFall17V2noIso_WPL_);
+    chain->SetBranchStatus("Electron_mvaFall17V2Iso_WPL",1);
+    chain->SetBranchAddress("Electron_mvaFall17V2Iso_WPL", &eleMVAFall17V2Iso_WPL_);
 
 
     // muons
@@ -261,10 +261,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Photon_electronVeto",1);
     chain->SetBranchAddress("Photon_electronVeto", &phoEleVeto_);
 	
-    chain->SetBranchStatus("Photon_mvaID",1);
-    chain->SetBranchAddress("Photon_mvaID", &phoMVAId_);
-	chain->SetBranchStatus("Photon_mvaID_Fall17V1p1",1);
-	chain->SetBranchAddress("Photon_mvaID_Fall17V1p1", &phoMVAId17V1_);
+    chain->SetBranchStatus("Photon_mvaID_WP80",1);
+    chain->SetBranchAddress("Photon_mvaID_WP80", &phoMVAId_WP80_);
 
     // Gen Partons
     if (!isData_){

@@ -123,22 +123,19 @@ void Selector::filter_electrons(){
         double SCeta = eta + tree->eleDeltaEtaSC_[eleInd];
         double absSCEta = TMath::Abs(SCeta);
         double pt = tree->elePt_[eleInd];
-        double eleMiniIso = tree->eleMiniPFRelIso_[eleInd];
         // make sure it doesn't fall within the gap
         bool passEtaEBEEGap = (absSCEta < 1.4442) || (absSCEta > 1.566);
 
-        bool passTightID = tree->eleMVAFall17V2noIso_WP90_[eleInd];
-        bool passVetoID  = tree->eleMVAFall17V2noIso_WPL_[eleInd]; 
+        bool passTightID = tree->eleMVAFall17V2Iso_WP80_[eleInd];
+        bool passVetoID  = tree->eleMVAFall17V2Iso_WPL_[eleInd]; 
 
         bool eleSel = (passEtaEBEEGap && 
                        absEta <= 2.2 &&
                        pt >= 50.0 &&
-                       eleMiniIso <= 0.1 &&
                        passTightID);
         bool looseSel = (passEtaEBEEGap && 
                          absEta <= 2.2 &&
                          pt >= 35.0 &&
-                         eleMiniIso <= 0.4 &&
                          passVetoID &&
                          !eleSel);
         if(eleSel) Electrons.push_back(eleInd);
@@ -168,8 +165,7 @@ void Selector::filter_photons(){
         for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
 	    if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < 0.4) passDR_lep_pho = false;
         }
-        //looseID >=-0.02, tightID >=0.42
-        bool passPhoId      = tree->phoMVAId_[phoInd] >=-0.02;
+        bool passPhoId      = tree->phoMVAId_WP80_[phoInd];//tight 
         bool hasPixelSeed   = tree->phoPixelSeed_[phoInd];
         bool phoEleVeto     = tree->phoEleVeto_[phoInd];
         bool phoPresel = (et >= 20.0 &&                          

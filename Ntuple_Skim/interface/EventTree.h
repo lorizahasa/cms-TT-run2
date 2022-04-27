@@ -84,8 +84,8 @@ class EventTree{
     Int_t           eleCharge_[25];
     Float_t         eleMass_[25];
     Float_t         eleMiniPFRelIso_[25];
-    Bool_t          eleMVAFall17V2noIso_WP90_[25];
-    Bool_t          eleMVAFall17V2noIso_WPL_[25];
+    Bool_t          eleMVAFall17V2Iso_WP80_[25];
+    Bool_t          eleMVAFall17V2Iso_WPL_[25];
 
     // Photon
     UInt_t          nPho_;
@@ -100,8 +100,7 @@ class EventTree{
     Int_t           phoVidWPBitmap_[15];
     Bool_t           phoPixelSeed_[15];
     Bool_t           phoEleVeto_[15];
-    Float_t           phoMVAId_[15];
-    Float_t           phoMVAId17V1_[15];
+    Bool_t           phoMVAId_WP80_[15];
 
     Float_t         phoR9_[15];
     Float_t         phoSIEIE_[15];

@@ -238,9 +238,13 @@ class makeNtuple {
     std::vector<float>    _phoEffWeight_Id_Up;
     std::vector<float>    _phoEffWeight_Id_Do;
 
-    std::vector<float>    _phoEffWeight_eVeto;
-    std::vector<float>    _phoEffWeight_eVeto_Up;
-    std::vector<float>    _phoEffWeight_eVeto_Do;
+    std::vector<float>    _phoEffWeight_PS;
+    std::vector<float>    _phoEffWeight_PS_Up;
+    std::vector<float>    _phoEffWeight_PS_Do;
+
+    std::vector<float>    _phoEffWeight_CS;
+    std::vector<float>    _phoEffWeight_CS_Up;
+    std::vector<float>    _phoEffWeight_CS_Do;
 
     std::vector<float>   _dRPhotonJet;
     std::vector<float>   _dRPhotonLepton;
@@ -398,7 +402,8 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Weight_ele_trig", &_eleEffWeight_Trig );
     outputTree->Branch("Weight_pho"     , &_phoEffWeight );
     outputTree->Branch("Weight_pho_id"  , &_phoEffWeight_Id );
-    outputTree->Branch("Weight_pho_e_veto", &_phoEffWeight_eVeto );
+    outputTree->Branch("Weight_pho_ps", &_phoEffWeight_PS );
+    outputTree->Branch("Weight_pho_cs", &_phoEffWeight_CS );
     outputTree->Branch("Weight_jer" , &_jerWeight);
     outputTree->Branch("Weight_jes" , &_jesWeight);
     //Weights: up/down
@@ -431,9 +436,11 @@ void makeNtuple::InitBranches(){
 	    outputTree->Branch("Weight_pho_down"    , &_phoEffWeight_Do );
 	    outputTree->Branch("Weight_pho_id_up"   , &_phoEffWeight_Id_Up );
 	    outputTree->Branch("Weight_pho_id_down" , &_phoEffWeight_Id_Do );
-	    outputTree->Branch("Weight_pho_e_veto_up", &_phoEffWeight_eVeto_Up);
-	    outputTree->Branch("Weight_pho_e_veto_down", &_phoEffWeight_eVeto_Do);
-	    outputTree->Branch("Weight_q2"  , &_q2weight_nominal );
+	    outputTree->Branch("Weight_pho_ps_up"   , &_phoEffWeight_PS_Up);
+	    outputTree->Branch("Weight_pho_ps_down" , &_phoEffWeight_PS_Do);
+	    outputTree->Branch("Weight_pho_cs_up"   , &_phoEffWeight_CS_Up);
+	    outputTree->Branch("Weight_pho_cs_down" , &_phoEffWeight_CS_Do);
+	    outputTree->Branch("Weight_q2"          , &_q2weight_nominal );
 	    outputTree->Branch("Weight_q2_up"       , &_q2weight_Up );
 	    outputTree->Branch("Weight_q2_down"     , &_q2weight_Do );
 	    outputTree->Branch("Weight_gen"         , &_genWeight );
@@ -671,9 +678,12 @@ void makeNtuple::InitVariables()
     _phoEffWeight_Id.clear();
     _phoEffWeight_Id_Do.clear();
     _phoEffWeight_Id_Up.clear();
-    _phoEffWeight_eVeto.clear();
-    _phoEffWeight_eVeto_Do.clear();
-    _phoEffWeight_eVeto_Up.clear();
+    _phoEffWeight_PS.clear();
+    _phoEffWeight_PS_Do.clear();
+    _phoEffWeight_PS_Up.clear();
+    _phoEffWeight_CS.clear();
+    _phoEffWeight_CS_Do.clear();
+    _phoEffWeight_CS_Up.clear();
 
     _btagWeight_1a = 1.;
     _btagWeight_1a_b_Up = 1.;

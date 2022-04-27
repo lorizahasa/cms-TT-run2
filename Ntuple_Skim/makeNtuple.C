@@ -430,17 +430,17 @@ makeNtuple::makeNtuple(int ac, char** av)
     //https://gitlab.cern.ch/cms-muonPOG/muonefficiencies/-/tree/master/Run2/UL
     //ID files
     std::map<std::string, string> muIDFiles;
-    string common = "Efficiencies_muon_generalTracks_Z_"; 
-    muIDFiles["2016PreVFP"]  = "weight/MuSF/"+common+"Run2016_UL_HIPM_ID.root";
-    muIDFiles["2016PostVFP"] = "weight/MuSF/"+common+"Run2016_UL_ID.root";
-    muIDFiles["2017"]        = "weight/MuSF/"+common+"Run2017_UL_ID.root";
-    muIDFiles["2018"]        = "weight/MuSF/"+common+"Run2018_UL_ID.root";
+    string common = "weight/MuSF/Efficiencies_muon_generalTracks_Z_"; 
+    muIDFiles["2016PreVFP"]  = common+"Run2016_UL_HIPM_ID.root";
+    muIDFiles["2016PostVFP"] = common+"Run2016_UL_ID.root";
+    muIDFiles["2017"]        = common+"Run2017_UL_ID.root";
+    muIDFiles["2018"]        = common+"Run2018_UL_ID.root";
     //Iso files
     std::map<std::string, string> muIsoFiles;
-    muIsoFiles["2016PreVFP"]  = "weight/MuSF/"+common+"Run2016_UL_HIPM_ISO.root";
-    muIsoFiles["2016PostVFP"] = "weight/MuSF/"+common+"Run2016_UL_ISO.root";
-    muIsoFiles["2017"]        = "weight/MuSF/"+common+"Run2017_UL_ISO.root";
-    muIsoFiles["2018"]        = "weight/MuSF/"+common+"Run2018_UL_ISO.root";
+    muIsoFiles["2016PreVFP"]  = common+"Run2016_UL_HIPM_ISO.root";
+    muIsoFiles["2016PostVFP"] = common+"Run2016_UL_ISO.root";
+    muIsoFiles["2017"]        = common+"Run2017_UL_ISO.root";
+    muIsoFiles["2018"]        = common+"Run2018_UL_ISO.root";
     //Trig file
     string muTrigFile = "weight/MuSF/OutFile-v20190510-Combined-Run2016BtoH_Run2017BtoF_Run2018AtoD-M120to10000.root";
     //Name of the histograms
@@ -459,41 +459,58 @@ makeNtuple::makeNtuple(int ac, char** av)
     //--------------------------
     //https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018
     //ID files
-    std::map<std::string, string> eleRecoFiles;
-    string comEle = "egammaEffi_ptAbove20.txt_EGM2D_"; 
-    eleRecoFiles["2016PreVFP"]  = "weight/EleSF/"+comEle+"UL2016preVFP.root"; 
-    eleRecoFiles["2016PostVFP"] = "weight/EleSF/"+comEle+"UL2016postVFP.root"; 
-    eleRecoFiles["2017"]        = "weight/EleSF/"+comEle+"UL2017.root"; 
-    eleRecoFiles["2018"]        = "weight/EleSF/"+comEle+"UL2018.root"; 
+    std::map<std::string, string> eIDFiles;
+    string comEleID = "weight/EleSF/egammaEffi.txt_";
+    eIDFiles["2016PreVFP"]  = comEleID+"Ele_wp80iso_preVFP_EGM2D.root"; 
+    eIDFiles["2016PostVFP"] = comEleID+"Ele_wp80iso_postVFP_EGM2D.root"; 
+    eIDFiles["2017"]        = comEleID+"EGM2D_MVA80iso_UL17.root"; 
+    eIDFiles["2018"]        = comEleID+"Ele_wp80iso_EGM2D.root"; 
+    //Reco files
+    std::map<std::string, string> eRecoFiles;
+    string comEleReco = "weight/EleSF/egammaEffi_ptAbove20.txt_EGM2D_"; 
+    eRecoFiles["2016PreVFP"]  = comEleReco+"UL2016preVFP.root"; 
+    eRecoFiles["2016PostVFP"] = comEleReco+"UL2016postVFP.root"; 
+    eRecoFiles["2017"]        = comEleReco+"UL2017.root"; 
+    eRecoFiles["2018"]        = comEleReco+"UL2018.root"; 
+    //Trig files
+    //These triggers are for legacy rereco. Need to evaluate them for UL using
+    //https://hypernews.cern.ch/HyperNews/CMS/get/egamma-hlt/289.html
+    std::map<std::string, string> eTrigFiles;
+    eTrigFiles["2016PreVFP"]  = "weight/EleSF/electron_16.root";
+    eTrigFiles["2016PostVFP"] = "weight/EleSF/electron_16.root";
+    eTrigFiles["2017"]        = "weight/EleSF/electron_17.root";
+    eTrigFiles["2018"]        = "weight/EleSF/electron_18.root";
+    //Initiate the electron SF reader
+	eleSF = new ElectronSF(eIDFiles[year], eRecoFiles[year], eTrigFiles[year]);
 
-    if (year=="2016"){
-	eleSF = new ElectronSF("weight/EleSF/EGM2D_MiniIso_SF_2016.root",
+    //--------------------------
+    //Photon SFs
+    //--------------------------
+    //https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018
+    //ID files
+    std::map<std::string, string> phoIDFiles;
+    string comPhoID = "weight/PhoSF/egammaEffi.txt_EGM2D_";
+    phoIDFiles["2016PreVFP"]  = comPhoID+"Pho_wp80_UL16.root";
+    phoIDFiles["2016PostVFP"] = comPhoID+"Pho_MVA80_UL16_postVFP.root";
+    phoIDFiles["2017"]        = comPhoID+"PHO_MVA80_UL17.root";
+    phoIDFiles["2018"]        = comPhoID+"Pho_wp80.root_UL18.root";
+    //Electron veto (reject photon which has pixel seed)
+    std::map<std::string, string> phoPSFiles;
+    string comPhoPS = "weight/PhoSF/HasPix_SummaryPlot_";
+    phoPSFiles["2016PreVFP"]  = comPhoPS+"UL16_preVFP.root";
+    phoPSFiles["2016PostVFP"] = comPhoPS+"UL16_postVFP.root";
+    phoPSFiles["2017"]        = comPhoPS+"UL17.root"; 
+    phoPSFiles["2018"]        = comPhoPS+"UL18.root"; 
+    //Electron veto (conversion safe EV)
+    std::map<std::string, string> phoCSFiles;
+    string comPhoCS = "weight/PhoSF/CSEV_SummaryPlot_";
+    phoCSFiles["2016PreVFP"]  = comPhoCS+"UL16_preVFP.root";
+    phoCSFiles["2016PostVFP"] = comPhoCS+"UL16_postVFP.root";
+    phoCSFiles["2017"]        = comPhoCS+"UL17.root"; 
+    phoCSFiles["2018"]        = comPhoCS+"UL18.root"; 
+    //Initiate the phton SF reader
+	phoSF = new PhotonSF(phoIDFiles[year], phoPSFiles[year], phoCSFiles[year]);
 
-			       eleRecoFiles[year],
-			       "weight/EleSF/electron_16.root");
-	
-	phoSF = new PhotonSF("weight/PhoSF/Fall17V2_2016_MVAwp90_photons.root",
-			     "weight/PhoSF/ScalingFactors_80X_Summer16.root",
-			     2016);
-    } else if (year=="2017") {
-	eleSF = new ElectronSF("weight/EleSF/EGM2D_MiniIso_SF_2017.root",
-			       eleRecoFiles[year],
-			       "weight/EleSF/electron_17.root");
-	
-	phoSF = new PhotonSF("weight/PhoSF/2017_PhotonsMVAwp90.root",
-			     "weight/PhoSF/PixelSeed_ScaleFactors_2017.root",
-			     2017);
-	
-    } else if (year=="2018") {
-	eleSF = new ElectronSF("weight/EleSF/EGM2D_MiniIso_SF_2018.root",
-			       eleRecoFiles[year],
-			       "weight/EleSF/electron_18.root");
-
-	phoSF = new PhotonSF("weight/PhoSF/2018_PhotonsMVAwp90.root",
-			     "weight/PhoSF/HasPix_2018.root",
-			     2018);
-
-    }
 
     int dumpFreq = 1;
     if (nEntr >50)     { dumpFreq = 5; }
@@ -1041,9 +1058,13 @@ void makeNtuple::FillEvent(std::string year)
             _phoEffWeight_Id_Do.push_back(phoWeights_Do.at(1));
             _phoEffWeight_Id_Up.push_back(phoWeights_Up.at(1));
         
-            _phoEffWeight_eVeto.push_back(phoWeights.at(2));
-            _phoEffWeight_eVeto_Do.push_back(phoWeights_Do.at(2));
-            _phoEffWeight_eVeto_Up.push_back(phoWeights_Up.at(2));
+            _phoEffWeight_PS.push_back(phoWeights.at(2));
+            _phoEffWeight_PS_Do.push_back(phoWeights_Do.at(2));
+            _phoEffWeight_PS_Up.push_back(phoWeights_Up.at(2));
+
+            _phoEffWeight_CS.push_back(phoWeights.at(3));
+            _phoEffWeight_CS_Do.push_back(phoWeights_Do.at(3));
+            _phoEffWeight_CS_Up.push_back(phoWeights_Up.at(3));
         }
         _phoMassLepGamma.push_back( (phoVector+lepVector).M() );
 
