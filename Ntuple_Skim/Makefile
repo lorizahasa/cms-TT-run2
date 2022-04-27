@@ -35,8 +35,8 @@ src/Selector.o: src/EventTree.o src/Selector.cpp interface/Selector.h
 src/EventPick.o: src/Selector.o src/EventPick.cpp interface/EventPick.h
 	g++ -o src/EventPick.o -c -I `root-config --incdir` -std=c++17 -D STANDALONE src/EventPick.cpp 
 
-makeNtuple: src/Selector.o src/EventPick.o src/EventTree.o makeNtuple.C src/OverlapRemove.cpp interface/makeNtuple.h src/ReaderPileupSF.cpp interface/ReaderPileupSF.h src/BTagCalibrationStandalone.o interface/ReaderLumiSF.h src/JECvariation.o src/TopEventCombinatorics.cpp interface/ReaderMuSF.h interface/ReaderEleSF.h interface/ReaderPhoSF.h 
-	g++ -o makeNtuple `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE makeNtuple.C src/EventTree.o src/EventPick.o src/ParsePhotonID.cpp src/Selector.o src/OverlapRemove.cpp src/ReaderPileupSF.cpp src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/JetResolution.cc src/JetResolutionObject.cc src/METzCalculator.cpp src/TopEventCombinatorics.cpp 
+makeNtuple: src/Selector.o src/EventPick.o src/EventTree.o makeNtuple.C src/OverlapRemove.cpp interface/makeNtuple.h interface/ReaderPileupSF.h src/BTagCalibrationStandalone.o interface/ReaderLumiSF.h src/JECvariation.o src/TopEventCombinatorics.cpp interface/ReaderMuSF.h interface/ReaderEleSF.h interface/ReaderPhoSF.h 
+	g++ -o makeNtuple `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE makeNtuple.C src/EventTree.o src/EventPick.o src/ParsePhotonID.cpp src/Selector.o src/OverlapRemove.cpp src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/JetResolution.cc src/JetResolutionObject.cc src/METzCalculator.cpp src/TopEventCombinatorics.cpp 
 
 clean:
 	rm makeNtuple src/*.o 

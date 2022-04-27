@@ -145,24 +145,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 	}
     }
     
-    std::string PUfilename; 
-    std::string PUfilename_up;
-    std::string PUfilename_down;
-    if (year=="2016"){
-	PUfilename      = "weight/PileupSF/Data_2016BCDGH_Pileup.root";
-	PUfilename_up   = "weight/PileupSF/Data_2016BCDGH_Pileup_scaledUp.root";
-	PUfilename_down = "weight/PileupSF/Data_2016BCDGH_Pileup_scaledDown.root";
-    }
-    if (year=="2017"){
-	PUfilename      = "weight/PileupSF/Data_2017BCDEF_Pileup.root";
-	PUfilename_up   = "weight/PileupSF/Data_2017BCDEF_Pileup_scaledUp.root";
-	PUfilename_down = "weight/PileupSF/Data_2017BCDEF_Pileup_scaledDown.root";
-    }
-    if (year=="2018"){
-	PUfilename      = "weight/PileupSF/Data_2018ABCD_Pileup.root";
-	PUfilename_up   = "weight/PileupSF/Data_2018ABCD_Pileup_scaledUp.root";
-	PUfilename_down = "weight/PileupSF/Data_2018ABCD_Pileup_scaledDown.root";
-    }
     if (eventNum > -1) {
 	string cut = "event=="+eventStr;
 	cout << "Selecting only entries with " << cut << endl;
@@ -351,20 +333,11 @@ makeNtuple::makeNtuple(int ac, char** av)
     cout << outputDirectory<<"/"<<outputFileName << endl;
     TFile *outputFile = new TFile(outputFileName.c_str(),"recreate");
     outputTree = new TTree("AnalysisTree","AnalysisTree");
-    //outputTree->SetAutoFlush(1000000000);
-    //outputTree->SetAutoSave(10000000000);//Save to disk after 1000 GB
-
     cout << "HERE" << endl;
-    PUReweight* PUweighter = new PUReweight(ac-4, av+4, PUfilename);
-    PUReweight* PUweighterUp = new PUReweight(ac-4, av+4, PUfilename_up);
-    PUReweight* PUweighterDown = new PUReweight(ac-4, av+4, PUfilename_down);
-    cout << "DONE" << endl;
     tree->GetEntry(0);
-        
     std::cout << "isMC: " << isMC << endl;
 
     InitBranches();
-
     JECvariation* jecvar;
     if (isMC && jecvar012_g!=1) {
 	cout << "Applying JEC uncertainty variations : " << JECsystLevel << endl;
@@ -402,14 +375,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 	nMC_total=1;
     }
     _lumiWeight = getEvtWeight(sampleType, std::stoi(year), luminosity, nMC_total);
-    _PUweight       = 1.;
-    _muEffWeight    = 1.;
-    _muEffWeight_Do = 1.;
-    _muEffWeight_Up = 1.;
-    _eleEffWeight    = 1.;
-    _eleEffWeight_Up = 1.;
-    _eleEffWeight_Do = 1.;
-
     Long64_t nEntr = tree->GetEntries();
     bool saveAllEntries = false;
     if (sampleType=="Test") {
@@ -423,6 +388,28 @@ makeNtuple::makeNtuple(int ac, char** av)
 	saveAllEntries = true;
     }
     nEntr = 100000;
+
+    //--------------------------
+    //Pileup SFs
+    //--------------------------
+    //https://github.com/cms-nanoAOD/nanoAOD-tools/tree/master/python/postprocessing/data/pileup
+    //PV data files
+    std::map<std::string, string> puDataFiles;
+    string comPuData = "weight/PileupSF/PileupHistogram-";
+    puDataFiles["2016PreVFP"]  = comPuData+"UL2016-100bins_withVar.root"; 
+    puDataFiles["2016PostVFP"] = comPuData+"UL2016-100bins_withVar.root";
+    puDataFiles["2017"]        = comPuData+"UL2017-100bins_withVar.root";
+    puDataFiles["2018"]        = comPuData+"UL2018-100bins_withVar.root";
+    //PV MC files
+    std::map<std::string, string> puMCFiles;
+    string comPuMC = "weight/PileupSF/mcPileup";
+    puMCFiles["2016PreVFP"]  = comPuMC+"UL2016.root";
+    puMCFiles["2016PostVFP"] = comPuMC+"UL2016.root";
+    puMCFiles["2017"]        = comPuMC+"UL2017.root";
+    puMCFiles["2018"]        = comPuMC+"UL2018.root";
+    //Initiate the pileup SF reader
+	puSF = new PileupSF(puDataFiles[year], puMCFiles[year]);
+
     //--------------------------
     //Muon SFs
     //--------------------------
@@ -430,17 +417,17 @@ makeNtuple::makeNtuple(int ac, char** av)
     //https://gitlab.cern.ch/cms-muonPOG/muonefficiencies/-/tree/master/Run2/UL
     //ID files
     std::map<std::string, string> muIDFiles;
-    string common = "weight/MuSF/Efficiencies_muon_generalTracks_Z_"; 
-    muIDFiles["2016PreVFP"]  = common+"Run2016_UL_HIPM_ID.root";
-    muIDFiles["2016PostVFP"] = common+"Run2016_UL_ID.root";
-    muIDFiles["2017"]        = common+"Run2017_UL_ID.root";
-    muIDFiles["2018"]        = common+"Run2018_UL_ID.root";
+    string comMu = "weight/MuSF/Efficiencies_muon_generalTracks_Z_"; 
+    muIDFiles["2016PreVFP"]  = comMu+"Run2016_UL_HIPM_ID.root";
+    muIDFiles["2016PostVFP"] = comMu+"Run2016_UL_ID.root";
+    muIDFiles["2017"]        = comMu+"Run2017_UL_ID.root";
+    muIDFiles["2018"]        = comMu+"Run2018_UL_ID.root";
     //Iso files
     std::map<std::string, string> muIsoFiles;
-    muIsoFiles["2016PreVFP"]  = common+"Run2016_UL_HIPM_ISO.root";
-    muIsoFiles["2016PostVFP"] = common+"Run2016_UL_ISO.root";
-    muIsoFiles["2017"]        = common+"Run2017_UL_ISO.root";
-    muIsoFiles["2018"]        = common+"Run2018_UL_ISO.root";
+    muIsoFiles["2016PreVFP"]  = comMu+"Run2016_UL_HIPM_ISO.root";
+    muIsoFiles["2016PostVFP"] = comMu+"Run2016_UL_ISO.root";
+    muIsoFiles["2017"]        = comMu+"Run2017_UL_ISO.root";
+    muIsoFiles["2018"]        = comMu+"Run2018_UL_ISO.root";
     //Trig file
     string muTrigFile = "weight/MuSF/OutFile-v20190510-Combined-Run2016BtoH_Run2017BtoF_Run2018AtoD-M120to10000.root";
     //Name of the histograms
@@ -695,7 +682,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 
 	selector->clear_vectors();
 
-	evtPick->process_event(tree, selector, _PUweight);
+	evtPick->process_event(tree, selector);
 
         if (tree->event_==eventNum){
             cout << "EventSelection:" << endl;
@@ -708,9 +695,11 @@ makeNtuple::makeNtuple(int ac, char** av)
 	    FillEvent(year); //HEM test
 
 	    if(isMC) {
-		_PUweight    = PUweighter->getWeight(tree->nPUTrue_);
-		_PUweight_Up = PUweighterUp->getWeight(tree->nPUTrue_);
-		_PUweight_Do = PUweighterDown->getWeight(tree->nPUTrue_);
+            vector<double> puWeights; 
+            puWeights = puSF->getPuSFs(tree->nPUTrue_, tree->event_==eventNum);
+            _PUweight    = puWeights.at(0); 
+            _PUweight_Do = puWeights.at(1); 
+            _PUweight_Up = puWeights.at(2);
 
 		_btagWeight_1a      = getBtagSF_1a("central", reader, tree->event_==eventNum);
 		_btagWeight_1a_b_Up = getBtagSF_1a("b_up",    reader);
@@ -740,22 +729,6 @@ makeNtuple::makeNtuple(int ac, char** av)
             _muEffWeight_Trig    = muWeights.at(3);
 		    _muEffWeight_Trig_Up = muWeights_Up.at(3);
 		    _muEffWeight_Trig_Do = muWeights_Do.at(3);
-            //set electron weights to 1 for muon channel
-		    _eleEffWeight    = 1.;
-		    _eleEffWeight_Up = 1.;
-		    _eleEffWeight_Do = 1.;
-		    _eleEffWeight_Id    = 1.; 
-		    _eleEffWeight_Id_Do = 1.; 
-		    _eleEffWeight_Id_Up = 1.; 
-
-		    _eleEffWeight_Reco    = 1.; 
-		    _eleEffWeight_Reco_Do = 1.; 
-		    _eleEffWeight_Reco_Up = 1.; 
-
-		    _eleEffWeight_Trig    = 1.; 
-		    _eleEffWeight_Trig_Do = 1.; 
-		    _eleEffWeight_Trig_Up = 1.; 
-
 		}
 		if (evtPick->passPreselEle) {
 		    int eleInd_ = selector->Electrons.at(0);
@@ -779,21 +752,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 		    _eleEffWeight_Trig    = eleWeights.at(3);
 		    _eleEffWeight_Trig_Do = eleWeights_Do.at(3);
 		    _eleEffWeight_Trig_Up = eleWeights_Up.at(3);
-            //set muon weights to 1 for electron channel
-		    _muEffWeight    = 1.; 
-		    _muEffWeight_Up = 1.; 
-		    _muEffWeight_Do = 1.; 
-		    _muEffWeight_Id    = 1.; 
-		    _muEffWeight_Id_Up = 1.; 
-		    _muEffWeight_Id_Do = 1.; 
-		    
-            _muEffWeight_Iso    = 1.; 
-		    _muEffWeight_Iso_Up = 1.; 
-		    _muEffWeight_Iso_Do = 1.; 
-            
-            _muEffWeight_Trig    = 1.; 
-		    _muEffWeight_Trig_Up = 1.; 
-		    _muEffWeight_Trig_Do = 1.; 
 		}
 	    }
         //https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
@@ -801,11 +759,6 @@ makeNtuple::makeNtuple(int ac, char** av)
             _prefireSF_Do   = tree->prefireDn_;
             _prefireSF      = tree->prefireNom_; 
             _prefireSF_Up   = tree->prefireUp_; 
-	    }
-	    else{
-            _prefireSF_Do = 1.;
-            _prefireSF = 1;
-            _prefireSF_Up = 1.;
 	    }
 
 	    outputTree->Fill();
@@ -1400,15 +1353,6 @@ void makeNtuple::FillEvent(std::string year)
 	_pdfuncer = sqrt(pdfVariance/_pdfSystWeight.size())/pdfMean;
 	_pdfweight_Up = (1. + _pdfuncer);
 	_pdfweight_Do = (1. - _pdfuncer);
-
-	_ISRweight_Do = 1.;
-	_ISRweight    = 1.;
-	_ISRweight_Up = 1.;
-
-	_FSRweight_Do = 1.;
-	_FSRweight    = 1.;
-	_FSRweight_Do = 1.;
-	
 	if (tree->nPSWeight_==4){
             if (tree->genWeight_ != 0){
                 double scaleWeight=tree->PSWeight_[4];

@@ -60,6 +60,5 @@ vector<double> ElectronSF::getEleSFs(double pt, double eta, int systLevel, bool 
         cout << "    Trig = " << trigSF << endl;
         cout << "    Total= " << idSF*recoSF*trigSF << endl;
     }
-    if(recoSF>10){cout<<"laad"<<endl;}
     return eleSFs;
 }

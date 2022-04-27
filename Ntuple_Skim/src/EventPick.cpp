@@ -26,7 +26,7 @@ EventPick::EventPick(std::string titleIn){
 EventPick::~EventPick(){
 }
 
-void EventPick::process_event(EventTree* tree, Selector* selector, double weight){
+void EventPick::process_event(EventTree* tree, Selector* selector){
     passPreselMu  = true;
     passPreselEle = true;
 	selector->process_objects(tree);

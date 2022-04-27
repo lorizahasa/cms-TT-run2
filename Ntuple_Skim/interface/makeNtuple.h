@@ -80,6 +80,7 @@ class makeNtuple {
     bool applypdfweight;
     bool applyqsquare;
 
+    PileupSF* puSF;
     MuonSF* muSF;
     ElectronSF* eleSF;
     PhotonSF* phoSF;
@@ -658,9 +659,11 @@ void makeNtuple::InitVariables()
     _q2weight_Up = 1.;
     _q2weight_Do = 1.;
 
+    _ISRweight = 1.;
     _ISRweight_Up = 1.;
     _ISRweight_Do = 1.;
 
+    _FSRweight    = 1.;
     _FSRweight_Up = 1.;
     _FSRweight_Do = 1.;
 
@@ -668,9 +671,41 @@ void makeNtuple::InitVariables()
     _eleEffWeight_Do = 1.;
     _eleEffWeight_Up = 1.;
 
+    _eleEffWeight_Trig    = 1.;
+    _eleEffWeight_Trig_Do = 1.;
+    _eleEffWeight_Trig_Up = 1.;
+
+    _eleEffWeight_Id    = 1.;
+    _eleEffWeight_Id_Do = 1.;
+    _eleEffWeight_Id_Up = 1.;
+
+    _eleEffWeight_Reco    = 1.;
+    _eleEffWeight_Reco_Do = 1.;
+    _eleEffWeight_Reco_Up = 1.;
+
     _muEffWeight    = 1.;
     _muEffWeight_Do = 1.;
     _muEffWeight_Up = 1.;
+
+    _muEffWeight_Id    = 1.;
+    _muEffWeight_Id_Do = 1.;
+    _muEffWeight_Id_Up = 1.;
+
+    _muEffWeight_Iso    = 1.;
+    _muEffWeight_Iso_Do = 1.;
+    _muEffWeight_Iso_Up = 1.;
+
+    _muEffWeight_Trig    = 1.;
+    _muEffWeight_Trig_Do = 1.;
+    _muEffWeight_Trig_Up = 1.;
+
+    _PUweight = 1;
+    _PUweight_Up = 1;
+    _PUweight_Do = 1;
+
+    _prefireSF = 1;
+    _prefireSF_Up = 1;
+    _prefireSF_Do = 1;
 
     _phoEffWeight.clear();
     _phoEffWeight_Do.clear();
