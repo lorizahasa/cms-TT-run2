@@ -23,7 +23,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 	std::cout << "usage: ./makeNtuple year sampleName outputFileDir inputFile[s]" << std::endl;
 	return;
     }
-
     /*
     printf("Git Commit Number: %s\n", VERSION);
     printf("Git Commit Time: %s\n", COMMITTIME);
@@ -150,6 +149,136 @@ makeNtuple::makeNtuple(int ac, char** av)
 	cout << "Selecting only entries with " << cut << endl;
 	tree->chain = (TChain*) tree->chain->CopyTree(cut.c_str());
     }
+    //--------------------------
+    //Pileup SFs
+    //--------------------------
+    //https://github.com/cms-nanoAOD/nanoAOD-tools/tree/master/python/postprocessing/data/pileup
+    //PV data files
+    std::map<std::string, string> puDataFiles;
+    string comPuData = "weight/PileupSF/PileupHistogram-";
+    puDataFiles["2016PreVFP"]  = comPuData+"UL2016-100bins_withVar.root"; 
+    puDataFiles["2016PostVFP"] = comPuData+"UL2016-100bins_withVar.root";
+    puDataFiles["2017"]        = comPuData+"UL2017-100bins_withVar.root";
+    puDataFiles["2018"]        = comPuData+"UL2018-100bins_withVar.root";
+    //PV MC files
+    std::map<std::string, string> puMCFiles;
+    string comPuMC = "weight/PileupSF/mcPileup";
+    puMCFiles["2016PreVFP"]  = comPuMC+"UL2016.root";
+    puMCFiles["2016PostVFP"] = comPuMC+"UL2016.root";
+    puMCFiles["2017"]        = comPuMC+"UL2017.root";
+    puMCFiles["2018"]        = comPuMC+"UL2018.root";
+    //Initiate the pileup SF reader
+	puSF = new PileupSF(puDataFiles[year], puMCFiles[year]);
+
+    //--------------------------
+    //Muon SFs
+    //--------------------------
+    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2016#High_pT_above_120_GeV
+    //https://gitlab.cern.ch/cms-muonPOG/muonefficiencies/-/tree/master/Run2/UL
+    //ID files
+    std::map<std::string, string> muIDFiles;
+    string comMu = "weight/MuSF/Efficiencies_muon_generalTracks_Z_"; 
+    muIDFiles["2016PreVFP"]  = comMu+"Run2016_UL_HIPM_ID.root";
+    muIDFiles["2016PostVFP"] = comMu+"Run2016_UL_ID.root";
+    muIDFiles["2017"]        = comMu+"Run2017_UL_ID.root";
+    muIDFiles["2018"]        = comMu+"Run2018_UL_ID.root";
+    //Iso files
+    std::map<std::string, string> muIsoFiles;
+    muIsoFiles["2016PreVFP"]  = comMu+"Run2016_UL_HIPM_ISO.root";
+    muIsoFiles["2016PostVFP"] = comMu+"Run2016_UL_ISO.root";
+    muIsoFiles["2017"]        = comMu+"Run2017_UL_ISO.root";
+    muIsoFiles["2018"]        = comMu+"Run2018_UL_ISO.root";
+    //Trig file
+    string muTrigFile = "weight/MuSF/OutFile-v20190510-Combined-Run2016BtoH_Run2017BtoF_Run2018AtoD-M120to10000.root";
+    //Name of the histograms
+    string muIDHist     = "NUM_HighPtID_DEN_TrackerMuons_abseta_pt";
+    string muIsoHist    = "NUM_TightRelTkIso_DEN_HighPtIDandIPCut_abseta_pt";
+    std::map<std::string, string> muTrigHists;
+    muTrigHists["2016PreVFP"]  = "SF_2016";
+    muTrigHists["2016PostVFP"] = "SF_2016";
+    muTrigHists["2017"]        = "SF_2017";
+    muTrigHists["2018"]        = "SF_2018";
+    //Initiate the muon SF reader
+	muSF = new MuonSF(muIDFiles[year], muIDHist, muIsoFiles[year], muIsoHist, muTrigFile, muTrigHists[year]);
+
+    //--------------------------
+    //Electron SFs
+    //--------------------------
+    //https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018
+    //ID files
+    std::map<std::string, string> eIDFiles;
+    string comEleID = "weight/EleSF/egammaEffi.txt_";
+    eIDFiles["2016PreVFP"]  = comEleID+"Ele_wp80iso_preVFP_EGM2D.root"; 
+    eIDFiles["2016PostVFP"] = comEleID+"Ele_wp80iso_postVFP_EGM2D.root"; 
+    eIDFiles["2017"]        = comEleID+"EGM2D_MVA80iso_UL17.root"; 
+    eIDFiles["2018"]        = comEleID+"Ele_wp80iso_EGM2D.root"; 
+    //Reco files
+    std::map<std::string, string> eRecoFiles;
+    string comEleReco = "weight/EleSF/egammaEffi_ptAbove20.txt_EGM2D_"; 
+    eRecoFiles["2016PreVFP"]  = comEleReco+"UL2016preVFP.root"; 
+    eRecoFiles["2016PostVFP"] = comEleReco+"UL2016postVFP.root"; 
+    eRecoFiles["2017"]        = comEleReco+"UL2017.root"; 
+    eRecoFiles["2018"]        = comEleReco+"UL2018.root"; 
+    //Trig files
+    //These triggers are for legacy rereco. Need to evaluate them for UL using
+    //https://hypernews.cern.ch/HyperNews/CMS/get/egamma-hlt/289.html
+    std::map<std::string, string> eTrigFiles;
+    eTrigFiles["2016PreVFP"]  = "weight/EleSF/electron_16.root";
+    eTrigFiles["2016PostVFP"] = "weight/EleSF/electron_16.root";
+    eTrigFiles["2017"]        = "weight/EleSF/electron_17.root";
+    eTrigFiles["2018"]        = "weight/EleSF/electron_18.root";
+    //Initiate the electron SF reader
+	eleSF = new ElectronSF(eIDFiles[year], eRecoFiles[year], eTrigFiles[year]);
+
+    //--------------------------
+    //Photon SFs
+    //--------------------------
+    //https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018
+    //ID files
+    std::map<std::string, string> phoIDFiles;
+    string comPhoID = "weight/PhoSF/egammaEffi.txt_EGM2D_";
+    phoIDFiles["2016PreVFP"]  = comPhoID+"Pho_wp80_UL16.root";
+    phoIDFiles["2016PostVFP"] = comPhoID+"Pho_MVA80_UL16_postVFP.root";
+    phoIDFiles["2017"]        = comPhoID+"PHO_MVA80_UL17.root";
+    phoIDFiles["2018"]        = comPhoID+"Pho_wp80.root_UL18.root";
+    //Electron veto (reject photon which has pixel seed)
+    std::map<std::string, string> phoPSFiles;
+    string comPhoPS = "weight/PhoSF/HasPix_SummaryPlot_";
+    phoPSFiles["2016PreVFP"]  = comPhoPS+"UL16_preVFP.root";
+    phoPSFiles["2016PostVFP"] = comPhoPS+"UL16_postVFP.root";
+    phoPSFiles["2017"]        = comPhoPS+"UL17.root"; 
+    phoPSFiles["2018"]        = comPhoPS+"UL18.root"; 
+    //Electron veto (conversion safe EV)
+    std::map<std::string, string> phoCSFiles;
+    string comPhoCS = "weight/PhoSF/CSEV_SummaryPlot_";
+    phoCSFiles["2016PreVFP"]  = comPhoCS+"UL16_preVFP.root";
+    phoCSFiles["2016PostVFP"] = comPhoCS+"UL16_postVFP.root";
+    phoCSFiles["2017"]        = comPhoCS+"UL17.root"; 
+    phoCSFiles["2018"]        = comPhoCS+"UL18.root"; 
+    //Initiate the phton SF reader
+	phoSF = new PhotonSF(phoIDFiles[year], phoPSFiles[year], phoCSFiles[year]);
+
+    //--------------------------
+    //BTag SFs
+    //--------------------------
+    //https://twiki.cern.ch/twiki/bin/view/CMS/BtagRecommendation
+    //Hard coded the old calibration BTagCalibrationStandalone file and 
+    //re-formatted the UL csv file: 
+    //https://github.com/indra-ehep/KinFit_Skim/tree/9625ff1697693f4cc71813fe7f6b097643ae5166/CBA_Skim
+    //deepCSV
+    std::map<std::string, string> deepCSVFiles;
+    string comCSV = "weight/BtagSF/wp_deepCSV_106X";
+    deepCSVFiles["2016PreVFP"]  = comCSV+"UL16preVFP_v2_formatted.csv";
+    deepCSVFiles["2016PostVFP"] = comCSV+"UL16postVFP_v3_formatted.csv";
+    deepCSVFiles["2017"]        = comCSV+"UL17_v3_formatted.csv";
+    deepCSVFiles["2018"]        = comCSV+"UL18_v2_formatted.csv";
+    //deepJet
+    std::map<std::string, string> deepJetFiles;
+    string comJet = "weight/BtagSF/wp_deepJet_106X";
+    deepJetFiles["2016PreVFP"]  = comJet+"UL16preVFP_v2_formatted.csv";
+    deepJetFiles["2016PostVFP"] = comJet+"UL16postVFP_v3_formatted.csv";
+    deepJetFiles["2017"]        = comJet+"UL17_v3_formatted.csv";
+    deepJetFiles["2018"]        = comJet+"UL18_v2_formatted.csv";
 
     selector = new Selector();
     evtPick = new EventPick("");
@@ -179,16 +308,12 @@ makeNtuple::makeNtuple(int ac, char** av)
     //	selector->jet_Pt_cut = 40.;
     BTagCalibration calib;
     if (!selector->useDeepCSVbTag){
-	if (year=="2016") calib = BTagCalibration("csvv2", "weight/BtagSF/CSVv2_Moriond17_B_H.csv");
-	if (year=="2017") calib = BTagCalibration("csvv2", "weight/BtagSF/CSVv2_94XSF_V2_B_F.csv");
-	if (year=="2018") calib = BTagCalibration("csvv2", "weight/BtagSF/CSVv2_94XSF_V2_B_F.csv");
-    } else {
-	if (year=="2016"){ calib = BTagCalibration("deepcsv", "weight/BtagSF/DeepCSV_2016LegacySF_V1.csv");}
-	if (year=="2017"){ calib = BTagCalibration("deepcsv", "weight/BtagSF/DeepCSV_94XSF_V3_B_F.csv");}
-	if (year=="2018"){ calib = BTagCalibration("deepcsv", "weight/BtagSF/DeepCSV_102XSF_V1.csv");} //DeepCSV_102XSF_V1.csv
-	loadBtagEff(sampleType,year);
+	    calib = BTagCalibration("csvv2", deepJetFiles[year]); 
+    } 
+    else {
+	    calib = BTagCalibration("csvv2", deepCSVFiles[year]); 
+	    loadBtagEff(sampleType,year);
     }
-
     topEvent.SetBtagThresh(selector->btag_cut_DeepCSV);
     BTagCalibrationReader reader(BTagEntry::OP_MEDIUM,  // operating point
 				 "central",             // central sys type
@@ -388,116 +513,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 	saveAllEntries = true;
     }
     nEntr = 100000;
-
-    //--------------------------
-    //Pileup SFs
-    //--------------------------
-    //https://github.com/cms-nanoAOD/nanoAOD-tools/tree/master/python/postprocessing/data/pileup
-    //PV data files
-    std::map<std::string, string> puDataFiles;
-    string comPuData = "weight/PileupSF/PileupHistogram-";
-    puDataFiles["2016PreVFP"]  = comPuData+"UL2016-100bins_withVar.root"; 
-    puDataFiles["2016PostVFP"] = comPuData+"UL2016-100bins_withVar.root";
-    puDataFiles["2017"]        = comPuData+"UL2017-100bins_withVar.root";
-    puDataFiles["2018"]        = comPuData+"UL2018-100bins_withVar.root";
-    //PV MC files
-    std::map<std::string, string> puMCFiles;
-    string comPuMC = "weight/PileupSF/mcPileup";
-    puMCFiles["2016PreVFP"]  = comPuMC+"UL2016.root";
-    puMCFiles["2016PostVFP"] = comPuMC+"UL2016.root";
-    puMCFiles["2017"]        = comPuMC+"UL2017.root";
-    puMCFiles["2018"]        = comPuMC+"UL2018.root";
-    //Initiate the pileup SF reader
-	puSF = new PileupSF(puDataFiles[year], puMCFiles[year]);
-
-    //--------------------------
-    //Muon SFs
-    //--------------------------
-    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2016#High_pT_above_120_GeV
-    //https://gitlab.cern.ch/cms-muonPOG/muonefficiencies/-/tree/master/Run2/UL
-    //ID files
-    std::map<std::string, string> muIDFiles;
-    string comMu = "weight/MuSF/Efficiencies_muon_generalTracks_Z_"; 
-    muIDFiles["2016PreVFP"]  = comMu+"Run2016_UL_HIPM_ID.root";
-    muIDFiles["2016PostVFP"] = comMu+"Run2016_UL_ID.root";
-    muIDFiles["2017"]        = comMu+"Run2017_UL_ID.root";
-    muIDFiles["2018"]        = comMu+"Run2018_UL_ID.root";
-    //Iso files
-    std::map<std::string, string> muIsoFiles;
-    muIsoFiles["2016PreVFP"]  = comMu+"Run2016_UL_HIPM_ISO.root";
-    muIsoFiles["2016PostVFP"] = comMu+"Run2016_UL_ISO.root";
-    muIsoFiles["2017"]        = comMu+"Run2017_UL_ISO.root";
-    muIsoFiles["2018"]        = comMu+"Run2018_UL_ISO.root";
-    //Trig file
-    string muTrigFile = "weight/MuSF/OutFile-v20190510-Combined-Run2016BtoH_Run2017BtoF_Run2018AtoD-M120to10000.root";
-    //Name of the histograms
-    string muIDHist     = "NUM_HighPtID_DEN_TrackerMuons_abseta_pt";
-    string muIsoHist    = "NUM_TightRelTkIso_DEN_HighPtIDandIPCut_abseta_pt";
-    std::map<std::string, string> muTrigHists;
-    muTrigHists["2016PreVFP"]  = "SF_2016";
-    muTrigHists["2016PostVFP"] = "SF_2016";
-    muTrigHists["2017"]        = "SF_2017";
-    muTrigHists["2018"]        = "SF_2018";
-    //Initiate the muon SF reader
-	muSF = new MuonSF(muIDFiles[year], muIDHist, muIsoFiles[year], muIsoHist, muTrigFile, muTrigHists[year]);
-
-    //--------------------------
-    //Electron SFs
-    //--------------------------
-    //https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018
-    //ID files
-    std::map<std::string, string> eIDFiles;
-    string comEleID = "weight/EleSF/egammaEffi.txt_";
-    eIDFiles["2016PreVFP"]  = comEleID+"Ele_wp80iso_preVFP_EGM2D.root"; 
-    eIDFiles["2016PostVFP"] = comEleID+"Ele_wp80iso_postVFP_EGM2D.root"; 
-    eIDFiles["2017"]        = comEleID+"EGM2D_MVA80iso_UL17.root"; 
-    eIDFiles["2018"]        = comEleID+"Ele_wp80iso_EGM2D.root"; 
-    //Reco files
-    std::map<std::string, string> eRecoFiles;
-    string comEleReco = "weight/EleSF/egammaEffi_ptAbove20.txt_EGM2D_"; 
-    eRecoFiles["2016PreVFP"]  = comEleReco+"UL2016preVFP.root"; 
-    eRecoFiles["2016PostVFP"] = comEleReco+"UL2016postVFP.root"; 
-    eRecoFiles["2017"]        = comEleReco+"UL2017.root"; 
-    eRecoFiles["2018"]        = comEleReco+"UL2018.root"; 
-    //Trig files
-    //These triggers are for legacy rereco. Need to evaluate them for UL using
-    //https://hypernews.cern.ch/HyperNews/CMS/get/egamma-hlt/289.html
-    std::map<std::string, string> eTrigFiles;
-    eTrigFiles["2016PreVFP"]  = "weight/EleSF/electron_16.root";
-    eTrigFiles["2016PostVFP"] = "weight/EleSF/electron_16.root";
-    eTrigFiles["2017"]        = "weight/EleSF/electron_17.root";
-    eTrigFiles["2018"]        = "weight/EleSF/electron_18.root";
-    //Initiate the electron SF reader
-	eleSF = new ElectronSF(eIDFiles[year], eRecoFiles[year], eTrigFiles[year]);
-
-    //--------------------------
-    //Photon SFs
-    //--------------------------
-    //https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018
-    //ID files
-    std::map<std::string, string> phoIDFiles;
-    string comPhoID = "weight/PhoSF/egammaEffi.txt_EGM2D_";
-    phoIDFiles["2016PreVFP"]  = comPhoID+"Pho_wp80_UL16.root";
-    phoIDFiles["2016PostVFP"] = comPhoID+"Pho_MVA80_UL16_postVFP.root";
-    phoIDFiles["2017"]        = comPhoID+"PHO_MVA80_UL17.root";
-    phoIDFiles["2018"]        = comPhoID+"Pho_wp80.root_UL18.root";
-    //Electron veto (reject photon which has pixel seed)
-    std::map<std::string, string> phoPSFiles;
-    string comPhoPS = "weight/PhoSF/HasPix_SummaryPlot_";
-    phoPSFiles["2016PreVFP"]  = comPhoPS+"UL16_preVFP.root";
-    phoPSFiles["2016PostVFP"] = comPhoPS+"UL16_postVFP.root";
-    phoPSFiles["2017"]        = comPhoPS+"UL17.root"; 
-    phoPSFiles["2018"]        = comPhoPS+"UL18.root"; 
-    //Electron veto (conversion safe EV)
-    std::map<std::string, string> phoCSFiles;
-    string comPhoCS = "weight/PhoSF/CSEV_SummaryPlot_";
-    phoCSFiles["2016PreVFP"]  = comPhoCS+"UL16_preVFP.root";
-    phoCSFiles["2016PostVFP"] = comPhoCS+"UL16_postVFP.root";
-    phoCSFiles["2017"]        = comPhoCS+"UL17.root"; 
-    phoCSFiles["2018"]        = comPhoCS+"UL18.root"; 
-    //Initiate the phton SF reader
-	phoSF = new PhotonSF(phoIDFiles[year], phoPSFiles[year], phoCSFiles[year]);
-
 
     int dumpFreq = 1;
     if (nEntr >50)     { dumpFreq = 5; }
@@ -1419,7 +1434,6 @@ void makeNtuple::loadBtagEff(string sampleName, string year){
     if (sampleType.find("TTbar") != std::string::npos){
 	effType = "Top";
     }
-    
     std::string leffName = effType+"_l_efficiency";
     std::string ceffName = effType+"_c_efficiency";
     std::string beffName = effType+"_b_efficiency";

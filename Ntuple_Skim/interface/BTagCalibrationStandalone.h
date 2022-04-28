@@ -174,7 +174,7 @@ public:
                           float eta,
                           float pt,
                           float discr=0.) const;
-
+  std::string formula(const std::string & sys,BTagEntry::JetFlavor jf);
   std::pair<float, float> min_max_pt(BTagEntry::JetFlavor jf,
                                      float eta,
                                      float discr=0.) const;

@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <sstream>
 
-
 BTagEntry::Parameters::Parameters(
   OperatingPoint op,
   std::string measurement_type,
@@ -40,18 +39,19 @@ BTagEntry::BTagEntry(const std::string &csvLine)
   std::stringstream buff(csvLine);
   std::vector<std::string> vec;
   std::string token;
-  while (std::getline(buff, token, ","[0])) {
+  while (std::getline(buff, token, ";"[0])) {
     token = BTagEntry::trimStr(token);
     if (token.empty()) {
       continue;
     }
+    //std::cout<<"token " << token << std::endl;
     vec.push_back(token);
   }
   if (vec.size() != 11) {
-std::cerr << "ERROR in BTagCalibration: "
-          << "Invalid csv line; num tokens != 11: "
-          << csvLine;
-throw std::exception();
+    std::cerr << "ERROR in BTagCalibration: "
+	      << "Invalid csv line; num tokens != 11: "
+	      << csvLine;
+    throw std::exception();
   }
 
   // clean string values
@@ -64,41 +64,63 @@ throw std::exception();
 
   // make formula
   formula = vec[10];
+  //std::cout << "formula " << formula << std::endl;
   TF1 f1("", formula.c_str());  // compile formula to check validity
   if (f1.IsZombie()) {
-std::cerr << "ERROR in BTagCalibration: "
-          << "Invalid csv line; formula does not compile: "
-          << csvLine;
-throw std::exception();
+    std::cerr << "ERROR in BTagCalibration: "
+	      << "Invalid csv line; formula does not compile: "
+	      << csvLine;
+    throw std::exception();
   }
 
   // make parameters
   unsigned op = stoi(vec[0]);
+  // if(vec[0]=="L")
+  //   op = BTagEntry::OP_LOOSE ;
+  // else if (vec[0]=="M") 
+  //   op = BTagEntry::OP_MEDIUM ;
+  // else if (vec[0]=="T") 
+  //   op = BTagEntry::OP_TIGHT ;
+  // else
+  //   op = BTagEntry::OP_RESHAPING ;
+  
   if (op > 3) {
-std::cerr << "ERROR in BTagCalibration: "
-          << "Invalid csv line; OperatingPoint > 3: "
-          << csvLine;
-throw std::exception();
+    std::cerr << "ERROR in BTagCalibration: "
+	      << "Invalid csv line; OperatingPoint > 3: "
+	      << csvLine;
+    throw std::exception();
   }
-  unsigned jf = stoi(vec[3]);
+
+
+  unsigned jtflv = stoi(vec[3]);
+  //code below to handle the conversion new-->old way of handling the jet flavour
+  unsigned jf = 3;
+  if(jtflv==0)
+    jf = 2;
+  else if(jtflv==4)
+    jf = 1;
+  else if(jtflv==5)
+    jf = 0;
+  /////////////////////////////////////////////////////////////////////////////
+
   if (jf > 2) {
-std::cerr << "ERROR in BTagCalibration: "
-          << "Invalid csv line; JetFlavor > 2: "
-          << csvLine;
-throw std::exception();
+    std::cerr << "ERROR in BTagCalibration: "
+	      << "Invalid csv line; JetFlavor > 2: "
+	      << csvLine;
+    throw std::exception();
   }
   params = BTagEntry::Parameters(
-    BTagEntry::OperatingPoint(op),
-    vec[1],
-    vec[2],
-    BTagEntry::JetFlavor(jf),
-    stof(vec[4]),
-    stof(vec[5]),
-    stof(vec[6]),
-    stof(vec[7]),
-    stof(vec[8]),
-    stof(vec[9])
-  );
+				 BTagEntry::OperatingPoint(op),
+				 vec[1],
+				 vec[2],
+				 BTagEntry::JetFlavor(jf),
+				 stof(vec[4]),
+				 stof(vec[5]),
+				 stof(vec[6]),
+				 stof(vec[7]),
+				 stof(vec[8]),
+				 stof(vec[9])
+				 );
 }
 
 BTagEntry::BTagEntry(const std::string &func, BTagEntry::Parameters p):
@@ -401,8 +423,13 @@ private:
                           float pt,
                           float discr) const;
 
+  std::string formula(const std::string & sys,BTagEntry::JetFlavor jf);
+
   std::pair<float, float> min_max_pt(BTagEntry::JetFlavor jf,
                                      float eta,
+                                     float discr) const;
+ 
+  std::pair<float, float> min_max_eta(BTagEntry::JetFlavor jf,
                                      float discr) const;
 
   BTagEntry::OperatingPoint op_;
@@ -440,7 +467,7 @@ void BTagCalibrationReader::BTagCalibrationReaderImpl::load(
                                              BTagEntry::JetFlavor jf,
                                              std::string measurementType)
 {
-  if (tmpData_[jf].size()) {
+  if (!tmpData_[jf].empty()) {
 std::cerr << "ERROR in BTagCalibration: "
           << "Data for this jet-flavor is already loaded: "
           << jf;
@@ -482,6 +509,32 @@ throw std::exception();
   }
 }
 
+std::string BTagCalibrationReader::BTagCalibrationReaderImpl::formula(
+								      const std::string & sys,
+								      BTagEntry::JetFlavor jf)
+{
+  // std::cout <<"sysType_ " << sysType_ << std::endl;
+  // std::cout <<"count up :" << otherSysTypeReaders_.count("up") << std::endl;
+  // std::cout <<"count down :" << otherSysTypeReaders_.count("down") << std::endl;
+  // //std::cout <<"Other sysType_ 2 : " <<otherSysTypeReaders_[sys]->formula("up",jf) << std::endl;
+  // const auto &entries = tmpData_.at(jf);
+  // std::cout << "entries.size() " << entries.size() << std::endl;
+  // std::cout << "entries " << (otherSysTypeReaders_["down"]->tmpData_.at(jf)).at(0).func.GetTitle() << std::endl;
+  // for (unsigned i=0; i<entries.size(); ++i) {
+  //   const auto &e = entries.at(i);
+  //   if (sys == sysType_)
+  //     return e.func.GetTitle();
+  // }
+  
+  if(sys=="central"){
+    return tmpData_.at(jf).at(0).func.GetTitle() ;
+  }else if(sys=="up" or sys=="down"){
+    return (otherSysTypeReaders_[sys]->tmpData_.at(jf)).at(5).func.GetTitle();
+  }
+
+  return "";
+}
+
 double BTagCalibrationReader::BTagCalibrationReaderImpl::eval(
                                              BTagEntry::JetFlavor jf,
                                              float eta,
@@ -499,7 +552,7 @@ double BTagCalibrationReader::BTagCalibrationReaderImpl::eval(
   for (unsigned i=0; i<entries.size(); ++i) {
     const auto &e = entries.at(i);
     if (
-      e.etaMin <= eta && eta < e.etaMax                   // find eta
+      e.etaMin <= eta && eta <= e.etaMax                   // find eta
       && e.ptMin < pt && pt <= e.ptMax                    // check pt
     ){
       if (use_discr) {                                    // discr. reshaping?
@@ -522,11 +575,29 @@ double BTagCalibrationReader::BTagCalibrationReaderImpl::eval_auto_bounds(
                                              float pt,
                                              float discr) const
 {
-  auto sf_bounds = min_max_pt(jf, eta, discr);
-  float pt_for_eval = pt;
-  bool is_out_of_bounds = false;
+  auto sf_bounds_eta = min_max_eta(jf, discr);
+  bool eta_is_out_of_bounds = false;
 
-  if (pt < sf_bounds.first) {
+  if (sf_bounds_eta.first < 0) sf_bounds_eta.first = -sf_bounds_eta.second;  
+
+  if (useAbsEta_[jf] && eta < 0) {
+      eta = -eta;
+  } 
+ 
+  if (eta <= sf_bounds_eta.first || eta > sf_bounds_eta.second ) {
+    eta_is_out_of_bounds = true;
+  }
+   
+  if (eta_is_out_of_bounds) {
+    return 1.;
+  }
+
+
+   auto sf_bounds = min_max_pt(jf, eta, discr);
+   float pt_for_eval = pt;
+   bool is_out_of_bounds = false;
+
+   if (pt <= sf_bounds.first) {
     pt_for_eval = sf_bounds.first + .0001;
     is_out_of_bounds = true;
   } else if (pt > sf_bounds.second) {
@@ -571,7 +642,7 @@ std::pair<float, float> BTagCalibrationReader::BTagCalibrationReaderImpl::min_ma
   float min_pt = -1., max_pt = -1.;
   for (const auto & e: entries) {
     if (
-      e.etaMin <= eta && eta < e.etaMax                   // find eta
+      e.etaMin <= eta && eta <=e.etaMax                   // find eta
     ){
       if (min_pt < 0.) {                                  // init
         min_pt = e.ptMin;
@@ -594,6 +665,31 @@ std::pair<float, float> BTagCalibrationReader::BTagCalibrationReaderImpl::min_ma
   return std::make_pair(min_pt, max_pt);
 }
 
+std::pair<float, float> BTagCalibrationReader::BTagCalibrationReaderImpl::min_max_eta(
+                                               BTagEntry::JetFlavor jf,
+                                               float discr) const
+{
+  bool use_discr = (op_ == BTagEntry::OP_RESHAPING);
+
+  const auto &entries = tmpData_.at(jf);
+  float min_eta = 0., max_eta = 0.;
+  for (const auto & e: entries) {
+
+      if (use_discr) {                                    // discr. reshaping?
+        if (e.discrMin <= discr && discr < e.discrMax) {  // check discr
+          min_eta = min_eta < e.etaMin ? min_eta : e.etaMin;
+          max_eta = max_eta > e.etaMax ? max_eta : e.etaMax;
+        }
+      } else {
+        min_eta = min_eta < e.etaMin ? min_eta : e.etaMin;
+        max_eta = max_eta > e.etaMax ? max_eta : e.etaMax;
+      }
+    }
+
+
+  return std::make_pair(min_eta, max_eta);
+}
+
 
 BTagCalibrationReader::BTagCalibrationReader(BTagEntry::OperatingPoint op,
                                              const std::string & sysType,
@@ -605,6 +701,12 @@ void BTagCalibrationReader::load(const BTagCalibration & c,
                                  const std::string & measurementType)
 {
   pimpl->load(c, jf, measurementType);
+}
+
+std::string BTagCalibrationReader::formula(const std::string & sys,
+					   BTagEntry::JetFlavor jf)
+{
+  return pimpl->formula(sys, jf);
 }
 
 double BTagCalibrationReader::eval(BTagEntry::JetFlavor jf,
@@ -630,5 +732,3 @@ std::pair<float, float> BTagCalibrationReader::min_max_pt(BTagEntry::JetFlavor j
 {
   return pimpl->min_max_pt(jf, eta, discr);
 }
-
-
