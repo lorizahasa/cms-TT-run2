@@ -60,21 +60,29 @@ void Selector::process_objects(EventTree* inp_tree){
 void Selector::clear_vectors(){
     Muons.clear();
     MuonsLoose.clear();
+
     Electrons.clear();
     ElectronsLoose.clear();
-    Jets.clear();
-    FatJets.clear();
-    bJets.clear();
+
     Photons.clear();
     PhoPassChHadIso.clear();
     PhoPassPhoIso.clear();
     PhoPassSih.clear();
     LoosePhotons.clear();
     PhotonsNoID.clear();
+
     PhoChHadIso_corr.clear();
     PhoNeuHadIso_corr.clear();
     PhoPhoIso_corr.clear();
     PhoRandConeChHadIso_corr.clear();
+
+    Jets.clear();
+    bJets.clear();
+    FatJets.clear();
+    jet_resolution.clear();
+    jet_smear.clear();
+    jet_isTagged.clear();
+
 }
 //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2016#High_pT_above_120_GeV
 //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SWGuideMuonIdRun2#HighPt_Muon
@@ -200,10 +208,7 @@ void Selector::filter_jets(){
         bool jetID_pass = (tree->jetID_[jetInd] & 2)==2;
 
         double resolution = 0.;
-        double jetSmear = 1;
-        if (tree->event_==printEvent){
-            cout << "------Jet "<<jetInd<< "------" << endl;
-        }
+        double jetSmear = 1.;
         if (!tree->isData_){
             jetParamAK4.setJetEta(tree->jetEta_[jetInd]);
             jetParamAK4.setJetPt(tree->jetPt_[jetInd]);
@@ -222,8 +227,11 @@ void Selector::filter_jets(){
 	        jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
             }
             if (tree->event_==printEvent){
+            cout<<"------------------------"<<endl;
+            cout << "  JetInd: "<<jetInd << endl;
 	        cout << "  DoJetSmear: " << smearJetPt << endl;
 	        cout << "  GenIdx: "<< genIdx << endl;
+	        cout << "  jetEta: "<< tree->jetEta_[jetInd] << endl;
 	        cout << "  jetSF: "<< jetSF << endl;
 	        cout << "  JetSmear: "<<jetSmear << endl;
             }

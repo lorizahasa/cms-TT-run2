@@ -407,6 +407,11 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Weight_pho_cs", &_phoEffWeight_CS );
     outputTree->Branch("Weight_jer" , &_jerWeight);
     outputTree->Branch("Weight_jes" , &_jesWeight);
+	outputTree->Branch("Weight_q2"          , &_q2weight_nominal );
+	outputTree->Branch("Weight_gen"         , &_genWeight );
+	outputTree->Branch("Weight_pdf"         , &_pdfWeight );
+	outputTree->Branch("Weight_isr"         , &_ISRweight );
+	outputTree->Branch("Weight_fsr"         , &_FSRweight );
     //Weights: up/down
     if (!isSystematicRun){
 	    outputTree->Branch("Weight_pu_up"       , &_PUweight_Up );
@@ -441,19 +446,14 @@ void makeNtuple::InitBranches(){
 	    outputTree->Branch("Weight_pho_ps_down" , &_phoEffWeight_PS_Do);
 	    outputTree->Branch("Weight_pho_cs_up"   , &_phoEffWeight_CS_Up);
 	    outputTree->Branch("Weight_pho_cs_down" , &_phoEffWeight_CS_Do);
-	    outputTree->Branch("Weight_q2"          , &_q2weight_nominal );
 	    outputTree->Branch("Weight_q2_up"       , &_q2weight_Up );
 	    outputTree->Branch("Weight_q2_down"     , &_q2weight_Do );
-	    outputTree->Branch("Weight_gen"         , &_genWeight );
-	    outputTree->Branch("Weight_pdf"         , &_pdfWeight );
 	    outputTree->Branch("Weight_pdf_up"      , &_pdfweight_Up );
 	    outputTree->Branch("Weight_pdf_down"    , &_pdfweight_Do );
-	    outputTree->Branch("Weight_isr_down"    , &_ISRweight_Do );
-	    outputTree->Branch("Weight_isr"         , &_ISRweight );
 	    outputTree->Branch("Weight_isr_up"      , &_ISRweight_Up );
-	    outputTree->Branch("Weight_fsr_down"    , &_FSRweight_Do );
-	    outputTree->Branch("Weight_fsr"         , &_FSRweight );
+	    outputTree->Branch("Weight_isr_down"    , &_ISRweight_Do );
 	    outputTree->Branch("Weight_fsr_up"      , &_FSRweight_Up );
+	    outputTree->Branch("Weight_fsr_down"    , &_FSRweight_Do );
     }
     //muons
     outputTree->Branch("Muon_size"    , &_nMu ); 

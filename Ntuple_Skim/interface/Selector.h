@@ -49,11 +49,9 @@ public:
 	Selector();
 	~Selector();
 	void process_objects(EventTree* inp_tree);
-    //muons
 	std::vector<int> Muons;
 	std::vector<int> MuonsLoose;
 
-    //electrons
 	std::vector<int> Electrons;
 	std::vector<int> ElectronsLoose;
 
@@ -63,6 +61,11 @@ public:
 	std::vector<bool> PhoPassSih;
 	std::vector<int> LoosePhotons;
 	std::vector<int> PhotonsNoID;
+	std::vector<double> PhoChHadIso_corr;
+	std::vector<double> PhoNeuHadIso_corr;
+	std::vector<double> PhoPhoIso_corr;
+	std::vector<std::vector<float>> PhoRandConeChHadIso_corr;
+
 	std::vector<int> Jets;
 	std::vector<int> bJets;
     std::vector<int> FatJets;
@@ -70,11 +73,6 @@ public:
 	std::vector<double> jet_smear;
 	std::vector<bool>   jet_isTagged;
 	
-	std::vector<double> PhoChHadIso_corr;
-	std::vector<double> PhoNeuHadIso_corr;
-	std::vector<double> PhoPhoIso_corr;
-	std::vector<std::vector<float>> PhoRandConeChHadIso_corr;
-
 	double btag_cut;
 	double btag_cut_DeepCSV;
 	double toptag_cut_DeepAK8;

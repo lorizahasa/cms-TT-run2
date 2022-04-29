@@ -1,6 +1,7 @@
 #include "interface/makeNtuple.h"
 #define makeNtuple_cxx
 
+
 int jecvar012_g = 1; // 0:down, 1:norm, 2:up
 int jervar012_g = 1; // 0:down, 1:norm, 2:up
 int phosmear012_g = 1; // 0:down, 1:norm, 2:up
@@ -262,6 +263,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     //BTag SFs
     //--------------------------
     //https://twiki.cern.ch/twiki/bin/view/CMS/BtagRecommendation
+    //https://gitlab.cern.ch/vanderli/btv-json-sf/-/tree/master/data
     //Hard coded the old calibration BTagCalibrationStandalone file and 
     //re-formatted the UL csv file: 
     //https://github.com/indra-ehep/KinFit_Skim/tree/9625ff1697693f4cc71813fe7f6b097643ae5166/CBA_Skim
@@ -272,6 +274,11 @@ makeNtuple::makeNtuple(int ac, char** av)
     deepCSVFiles["2016PostVFP"] = comCSV+"UL16postVFP_v3_formatted.csv";
     deepCSVFiles["2017"]        = comCSV+"UL17_v3_formatted.csv";
     deepCSVFiles["2018"]        = comCSV+"UL18_v2_formatted.csv";
+    std::map<std::string, double> deepCSVWPs;//medium WPs
+    deepCSVWPs["2016PreVFP"]  = 0.6001; 
+    deepCSVWPs["2016PostVFP"] = 0.5847; 
+    deepCSVWPs["2017"]        = 0.4506; 
+    deepCSVWPs["2018"]        = 0.4168; 
     //deepJet
     std::map<std::string, string> deepJetFiles;
     string comJet = "weight/BtagSF/wp_deepJet_106X";
@@ -279,6 +286,31 @@ makeNtuple::makeNtuple(int ac, char** av)
     deepJetFiles["2016PostVFP"] = comJet+"UL16postVFP_v3_formatted.csv";
     deepJetFiles["2017"]        = comJet+"UL17_v3_formatted.csv";
     deepJetFiles["2018"]        = comJet+"UL18_v2_formatted.csv";
+    std::map<std::string, double> deepJetWPs;//medium WPs
+    deepJetWPs["2016PreVFP"]  = 0.2598; 
+    deepJetWPs["2016PostVFP"] = 0.2489; 
+    deepJetWPs["2017"]        = 0.3040; 
+    deepJetWPs["2018"]        = 0.2783; 
+    
+    //--------------------------
+    //JES and JER SFs
+    //--------------------------
+    //https://github.com/cms-jet/JRDatabase/tree/master/textFiles
+    //Partial file name here, full name in init_JER function
+    std::map<std::string, string> jerFiles;
+    string comJER = "weight/JetSF/JER/";
+    jerFiles["2016PreVFP"]  = comJER+"Summer20UL16APV_JRV3";
+    jerFiles["2016PostVFP"] = comJER+"Summer20UL16_JRV3";
+    jerFiles["2017"]        = comJER+"Summer19UL17_JRV3";
+    jerFiles["2018"]        = comJER+"Summer19UL18_JRV2";
+
+    //https://github.com/cms-jet/JECDatabase/tree/master/textFiles
+    std::map<std::string, string> jesFiles;
+    string comJES = "weight/JetSF/JEC/"+year+"/";
+    jesFiles["2016PreVFP"]  = comJES+"Summer19UL16APV_V7";
+    jesFiles["2016PostVFP"] = comJES+"Summer19UL16_V7";
+    jesFiles["2017"]        = comJES+"Summer19UL17_V5";
+    jesFiles["2018"]        = comJES+"Summer19UL18_V5";
 
     selector = new Selector();
     evtPick = new EventPick("");
@@ -292,20 +324,11 @@ makeNtuple::makeNtuple(int ac, char** av)
     bool applyHemVeto=true; 
     selector->looseJetID = false;
     selector->useDeepCSVbTag = true;
+    selector->btag_cut_DeepCSV = deepCSVWPs[year]; 
+    selector->toptag_cut_DeepAK8 = deepJetWPs[year];
     if (isMC){
-    	if (year=="2016") selector->init_JER("weight/JetSF/JER/Summer16_25nsV1");
-    	if (year=="2017") selector->init_JER("weight/JetSF/JER/Fall17_V3");
-    	if (year=="2018") selector->init_JER("weight/JetSF/JER/Autumn18_V7b");
+    	selector->init_JER(jerFiles[year]);
     }
-    if (year=="2016") selector->btag_cut_DeepCSV = 0.6321;
-    if (year=="2017") selector->btag_cut_DeepCSV = 0.4941;
-    if (year=="2018") selector->btag_cut_DeepCSV = 0.4184;
-    
-    if (year=="2016") selector->toptag_cut_DeepAK8 = 0.834;
-    if (year=="2017") selector->toptag_cut_DeepAK8 = 0.725;
-    if (year=="2018") selector->toptag_cut_DeepAK8 = 0.802;
-
-    //	selector->jet_Pt_cut = 40.;
     BTagCalibration calib;
     if (!selector->useDeepCSVbTag){
 	    calib = BTagCalibration("csvv2", deepJetFiles[year]); 
@@ -466,9 +489,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     JECvariation* jecvar;
     if (isMC && jecvar012_g!=1) {
 	cout << "Applying JEC uncertainty variations : " << JECsystLevel << endl;
-	if (year=="2016") jecvar = new JECvariation("weight/JetSF/Summer16_07Aug2017_V11", isMC, JECsystLevel);
-	if (year=="2017") jecvar = new JECvariation("weight/JetSF/Fall17_17Nov2017_V32", isMC, JECsystLevel);
-	if (year=="2018") jecvar = new JECvariation("weight/JetSF/Autumn18_V19", isMC, JECsystLevel);
+	jecvar = new JECvariation(jesFiles[year], isMC, JECsystLevel);
     }
 
     double luminosity = 1.;
@@ -1126,15 +1147,10 @@ void makeNtuple::FillEvent(std::string year)
         _jetDeepB.push_back(tree->jetBtagDeepB_[jetInd]);
         _jetGenJetIdx.push_back(tree->jetGenJetIdx_[jetInd]);
         double resolution = selector->jet_resolution.at(i_jet);
-        double weight_jer = selector->jet_smear.at(i_jet);
         _jetRes.push_back(resolution);
-        _jerWeight.push_back(weight_jer);
-	    if (jecvar012_g == 1){
-            _jesWeight.push_back(1.0);
-        }
-        else{
-            _jesWeight.push_back(tree->jetmuEF_[jetInd]);
-        }
+        _jerWeight.push_back(selector->jet_smear.at(i_jet));
+	    if (jecvar012_g != 1)_jesWeight.push_back(tree->jetmuEF_[jetInd]);
+        else _jesWeight.push_back(1.0);
         jetResolutionVectors.push_back(resolution);
         jetBtagVectors.push_back(tree->jetBtagDeepB_[jetInd]);
         jetVector.SetPtEtaPhiM(tree->jetPt_[jetInd], 
@@ -1297,15 +1313,13 @@ void makeNtuple::FillEvent(std::string year)
         _Reco_ratio_leadJetPt_met = jetVectors.at(0).Pt()/_pfMET;
         _Reco_ratio_leadJetPt_ht = jetVectors.at(0).Pt()/_HT;
     }
-    /*
-    std::cout<<"------------"<<std::endl;
-    std::cout<<"_nBJet = " << _nBJet<<std::endl;
-    std::cout<<"bjetVectors = " << bjetVectors.size()<<std::endl;
+    //std::cout<<"------------"<<std::endl;
+    //std::cout<<"_nBJet = " << _nBJet<<std::endl;
+    //std::cout<<"bjetVectors = " << bjetVectors.size()<<std::endl;
     if(bjetVectors.size()>0){
         _Reco_angle_leadBjet_met = bjetVectors.at(0).Angle(METVector.Vect()); 
-        std::cout<<_Reco_angle_leadBjet_met<<std::endl; //FIXME
+        //std::cout<<_Reco_angle_leadBjet_met<<std::endl; //FIXME
     }
-    */
     ljetVectors.clear();
     bjetVectors.clear();
     ljetResVectors.clear();
@@ -1323,20 +1337,17 @@ void makeNtuple::FillEvent(std::string year)
 	// [6] is mur=2 muf=0.5 ; 
 	// [7] is mur=2 muf=1 ; 
 	// [8] is mur=2 muf=2 
-
-	_q2weight_Up = 1.;
-	_q2weight_Do = 1.;
     std::vector<float>   _genScaleSystWeights;
 	if (tree->nLHEScaleWeight_==9){
 	    for (int i = 0; i < 9; i++){
-		if(i==2||i==6){continue;}
-		_genScaleSystWeights.push_back(tree->LHEScaleWeight_[i]);
+	        if(i==2||i==6){continue;}
+	        _genScaleSystWeights.push_back(tree->LHEScaleWeight_[i]);
 	    }
-            double nomWeight=tree->LHEScaleWeight_[4];
-            if (nomWeight!=0){
-                _q2weight_Up = *max_element(_genScaleSystWeights.begin(), _genScaleSystWeights.end())/nomWeight;
-                _q2weight_Do = *min_element(_genScaleSystWeights.begin(), _genScaleSystWeights.end())/nomWeight;
-            }
+        double nomWeight=tree->LHEScaleWeight_[4];
+        if (nomWeight!=0){
+            _q2weight_Up = *max_element(_genScaleSystWeights.begin(), _genScaleSystWeights.end())/nomWeight;
+            _q2weight_Do = *min_element(_genScaleSystWeights.begin(), _genScaleSystWeights.end())/nomWeight;
+        }
 	}
 	if (tree->nLHEScaleWeight_==44){
 	    _genScaleSystWeights.push_back(tree->LHEScaleWeight_[0]);
@@ -1345,7 +1356,6 @@ void makeNtuple::FillEvent(std::string year)
 	    _genScaleSystWeights.push_back(tree->LHEScaleWeight_[24]);
 	    _genScaleSystWeights.push_back(tree->LHEScaleWeight_[34]);
 	    _genScaleSystWeights.push_back(tree->LHEScaleWeight_[39]);
-
 	    _q2weight_Up = *max_element(_genScaleSystWeights.begin(), _genScaleSystWeights.end());
 	    _q2weight_Do = *min_element(_genScaleSystWeights.begin(), _genScaleSystWeights.end());
 	}
@@ -1372,11 +1382,11 @@ void makeNtuple::FillEvent(std::string year)
             if (tree->genWeight_ != 0){
                 double scaleWeight=tree->PSWeight_[4];
                 if (scaleWeight==0) scaleWeight=1.;
-                _ISRweight_Up = tree->PSWeight_[0]/scaleWeight;
-                _ISRweight_Do = tree->PSWeight_[2]/scaleWeight;
+                _ISRweight_Up = tree->PSWeight_[2]/scaleWeight;
+                _ISRweight_Do = tree->PSWeight_[0]/scaleWeight;
 
-                _FSRweight_Up = tree->PSWeight_[1]/scaleWeight;
-                _FSRweight_Do = tree->PSWeight_[3]/scaleWeight;
+                _FSRweight_Up = tree->PSWeight_[3]/scaleWeight;
+                _FSRweight_Do = tree->PSWeight_[1]/scaleWeight;
             }
         }
 
