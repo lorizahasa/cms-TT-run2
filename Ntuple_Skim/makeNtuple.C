@@ -295,6 +295,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     //--------------------------
     //JES and JER SFs
     //--------------------------
+    //https://twiki.cern.ch/twiki/bin/view/CMS/JECDataMC
     //https://github.com/cms-jet/JRDatabase/tree/master/textFiles
     //Partial file name here, full name in init_JER function
     std::map<std::string, string> jerFiles;
@@ -325,7 +326,6 @@ makeNtuple::makeNtuple(int ac, char** av)
     selector->looseJetID = false;
     selector->useDeepCSVbTag = true;
     selector->btag_cut_DeepCSV = deepCSVWPs[year]; 
-    selector->toptag_cut_DeepAK8 = deepJetWPs[year];
     if (isMC){
     	selector->init_JER(jerFiles[year]);
     }
@@ -493,30 +493,21 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
 
     double luminosity = 1.;
-    if (year=="2016") luminosity=35921.875595;
+    //if (year=="2016") luminosity=35921.875595;
+    if (year=="2016PreVFP") luminosity=19.695422959;
+    if (year=="2016PostVFP") luminosity=16.226452636;
     if (year=="2017") luminosity=41529.548819;
     if (year=="2018") luminosity=59740.565202;
 
     double nMC_total = 0.;
-    useGenWeightScaling = true;
-
-    double nMC_thisFile = 0.;
     char** fileNames = av+4;
     for(int fileI=0; fileI<ac-4; fileI++){
-	TFile *_file = TFile::Open(fileNames[fileI],"read");
-	TH1D *hEvents = (TH1D*) _file->Get("hEvents");
-	nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights
-	if (nMC_thisFile==0) {useGenWeightScaling=false;} //if bin isn't filled, fall back to using positive - negative bins
-	nMC_total += nMC_thisFile;
+        TFile *_file = TFile::Open(fileNames[fileI],"read");
+        TH1D *hEvents = (TH1D*) _file->Get("hEvents");
+        double nMC_thisFile = 0.;
+        nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights
+        nMC_total += nMC_thisFile;
     }
-    if (!useGenWeightScaling){
-	for(int fileI=0; fileI<ac-4; fileI++){
-	    TFile *_file = TFile::Open(fileNames[fileI],"read");
-	    TH1D *hEvents = (TH1D*) _file->Get("hEvents");
-	    nMC_total += (hEvents->GetBinContent(3) - hEvents->GetBinContent(1));  //positive weight - neg weight 
-	}
-    }
-	
     if (nMC_total==0){
 	nMC_total=1;
     }
@@ -791,7 +782,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 		}
 	    }
         //https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
-	    if (year=="2016" || year=="2017"){
+	    if (year=="2016PreVFP" || year=="2016PostVFP" || year=="2017"){
             _prefireSF_Do   = tree->prefireDn_;
             _prefireSF      = tree->prefireNom_; 
             _prefireSF_Up   = tree->prefireUp_; 
@@ -854,45 +845,30 @@ makeNtuple::makeNtuple(int ac, char** av)
 }
 
 
-void makeNtuple::FillEvent(std::string year)
-//void makeNtuple::FillEvent(std::string year, bool isHemVetoObj) //HEM test
-{
-
+void makeNtuple::FillEvent(std::string year){
     _run             = tree->run_;
     _event           = tree->event_;
     _lumis           = tree->lumis_;
     _isData	         = !isMC;
-    // _isPVGood	 = tree->isPVGood_;
-    // _rho		 = tree->rho_;
-    if (useGenWeightScaling){
-    _genWeight       = tree->genWeight_;
-    }else{
-	_genWeight       = (tree->genWeight_ >= 0) ? 1 : -1;  //event weight needs to be positive or negative depending on sign of genWeight (to account for mc@nlo negative weights)
+    if (isMC){
+	    _genWeight       = tree->genWeight_/abs(tree->genWeight_); 
+        _evtWeight       = _lumiWeight * _genWeight;
+        if(_inHEMVeto)_evtWeight = _evtWeight*0.3518;
     }
-    _evtWeight = _lumiWeight * _genWeight;
-
-    if (_isData) {
-	_evtWeight= 1.;
-	//	_evtWeightAlt= 1.;
+    else{
+	    _evtWeight= 1.;
     }
-
-
-    //MC HEM test
-    if(isMC && _inHEMVeto){
-        _evtWeight = _evtWeight*0.3518;
-    }
-
 
     _pfMET		     = tree->MET_pt_;
-    _pfMETPhi    	     = tree->MET_phi_;
+    _pfMETPhi    	 = tree->MET_phi_;
     
     _nPho		     = selector->Photons.size();
-    _nLoosePho	             = selector->LoosePhotons.size();
-    _nPhoNoID	             = selector->PhotonsNoID.size();
+    _nLoosePho	     = selector->LoosePhotons.size();
+    _nPhoNoID	     = selector->PhotonsNoID.size();
     _nEle		     = selector->Electrons.size();
-    _nEleLoose               = selector->ElectronsLoose.size();
+    _nEleLoose       = selector->ElectronsLoose.size();
     _nMu		     = selector->Muons.size();
-    _nMuLoose                = selector->MuonsLoose.size();
+    _nMuLoose        = selector->MuonsLoose.size();
     
     _nJet            = selector->Jets.size();
     _nFatJet         = selector->FatJets.size();

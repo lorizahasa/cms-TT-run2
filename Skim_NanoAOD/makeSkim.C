@@ -6,7 +6,6 @@
 #include<TTree.h>
 #include<TDirectory.h>
 #include<TObject.h>
-#include<TH1F.h>
 #include<TCanvas.h>
 #include<iomanip>
 #include <boost/program_options.hpp>
@@ -53,20 +52,7 @@ int main(int ac, char** av){
 	// input: dealing with TTree first
 	bool isMC = true;
 	bool xRootDAccess = false;
-
-	bool passAll=false;
-        if (std::string(av[1])=="passAll"){
-	    passAll = true;
-	    cout << "Keeping all events, no skim" << endl;
-	    for (int i = 1; i < ac-1; i++){
-		av[i] = av[i+1];
-		//cout << av[i] << " ";
-	    }
-	    ac = ac-1;
-	}
-
-        if (std::string(av[1])=="event"){
-
+    if (std::string(av[1])=="event"){
 	    std::string tempEventStr(av[2]);
 	    eventNum = std::stoi(tempEventStr);
 	    for (int i = 1; i < ac-2; i++){
@@ -197,9 +183,6 @@ int main(int ac, char** av){
 	if (eventsPerJob >500000) { dumpFreq = 100000; }
 	if (eventsPerJob >5000000){ dumpFreq = 1000000; }
 	
-
-	TH1F* hPU_        = new TH1F("hPU",        "number of pileup",      200,  0, 200);
-	TH1F* hPUTrue_    = new TH1F("hPUTrue",    "number of true pilepu", 200, 0, 200);
 	TH1D* hEvents_    = new TH1D("hEvents",    "number of events (+/- event weight)",      3,  -1.5, 1.5);
     double totalTime = 0.0;
     std::cout<<"---------------------------"<<std::endl;
@@ -213,26 +196,15 @@ int main(int ac, char** av){
 			startClock = std::chrono::high_resolution_clock::now();			
 		}
 		tree->GetEntry(entry);
-		hPUTrue_->Fill(tree->nPUTrue_, tree->genWeight_);
-		if (isMC) {
-		    hEvents_->Fill(tree->genWeight_/abs(tree->genWeight_));
-		    hEvents_->Fill(0.,tree->genWeight_);
-		}
-		else {
-		    hEvents_->Fill(1.);
-		    hEvents_->Fill(0.);
-		}
+		hEvents_->Fill(1.);
 		evtPick->process_event(tree);
-		if( evtPick->passSkim || passAll){
-		hPU_->Fill(tree->nPU_, tree->genWeight_);
+		if( evtPick->passSkim){
 			newTree->Fill();
 		}
 	}
     TTree* newT = newTree;
     //newTree->Write();
     newT->Write();
-	hPU_->Write();
-	hPUTrue_->Write();
 	hEvents_->Write();
 
     TNamed gitCommit("Git_Commit", VERSION);

@@ -12,4 +12,4 @@ charge and mass window in 91.18+-10 GeV
 #Apply electron HLT Zvtx sf = 0.991 for 2017
 #It seems we have to evaluate electron Trigger SFs using TnP method for UL samples
 #Document details about PDF, ISR/FSR systematics in the AN
-
+#Describe HEM veto in the AN

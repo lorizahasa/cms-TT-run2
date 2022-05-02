@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import numpy as np
 sys.dont_write_bytecode = True
 from SamplesNano import sampleDict 
 sys.path.insert(0, os.getcwd().replace("sample",""))
@@ -13,21 +14,21 @@ def getFileList(sample, isDAS=True):
     else:
         std_output, std_error = subprocess.Popen("xrdfs root://cmseos.fnal.gov/ ls -u %s | grep '.root'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
     names = std_output.decode("ascii").replace('\n',' ')
-    if names=='':
-        print ("PROBLEM: %s \n"%sample)
     return names
 
 #Function to print the total events in nice format 
 def getEvents(sample):
     std_output, std_error = subprocess.Popen("dasgoclient --query='summary dataset=%s'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
     num = eval(std_output)[0]['nevents']
+    rawNum = num
     magnitude = 0
     while abs(num) >= 1000:
         magnitude += 1
         num /= 1000.0
     evtStr = '{}{}'.format('{:f}'.format(num).rstrip('0').rstrip('.'), ['', 'K', 'M', 'B', 'T'][magnitude])
     unit = evtStr[-1]
-    return "%s%s"%(round(float(evtStr.replace(unit, '')), 1), unit)
+    formatStr = "%s%s"%(round(float(evtStr.replace(unit, '')), 1), unit)
+    return [rawNum, formatStr] 
 
 
 #Store the ouputs in two separate files
@@ -35,8 +36,8 @@ f1 = open("FilesNano_cff.sh", "w")
 f2 = open("JobsNano_cff.py", "w")
 
 allJobs = 0
-#for year in ['2016PreVFP', '2016PostVFP', '2017', '2018']:
 for year in Years: 
+#for year in ['2017']: 
     splitJobs = {}
     print '---------------------------------------'
     print  year 
@@ -55,15 +56,18 @@ for year in Years:
             fileList = getFileList(sample, True)
             line += fileList 
             line += '"\n\n'
+        if fileList=='':
+            print ("PROBLEM: %s \n"%sample)
+            continue
         nFiles = len(fileList.split(" "))
-        nJob = 1
-        if nFiles >= 5:
-            nJob = int (nFiles/5)
+        evt     = getEvents(sample)[0]
+        evtStr  = getEvents(sample)[1]
+        evtPerJob = 1e7 #10 million
+        nJob = int(np.ceil(evt/evtPerJob))
         #evt = "NA" 
-        evt = getEvents(sample)
-        splitJobs[sampleName] = [nJob, evt]
+        splitJobs[sampleName] = [nJob, evtStr]
         jobs += nJob
-        print("%i\t %i\t %s\t %s"%(nFiles, nJob, evt, sampleName))
+        print("%i\t %i\t %s\t %s"%(nFiles, nJob, evtStr, sampleName))
     f1.write(line.encode('ascii'))
     f2.write("Samples_%s = %s \n"%(str(year), str(splitJobs)))
     f2.write("AllJobs_%s = %s \n"%(str(year), str(jobs)))

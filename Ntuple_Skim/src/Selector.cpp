@@ -20,9 +20,6 @@ Selector::Selector(){
     // DeepCSV
     btag_cut_DeepCSV = 0.6324;  
 
-    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/DeepAK8Tagging2018WPsSFs
-    toptag_cut_DeepAK8 = 0.834;
-
     // whether to invert lepton requirements for 
     QCDselect = false;
 
@@ -371,10 +368,12 @@ void Selector::filter_fatjets(){
         for(std::vector<int>::const_iterator phoInd = Photons.begin(); phoInd != Photons.end(); phoInd++) {
 	        if (dR(eta, phi, tree->phoEta_[*phoInd], tree->phoPhi_[*phoInd]) < 0.8) passDR_pho_jet = false;
 	    }
+        //https://twiki.cern.ch/twiki/bin/viewauth/CMS/DeepAK8Tagging2018WPsSFs
+        //https://twiki.cern.ch/twiki/bin/view/CMS/JetTopTagging
         bool jetPresel = (pt >= 350.0 
                 && TMath::Abs(eta) <= 2.4 
                 && mSD >=105 && mSD <=210
-                && TvsQCD >=toptag_cut_DeepAK8
+                && TvsQCD >= 0.834
                 && passDR_lep_jet
                 && passDR_pho_jet
                 && isId);
