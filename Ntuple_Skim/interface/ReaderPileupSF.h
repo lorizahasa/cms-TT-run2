@@ -42,16 +42,16 @@ double PileupSF::getPuSF(TH1D* hRatio, Float_t nPV){
 }
 
 vector<double>PileupSF::getPuSFs(Float_t nPV, bool print){
-    double sf_nom   = getPuSF(hData_nom, nPV); 
     double sf_minus = getPuSF(hData_minus, nPV); 
+    double sf_nom   = getPuSF(hData_nom, nPV); 
     double sf_plus  = getPuSF(hData_plus, nPV); 
-    vector<double> pileupSFs {sf_nom, sf_minus, sf_plus};
+    vector<double> pileupSFs {sf_minus, sf_nom, sf_plus};
     if (print){ 
         cout<<"----------------------------"<<endl;
         cout << "Pileup Scale Factors: " << endl;
         cout<<  "    nPV   = " <<nPV<<endl;
-        cout << "    sf_nom = " << sf_nom << endl;
         cout << "    sf_minus = " << sf_minus << endl;
+        cout << "    sf_nom = " << sf_nom << endl;
         cout << "    sf_plus = " << sf_plus << endl;
     }
     return pileupSFs;

@@ -312,7 +312,28 @@ makeNtuple::makeNtuple(int ac, char** av)
     jesFiles["2016PostVFP"] = comJES+"Summer19UL16_V7";
     jesFiles["2017"]        = comJES+"Summer19UL17_V5";
     jesFiles["2018"]        = comJES+"Summer19UL18_V5";
-
+    
+    //--------------------------
+    //Luminosity
+    //--------------------------
+    std::map<std::string, double> lumiValues;
+    lumiValues["2016PreVFP"]  = 19.695422959;
+    lumiValues["2016PostVFP"] = 16.226452636;
+    lumiValues["2017"]        = 41529.548819;
+    lumiValues["2018"]        = 59740.565202;
+    
+    //--------------------------
+    // t-tagging WPs
+    //--------------------------
+    //https://indico.cern.ch/event/1152827/contributions/4840404/attachments/2428856/4162159/ParticleNet_SFs_ULNanoV9_JMAR_25April2022_PK.pdf
+    //For mis-tag rate of 0.5%
+    std::map<std::string, double> topTagWPs;
+    topTagWPs["2016PreVFP"]  = 0.74; 
+    topTagWPs["2016PostVFP"] = 0.73; 
+    topTagWPs["2017"]        = 0.80; 
+    topTagWPs["2018"]        = 0.80; 
+	topSF = new TopSF();
+    
     selector = new Selector();
     evtPick = new EventPick("");
     selector->year = year;
@@ -325,7 +346,11 @@ makeNtuple::makeNtuple(int ac, char** av)
     bool applyHemVeto=true; 
     selector->looseJetID = false;
     selector->useDeepCSVbTag = true;
+    if (sampleType.find("Signal") != std::string::npos){
+	selector->isSignal = true;
+    }
     selector->btag_cut_DeepCSV = deepCSVWPs[year]; 
+    selector->topTagWP = topTagWPs[year];
     if (isMC){
     	selector->init_JER(jerFiles[year]);
     }
@@ -472,9 +497,9 @@ makeNtuple::makeNtuple(int ac, char** av)
     std::string outputDirectory(av[3]);
     std::string outputFileName;
     if (nJob==-1){
-	outputFileName = outputDirectory + "/" + sampleType+"_"+year+"_Ntuple.root";
+	outputFileName = outputDirectory + "/" + sampleType+"_Ntuple.root";
     } else {
-	outputFileName = outputDirectory + "/" + sampleType+"_"+year+"_Ntuple_"+to_string(nJob)+"of"+to_string(totJob)+".root";
+	outputFileName = outputDirectory + "/" + sampleType+"_Ntuple_"+to_string(nJob)+"of"+to_string(totJob)+".root";
     }
     // char outputFileName[100];
     cout << av[3] << " " << sampleType << " " << systematicType << endl;
@@ -492,26 +517,17 @@ makeNtuple::makeNtuple(int ac, char** av)
 	jecvar = new JECvariation(jesFiles[year], isMC, JECsystLevel);
     }
 
-    double luminosity = 1.;
-    //if (year=="2016") luminosity=35921.875595;
-    if (year=="2016PreVFP") luminosity=19.695422959;
-    if (year=="2016PostVFP") luminosity=16.226452636;
-    if (year=="2017") luminosity=41529.548819;
-    if (year=="2018") luminosity=59740.565202;
-
     double nMC_total = 0.;
     char** fileNames = av+4;
     for(int fileI=0; fileI<ac-4; fileI++){
         TFile *_file = TFile::Open(fileNames[fileI],"read");
         TH1D *hEvents = (TH1D*) _file->Get("hEvents");
-        double nMC_thisFile = 0.;
-        nMC_thisFile = (hEvents->GetBinContent(2)); //sum of gen weights
-        nMC_total += nMC_thisFile;
+        nMC_total += (hEvents->GetBinContent(2)); 
     }
     if (nMC_total==0){
-	nMC_total=1;
+	    nMC_total=1;
     }
-    _lumiWeight = getEvtWeight(sampleType, std::stoi(year), luminosity, nMC_total);
+    _lumiWeight = getEvtWeight(sampleType, lumiValues[year], nMC_total);
     Long64_t nEntr = tree->GetEntries();
     bool saveAllEntries = false;
     if (sampleType=="Test") {
@@ -524,7 +540,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 	if (nEntr > 1000) nEntr = 10;
 	saveAllEntries = true;
     }
-    nEntr = 100000;
+    //nEntr = 100000;
 
     int dumpFreq = 1;
     if (nEntr >50)     { dumpFreq = 5; }
@@ -556,12 +572,17 @@ makeNtuple::makeNtuple(int ac, char** av)
 	    entryStop = nEntr;
 	}
     }
-
+    std::cout<<"nEvents_Skim = "<<entryStop<<endl;
+    std::cout<<"---------------------------"<<std::endl;
+    std::cout<<setw(10)<<"Progress"<<setw(10)<<"Time"<<std::endl;
+    std::cout<<"---------------------------"<<std::endl;
+    double totalTime = 0.0;
     for(Long64_t entry=entryStart; entry<entryStop; entry++){
 	if(entry%dumpFreq == 0){
-	    std::cout << "processing entry " << entry << " out of " << nEntr << " : " 
-		      << std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count()
-		      << " seconds since last progress" << std::endl;
+        totalTime+= std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count();
+        int sec = (int)(totalTime)%60;
+        int min = (int)(totalTime)/60;
+		std::cout<<setw(10)<<100*entry/entryStop<<" %"<<setw(10)<<min<<"m "<<sec<<"s"<<std::endl;
 	    startClock = std::chrono::high_resolution_clock::now();			
 	}
 	//  cout << entry << endl;
@@ -724,8 +745,8 @@ makeNtuple::makeNtuple(int ac, char** av)
 	    if(isMC) {
             vector<double> puWeights; 
             puWeights = puSF->getPuSFs(tree->nPUTrue_, tree->event_==eventNum);
-            _PUweight    = puWeights.at(0); 
-            _PUweight_Do = puWeights.at(1); 
+            _PUweight_Do = puWeights.at(0); 
+            _PUweight    = puWeights.at(1); 
             _PUweight_Up = puWeights.at(2);
 
 		_btagWeight_1a      = getBtagSF_1a("central", reader, tree->event_==eventNum);
@@ -828,6 +849,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
     std:cout << "Total number of HEM events removed from Data  = "<<count_HEM<<std::endl;
     outputFile->cd();
+    std::cout<<"nEvents_Ntuple = "<<outputTree->GetEntries()<<endl;
     outputTree->Write();
    /* 
     TNamed gitCommit("Git_Commit", VERSION);
@@ -874,11 +896,6 @@ void makeNtuple::FillEvent(std::string year){
     _nFatJet         = selector->FatJets.size();
     _nBJet           = selector->bJets.size();
 
-    _nGenPart        = tree->nGenPart_;
-    _nGenJet         = tree->nGenJet_;
-
-    //TODO
-    //        _pdfWeight       = tree->pdfWeight_;	
     double ht = 0.0;
     for( int i_jet = 0; i_jet < _nJet; i_jet++){
 	    ht += tree->jetPt_[i_jet];
@@ -971,9 +988,6 @@ void makeNtuple::FillEvent(std::string year){
 	
     _passPresel_Ele  = evtPick->passPreselEle;
     _passPresel_Mu   = evtPick->passPreselMu;
-    _nPhoBarrel=0.;
-    _nPhoEndcap=0.;
-
     int parentPID = -1;
     phoVectors.clear();
     if (tree->event_==eventNum) {
@@ -990,22 +1004,8 @@ void makeNtuple::FillEvent(std::string year){
         _phoEt.push_back(tree->phoEt_[phoInd]);
         _phoEta.push_back(tree->phoEta_[phoInd]);
         _phoPhi.push_back(tree->phoPhi_[phoInd]);
-        //	_phoSCEta.push_back(tree->phoEta_[phoInd]);
-        
-        _phoR9.push_back(tree->phoR9_[phoInd]);		
-        _phoSIEIE.push_back(tree->phoSIEIE_[phoInd]);
-        _phoHoverE.push_back(tree->phoHoverE_[phoInd]);
-        _phoIsBarrel.push_back( abs(tree->phoEta_[phoInd])<1.47 );
-        
         _phoPFRelIso.push_back( tree->phoPFRelIso_[phoInd]);
-        _phoPFRelChIso.push_back( tree->phoPFRelChIso_[phoInd]);
-        _phoPFChIso.push_back( tree->phoPFRelChIso_[phoInd] * tree->phoEt_[phoInd]);
         
-        if (abs(tree->phoEta_[phoInd])<1.47){
-            _nPhoBarrel++;
-        }else{
-            _nPhoEndcap++;
-        } 
         if (tree->isData_){
             _phoEffWeight.push_back(1.);
             _phoEffWeight_Do.push_back(1.);
@@ -1090,27 +1090,25 @@ void makeNtuple::FillEvent(std::string year){
     jetBtagVectors.clear();
     for (int i_fatJet = 0; i_fatJet <_nFatJet; i_fatJet++){
         int fatJetInd = selector->FatJets.at(i_fatJet);
+        int topSFInd = selector->FatJets.at(0);
         //std::cout<<tree->fatJetPt_[fatJetInd]<<std::endl;
         _fatJetPt.push_back(          tree->fatJetPt_[fatJetInd]);
         _fatJetEta.push_back(         tree->fatJetEta_[fatJetInd]);
         _fatJetPhi.push_back(         tree->fatJetPhi_[fatJetInd]);
         _fatJetMass.push_back(        tree->fatJetMass_[fatJetInd]);
         _fatJetMassSoftDrop.push_back(tree->fatJetMassSoftDrop_[fatJetInd]);
-        _fatJetBtagDeepB.push_back(   tree->fatJetBtagDeepB_[fatJetInd]);
-        _fatJetDeepTagT.push_back(    tree->fatJetDeepTagT_[fatJetInd]);
-        _fatJetDeepTagW.push_back(    tree->fatJetDeepTagW_[fatJetInd]);
-        _fatJetDeepTagMDT.push_back(  tree->fatJetDeepTagMDT_[fatJetInd]);
-        _fatJetDeepTagMDW.push_back(  tree->fatJetDeepTagMDW_[fatJetInd]);
-        _fatJetEleIdx.push_back(      tree->fatJetEleIdx_[fatJetInd]);
-        _fatJetMuIdx.push_back(       tree->fatJetMuIdx_[fatJetInd]);
-        _fatJetGenJetAK8Idx.push_back(tree->fatJetGenJetAK8Idx_[fatJetInd]);
-        _fatJetHadFlvr.push_back(     tree->fatJetHadFlvr_[fatJetInd]);
-        _fatJetID.push_back(          tree->fatJetID_[fatJetInd]);
         fatJetVector.SetPtEtaPhiM(tree->fatJetPt_[fatJetInd], 
                 tree->fatJetEta_[fatJetInd], 
                 tree->fatJetPhi_[fatJetInd], 
                 tree->fatJetMass_[fatJetInd]);
         fatJetVectors.push_back(fatJetVector);
+	    if(isMC) {
+            vector<double> TopWeights; 
+            TopWeights = topSF->getTopSFs(year,tree->fatJetPt_[topSFInd], tree->event_==eventNum);
+            _TopWeight_Do = TopWeights.at(0); 
+            _TopWeight    = TopWeights.at(1); 
+            _TopWeight_Up = TopWeights.at(2);
+        }
     }
     for (int i_jet = 0; i_jet <_nJet; i_jet++){
         int jetInd = selector->Jets.at(i_jet);
@@ -1286,8 +1284,6 @@ void makeNtuple::FillEvent(std::string year){
     }
     if(jetVectors.size()>0){
         _Reco_angle_leadJet_met = jetVectors.at(0).Angle(METVector.Vect()); 
-        _Reco_ratio_leadJetPt_met = jetVectors.at(0).Pt()/_pfMET;
-        _Reco_ratio_leadJetPt_ht = jetVectors.at(0).Pt()/_HT;
     }
     //std::cout<<"------------"<<std::endl;
     //std::cout<<"_nBJet = " << _nBJet<<std::endl;
@@ -1367,25 +1363,6 @@ void makeNtuple::FillEvent(std::string year){
         }
 
     }
-    /*
-    for (int i_mc = 0; i_mc <_nGenPart; i_mc++){
-	_genPt.push_back(tree->GenPart_pt_[i_mc]);
-	_genPhi.push_back(tree->GenPart_phi_[i_mc]);
-	_genEta.push_back(tree->GenPart_eta_[i_mc]);
-	_genMass.push_back(tree->GenPart_mass_[i_mc]);
-	_genStatus.push_back(tree->GenPart_status_[i_mc]);
-	_genStatusFlag.push_back(tree->GenPart_statusFlags_[i_mc]);
-	_genPDGID.push_back(tree->GenPart_pdgId_[i_mc]);
-	_genMomIdx.push_back(tree->GenPart_genPartIdxMother_[i_mc]);
-    }
-
-    for (int i_genJet = 0; i_genJet < _nGenJet; i_genJet++){
-	_genJetPt.push_back(tree->GenJet_pt_[i_genJet]);
-	_genJetEta.push_back(tree->GenJet_eta_[i_genJet]);
-	_genJetPhi.push_back(tree->GenJet_phi_[i_genJet]);
-	_genJetMass.push_back(tree->GenJet_mass_[i_genJet]);
-    }
-    */
 }
 
 // https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopPtReweighting

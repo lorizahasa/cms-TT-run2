@@ -19,6 +19,7 @@ Selector::Selector(){
     btag_cut = 0.8484;  
     // DeepCSV
     btag_cut_DeepCSV = 0.6324;  
+    topTagWP = 0.74;
 
     // whether to invert lepton requirements for 
     QCDselect = false;
@@ -30,6 +31,7 @@ Selector::Selector(){
     smearEle = true;
     scaleEle = true;
     scalePho = true;
+    isSignal = false;
 
 }
 
@@ -97,6 +99,7 @@ void Selector::filter_muons(){
         bool looseMuonID = tree->muIsPFMuon_[m] && 
             (tree->muIsTracker_[m] || tree->muIsGlobal_[m]);
         bool passPromptID = tree->muHighPurity_[m] && (int)tree->muHighPtId_[m]==2;
+        if(isSignal) passPromptID = (int)tree->muHighPtId_[m]==2;//FIXME for UL signals
         //highPtID has IP cuts too:
         bool passPrompt = (pt >= 55.0 &&
         		  TMath::Abs(eta) <= 2.4 &&
@@ -198,12 +201,11 @@ void Selector::filter_jets(){
         double pt = tree->jetPt_[jetInd];
         double eta = tree->jetEta_[jetInd];
         double phi = tree->jetPhi_[jetInd];
-        //tight ID for 2016 (bit 0), tightLeptVeto for 2017 (bit 1)
-        int jetID_cutBit = 1;
-        if (year=="2016"){ jetID_cutBit = 0; }
-        //bool jetID_pass = (tree->jetID_[jetInd]>>0 & 1 && looseJetID) || (tree->jetID_[jetInd]>>jetID_cutBit & 1);
-        bool jetID_pass = (tree->jetID_[jetInd] & 2)==2;
-
+        //https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVUL
+        //https://twiki.cern.ch/twiki/bin/viewauth/CMS/PileupJetIDUL
+        //puID to be applied later on
+        //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ;
+        bool jetID_pass = tree->jetID_[jetInd]>=2; 
         double resolution = 0.;
         double jetSmear = 1.;
         if (!tree->isData_){
@@ -307,8 +309,7 @@ void Selector::filter_jets(){
 }
 
 //https://cms-nanoaod-integration.web.cern.ch/integration/master-102X/mc102X_doc.html
-//for 2016: id = 0, 1, 3 (1=loose, 2=tight, 3=tightLepVeto)
-//for 2017,18, id = 0, 2, 6
+//https://indico.cern.ch/event/1152827/contributions/4840404/attachments/2428856/4162159/ParticleNet_SFs_ULNanoV9_JMAR_25April2022_PK.pdf
 void Selector::filter_fatjets(){
     if (tree->event_==printEvent){
         cout << endl;
@@ -321,8 +322,10 @@ void Selector::filter_fatjets(){
         double phi = tree->fatJetPhi_[jetInd];
         Int_t id   = tree->fatJetID_[jetInd];
         Float_t mSD = tree->fatJetMassSoftDrop_[jetInd];
-        Float_t TvsQCD = tree->fatJetDeepTagT_[jetInd];
-        bool isId  = id >=1 || id >=2;
+        //Float_t TvsQCD = tree->fatJetDeepTagT_[jetInd];
+        Float_t TvsQCD = tree->fatJetPNET_[jetInd];
+        if(isSignal) TvsQCD = tree->fatJetDeepTagT_[jetInd]; //FIXME for UL signals
+        bool isId  = (id >= 1); 
         double resolution = 0.;
         if (tree->event_==printEvent){
             cout << "------FatJet "<<jetInd<< "------" << endl;
@@ -352,6 +355,7 @@ void Selector::filter_fatjets(){
 	        cout << "  jetSF: "<< jetSF << endl;
 	        cout << "  JetSmear: "<<jetSmear << endl;
             }
+            if(isSignal) jetSmear = 1.0;//FIXME for UL signals
             if (smearJetPt){
 	        pt = pt*jetSmear;
 	        tree->fatJetPt_[jetInd] = pt;
@@ -373,7 +377,8 @@ void Selector::filter_fatjets(){
         bool jetPresel = (pt >= 350.0 
                 && TMath::Abs(eta) <= 2.4 
                 && mSD >=105 && mSD <=210
-                && TvsQCD >= 0.834
+                //&& TvsQCD >= 0.834
+                && TvsQCD >= topTagWP
                 && passDR_lep_jet
                 && passDR_pho_jet
                 && isId);

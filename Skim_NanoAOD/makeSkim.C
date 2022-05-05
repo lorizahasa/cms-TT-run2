@@ -148,7 +148,7 @@ int main(int ac, char** av){
 	}
 
 	TFile* outFile = TFile::Open( outFileName.c_str() ,"RECREATE","",207 );
-	TTree* newTree = tree->chain->CloneTree(0);
+	TTree* newTree = tree->chain->GetTree()->CloneTree(0);
 	newTree->SetCacheSize(50*1024*1024);
 
 	Long64_t nEntr = tree->GetEntries();
@@ -183,8 +183,22 @@ int main(int ac, char** av){
 	if (eventsPerJob >500000) { dumpFreq = 100000; }
 	if (eventsPerJob >5000000){ dumpFreq = 1000000; }
 	
-	TH1D* hEvents_    = new TH1D("hEvents",    "number of events (+/- event weight)",      3,  -1.5, 1.5);
+	TH1D* hEvents_ = new TH1D("hEvents", "#events in NanoAOD", 3, -1.5, 1.5);
+	TH1D* hCut_    = new TH1D("hCutflow", "cutflow of events", 10, 0.5, 10.5);
     double totalTime = 0.0;
+    std::map<std::string, int>cutBins;
+    cutBins["NanoAOD"] = 1;
+    cutBins["LepTrig"] = 2;
+    cutBins["Filters"] = 3;
+    cutBins["g0Lep"]   = 4;
+    cutBins["g0PV"]    = 5;
+    cutBins["g0Jet"]   = 6;
+    cutBins["g15MET"]  = 7;
+    std::map<std::string, int>::iterator itr;
+    std::map<std::string, int>::iterator itr_;
+    for(itr = cutBins.begin(); itr != cutBins.end(); ++itr){
+        hCut_->GetXaxis()->SetBinLabel(itr->second, TString(itr->first));
+    }
     std::cout<<"---------------------------"<<std::endl;
     std::cout<<setw(10)<<"Progress"<<setw(10)<<"Time"<<std::endl;
     std::cout<<"---------------------------"<<std::endl;
@@ -192,20 +206,28 @@ int main(int ac, char** av){
 		if(entry%dumpFreq == 0) {
             //if(entry>1000) break;
             totalTime+= std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count();
-			std::cout<<setw(10)<<100*entry/endEntry<<" %"<<setw(10)<<(int)(totalTime/60)<<" m"<<std::endl;
+            int sec = (int)(totalTime)%60;
+            int min = (int)(totalTime)/60;
+	        std::cout<<setw(10)<<100*entry/endEntry<<" %"<<setw(10)<<min<<"m "<<sec<<"s"<<std::endl;
 			startClock = std::chrono::high_resolution_clock::now();			
 		}
 		tree->GetEntry(entry);
-		hEvents_->Fill(1.);
+		hEvents_->Fill(0.);
 		evtPick->process_event(tree);
+        //fill the cutflow histogram 
+        for(itr_ = cutBins.begin(); itr_ != cutBins.end(); ++itr_){
+            if(evtPick->cutflow[itr_->first]==1){
+                hCut_->Fill(cutBins[itr_->first]);
+            }
+        }
 		if( evtPick->passSkim){
 			newTree->Fill();
 		}
 	}
-    TTree* newT = newTree;
-    //newTree->Write();
-    newT->Write();
+    std::cout<<"nEvents_Skim = "<<newTree->GetEntries()<<endl;
+    newTree->Write();
 	hEvents_->Write();
+	hCut_->Write();
 
     TNamed gitCommit("Git_Commit", VERSION);
     TNamed gitTime("Git_Commit_Time", COMMITTIME);

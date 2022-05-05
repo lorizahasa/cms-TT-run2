@@ -130,6 +130,5 @@ void EventPick::process_event(EventTree* tree, Selector* selector){
     if(passPreselEle && tree->MET_pt_ < MET_cut) { 
         passPreselEle = false;
     }
-
 }
 

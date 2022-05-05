@@ -1,14 +1,15 @@
+import os
+import sys
 import subprocess
 import itertools
-import sys
-import os
-sys.path.insert(0, os.getcwd().replace("Hist_Ntuple/HistMain/sample","Ntuple_Skim/"))
-sys.path.insert(0, os.getcwd().replace("Hist_Ntuple/HistMain/sample","Ntuple_Skim/sample"))
-from Skim_NanoAOD_SplitJobs_cff_danny import Samples_2016, Samples_2017, Samples_2018
+sys.dont_write_bytecode = True
+sys.path.insert(0, os.getcwd().replace("CBA_Ntuple/Hist_Ntuple/HistMain/sample","Ntuple_Skim/"))
+sys.path.insert(0, os.getcwd().replace("CBA_Ntuple/Hist_Ntuple/HistMain/sample","Skim_NanoAOD/sample"))
 from NtupleInputs import *
+from JobsNano_cff import Samples_2016PreVFP, Samples_2016PostVFP,  Samples_2017, Samples_2018 
 
 newSamples = []
-f1 = open('Ntuple_Skim_FileLists_cff_danny.py','w')
+f1 = open('FilesNtuple_cff.py','w')
 allJobs = 0
 
 def returnNotMatches(a, b):
@@ -20,23 +21,22 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
     missingJobs = {}
     jobsDictPerYear = {}
     nJobsPerYear = 0
-    directory = "%s/%s/%s/%s"%(condorNtupleDir, year, decay, syst)
-    year = int(year)
+    directory = "%s/%s/%s/%s"%(outNtupleDir, year, decay, syst)
     fileList = subprocess.Popen('xrdfs root://cmseos.fnal.gov/ ls %s'%(directory),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
     allSamples = []
     for x in fileList:
         if len(x)>1:
             sample = x.split('/')[-1]
-            sType = sample.split('_%i_Ntuple'%year)[0]
+            sType = sample.split('_Ntuple')[0]
             allSamples.append(sType)
     allSamples.sort()
     newSamples = list(set(allSamples))
-    sampleList = eval("Samples_%i"%year)
+    sampleList = eval("Samples_%s"%year)
     for s in newSamples:
         filesPerSample = []
-        line = '%s_FileList_%i'%(s, year)
+        line = '%s_%s__%s_FileList_%s'%(decay, syst, s, year)
         hasAny=False
-        sType = '%s/%s_%i'%(directory, s,year)
+        sType = '%s/%s_Ntuple'%(directory, s)
         sType_ext = '%s/%s_ext'%(directory, s)
         for f in fileList:
             if f.startswith(sType) or f.startswith(sType_ext): 
@@ -57,14 +57,14 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
 
         #check missing jobs
         #print newSamples
-        #print sampleList
-        subJobs = sampleList[s.split("__")[1]]
+        #print(sampleList)
+        subJobs = sampleList[s.split("_Ntuple")[0]][0]
         unFinished = 0
         if nJobsPerSample is not subJobs:
             unFinished = subJobs - nJobsPerSample
             missingJobs[s] = subJobs-nJobsPerSample
         print("%i\t %i\t %i\t %s"%(subJobs, nJobsPerSample, unFinished , s))
-    print ("Year = %i, nJobs = %i"%(year, nJobsPerYear))
+    print ("Year = %s, nJobs = %i"%(year, nJobsPerYear))
     print "Missing jobs:", missingJobs
     #print returnNotMatches(sampleList, newSamples)
     print len(returnNotMatches(sampleList, newSamples)[0])

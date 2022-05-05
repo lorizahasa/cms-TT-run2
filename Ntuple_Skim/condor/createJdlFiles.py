@@ -1,11 +1,13 @@
-import itertools
 import os
 import sys
+import itertools
+sys.dont_write_bytecode = True
 
 #IMPORT MODULES FROM OTHER DIR
+sys.path.insert(0, os.getcwd().replace("condor",""))
 sys.path.insert(0, os.getcwd().replace("Ntuple_Skim/condor","Skim_NanoAOD/sample"))
-from NanoAOD_Gen_SplitJobs_cff import Samples_2016, Samples_2017, Samples_2018 
-#from NanoAOD_Gen_SplitJobs_cff import Samples_2016
+from NtupleInputs import *
+from JobsNano_cff import Samples_2016PreVFP, Samples_2016PostVFP,  Samples_2017, Samples_2018 
 
 if not os.path.exists("tmpSub/log"):
     os.makedirs("tmpSub/log")
@@ -24,30 +26,31 @@ use_x509userproxy = true\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\
 Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
-
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
 subFile = open('tmpSub/condorSubmit.sh','w')
-for year in [2016,2017,2018]:
-#for year in [2016]:
-    sampleList = eval("Samples_%i"%year)
+for year in Years:
+    sampleList = eval("Samples_%s"%year)
     jdlName = 'submitJobs_%s.jdl'%(year)
     jdlFile = open('tmpSub/%s'%jdlName,'w')
     jdlFile.write('Executable =  runMakeNtuple.sh \n')
     jdlFile.write(common_command)
-    condorOutDir="/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
-    os.system("eos root://cmseos.fnal.gov mkdir -p %s/%s"%(condorOutDir, year))
-    jdlFile.write("X=$(step)+1\n")
-    
-    for sampleName, nJob in sampleList.items():
-        if nJob==1:
-            run_command =  'Arguments  = %s %s \nQueue 1\n\n' %(year, sampleName)
-        else:
-            run_command =  'Arguments  = %s %s $INT(X) %i\nQueue %i\n\n' %(year, sampleName, nJob, nJob)
-	jdlFile.write(run_command)
-    
-	#print "condor_submit jdl/%s"%jdlFile
+    for decay, syst in itertools.product(Decays, Systs):
+        outDir = "%s/%s/%s/%s"%(outNtupleDir, year, decay, syst)
+        os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
+        jdlFile.write("X=$(step)+1\n")
+        for sampleName, fEvt in sampleList.items():
+            nJob = fEvt[0]
+            if nJob==1:
+                jdl =  'Arguments  = %s %s %s %s %s \nQueue 1\n\n' %(year, decay, syst, sampleName, outDir)
+            else:
+                jdl =  'Arguments  = %s %s %s %s %s $INT(X) %i\nQueue %i\n\n' %(year, decay, syst, sampleName, outDir, nJob, nJob)
+            if "Data" in sampleName and ("up" in syst or "down" in syst):
+                continue
+            jdlFile.write(jdl)
+    #print "condor_submit jdl/%s"%jdlFile
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
 subFile.close()
+print("OutputDir: /eos/uscms/%s"%outNtupleDir)

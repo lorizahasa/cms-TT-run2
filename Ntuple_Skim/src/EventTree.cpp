@@ -218,6 +218,9 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("FatJet_deepTag_TvsQCD",1);
     chain->SetBranchAddress("FatJet_deepTag_TvsQCD", &fatJetDeepTagT_);
 
+    chain->SetBranchStatus("FatJet_particleNet_TvsQCD",1);
+    chain->SetBranchAddress("FatJet_particleNet_TvsQCD", &fatJetPNET_);
+
 
     if (!isData_){
         chain->SetBranchStatus("FatJet_genJetAK8Idx",1);

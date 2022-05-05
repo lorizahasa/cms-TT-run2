@@ -17,13 +17,8 @@ public:
 	void process_event(EventTree* inp_tree);
 	std::string title;
 	std::string year;
-	// variables showing passing or failing selections
+    std::map <std::string, int>cutflow;
 	bool passSkim;
-	bool passPresel_ele; // passed preselection
-	bool passAll_ele; // single flag: event passed all cuts: preselection + photon
-	bool passPresel_mu; // passed preselection
-	bool passAll_mu; // single flag: event passed all cuts: preselection + photon
-
 private:
 	EventTree* tree;
 };

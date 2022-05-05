@@ -65,12 +65,27 @@ void EventPick::process_event(EventTree* tree){
     bool zeroLep = (tree->nMu_ == 0) && (tree->nEle_ ==0);
     
     //Apply above selections along with additional cuts on PV, nJet, and MET
-    passSkim = 
-        (passTrigEle || passTrigMu) && 
-        filters && 
-        !zeroLep && 
-        tree->nGoodVtx_>0 &&
-        tree->nJet_>0 &&
-        tree->MET_pt_>15;
-}
+    cutflow["NanoAOD"] = 1;
+    cutflow["LepTrig"] = 0;
+    cutflow["Filters"] = 0;
+    cutflow["g0Lep"]   = 0;
+    cutflow["g0PV"]    = 0;
+    cutflow["g0Jet"]   = 0;
+    cutflow["g15MET"]  = 0;
 
+    if(passTrigEle || passTrigMu){
+    cutflow["LepTrig"] = 1;
+    if(filters){
+    cutflow["Filters"] = 1;
+    if(!zeroLep){
+    cutflow["g0Lep"] = 1;
+    if(tree->nGoodVtx_>0){ 
+    cutflow["g0PV"] = 1;
+    if(tree->nJet_>0){ 
+    cutflow["g0Jet"] = 1;
+    if(tree->MET_pt_ > 15){ 
+    cutflow["g15MET"] = 1;
+    passSkim = true;
+    }}}}}}
+    
+}

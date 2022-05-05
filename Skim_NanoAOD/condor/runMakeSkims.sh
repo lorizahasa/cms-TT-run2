@@ -23,9 +23,9 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-outDir=$1
-year=$2
-sample=$3
+year=$1
+sample=$2
+outDir=$3
 job=$4
 nJobTotal=$5
 varname=${sample}_FileList_${year}
@@ -45,7 +45,7 @@ printf "Done Histogramming at ";/bin/date
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
-    xrdcp -f ${sample}_Skim*.root root://cmseos.fnal.gov/${outDir}/${year}
+    xrdcp -f ${sample}_Skim*.root root://cmseos.fnal.gov/${outDir}
     echo "Cleanup"
     rm -rf CMSSW_10_2_13
     rm *.root

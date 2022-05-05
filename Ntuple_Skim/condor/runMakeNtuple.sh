@@ -5,10 +5,11 @@ myArray=( "$@" )
 #Array: Size=$#, an element=$1, all element = $@
 year=$1
 decay=$2
-sample=$3
-syst=$4
-job=$5
-nJobTotal=$6
+syst=$3
+sample=$4
+outDir=$5
+job=$6
+nJobTotal=$7
 
 printf "Start Running Histogramming at ";/bin/date
 printf "Worker node hostname ";/bin/hostname
@@ -31,8 +32,7 @@ echo "All arguements: "$@
 echo "Number of arguements: "$#
 varname=${sample}_FileList_${year}
 cd sample
-#source Skim_NanoAOD_FileLists_cff.sh 
-source Skim_NanoAOD_FileLists_cff_danny.sh 
+source FilesSkim_cff.sh 
 cd -
 if [ -z $job ] ; then
     jobNum=""
@@ -46,11 +46,10 @@ printf "Done Histogramming at ";/bin/date
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
-condorOutDir=/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim/${year}/${decay}/${syst}
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
-    xrdcp -f ${decay}_${syst}__${sample}*.root root://cmseos.fnal.gov/${condorOutDir}/
+    xrdcp -f ${sample}*.root root://cmseos.fnal.gov/${outDir}
     echo "Cleanup"
     rm -rf CMSSW_10_2_14
     rm *.root

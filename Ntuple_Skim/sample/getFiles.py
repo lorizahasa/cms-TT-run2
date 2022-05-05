@@ -20,8 +20,10 @@ for year in Years:
     line = ""
     sampleList = eval("Samples_%s"%year)
     skimFiles.write("eosDirSkim=root://cmseos.fnal.gov/%s\n"%outSkimDir)
+    allJobs = 0
     for sampleName, fEvt in sampleList.items():
         nJob = fEvt[0]
+        allJobs+=nJob
         line += '%s_FileList_%s="'%(sampleName,year)
         extraArgs = "%s_Skim*.root"%sampleName
         fileList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s/%s/%s'%(outSkimDir, year, extraArgs),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
@@ -34,6 +36,7 @@ for year in Years:
         if nFiles is not nJob:
             missingJobs[sampleName] = nJob -nFiles
     skimFiles.write(line.encode('ascii'))
+    print "All jobs: ", allJobs 
     print "Missing jobs:", missingJobs
 skimFiles.close()
 

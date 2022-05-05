@@ -93,28 +93,28 @@ void initCrossSections(){
     //--------------------------
     //Product fo XS and filter eff from table at:
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns//QCD
-    crossSections["QCD_Pt20to30_Mu"]    = {2960198.4   };
-    crossSections["QCD_Pt30to50_Mu"]    = {1652471.46  };
-    crossSections["QCD_Pt50to80_Mu"]    = { 437504.1   };
-    crossSections["QCD_Pt80to120_Mu"]   = { 106033.6648};
-    crossSections["QCD_Pt120to170_Mu"]  = {  25190.5151};
-    crossSections["QCD_Pt170to300_Mu"]  = {   8654.4932};
-    crossSections["QCD_Pt300to470_Mu"]  = {    797.3527};
-    crossSections["QCD_Pt470to600_Mu"]  = {     79.0255};
-    crossSections["QCD_Pt600to800_Mu"]  = {     25.0951};
-    crossSections["QCD_Pt800to1000_Mu"] = {      4.7074};
-    crossSections["QCD_Pt1000toInf_Mu"] = {      1.6213};
+    crossSections["QCD_Pt20To30_Mu"]    = {2960198.4   };
+    crossSections["QCD_Pt30To50_Mu"]    = {1652471.46  };
+    crossSections["QCD_Pt50To80_Mu"]    = { 437504.1   };
+    crossSections["QCD_Pt80To120_Mu"]   = { 106033.6648};
+    crossSections["QCD_Pt120To170_Mu"]  = {  25190.5151};
+    crossSections["QCD_Pt170To300_Mu"]  = {   8654.4932};
+    crossSections["QCD_Pt300To470_Mu"]  = {    797.3527};
+    crossSections["QCD_Pt470To600_Mu"]  = {     79.0255};
+    crossSections["QCD_Pt600To800_Mu"]  = {     25.0951};
+    crossSections["QCD_Pt800To1000_Mu"] = {      4.7074};
+    crossSections["QCD_Pt1000ToInf_Mu"] = {      1.6213};
 
     //--------------------------
     //QCD ele
     //--------------------------
-    crossSections["QCD_Pt20to30_Ele"]   = {5352960.};
-    crossSections["QCD_Pt30to50_Ele"]   = {9928000.};
-    crossSections["QCD_Pt50to80_Ele"]   = {2890800.};
-    crossSections["QCD_Pt80to120_Ele"]  = { 350000.};
-    crossSections["QCD_Pt120to170_Ele"] = {  62964.};
-    crossSections["QCD_Pt170to300_Ele"] = {  18810.};
-    crossSections["QCD_Pt300toInf_Ele"] = {   1350.};
+    crossSections["QCD_Pt20To30_Ele"]   = {5352960.};
+    crossSections["QCD_Pt30To50_Ele"]   = {9928000.};
+    crossSections["QCD_Pt50To80_Ele"]   = {2890800.};
+    crossSections["QCD_Pt80To120_Ele"]  = { 350000.};
+    crossSections["QCD_Pt120To170_Ele"] = {  62964.};
+    crossSections["QCD_Pt170To300_Ele"] = {  18810.};
+    crossSections["QCD_Pt300ToInf_Ele"] = {   1350.};
 
     //--------------------------
     // W/Z + y
@@ -141,7 +141,7 @@ void initCrossSections(){
     return;
 }
 
-double getEvtWeight(string sampleType, int year, double luminosity, double nEvents_MC){
+double getEvtWeight(string sampleType, double luminosity, double nEvents_MC){
     double evtWeight = -1.;
     if( sampleType.substr(0,4)=="Data") {evtWeight = 1.;}
     else if( sampleType=="Test") {evtWeight = 1.;}
@@ -164,7 +164,7 @@ double getEvtWeight(string sampleType, int year, double luminosity, double nEven
     cout << "Using event weight " << evtWeight << endl;
     cout << "XS = " << evtWeight/luminosity*nEvents_MC << endl;
     cout << "lumi = " << luminosity << endl;
-    cout << "nEvents_MC = " << nEvents_MC << endl;
+    cout << "nEvents_NanoAOD = " << nEvents_MC << endl;
     
     return evtWeight;
 }

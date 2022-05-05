@@ -158,66 +158,15 @@ class EventTree{
     Float_t         fatJetMass_[200];
     Float_t         fatJetMassSoftDrop_[200];
     Int_t           fatJetID_[200];
-    Float_t         fatJetBtagDeepB_[200];
     Float_t         fatJetDeepTagT_[200];
     Float_t         fatJetDeepTagW_[200];
     Float_t         fatJetDeepTagMDT_[200];
     Float_t         fatJetDeepTagMDW_[200];
+    Float_t         fatJetPNET_[200];
     Int_t           fatJetHadFlvr_[200];
     Float_t         fatJetEleIdx_[200];
     Float_t         fatJetMuIdx_[200];
     Int_t           fatJetGenJetAK8Idx_[200];
-
-    //Muon trigger
-    Bool_t   HLT_Mu50_;
-    Bool_t   HLT_TkMu50_;
-    Bool_t   HLT_OldMu100_;
-    Bool_t   HLT_TkMu100_;
-
-    Bool_t   HLT_Ele27_WPTight_Gsf_;
-    Bool_t   HLT_Ele35_WPTight_Gsf_;
-    Bool_t   HLT_Ele32_WPTight_Gsf_;
-    Bool_t   HLT_Ele115_CaloIdVT_GsfTrkIdT_;
-    Bool_t   HLT_Photon175_;
-    Bool_t   HLT_Photon200_;
-    
-    Bool_t   L1_SingleEG24_;
-    Bool_t   L1_SingleEG26_;
-    Bool_t   L1_SingleEG30_;
-    Bool_t   L1_SingleEG32_;
-    Bool_t   L1_SingleEG34_;
-    Bool_t   L1_SingleEG36_;
-    Bool_t   L1_SingleEG38_;
-    Bool_t   L1_SingleEG40_;
-    Bool_t   L1_SingleEG42_;
-    Bool_t   L1_SingleEG45_;
-    Bool_t   L1_SingleEG50_;
-    Bool_t   L1_SingleEG34er2p1_;
-    Bool_t   L1_SingleEG36er2p1_;
-    Bool_t   L1_SingleEG38er2p1_;
-    Bool_t   L1_SingleIsoEG24er2p1_;
-    Bool_t   L1_SingleIsoEG26er2p1_;
-    Bool_t   L1_SingleIsoEG28er2p1_;
-    Bool_t   L1_SingleIsoEG30er2p1_;
-    Bool_t   L1_SingleIsoEG32er2p1_;
-    Bool_t   L1_SingleIsoEG34er2p1_;
-    Bool_t   L1_SingleIsoEG36er2p1_;
-    Bool_t   L1_SingleIsoEG24_;
-    Bool_t   L1_SingleIsoEG26_;
-    Bool_t   L1_SingleIsoEG28_;
-    Bool_t   L1_SingleIsoEG30_;
-    Bool_t   L1_SingleIsoEG32_;
-    Bool_t   L1_SingleIsoEG34_;
-    Bool_t   L1_SingleIsoEG36_;
-    Bool_t   L1_SingleIsoEG38_;
-
-    Bool_t   Flag_goodVertices_ ;
-    Bool_t   Flag_globalSuperTightHalo2016Filter_ ;
-    Bool_t   Flag_HBHENoiseFilter_ ;
-    Bool_t   Flag_HBHENoiseIsoFilter_ ;
-    Bool_t   Flag_EcalDeadCellTriggerPrimitiveFilter_ ;
-    Bool_t   Flag_BadPFMuonFilter_ ;
-    Bool_t   Flag_ecalBadCalibFilterV2_ ;
     Float_t  rho_;
     
 
