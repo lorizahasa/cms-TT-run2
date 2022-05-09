@@ -43,13 +43,11 @@ for year in Years:
     
     for sampleName, nJobEvt in samples.items():
         nJob = nJobEvt[0]
-        if nJob==1:
-            run_command =  'Arguments  = %s %s %s \nQueue 1\n\n' %(year, sampleName, outDir)
-        else:
-            run_command =  'Arguments  = %s %s %s $INT(X) %i\nQueue %i\n\n' %(year, sampleName, outDir, nJob, nJob)
-	jdlFile.write(run_command)
+        args =  'Arguments  = %s %s $INT(X) %i %s\n' %(year, sampleName, nJob, outDir)
+        args += "Queue %i\n\n"%nJob
+        jdlFile.write(args)
     
-	#print "condor_submit jdl/%s"%jdlFile
     subFile.write("condor_submit %s\n"%jdlName)
+	#print "condor_submit jdl/%s"%jdlFile
     jdlFile.close() 
 subFile.close()

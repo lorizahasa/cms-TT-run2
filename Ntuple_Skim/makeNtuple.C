@@ -1389,7 +1389,17 @@ double makeNtuple::topPtWeight(){
 }
 
 void makeNtuple::loadBtagEff(string sampleName, string year){
-    std::string fName = "weight/BtagSF/btag_efficiencies_"+year+".root";
+    //--------------------------
+    //btag efficiency files
+    //--------------------------
+    std::map<std::string, string> btagFiles;
+    string comBtag = "weight/BtagSF/btag_efficiencies_"; 
+    btagFiles["2016PreVFP"]  = comBtag+"2016.root";
+    btagFiles["2016PostVFP"] = comBtag+"2016.root";
+    btagFiles["2017"]        = comBtag+"2017.root";
+    btagFiles["2018"]        = comBtag+"2018.root";
+    std::string fName = btagFiles[year]; 
+
     std::string effType = "Other";
     if (sampleType.find("TTGamma") != std::string::npos){
 	effType = "Top";

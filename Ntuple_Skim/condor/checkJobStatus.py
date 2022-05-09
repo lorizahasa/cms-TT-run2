@@ -32,12 +32,8 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
     sampleList = eval("Samples_%s"%year)
     for sampleName in sampleList.keys():
         nJob = sampleList[sampleName][0]
-        if nJob>1:
-            for job in range(nJob):
-                rootFile = "%s_Ntuple_%sof%s.root"%(sampleName, job+1, nJob)
-                submittedDict[rootFile] = sampleName
-        else:
-            rootFile = "%s_Ntuple.root"%(sampleName)
+        for job in range(nJob):
+            rootFile = "%s_Ntuple_%sof%s.root"%(sampleName, job+1, nJob)
             submittedDict[rootFile] = sampleName
     print "Total submitted jobs: %s"%len(submittedDict.keys())
 

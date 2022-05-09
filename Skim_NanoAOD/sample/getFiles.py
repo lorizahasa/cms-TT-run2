@@ -62,7 +62,7 @@ for year in Years:
         nFiles = len(fileList.split(" "))
         evt     = getEvents(sample)[0]
         evtStr  = getEvents(sample)[1]
-        evtPerJob = 1e7 #10 million
+        evtPerJob = 5e6 #5 million
         nJob = int(np.ceil(evt/evtPerJob))
         #evt = "NA" 
         splitJobs[sampleName] = [nJob, evtStr]

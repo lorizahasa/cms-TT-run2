@@ -7,9 +7,9 @@ year=$1
 decay=$2
 syst=$3
 sample=$4
-outDir=$5
-job=$6
-nJobTotal=$7
+job=$5
+nJobTotal=$6
+outDir=$7
 
 printf "Start Running Histogramming at ";/bin/date
 printf "Worker node hostname ";/bin/hostname
@@ -24,7 +24,7 @@ else
     cd CMSSW_10_2_14/src
     eval `scramv1 runtime -sh`
     cd ../..
-	tar --strip-components=1 -zxvf Ntuple_Skim.tar.gz
+	tar --strip-components=1 -zxf Ntuple_Skim.tar.gz
 fi
 
 #Run for Base, Signal region
@@ -34,11 +34,7 @@ varname=${sample}_FileList_${year}
 cd sample
 source FilesSkim_cff.sh 
 cd -
-if [ -z $job ] ; then
-    jobNum=""
-else
-    jobNum=" ${job}of${nJobTotal}"
-fi
+jobNum=" ${job}of${nJobTotal}"
 echo "./makeNtuple ${decay} ${year} ${sample}__${syst} ${jobNum} . ${!varname}"
 ./makeNtuple ${decay} ${year} ${sample}__${syst} ${jobNum} . ${!varname}
 

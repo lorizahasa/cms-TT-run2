@@ -175,14 +175,6 @@ int main(int ac, char** av){
 	    }
 	}
 	cout << "Processing events "<<startEntry<< " to " << endEntry << endl;
-	    
-
-	int dumpFreq = 100;
-	if (eventsPerJob >5000)   { dumpFreq = 1000; }
-	if (eventsPerJob >50000)  { dumpFreq = 10000; }
-	if (eventsPerJob >500000) { dumpFreq = 100000; }
-	if (eventsPerJob >5000000){ dumpFreq = 1000000; }
-	
 	TH1D* hEvents_ = new TH1D("hEvents", "#events in NanoAOD", 3, -1.5, 1.5);
 	TH1D* hCut_    = new TH1D("hCutflow", "cutflow of events", 10, 0.5, 10.5);
     double totalTime = 0.0;
@@ -203,8 +195,8 @@ int main(int ac, char** av){
     std::cout<<setw(10)<<"Progress"<<setw(10)<<"Time"<<std::endl;
     std::cout<<"---------------------------"<<std::endl;
 	for(Long64_t entry= startEntry; entry < endEntry; entry++){
-		if(entry%dumpFreq == 0) {
-            //if(entry>1000) break;
+        //if(entry>100000) break;; 
+		if(entry%(eventsPerJob/100) == 0){// print after every 1% of events
             totalTime+= std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count();
             int sec = (int)(totalTime)%60;
             int min = (int)(totalTime)/60;

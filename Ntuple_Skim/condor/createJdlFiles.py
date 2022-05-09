@@ -42,13 +42,11 @@ for year in Years:
         jdlFile.write("X=$(step)+1\n")
         for sampleName, fEvt in sampleList.items():
             nJob = fEvt[0]
-            if nJob==1:
-                jdl =  'Arguments  = %s %s %s %s %s \nQueue 1\n\n' %(year, decay, syst, sampleName, outDir)
-            else:
-                jdl =  'Arguments  = %s %s %s %s %s $INT(X) %i\nQueue %i\n\n' %(year, decay, syst, sampleName, outDir, nJob, nJob)
+            args =  'Arguments  = %s %s %s %s $INT(X) %i %s\n' %(year, decay, syst, sampleName, nJob, outDir)
+            args += "Queue %i\n\n"%nJob
             if "Data" in sampleName and ("up" in syst or "down" in syst):
                 continue
-            jdlFile.write(jdl)
+            jdlFile.write(args)
     #print "condor_submit jdl/%s"%jdlFile
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
