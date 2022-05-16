@@ -116,16 +116,35 @@ makeNtuple::makeNtuple(int ac, char** av)
 	ac = ac-1;
     }
     cout << nJob << " of " << totJob << endl;
+    bool splitByEvents = false;
+    int nFiles = ac-4;                                                          
+    int startFile = 0;                                                          
+    if (nJob>0 && totJob>1){                                                    
+        if (ac-4 >= totJob){                                                    
+        double filesPerJob = 1.*(ac-4)/totJob;                                  
+        cout << "Processing " << filesPerJob << " files per job on average" << endl;
+        startFile = int((nJob-1)*filesPerJob);                                  
+        nFiles = int(nJob*filesPerJob) - startFile;                             
+        cout << "   total of " << (ac-4) << " files" << endl;                   
+        cout << "   this job will process files " << startFile << " to " << startFile+nFiles << endl;
+        } else {                                                                
+        splitByEvents = true;                                                   
+        }                                                                       
+                                                                                
+    }                                                                           
+    char** fileList(av+4+startFile);                                            
+    cout << "HERE" << endl;          
+
     sampleType = av[2];
     systematicType = "";
-    cout << sampleType << endl;
-
+    cout << "Sample = "<<sampleType << endl;
     isMC = true;
     if (sampleType.find("Data") != std::string::npos){
 	isMC = false;
     }
+
     std::string year(av[1]);
-    tree = new EventTree(ac-4, false, year, !isMC, av+4);
+    tree = new EventTree(nFiles, false, year, !isMC, fileList);
     isSystematicRun = false;
     pos = sampleType.find("__");
     if (pos != std::string::npos){
@@ -349,6 +368,9 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (sampleType.find("Signal") != std::string::npos){
 	selector->isSignal = true;
     }
+    if (sampleType.find("QCD") != std::string::npos){
+	selector->isQCD = true;
+    }
     selector->btag_cut_DeepCSV = deepCSVWPs[year]; 
     selector->topTagWP = topTagWPs[year];
     if (isMC){
@@ -540,163 +562,139 @@ makeNtuple::makeNtuple(int ac, char** av)
 	if (nEntr > 1000) nEntr = 10;
 	saveAllEntries = true;
     }
-    //nEntr = 100000;
 
-    int dumpFreq = 1;
-    if (nEntr >50)     { dumpFreq = 5; }
-    if (nEntr >100)     { dumpFreq = 10; }
-    if (nEntr >500)     { dumpFreq = 50; }
-    if (nEntr >1000)    { dumpFreq = 100; }
-    if (nEntr >5000)    { dumpFreq = 500; }
-    if (nEntr >10000)   { dumpFreq = 1000; }
-    if (nEntr >50000)   { dumpFreq = 5000; }
-    if (nEntr >100000)  { dumpFreq = 10000; }
-    if (nEntr >500000)  { dumpFreq = 50000; }
-    if (nEntr >1000000) { dumpFreq = 100000; }
-    if (nEntr >5000000) { dumpFreq = 500000; }
-    if (nEntr >10000000){ dumpFreq = 1000000; }
     int count_overlap=0;
     int count_HEM=0;
 
-    int entryStart;
-    int entryStop;
-    if (nJob==-1){
-	entryStart = 0;
-	entryStop=nEntr;
-    }
-    else {
-	int evtPerJob = nEntr/totJob;
-	entryStart = (nJob-1) * evtPerJob;
-	entryStop = (nJob) * evtPerJob;
-	if (nJob==totJob){
-	    entryStop = nEntr;
-	}
-    }
-    std::cout<<"nEvents_Skim = "<<entryStop<<endl;
+    int startEntry = 0;                                                         
+    int endEntry = nEntr;                                                       
+    int eventsPerJob = nEntr;                                                   
+                                                                                
+    if (splitByEvents) {                                                        
+        eventsPerJob = int(1.*nEntr/totJob);                                    
+        startEntry = (nJob-1)*eventsPerJob;                                     
+        endEntry = nJob*eventsPerJob;                                           
+        if (nJob==totJob){                                                      
+        endEntry=nEntr;                                                         
+        }                                                                       
+    }                                                                           
+    //--------------------------
+    //Event for loop
+    //--------------------------
+    cout << "Processing events "<<startEntry<< " to " << endEntry << endl;
+    std::cout<<"nEvents_Skim = "<<endEntry<<endl;
     std::cout<<"---------------------------"<<std::endl;
     std::cout<<setw(10)<<"Progress"<<setw(10)<<"Time"<<std::endl;
     std::cout<<"---------------------------"<<std::endl;
     double totalTime = 0.0;
-    for(Long64_t entry=entryStart; entry<entryStop; entry++){
-	if(entry%dumpFreq == 0){
-        totalTime+= std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count();
-        int sec = (int)(totalTime)%60;
-        int min = (int)(totalTime)/60;
-		std::cout<<setw(10)<<100*entry/entryStop<<" %"<<setw(10)<<min<<"m "<<sec<<"s"<<std::endl;
-	    startClock = std::chrono::high_resolution_clock::now();			
-	}
-	//  cout << entry << endl;
-	tree->GetEntry(entry);
-	if( isMC && doOverlapInvert_TTG){
-	    //if (!overlapRemovalTT(tree, tree->event_==eventNum)){	
-	    if (!overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){
-		    count_overlap++;			
-		    continue;
-	    }
-        // remove events with LHEPart photon with pt>100 
-        //GeV to avoid double counting with high pt samples
-        if (lowPtTTGamma){
-            for (int lheind = 0; lheind < tree->nLHEPart_; lheind++){
-                if (tree->LHEPart_pdgId_[lheind]==22 && tree->LHEPart_pt_[lheind]>100.){
+    for(Long64_t entry=startEntry; entry<endEntry; entry++){
+        //if(entry>100000) break;;
+        //--------------------------
+        //print event after each 1%
+        //--------------------------
+        bool isPrint = false;
+        if(eventsPerJob > 100){
+            isPrint = (entry%(eventsPerJob/100) == 0);
+        }else{
+            isPrint = true;
+        }
+        if(isPrint){
+            totalTime+= std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count();
+            int sec = (int)(totalTime)%60;
+            int min = (int)(totalTime)/60;
+        	std::cout<<setw(10)<<100*entry/endEntry<<" %"<<setw(10)<<min<<"m "<<sec<<"s"<<std::endl;
+            startClock = std::chrono::high_resolution_clock::now();			
+        }
+        tree->GetEntry(entry);
+
+        //--------------------------
+        //Apply overlap removal
+        //--------------------------
+        if( isMC && doOverlapInvert_TTG){
+            if (!overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){
+        	    count_overlap++;			
+        	    continue;
+            }
+            // remove events with LHEPart photon with pt>100 
+            //GeV to avoid double counting with high pt samples
+            if (lowPtTTGamma){
+                for (int lheind = 0; lheind < tree->nLHEPart_; lheind++){
+                    if (tree->LHEPart_pdgId_[lheind]==22 && tree->LHEPart_pt_[lheind]>100.){
+                        continue;
+                    }
+                }
+            }
+        }
+        if( isMC && doOverlapRemoval_TT){
+            if (!invertOverlap){
+                if (overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){
+                    count_overlap++;			
+                    continue;
+                }
+            } else {
+                if (!overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){
+                    count_overlap++;			
                     continue;
                 }
             }
         }
-	}
 
-	if( isMC && doOverlapRemoval_TT){
-	    // if (overlapRemovalTT(tree, tree->event_==eventNum) != overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){	
-	    // 	cout << "ISSUE WITH OVERLAP REMOVAL" << endl;
-	    // 	cout << "    " << tree->event_ << endl;
-	    // }
-	    if (!invertOverlap){
-		//if (overlapRemovalTT(tree, tree->event_==eventNum)){	
-		if (overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){
-		    count_overlap++;			
-		    continue;
-		}
-	    } else {
-		//if (!overlapRemovalTT(tree, tree->event_==eventNum)){	
-		if (!overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){
-		    count_overlap++;			
-		    continue;
-		}
-	    }
-	}
+        if( isMC && doOverlapRemoval_W){
+            if (overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
+                count_overlap++;
+                continue;
+            }
+        }
+        if( isMC && doOverlapInvert_WG){
+            if (!overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
+        	    count_overlap++;			
+        	    continue;
+            }
+        }
+        if( isMC && doOverlapRemoval_Z){
+            if (overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
+                count_overlap++;
+                continue;
+            }
+        }
+        if( isMC && doOverlapInvert_ZG){
+            if (!overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
+        	    count_overlap++;
+        	    continue;
+            }
+        }
+        if( isMC && doOverlapRemoval_Tchannel){
+            if (overlapRemoval_2To3(tree, 10., 2.6, 0.05, tree->event_==eventNum)){
+        	    count_overlap++;
+        	    continue;
+            }
+        }
+        if( isMC && doOverlapInvert_TG){
+            if (!overlapRemoval_2To3(tree, 10., 2.6, 0.05, tree->event_==eventNum)){
+        	    count_overlap++;
+        	    continue;
+            }
+        }
+        if( isMC && doOverlapInvert_GJ){
+            if (!overlapRemoval(tree, 25., 2.5, 0.4, tree->event_==eventNum)){
+        	    count_overlap++;
+        	    continue;
+            }
+        }
+        if( isMC && doOverlapRemoval_QCD){
+            if (overlapRemoval(tree, 25., 2.5, 0.4, tree->event_==eventNum)){
+        	    count_overlap++;
+        	    continue;
+            }
+        }
 
-	if( isMC && doOverlapRemoval_W){
-	    //if (overlapRemovalWJets(tree, tree->event_==eventNum)){
-	    if (overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
-		count_overlap++;
-		continue;
-	    }
-	}
-
-	if( isMC && doOverlapInvert_WG){
-	    //if (!overlapRemovalWJets(tree, tree->event_==eventNum)){	
-	    if (!overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
-		count_overlap++;			
-		continue;
-	    }
-	}
-	if( isMC && doOverlapRemoval_Z){
-	    //if (overlapRemovalZJets(tree, tree->event_==eventNum)){
-	    if (overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
-		count_overlap++;
-		continue;
-	    }
-	}
-	if( isMC && doOverlapInvert_ZG){
-	    //if (!overlapRemovalZJets(tree, tree->event_==eventNum)){
-	    if (!overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
-		count_overlap++;
-		continue;
-	    }
-	}
-	if( isMC && doOverlapRemoval_Tchannel){
-	    //if (overlapRemoval_Tchannel(tree)){
-	    if (overlapRemoval_2To3(tree, 10., 2.6, 0.05, tree->event_==eventNum)){
-		count_overlap++;
-		continue;
-	    }
-	}
-
-	if( isMC && doOverlapInvert_TG){
-	    //if (!overlapRemoval_Tchannel(tree)){
-	    if (!overlapRemoval_2To3(tree, 10., 2.6, 0.05, tree->event_==eventNum)){
-		count_overlap++;
-		continue;
-	    }
-	}
-
-	if( isMC && doOverlapInvert_GJ){
-	    //if (!overlapRemoval_Tchannel(tree)){
-	    if (!overlapRemoval(tree, 25., 2.5, 0.4, tree->event_==eventNum)){
-		count_overlap++;
-		continue;
-	    }
-	}
-
-	if( isMC && doOverlapRemoval_QCD){
-	    if (overlapRemoval(tree, 25., 2.5, 0.4, tree->event_==eventNum)){
-		count_overlap++;
-		continue;
-	    }
-	}
-
-	// //		Apply systematics shifts where needed
-	if( isMC ){
-	    if (jecvar012_g != 1){
-		jecvar->applyJEC(tree, jecvar012_g); // 0:down, 1:norm, 2:up
-	    }
-	}
-
-	//HEM test 
+        //--------------------------
+        //Apply HEM veto
+        //--------------------------
         _inHEMVeto = false;
-
-	int nHEM_ele=0;
-	bool HEM_ele_Veto=false;
-    	for(int eleInd = 0; eleInd < tree->nEle_; ++eleInd){
+        int nHEM_ele=0;
+        bool HEM_ele_Veto=false;
+        for(int eleInd = 0; eleInd < tree->nEle_; ++eleInd){
             double eta = tree->eleEta_[eleInd];
             double pt = tree->elePt_[eleInd];
             double phi = tree->elePhi_[eleInd];
@@ -704,12 +702,11 @@ makeNtuple::makeNtuple(int ac, char** av)
             bool ele_HEM_eta_pass = eta > -3.0 && eta < -1.4 ;
             bool ele_HEM_phi_pass = phi > -1.57 && phi < -0.87;
             if ( ele_HEM_pt_pass &&  ele_HEM_eta_pass &&  ele_HEM_phi_pass) nHEM_ele++;
-	}
+        }
         HEM_ele_Veto=(nHEM_ele>=1);
-
- 	int nHEM_pho=0;
-    	bool HEM_pho_Veto=false;
-    	for(int phoInd = 0; phoInd < tree->nPho_; ++phoInd){
+        int nHEM_pho=0;
+        bool HEM_pho_Veto=false;
+        for(int phoInd = 0; phoInd < tree->nPho_; ++phoInd){
             double et = tree->phoEt_[phoInd];
             double eta = tree->phoEta_[phoInd];
             double phi = tree->phoPhi_[phoInd];
@@ -717,112 +714,126 @@ makeNtuple::makeNtuple(int ac, char** av)
             bool pho_HEM_et_pass =  et >= 15;
             bool pho_HEM_phi_pass = phi > -1.57  && phi < -0.87 ;
             if (pho_HEM_eta_pass && pho_HEM_phi_pass && pho_HEM_et_pass) {nHEM_pho++ ;}
-	}
+        }
         HEM_pho_Veto= (nHEM_pho>=1);
-
-
         _inHEMVeto=(applyHemVeto && (HEM_pho_Veto || HEM_ele_Veto) && year=="2018");
-
-	if(_isData &&  tree->run_>=319077 && _inHEMVeto){ 
+        if(_isData &&  tree->run_>=319077 && _inHEMVeto){ 
             count_HEM++;
             continue; 
         }
 
-	selector->clear_vectors();
-
-	evtPick->process_event(tree, selector);
-
+        //--------------------------
+        //Process events
+        //--------------------------
+        if( isMC ){
+            if (jecvar012_g != 1){
+        	jecvar->applyJEC(tree, jecvar012_g); // 0:down, 1:norm, 2:up
+            }
+        }
+        selector->clear_vectors();
+        evtPick->process_event(tree, selector);
         if (tree->event_==eventNum){
             cout << "EventSelection:" << endl;
             cout << "  PassPresel e " << evtPick->passPreselEle << endl;
             cout << "  PassPresel mu" << evtPick->passPreselMu<< endl;
         }
-
-	if ( evtPick->passPreselEle || evtPick->passPreselMu || saveAllEntries) {
-	    InitVariables();
-	    FillEvent(year); //HEM test
-
-	    if(isMC) {
-            vector<double> puWeights; 
-            puWeights = puSF->getPuSFs(tree->nPUTrue_, tree->event_==eventNum);
-            _PUweight_Do = puWeights.at(0); 
-            _PUweight    = puWeights.at(1); 
-            _PUweight_Up = puWeights.at(2);
-
-		_btagWeight_1a      = getBtagSF_1a("central", reader, tree->event_==eventNum);
-		_btagWeight_1a_b_Up = getBtagSF_1a("b_up",    reader);
-		_btagWeight_1a_b_Do = getBtagSF_1a("b_down",  reader);
-		_btagWeight_1a_l_Up = getBtagSF_1a("l_up",    reader);
-		_btagWeight_1a_l_Do = getBtagSF_1a("l_down",  reader);
-		if (evtPick->passPreselMu) {
-		    vector<double> muWeights;
-		    vector<double> muWeights_Do;
-		    vector<double> muWeights_Up;    
-		    int muInd_ = selector->Muons.at(0);
-		    muWeights    = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, tree->event_==eventNum);
-			muWeights_Do = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0);
-			muWeights_Up = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2);
-		    _muEffWeight    = muWeights.at(0);
-		    _muEffWeight_Up = muWeights_Up.at(0);
-		    _muEffWeight_Do = muWeights_Do.at(0);
-		    
-		    _muEffWeight_Id    = muWeights.at(1)    ;
-		    _muEffWeight_Id_Up = muWeights_Up.at(1) ;
-		    _muEffWeight_Id_Do = muWeights_Do.at(1) ;
-		    
-            _muEffWeight_Iso    = muWeights.at(2)   ;
-		    _muEffWeight_Iso_Up = muWeights_Up.at(2);
-		    _muEffWeight_Iso_Do = muWeights_Do.at(2);
-            
-            _muEffWeight_Trig    = muWeights.at(3);
-		    _muEffWeight_Trig_Up = muWeights_Up.at(3);
-		    _muEffWeight_Trig_Do = muWeights_Do.at(3);
-		}
-		if (evtPick->passPreselEle) {
-		    int eleInd_ = selector->Electrons.at(0);
-		    vector<double> eleWeights    = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],1, tree->event_==eventNum);
-		    vector<double> eleWeights_Do = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],0);
-		    vector<double> eleWeights_Up = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],2);
-
-
-		    _eleEffWeight    = eleWeights.at(0);
-		    _eleEffWeight_Do = eleWeights_Do.at(0);
-		    _eleEffWeight_Up = eleWeights_Up.at(0);
-
-		    _eleEffWeight_Id    = eleWeights.at(1)   ;
-		    _eleEffWeight_Id_Do = eleWeights_Do.at(1);
-		    _eleEffWeight_Id_Up = eleWeights_Up.at(1);
-
-		    _eleEffWeight_Reco    = eleWeights.at(2)    ;
-		    _eleEffWeight_Reco_Do = eleWeights_Do.at(2) ;
-		    _eleEffWeight_Reco_Up = eleWeights_Up.at(2) ;
-
-		    _eleEffWeight_Trig    = eleWeights.at(3);
-		    _eleEffWeight_Trig_Do = eleWeights_Do.at(3);
-		    _eleEffWeight_Trig_Up = eleWeights_Up.at(3);
-		}
-	    }
-        //https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
-	    if (year=="2016PreVFP" || year=="2016PostVFP" || year=="2017"){
-            _prefireSF_Do   = tree->prefireDn_;
-            _prefireSF      = tree->prefireNom_; 
-            _prefireSF_Up   = tree->prefireUp_; 
-	    }
-
-	    outputTree->Fill();
-	    if (tree->event_==eventNum){
-		cout << "--------------------------------------------" << endl;
-		cout << "Scale Factor Summary" << endl;
-		cout << std::setprecision(10) << "  evtWeight="<<_evtWeight <<  _btagWeight_1a << "  eleEffWeight="<<_eleEffWeight<<"  muEffWeight="<<_muEffWeight;
-		if (_phoEffWeight.size()>0){
-		    cout <<"  phoEffWeight="<<_phoEffWeight.at(0);
-		}
-		cout << "  prefire="<<_prefireSF;
-		cout << "  PUscale="<<_PUweight;
-		cout<<endl;
-	    }
-	}
-    }
+        //--------------------------
+        //Presel for loop
+        //--------------------------
+        if ( evtPick->passPreselEle || evtPick->passPreselMu || saveAllEntries) {
+            InitVariables();
+            FillEvent(year); 
+            //--------------------------
+            //Apply MC weight
+            //--------------------------
+            if(isMC) {
+                vector<double> puWeights; 
+                puWeights = puSF->getPuSFs(tree->nPUTrue_, tree->event_==eventNum);
+                _PUweight_Do = puWeights.at(0); 
+                _PUweight    = puWeights.at(1); 
+                _PUweight_Up = puWeights.at(2);
+        
+                _btagWeight_1a      = getBtagSF_1a("central", reader, tree->event_==eventNum);
+                _btagWeight_1a_b_Up = getBtagSF_1a("b_up",    reader);
+                _btagWeight_1a_b_Do = getBtagSF_1a("b_down",  reader);
+                _btagWeight_1a_l_Up = getBtagSF_1a("l_up",    reader);
+                _btagWeight_1a_l_Do = getBtagSF_1a("l_down",  reader);
+                if (evtPick->passPreselMu) {
+                    vector<double> muWeights;
+                    vector<double> muWeights_Do;
+                    vector<double> muWeights_Up;    
+                    int muInd_ = selector->Muons.at(0);
+                    muWeights    = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, tree->event_==eventNum);
+                	muWeights_Do = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0);
+                	muWeights_Up = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2);
+                    _muEffWeight    = muWeights.at(0);
+                    _muEffWeight_Up = muWeights_Up.at(0);
+                    _muEffWeight_Do = muWeights_Do.at(0);
+                    
+                    _muEffWeight_Id    = muWeights.at(1)    ;
+                    _muEffWeight_Id_Up = muWeights_Up.at(1) ;
+                    _muEffWeight_Id_Do = muWeights_Do.at(1) ;
+                    
+                    _muEffWeight_Iso    = muWeights.at(2)   ;
+                    _muEffWeight_Iso_Up = muWeights_Up.at(2);
+                    _muEffWeight_Iso_Do = muWeights_Do.at(2);
+                    
+                    _muEffWeight_Trig    = muWeights.at(3);
+                    _muEffWeight_Trig_Up = muWeights_Up.at(3);
+                    _muEffWeight_Trig_Do = muWeights_Do.at(3);
+                }
+                if (evtPick->passPreselEle) {
+                    int eleInd_ = selector->Electrons.at(0);
+                    vector<double> eleWeights    = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],1, tree->event_==eventNum);
+                    vector<double> eleWeights_Do = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],0);
+                    vector<double> eleWeights_Up = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],2);
+                
+                
+                    _eleEffWeight    = eleWeights.at(0);
+                    _eleEffWeight_Do = eleWeights_Do.at(0);
+                    _eleEffWeight_Up = eleWeights_Up.at(0);
+                
+                    _eleEffWeight_Id    = eleWeights.at(1)   ;
+                    _eleEffWeight_Id_Do = eleWeights_Do.at(1);
+                    _eleEffWeight_Id_Up = eleWeights_Up.at(1);
+                
+                    _eleEffWeight_Reco    = eleWeights.at(2)    ;
+                    _eleEffWeight_Reco_Do = eleWeights_Do.at(2) ;
+                    _eleEffWeight_Reco_Up = eleWeights_Up.at(2) ;
+                
+                    _eleEffWeight_Trig    = eleWeights.at(3);
+                    _eleEffWeight_Trig_Do = eleWeights_Do.at(3);
+                    _eleEffWeight_Trig_Up = eleWeights_Up.at(3);
+        	    }
+                //https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
+                if (year=="2016PreVFP" || year=="2016PostVFP" || year=="2017"){
+                    _prefireSF_Do   = tree->prefireDn_;
+                    _prefireSF      = tree->prefireNom_; 
+                    _prefireSF_Up   = tree->prefireUp_; 
+                }
+            }//isMC 
+        
+            //--------------------------
+            //Fill tree
+            //--------------------------
+            outputTree->Fill();
+            if (tree->event_==eventNum){
+                cout << "--------------------------------------------" << endl;
+                cout << "Scale Factor Summary" << endl;
+                cout << std::setprecision(10) << "  evtWeight="<<_evtWeight <<  _btagWeight_1a << "  eleEffWeight="<<_eleEffWeight<<"  muEffWeight="<<_muEffWeight;
+                if (_phoEffWeight.size()>0){
+                    cout <<"  phoEffWeight="<<_phoEffWeight.at(0);
+                }
+                cout << "  prefire="<<_prefireSF;
+                cout << "  PUscale="<<_PUweight;
+                cout<<endl;
+            }
+        }//presel loop
+    }//event for loop
+   
+    //--------------------------
+    //Write tree to the outfile
+    //--------------------------
     if (doOverlapRemoval_TT){
 	std::cout << "Total number of events removed from TTbar:"<< count_overlap <<std::endl;
     }
@@ -863,7 +874,6 @@ makeNtuple::makeNtuple(int ac, char** av)
     gitStatus.Write();
     */
     outputFile->Close();
-    
 }
 
 
@@ -1285,20 +1295,18 @@ void makeNtuple::FillEvent(std::string year){
     if(jetVectors.size()>0){
         _Reco_angle_leadJet_met = jetVectors.at(0).Angle(METVector.Vect()); 
     }
-    //std::cout<<"------------"<<std::endl;
-    //std::cout<<"_nBJet = " << _nBJet<<std::endl;
-    //std::cout<<"bjetVectors = " << bjetVectors.size()<<std::endl;
     if(bjetVectors.size()>0){
         _Reco_angle_leadBjet_met = bjetVectors.at(0).Angle(METVector.Vect()); 
-        //std::cout<<_Reco_angle_leadBjet_met<<std::endl; //FIXME
     }
     ljetVectors.clear();
     bjetVectors.clear();
     ljetResVectors.clear();
     bjetResVectors.clear();
     
-    
-    if (isMC){
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/HowToPDF
+    //https://hypernews.cern.ch/HyperNews/CMS/get/generators/5234.html 
+    //if (isMC){ 
+    if (isMC && !selector->isQCD){//FIXME for UL
 	// Float_t LHE scale variation weights (w_var / w_nominal); 
 	// [0] is mur=0.5 muf=0.5 ; 
 	// [1] is mur=0.5 muf=1 ; 

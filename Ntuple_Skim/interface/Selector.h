@@ -91,6 +91,7 @@ public:
 	bool   useDeepCSVbTag;
 	bool   QCDselect;
     bool isSignal;
+    bool isQCD;
 
         bool skipAK4AK8dr;
 

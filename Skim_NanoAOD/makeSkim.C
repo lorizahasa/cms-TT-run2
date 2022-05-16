@@ -9,6 +9,8 @@
 #include<TCanvas.h>
 #include<iomanip>
 #include <boost/program_options.hpp>
+//to check RAM
+#include "sys/types.h"
 
 int main(int ac, char** av){
     if (std::string(av[1])=="git"){
@@ -68,7 +70,6 @@ int main(int ac, char** av){
 	std::string year(av[1]);	
 
 	//check if NofM type format is before output name (for splitting jobs)
-
 	int nJob = -1;
 	int totJob = -1;
 	std::string checkJobs(av[2]);
@@ -148,6 +149,7 @@ int main(int ac, char** av){
 	}
 
 	TFile* outFile = TFile::Open( outFileName.c_str() ,"RECREATE","",207 );
+    outFile->cd();
 	TTree* newTree = tree->chain->GetTree()->CloneTree(0);
 	newTree->SetCacheSize(50*1024*1024);
 
@@ -203,6 +205,22 @@ int main(int ac, char** av){
 	        std::cout<<setw(10)<<100*entry/endEntry<<" %"<<setw(10)<<min<<"m "<<sec<<"s"<<std::endl;
 			startClock = std::chrono::high_resolution_clock::now();			
 		}
+        //If entry does not exist it returns 0. If an I/O error occurs, its -1.
+        /*
+        Int_t getEntry = tree->GetEntry(entry);
+        if(getEntry==0){ 
+            cout<< "GetEntry size 0"<<entry<<endl;
+            continue;
+        }
+        if(getEntry==-1){
+            cout<< "GetEntry I/O error"<<entry<<endl;
+            continue;
+        }
+        if(getEntry>10000){//event size in bytes
+            cout<< "GetEntry size above 10kb:"<<getEntry<<","<<entry<<endl;
+            continue;
+        }
+        */
 		tree->GetEntry(entry);
 		hEvents_->Fill(0.);
 		evtPick->process_event(tree);

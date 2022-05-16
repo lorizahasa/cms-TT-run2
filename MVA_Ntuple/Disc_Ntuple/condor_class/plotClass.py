@@ -74,13 +74,14 @@ for r, d, c, y, method in itertools.product(Regions.keys(), Decays, Channels, Ye
     allPlotPath.append("%s/rejBvsS.png"%(plotDir))
     allPlotName.append("%s, %s, %s, %s"%(y, c, r.replace("_", "\_"), method))
     #Get Area Under Curve
+    '''
     aucFile = open("%s/AUC.txt"%plotDir.replace("plots", ""))
     for line in aucFile:
         if "AUC" in line:
             aucDict["%s_%s_%s"%(y, c, r)] = [line.split(" ")[-1]]
-
-auc_df = pd.DataFrame.from_dict(aucDict)
-print(auc_df.T)
+    '''
+#auc_df = pd.DataFrame.from_dict(aucDict)
+#print(auc_df.T)
 figWidth = 0.38
 showPerFig = 7
 if isRun2:

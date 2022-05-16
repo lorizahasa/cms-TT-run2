@@ -12,7 +12,7 @@ from VarInfo import GetVarInfo
 #----------------------------------------
 from optparse import OptionParser
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016",type='str',
+parser.add_option("-y", "--year", dest="year", default="2017",type='str',
                      help="Specifyi the year of the data taking" )
 parser.add_option("-d", "--decay", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
@@ -47,7 +47,7 @@ print parser.parse_args()
 #INPUT AnalysisNtuples Directory
 #----------------------------------------
 package = "TMVA"
-dirNtuple = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim/"
+dirNtuple = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 dirFile = "%s/%s/%s"%(year, decayMode, syst) 
 allSamples = getSamples(year, decayMode, syst)
 
@@ -61,7 +61,7 @@ os.system("mkdir -p %s/plots"%outDir)
 sigList = []
 bkgList = []
 for s in allSamples.keys():
-    if 'TT_tytg' in s:
+    if 'Signal' in s:
         sigs = allSamples[s]
         for sigF in sigs:
             sigList.append(sigF)
@@ -73,24 +73,24 @@ for s in allSamples.keys():
             for bkgF in bkgs:
                 bkgList.append(bkgF)
 if isCheck:
-    bkgList = ["Semilep_JetBase__TTGamma_SingleLept_%s_Ntuple.root"%year]
+    bkgList = ["TTGamma_SingleLept_Ntuple_1of2.root"]
 
 #-----------------------------------------
 #Add trees in the TChain
 #----------------------------------------
 sigTree = ROOT.TChain("AnalysisTree")
 if isSep:
-    sigs = allSamples["TT_tytg_M%s"%mass]
+    sigs = allSamples["Signal_M%s"%mass]
     for sigF in sigs:
         sigTree.Add("%s/%s/%s"%(dirNtuple, dirFile, sigF))
 else:
     for s in sigList:
+        print("%s/%s/%s"%(dirNtuple, dirFile, s))
         sigTree.Add("%s/%s/%s"%(dirNtuple, dirFile, s))
 bkgTree = ROOT.TChain("AnalysisTree")
 for b in bkgList:
     print("%s/%s/%s"%(dirNtuple, dirFile, b))
     bkgTree.Add("%s/%s/%s"%(dirNtuple, dirFile, b))
-print(sigList)
 print("Total files from all bkgs = %s, Entries = %s "%(len(bkgList), bkgTree.GetEntries()))
 print("Total files from all sigs = %s, Entries = %s "%(len(sigList), sigTree.GetEntries()))
 
@@ -167,4 +167,3 @@ ROOT.TMVA.mvas(outDir,fName)
 ROOT.TMVA.mvas(outDir,fName, ROOT.TMVA.kCompareType)
 ROOT.TMVA.efficiencies(outDir,fName)
 ROOT.TMVA.correlations(outDir,fName)
-

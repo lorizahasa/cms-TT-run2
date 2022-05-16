@@ -20,8 +20,8 @@ else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    scramv1 project CMSSW CMSSW_10_2_14
-    cd CMSSW_10_2_14/src
+    scramv1 project CMSSW CMSSW_10_6_10
+    cd CMSSW_10_6_10/src
     eval `scramv1 runtime -sh`
     cd ../..
 	tar --strip-components=1 -zxf Ntuple_Skim.tar.gz
@@ -34,7 +34,7 @@ varname=${sample}_FileList_${year}
 cd sample
 source FilesSkim_cff.sh 
 cd -
-jobNum=" ${job}of${nJobTotal}"
+jobNum="${job}of${nJobTotal}"
 echo "./makeNtuple ${decay} ${year} ${sample}__${syst} ${jobNum} . ${!varname}"
 ./makeNtuple ${decay} ${year} ${sample}__${syst} ${jobNum} . ${!varname}
 
@@ -47,7 +47,7 @@ if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
 else
     xrdcp -f ${sample}*.root root://cmseos.fnal.gov/${outDir}
     echo "Cleanup"
-    rm -rf CMSSW_10_2_14
+    rm -rf CMSSW_10_6_10
     rm *.root
 fi
 printf "Done ";/bin/date

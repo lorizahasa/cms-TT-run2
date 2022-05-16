@@ -2,10 +2,10 @@ import ROOT
 #-----------------------------------------------------------------
 condorOutDir = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Disc_Ntuple/DiscMain"
 #-----------------------------------------------------------------
-#Years 	      =	["2016", "2017", "2018"]
-Years 	      =	["2016"]
-#Channels 	  =	["Mu", "Ele"]
-Channels 	  =	["Mu"]
+Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
+#Years 	      =	["2017"]
+Channels 	  =	["Mu", "Ele"]
+#Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 #Mass          = ["800", "1600"]
 Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"]

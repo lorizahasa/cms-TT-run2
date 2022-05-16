@@ -9,6 +9,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     if (xRootDAccess){
         //string dir = "root://cms-xrd-global.cern.ch/";
         string dir = "root://cmsxrootd.fnal.gov/";
+        //string dir = "root://xrootd-cms.infn.it/";
         for(int fileI=0; fileI<nFiles; fileI++){
             string fName = (string) fileNames[fileI];
             chain->Add( (dir + fName).c_str() );
@@ -266,6 +267,7 @@ Long64_t EventTree::GetEntries(){
 }
 
 Int_t EventTree::GetEntry(Long64_t entry){
-    chain->GetEntry(entry);
-    return chain->GetEntries();
+    //chain->GetEntry(entry);
+    //return chain->GetEntries();
+    return chain->GetEntry(entry);
 }

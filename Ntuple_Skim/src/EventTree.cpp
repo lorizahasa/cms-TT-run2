@@ -19,7 +19,9 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     }
     else{
 	for(int fileI=0; fileI<nFiles; fileI++){
+	    string fName = (string) fileNames[fileI];
 	    chain->Add(fileNames[fileI]);
+	    cout << fName << "  " << chain->GetEntries() << endl;
 	}
     }
     chain->SetBranchStatus("*",0);

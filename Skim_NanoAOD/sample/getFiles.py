@@ -64,8 +64,10 @@ for year in Years:
         evtStr  = getEvents(sample)[1]
         evtPerJob = 5e6 #5 million
         nJob = int(np.ceil(evt/evtPerJob))
+        if nFiles<nJob: 
+            nJob = nFiles
         #evt = "NA" 
-        splitJobs[sampleName] = [nJob, evtStr]
+        splitJobs[sampleName] = [nJob, evtStr, evt, nFiles]
         jobs += nJob
         print("%i\t %i\t %s\t %s"%(nFiles, nJob, evtStr, sampleName))
     f1.write(line.encode('ascii'))

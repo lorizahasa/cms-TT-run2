@@ -32,6 +32,7 @@ Selector::Selector(){
     scaleEle = true;
     scalePho = true;
     isSignal = false;
+    isQCD = false;
 
 }
 
@@ -197,6 +198,7 @@ void Selector::filter_jets(){
     	cout << "Found Event Staring Jets" << endl;
         cout << " nJet=" << tree->nJet_ << endl;
     }
+    if(tree->nJet_<200){//Some of the QCD events have very high nJet
     for(int jetInd = 0; jetInd < tree->nJet_; ++jetInd){
         double pt = tree->jetPt_[jetInd];
         double eta = tree->jetEta_[jetInd];
@@ -306,6 +308,7 @@ void Selector::filter_jets(){
             cout << " btag="<<(tree->jetBtagDeepB_[jetInd] > btag_cut_DeepCSV) << endl; 
         }
     }//jet for loop
+    }
 }
 
 //https://cms-nanoaod-integration.web.cern.ch/integration/master-102X/mc102X_doc.html
