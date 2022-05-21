@@ -5,9 +5,8 @@ import itertools
 sys.dont_write_bytecode = True
 
 #IMPORT MODULES FROM OTHER DIR
-sys.path.insert(0, os.getcwd().replace("sample",""))
-sys.path.insert(0, os.getcwd().replace("MVA_Ntuple/Disc_Ntuple/sample","Ntuple_Skim"))
-sys.path.insert(0, os.getcwd().replace("MVA_Ntuple/Disc_Ntuple/sample","Skim_NanoAOD/sample"))
+sys.path.insert(0, os.getcwd().replace("CBA_Ntuple/Hist_Ntuple","Ntuple_Skim"))
+sys.path.insert(0, os.getcwd().replace("CBA_Ntuple/Hist_Ntuple","Skim_NanoAOD/sample"))
 from NtupleInputs import * 
 from JobsNano_cff import Samples_2016PreVFP, Samples_2016PostVFP,  Samples_2017, Samples_2018 
 
@@ -24,9 +23,7 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
     allJobs = 0
     for sampleName, fEvt in sampleList.items():
         if "Data" in sampleName and "_" in syst: continue
-        nJob = fEvt[0]
-        if nJob > reduceJobBy:
-            nJob = nJob/reduceJobBy
+        nJob = reducedJob(fEvt[0], sampleName)
         allJobs+=nJob
         extraArgs = "%s_Ntuple*.root"%sampleName
         fileList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s/%s/%s/%s/%s'%(outNtupleDir, year, decay, syst, extraArgs),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')

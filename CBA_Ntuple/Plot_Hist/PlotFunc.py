@@ -1,4 +1,4 @@
-from ROOT import TLegend, TGraphAsymmErrors, Double
+import ROOT as rt
 from PlotInputs import *
 import numpy as np
 import sys
@@ -163,7 +163,7 @@ def getUncBand(hBase, hDiffUp, hDiffDown, isRatio):
         xValues.append(hBase.GetBinCenter(i+1))
         xErrorsUp.append(hBase.GetBinWidth(i+1)/2)
         xErrorsDown.append(hBase.GetBinWidth(i+1)/2)
-    uncGraph = TGraphAsymmErrors( nBins, 
+    uncGraph = rt.TGraphAsymmErrors( nBins, 
             np.array(xValues    , dtype='double'),
             np.array(yValues    , dtype='double'),
             np.array(xErrorsDown, dtype='double'),
@@ -208,6 +208,24 @@ def sortHists(hAllBkgs, isReverse):
             if i[0]==h.GetName():
                 hSorted.append(h)
     return hSorted
+
+#-----------------------------------------
+#Sort graph w.r.t to the maximum y-value 
+#-----------------------------------------
+def sortGraphs(graphs, isReverse = True):
+    yieldDict = {}
+    for g in graphs:
+        yieldDict[g.GetName()] = max(g.GetY())
+    if isReverse:
+        newDict = sorted(yieldDict.items(), key=lambda x: x[1], reverse=True)
+    else:
+        newDict = sorted(yieldDict.items(), key=lambda x: x[1])
+    gSorted = []
+    for i in newDict:
+        for g in graphs:
+            if i[0]==g.GetName():
+                gSorted.append(g)
+    return gSorted
 
 #----------------------------------------------------------
 #Reformat jet multiplicity string 
@@ -254,7 +272,7 @@ def createTable(tDict, sList, nCol, tHead, tCaption):
     return table
 
 def getYield(h):
-    err = Double(0.0)
+    err = rt.Double(0.0)
     norm = h.IntegralAndError(1, h.GetNbinsX(), err)
     entry = h.GetEntries()
     if(norm!=0):
@@ -298,4 +316,26 @@ def getRowCatBkgs(hName, hSum, catBkgs, catDict):
     row = makeRowCat(allBkgs, hName)
     return row
 
-    
+def getLumiLabel(year):
+    lumi = "35.9 fb^{-1}"
+    if "16Pre" in year:
+        lumi = "19.7 fb^{-1} (2016PreVFP)"
+    if "16Post" in year:
+        lumi = "16.2 fb^{-1} (2016PostVFP)"
+    if "17" in year:
+        lumi = "41.5 fb^{-1} (2017)"
+    if "18" in year:
+        lumi = "59.7 fb^{-1} (2018)"
+    if "__" in year:
+        lumi = "137.2 fb^{-1} (Run2)"
+    return lumi
+
+def getChLabel(decay, channel):
+    nDict   = {"Semilep": "1", "Dilep":2}
+    chDict  = {"Mu": "#mu", "Ele": "e"}
+    colDict = {"Mu": rt.kBlue, "Ele": rt.kRed}
+    name = ""
+    for ch in channel.split("__"):
+        name += "%s#color[%i]{%s}"%(nDict[decay], colDict[ch], chDict[ch])
+    name += ", p_{T}^{miss} #geq 20 GeV"
+    return name

@@ -1,6 +1,6 @@
 import sys
-from FilesNtuple_cff import * 
 sys.dont_write_bytecode = True
+from FilesNtuple_cff import * 
 
 era16Pre  = ["b1_preVFP", "b2_preVFP", "c_preVFP", "d_preVFP", "e_preVFP", "f_preVFP"]
 era16Post = ["f_postVFP", "g_postVFP", "h_postVFP"]
@@ -111,7 +111,7 @@ def getSamples(y, d, syst):
                    "QCD_Pt470To600_Mu",
                    "QCD_Pt600To800_Mu",
                    "QCD_Pt800To1000_Mu",
-                   "QCD_Pt1000ToInf_Mu",
+                   ##"QCD_Pt1000ToInf_Mu",
                    #"GJets_HT40To100",
                    #"GJets_HT100To200",
                    "GJets_HT200To400",

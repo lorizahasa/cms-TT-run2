@@ -9,9 +9,9 @@ Decays 	      =	["Semilep"]
 
 Samples = []
 #bkg and data
-Samples.append("TT_tytg_M800")
-Samples.append("TT_tytg_M1200")
-Samples.append("TT_tytg_M1600")
+Samples.append("Signal_M800")
+Samples.append("Signal_M1200")
+Samples.append("Signal_M1600")
 Samples.append("TTbar")
 Samples.append("TTGamma")
 Samples.append("WJets")

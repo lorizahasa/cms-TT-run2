@@ -9,8 +9,6 @@ Systs         = ["JetBase", "JECTotal_up", "JECTotal_down", "JER_up", "JER_down"
 #Systs         = ["JetBase"]
 #Systs         = ["JECTotal_up"]
 
-
-reduceJobBy = 6 
 #Reduce number of condor jobs w.r.t Skim by a factor of rData and rMC
 def reducedJob(nJob, samp):
     rData   = 20

@@ -1,13 +1,15 @@
-from ROOT import TH1F, TFile, TChain, TCanvas, gDirectory, gROOT 
-import sys
 import os
-sys.path.insert(0, os.getcwd()+"/sample")
-from optparse import OptionParser
-from HistInfo import *
-from HistInputs import Regions, phoCat
+import sys
 import numpy
+sys.dont_write_bytecode = True
+from HistInfo import *
+from optparse import OptionParser
+from HistInputs import Regions, phoCat
+from ROOT import TH1F, TFile, TChain, TCanvas, gDirectory, gROOT 
 
+sys.path.insert(0, os.getcwd().replace("HistMain", ""))
 from SampleInfo import *
+
 #-----------------------------------------
 #INPUT Command Line Arguments 
 #----------------------------------------
@@ -18,7 +20,7 @@ parser.add_option("-d", "--decay", dest="decayMode", default="Semilep",type='str
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
                      help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("-s", "--sample", dest="sample", default="TT_tytg_M800",type='str',
+parser.add_option("-s", "--sample", dest="sample", default="Signal_M800",type='str',
                      help="Specify which sample to run on" )
 parser.add_option("-r", "--region", dest="region", default="tty_Enriched_a3j_e0b_e1y",type='str', 
                      help="which control selection and region"), 

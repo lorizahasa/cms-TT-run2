@@ -9,7 +9,7 @@ sys.path.insert(0, os.getcwd().replace("Ntuple_Skim/condor","Skim_NanoAOD/sample
 from NtupleInputs import *
 from JobsNano_cff import Samples_2016PreVFP, Samples_2016PostVFP,  Samples_2017, Samples_2018 
 
-tmpDir = "tmpSub_check"
+tmpDir = "tmpSub"
 if not os.path.exists("%s/log"%tmpDir):
     os.makedirs("%s/log"%tmpDir)
 condorLogDir = "log"
@@ -44,13 +44,12 @@ for year in Years:
         os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
         jdlFile.write("X=$(step)+1\n")
         for sampleName, fEvt in sampleList.items():
+            if "Data" in sampleName and "_" in syst: continue
             nJob = reducedJob(fEvt[0], sampleName)
             args =  'Arguments  = %s %s %s %s $INT(X) %i %s\n' %(year, decay, syst, sampleName, nJob, outDir)
             args += "Queue %i\n\n"%nJob
             nJobYear += nJob
             nJobAll  += nJob
-            if "Data" in sampleName and ("up" in syst or "down" in syst):
-                continue
             jdlFile.write(args)
     #print "condor_submit jdl/%s"%jdlFile
     subFile.write("condor_submit %s\n"%jdlName)

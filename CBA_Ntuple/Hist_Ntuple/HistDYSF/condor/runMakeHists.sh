@@ -13,8 +13,8 @@ else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    scramv1 project CMSSW CMSSW_10_2_14
-    cd CMSSW_10_2_14/src
+    scramv1 project CMSSW CMSSW_10_6_10
+    cd CMSSW_10_6_10/src
     eval `scramv1 runtime -sh`
 	cd ../..
 	tar --strip-components=1 -zxvf HistDYSF.tar.gz
@@ -49,5 +49,5 @@ printf "Done Histogramming at ";/bin/date
 printf "Copying output files ..."
 condorOutDir=/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple/HistDYSF/Raw
 eos root://cmseos.fnal.gov mkdir -p $condorOutDir/$1/$2/$3/
-xrdcp -rf hists/$1/$2/$3/*.root root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/ 
+xrdcp -f hists/$1/$2/$3/*.root root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/ 
 printf "Done ";/bin/date

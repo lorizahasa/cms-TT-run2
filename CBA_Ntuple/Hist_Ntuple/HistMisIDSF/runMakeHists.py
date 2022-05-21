@@ -12,7 +12,7 @@ parser.add_option("-d", "--decay", dest="decay", default="Semilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
                      help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("-s", "--sample", dest="sample", default="TT_tytg_M800",type='str',
+parser.add_option("-s", "--sample", dest="sample", default="Signal_M800",type='str',
                      help="Specify which sample to run on" )
 parser.add_option("--level", "--level", dest="level", default="",type='str',
                      help="Specify up/down of systematic")

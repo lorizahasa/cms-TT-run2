@@ -8,16 +8,16 @@ Channels 	  =	["Mu", "Ele"]
 Decays 	      =	["Semilep"]
 
 Samples = []
-Samples.append("TT_tytg_M700")
-Samples.append("TT_tytg_M800")
-Samples.append("TT_tytg_M900")
-Samples.append("TT_tytg_M1000")
-##Samples.append("TT_tytg_M1100")
-Samples.append("TT_tytg_M1200")
-Samples.append("TT_tytg_M1300")
-Samples.append("TT_tytg_M1400")
-Samples.append("TT_tytg_M1500")
-Samples.append("TT_tytg_M1600")
+Samples.append("Signal_M700")
+Samples.append("Signal_M800")
+Samples.append("Signal_M900")
+Samples.append("Signal_M1000")
+##Samples.append("Signal_M1100")
+Samples.append("Signal_M1200")
+Samples.append("Signal_M1300")
+Samples.append("Signal_M1400")
+Samples.append("Signal_M1500")
+Samples.append("Signal_M1600")
 #bkg and data
 Samples.append("TTbar")
 Samples.append("TTGamma")

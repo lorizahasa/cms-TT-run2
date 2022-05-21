@@ -1,12 +1,13 @@
-from ROOT import TH1F, TFile, TChain, TCanvas, gDirectory, gROOT 
-import sys
 import os
-sys.path.insert(0, os.getcwd()+"/sample")
-from optparse import OptionParser
+import sys
+import numpy
+sys.dont_write_bytecode = True
 from HistInfo import *
 from HistInputs import Regions
-import numpy
+from optparse import OptionParser
+from ROOT import TH1F, TFile, TChain, TCanvas, gDirectory, gROOT 
 
+sys.path.insert(0, os.getcwd().replace("HistDYSF", ""))
 from SampleInfo import *
 #-----------------------------------------
 #INPUT Command Line Arguments 

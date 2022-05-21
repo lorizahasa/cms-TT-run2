@@ -165,9 +165,9 @@ for sysType in allSysType:
     writeList.append(getHistVGamma(inHistName, "ZGamma", sysType))
     writeList.append(getHistVGamma(inHistName, "WGamma", sysType))
     # signal sample for plotting purpose
-    writeList.append(getHistData(inHistName,  "TT_tytg_M800",   sysType))
-    writeList.append(getHistData(inHistName,  "TT_tytg_M1200",  sysType))
-    writeList.append(getHistData(inHistName,  "TT_tytg_M1600",  sysType))
+    writeList.append(getHistData(inHistName,  "Signal_M800",   sysType))
+    writeList.append(getHistData(inHistName,  "Signal_M1200",  sysType))
+    writeList.append(getHistData(inHistName,  "Signal_M1600",  sysType))
 for write in writeList:
     writeHist(write[0], write[1], write[2], outputFile)
 outputFile.Close()

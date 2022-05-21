@@ -336,8 +336,8 @@ makeNtuple::makeNtuple(int ac, char** av)
     //Luminosity
     //--------------------------
     std::map<std::string, double> lumiValues;
-    lumiValues["2016PreVFP"]  = 19.695422959;
-    lumiValues["2016PostVFP"] = 16.226452636;
+    lumiValues["2016PreVFP"]  = 19695.422959;
+    lumiValues["2016PostVFP"] = 16226.452636;
     lumiValues["2017"]        = 41529.548819;
     lumiValues["2018"]        = 59740.565202;
     
@@ -368,9 +368,15 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (sampleType.find("Signal") != std::string::npos){
 	selector->isSignal = true;
     }
-    if (sampleType.find("QCD") != std::string::npos){
-	selector->isQCD = true;
-    }
+    //FIXME//Use different UL samples for these
+    bool isE0 = sampleType.find("QCD")!= std::string::npos;//nan in PDF
+    bool isE1 = sampleType.find("WW") != std::string::npos;//nan in PDF
+    bool isE2 = sampleType.find("WZ") != std::string::npos;//nan in PDF
+    bool isE3 = sampleType.find("ZZ") != std::string::npos;//nan in PDF
+    bool isE4 = sampleType.find("Signal_M") != std::string::npos;//ISR, FSR too large
+    bool isE5 = sampleType.find("TTGamma_Hadronic_Pt200") != std::string::npos;//ISR, FSR too large
+    selector->isQCD = isE0 || isE1 || isE2 || isE3 || isE4 || isE5; 
+
     selector->btag_cut_DeepCSV = deepCSVWPs[year]; 
     selector->topTagWP = topTagWPs[year];
     if (isMC){

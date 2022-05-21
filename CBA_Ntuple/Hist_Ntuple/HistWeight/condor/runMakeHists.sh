@@ -13,23 +13,26 @@ else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    scramv1 project CMSSW CMSSW_10_2_14
-    cd CMSSW_10_2_14/src
+    scramv1 project CMSSW CMSSW_10_6_10
+    cd CMSSW_10_6_10/src
     eval `scramv1 runtime -sh`
 	cd ../..
-	tar --strip-components=1 -zxvf HistSF.tar.gz
+	tar --strip-components=1 -zxvf Hist_Ntuple.tar.gz
+    cd HistWeight
 fi
 
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-python runMakeHists.py -y $1 -d $2 -c $3 -s $4 --syst $5 --level $6 
+python runMakeHists.py -y $1 -d $2 -c $3 --syst $4 --level $5
 printf "Done Histogramming at ";/bin/date
 
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
 printf "Copying output files ..."
-condorOutDir=/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistSF/Raw
-xrdcp -rf hists/$1/$2/$3/*.root root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/ 
+xrdcp -f hists/$1/$2/$3/*.root root://cmseos.fnal.gov/$6
+cd ..
+rm -rf CMSSW*
+rm -rf hists
 printf "Done ";/bin/date

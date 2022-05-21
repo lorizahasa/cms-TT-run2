@@ -92,8 +92,7 @@ public:
 	bool   QCDselect;
     bool isSignal;
     bool isQCD;
-
-        bool skipAK4AK8dr;
+    bool skipAK4AK8dr;
 
 	std::string year;
 	int printEvent;
