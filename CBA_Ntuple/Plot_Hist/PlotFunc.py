@@ -19,14 +19,13 @@ def getDataHists(inFile, hName, CR):
         dataHist.append(hist)
     return dataHist
 
-def getBkgBaseHists(inFile, hName, CR):
+def getBkgBaseHists(inFile, hName, CR, syst="Base"):
     bkgHists     = []
     for sample in SampleBkg.keys():
-        #hPath = "%s/%s/Base/%s"%(sample, CR, hName)
-        hPath = "%s/%s/Base/%s"%(sample, CR, hName)
+        hPath = "%s/%s/%s/%s"%(sample, CR, syst, hName)
         try:
             hist = inFile.Get(hPath)
-            hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
+            hist = hist.Clone("%s_%s_%s_%s"%(sample, CR, syst, hName))
         except Exception:
             print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
             sys.exit()
@@ -36,7 +35,6 @@ def getBkgBaseHists(inFile, hName, CR):
 def getSigBaseHists(inFile, hName, CR):
     sigHists     = []
     for sample in SampleSignal.keys():
-        #hPath = "%s/%s/Base/%s"%(sample, CR, hName)
         hPath = "%s/%s/Base/%s"%(sample, CR, hName)
         try:
             hist = inFile.Get(hPath)
@@ -47,26 +45,49 @@ def getSigBaseHists(inFile, hName, CR):
         sigHists.append(hist)
     return sigHists
 
-def getBkgSystHists(inFile, hName, CR, level):
-    hSumBkgs = []
-    for syst in Systematics:
-        hBkg = []
-        for sample in SampleSyst:
-            hPath = "%s/%s/%s%s/%s"%(sample, syst, level, CR, hName)
-            try:
-                hist = inFile.Get(hPath)
-                hist = hist.Clone("%s_%s/%s%s_%s"%(sample, CR, syst,level,hName))
-            except Exception:
-                print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
-                sys.exit()
-            hBkg.append(hist)
-            hSum.Add(h)
-        hSum = hist.Clone("hSumBkgs_%s_%s%s_%s"%(CR, syst,level,hName))
+def addHists(hList, name):
+    if len(hList)==0:
+        print("Empty hist list: %s"%hList)
+        exit()
+    else:
+        hSum = hList[0].Clone(name)
         hSum.Reset()
-        for h in hBkg:
+        for h in hList:
             hSum.Add(h)
-        hSumBkgs.append(hSum)
-    return hSumBkgs
+    return hSum
+
+def absDiffHists(h1, h2):
+    h = h1.Clone("h")
+    h.Reset()
+    n = h1.GetNbinsX()
+    for i in range(n):
+        c = abs(h1.GetBinContent(i) - h2.GetBinContent(i))
+        h.SetBinContent(i, c)
+    return h
+    
+def getBkgSystHists(inFile, hName, CR):
+    hBases = getBkgBaseHists(inFile, hName, CR, "Base")#list
+    hSumBase = addHists(hBases, "SumBases_%s_%s"%(hName, CR))# single hist
+    hAllDiffUp   = hSumBase.Clone()
+    hAllDiffDown = hSumBase.Clone()
+    hAllDiffUp.Reset()
+    hAllDiffDown.Reset()
+    print("----------------------------------------------")
+    print("%20s %10s %10s"%("Syst", "Up(%)", "Down(%)"))
+    for syst in Systematics:
+        hUps   = getBkgBaseHists(inFile, hName, CR, "%s_up"%(syst))
+        hDowns = getBkgBaseHists(inFile, hName, CR, "%s_down"%(syst))
+        hSumUps   = addHists(hUps, "SumUps_%s_%s_%s"%(syst, hName, CR))
+        hSumDowns = addHists(hDowns, "SumDowns_%s_%s_%s"%(syst, hName, CR))
+        n = hSumBase.Integral()
+        nUp = hSumUps.Integral()
+        nDown = hSumDowns.Integral()
+        pUp = round(100*abs(n-nUp)/n, 2)
+        pDown = round(100*abs(n-nDown)/n, 2)
+        print("%20s %10s %10s"%(syst, pUp, pDown))
+        hAllDiffUp.Add(absDiffHists(hSumBase, hSumUps))
+        hAllDiffDown.Add(absDiffHists(hSumBase, hSumDowns))
+    return hSumBase, hAllDiffUp, hAllDiffDown
 
 #-----------------------------------------
 #Decorate a histogram

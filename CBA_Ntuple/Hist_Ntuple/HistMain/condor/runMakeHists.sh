@@ -17,37 +17,22 @@ else
     cd CMSSW_10_6_10/src
     eval `scramv1 runtime -sh`
 	cd ../..
-	tar --strip-components=1 -zxvf HistMain.tar.gz
+	tar --strip-components=1 -zxvf Hist_Ntuple.tar.gz
+    cd HistMain
 fi
 
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-##if [ $# -eq 5 ] 
-##then
-##    python makeHists.py -y $1 -d $2 -c $3 -s $4 --r $5 --allHists
-##elif [ $# -eq 7 ] 
-##then
-##    python makeHists.py -y $1 -d $2 -c $3 -s $4 --syst $5 --level $6 --r $7 --allHists
-
-if [ $# -eq 4 ] 
-then
-    python runMakeHists.py -y $1 -d $2 -c $3 -s $4  
-elif [ $# -eq 6 ] 
-then
-    python runMakeHists.py -y $1 -d $2 -c $3 -s $4 --syst $5 --level $6 
-
-#For over/under flow of arguments
-else
-    echo "The number of command line areguments should be 5 or 7" 
-fi
+python runMakeHists.py -y $1 -d $2 -c $3 -s $4 --syst $5 
 printf "Done Histogramming at ";/bin/date
 
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
 printf "Copying output files ..."
-condorOutDir=/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple/HistMain/Raw
-eos root://cmseos.fnal.gov mkdir -p $condorOutDir/$1/$2/$3/
-xrdcp -f hists/$1/$2/$3/*.root root://cmseos.fnal.gov/$condorOutDir/$1/$2/$3/ 
+xrdcp -f hists/$1/$2/$3/*.root root://cmseos.fnal.gov/$6
+cd ..
+rm -rf CMSSW*
+rm -rf hists
 printf "Done ";/bin/date

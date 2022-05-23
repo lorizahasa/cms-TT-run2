@@ -1,12 +1,20 @@
 import ROOT as rt
 #-----------------------------------------------------------------
-condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2"
+dirCBA  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple"
+dirHist = "%s/Hist_Ntuple/HistMain"%dirCBA
+dirPlot = "%s/Plot_Hist/PlotMain"%dirCBA
 #-----------------------------------------------------------------
-Year 	      =	["2016", "2017", "2018"]
+Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
 #Year 	      =	["2017"]
-Channel 	  =	["Mu", "Ele"]
+Channels 	  =	["Mu", "Ele"]
 #Channel 	  =	["Ele"]
-Decay 	  =	["Semilep"]
+Decays 	      =	["Semilep"]
+
+#Years and channels to be commbined
+Years_         = ["2016PreVFP__2016PostVFP__2017__2018"]
+Channels_      = ["Mu", "Ele", "Mu__Ele"]
+#Channels_      = ["Mu__Ele"]
+
 Systematics   =	[]
 Systematics.append("Weight_pu")
 Systematics.append("Weight_mu")
@@ -15,19 +23,21 @@ Systematics.append("Weight_ele")
 Systematics.append("Weight_btag_b")
 Systematics.append("Weight_btag_l")
 Systematics.append("Weight_prefire")
-Systematics.append("Weight_q2")
+#Systematics.append("Weight_q2")
 Systematics.append("Weight_pdf")
 Systematics.append("Weight_isr")
 Systematics.append("Weight_fsr")
+Systematics.append("Weight_jes")
+Systematics.append("Weight_jer")
 
 SystLevels = []
 SystLevels.append("Up")
 SystLevels.append("Down")
 
 SampleSignal = {
-         "TT_tytg_M800"    : [rt.kMagenta,  "m_{T} = 800"],
-         "TT_tytg_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
-         "TT_tytg_M1600"   : [rt.kPink,     "m_{T} = 1600"],
+         "Signal_M800"    : [rt.kMagenta,  "m_{T} = 800"],
+         "Signal_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
+         "Signal_M1600"   : [rt.kPink,     "m_{T} = 1600"],
          }
 
 SampleBkg = {
@@ -43,10 +53,11 @@ SampleBkg = {
 SampleData = {
          "Data"   : [rt.kBlack, "Data"]
          }
-SampleWeight = ["TTGamma", "TTbar", "TT_tytg_M800"]
+SampleWeight = ["TTGamma", "TTbar", "Signal_M800"]
 SampleLumi = SampleBkg
 #SampleLumi.update(SampleSignal)
-SampleSyst = SampleBkg.keys()
+SampleSyst = ["TTGamma", "TTbar", "WJets", "DYJets", "WGamma", "ZGamma", "QCD", "Others"] 
+#SampleSyst = SampleBkg.keys()
 Samples = SampleSignal.keys() + SampleBkg.keys() + SampleData.keys()
 Samples = dict(SampleSignal.items() + SampleBkg.items() + SampleData.items())
 plotList = ["Muon_pt"]

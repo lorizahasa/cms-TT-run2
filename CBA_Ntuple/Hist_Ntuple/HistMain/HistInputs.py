@@ -1,22 +1,28 @@
 #-----------------------------------------------------------------
-condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistMain/Raw"
+dirNtuple = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
+dirHist   = "/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistMain"
 #-----------------------------------------------------------------
-Years 	      =	["2016", "2017", "2018"]
+Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
 #Years 	      =	["2017"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 
+#Years and channels to be commbined
+Years_         = ["2016PreVFP__2016PostVFP__2017__2018"]
+Channels_      = ["Mu", "Ele", "Mu__Ele"]
+#Channels_      = ["Mu__Ele"]
+
 Samples = []
-Samples.append("Signal_M700")
+#Samples.append("Signal_M700")
 Samples.append("Signal_M800")
-Samples.append("Signal_M900")
-Samples.append("Signal_M1000")
+#Samples.append("Signal_M900")
+#Samples.append("Signal_M1000")
 ##Samples.append("Signal_M1100")
 Samples.append("Signal_M1200")
-Samples.append("Signal_M1300")
-Samples.append("Signal_M1400")
-Samples.append("Signal_M1500")
+#Samples.append("Signal_M1300")
+#Samples.append("Signal_M1400")
+#Samples.append("Signal_M1500")
 Samples.append("Signal_M1600")
 #bkg and data
 Samples.append("TTbar")
@@ -43,11 +49,12 @@ Systematics.append("Weight_isr")
 Systematics.append("Weight_fsr")
 Systematics.append("Weight_jes")
 Systematics.append("Weight_jer")
+#Systematics.append("Weight_ttag")                
 #Systematics   =	[]
 
 SystLevels = []
-SystLevels.append("Up")
-SystLevels.append("Down")
+SystLevels.append("up")
+SystLevels.append("down")
 
 phoCat = {}
 phoCat["genuine"]          = "Photon_genuine"         
@@ -57,9 +64,8 @@ phoCat["hadronic_fake"]    = "Photon_hadronic_fake"
 
 Regions = {}
 rForDYSF = {}
-isTT = False
+isTT  = True 
 isTTY = True 
-isTTYG = True 
 
 #--------------------------------
 #Validation region (0 photon) 
@@ -68,40 +74,16 @@ isTTYG = True
 #--------------------------------
 if isTT:
     Regions['tt_Enriched_e2j_e0b_e0y']          = "Jet_size==2 && Jet_b_size==0 && Photon_size==0" 
-    Regions['tt_Enriched_e3j_e0b_e0y']          = "Jet_size==3 && Jet_b_size==0 && Photon_size==0" 
     Regions['tt_Enriched_a3j_e0b_e0y']          = "Jet_size>=3 && Jet_b_size==0 && Photon_size==0" 
-    Regions['tt_Enriched_a4j_e0b_e0y']          = "Jet_size>=4 && Jet_b_size==0 && Photon_size==0" 
-
     Regions['tt_Enriched_e2j_e1b_e0y']          = "Jet_size==2 && Jet_b_size==1 && Photon_size==0" 
-    Regions['tt_Enriched_e3j_e1b_e0y']          = "Jet_size==3 && Jet_b_size==1 && Photon_size==0" 
     Regions['tt_Enriched_a3j_e1b_e0y']          = "Jet_size>=3 && Jet_b_size==1 && Photon_size==0" 
-    Regions['tt_Enriched_a4j_e1b_e0y']          = "Jet_size>=4 && Jet_b_size==1 && Photon_size==0" 
 
 #--------------------------------
 #tt+gamma control regions
 #--------------------------------
 if isTTY:
-    Regions['tty_Enriched_e2j_e0b_e1y']             = "Jet_size ==2 && Jet_b_size ==0 && Photon_size==1 && FatJet_size==0"
-    Regions['tty_Enriched_e3j_e0b_e1y']             = "Jet_size ==3 && Jet_b_size ==0 && Photon_size==1 && FatJet_size==0"
-    Regions['tty_Enriched_a3j_e0b_e1y']             = "Jet_size >=3 && Jet_b_size ==0 && Photon_size==1 && FatJet_size==0"
-    Regions['tty_Enriched_a4j_e0b_e1y']             = "Jet_size >=4 && Jet_b_size ==0 && Photon_size==1 && FatJet_size==0"
+    Regions['tty_Enriched_e2j_e0b_e1y']             = "Jet_size ==2 && Jet_b_size ==0 && Photon_size==1"
+    Regions['tty_Enriched_a3j_e0b_e1y']             = "Jet_size >=3 && Jet_b_size ==0 && Photon_size==1"
+    Regions['tty_Enriched_e2j_e2b_e1y']             = "Jet_size ==2 && Jet_b_size ==2 && Photon_size==1"
+    Regions['tty_Enriched_le4j_a1b_e1y']            = "Jet_size <=4 && Jet_b_size >=1 && Photon_size==1"
 
-    Regions['tty_Enriched_e2j_e2b_e1y']             = "Jet_size ==2 && Jet_b_size ==2 && Photon_size==1 && FatJet_size==0"
-    Regions['tty_Enriched_e4j_a1b_e1y']             = "Jet_size ==4 && Jet_b_size >=1 && Photon_size==1 && FatJet_size==0"
-    Regions['tty_Enriched_e4j_a2b_e1y']             = "Jet_size ==4 && Jet_b_size >=2 && Photon_size==1 && FatJet_size==0"
-    Regions['tty_Enriched_le4j_a1b_e1y']            = "Jet_size <=4 && Jet_b_size >=1 && Photon_size==1 && FatJet_size==0"
-
-#--------------------------------
-#tt+gamma+gluon control regions
-#--------------------------------
-if isTTYG:
-    Regions['ttyg_Enriched_CR']         = "((Jet_size>=5 && FatJet_size==0) || (Jet_size>=2 && FatJet_size==1)) && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75"
-    Regions['ttyg_Enriched_CR_Resolved']= "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75 && FatJet_size ==0"
-    Regions['ttyg_Enriched_CR_Boosted'] = "Jet_size >=2 && Jet_b_size >=1 && Photon_size==1 && Photon_et < 75 && FatJet_size >=1"
-
-    #--------------------------------
-    #signal regions
-    #--------------------------------
-    Regions['ttyg_Enriched_SR']         = "((Jet_size>=5 && FatJet_size==0) || (Jet_size>=2 && FatJet_size==1)) && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100"
-    Regions['ttyg_Enriched_SR_Resolved']= "Jet_size >=5 && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100 && FatJet_size ==0"
-    Regions['ttyg_Enriched_SR_Boosted'] = "Jet_size >=2 && Jet_b_size >=1 && Photon_size==1 && Photon_et > 100 && FatJet_size >=1"
