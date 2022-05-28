@@ -47,6 +47,7 @@ if isSep:
     for y, d, c in itertools.product(Years, Decays, Channels):
         histDir  = "%s/Raw/%s/%s/%s"%(outHistDir, y, d, c)
         mergeDir = histDir.replace("Raw", "Merged")
+        #if os.path.exists("/eos/uscms/%s"%mergeDir):
         runCmd("eos root://cmseos.fnal.gov rm -r %s"%mergeDir)
         runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%mergeDir)
         #Merge for each sample

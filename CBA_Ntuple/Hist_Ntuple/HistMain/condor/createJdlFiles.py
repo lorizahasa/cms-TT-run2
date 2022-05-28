@@ -4,6 +4,29 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor", ""))
 import itertools
 from HistInputs import *
+from optparse import OptionParser
+
+#----------------------------------------
+#INPUT Command Line Arguments 
+#----------------------------------------
+parser = OptionParser()
+parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
+parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
+(options, args) = parser.parse_args()
+isCheck = options.isCheck
+isSep = options.isSep
+
+if isSep:
+    isCheck = False
+if isCheck:
+    isSep  = True
+    isComb = False
+    Years  = [Years[0]]
+    Decays = [Decays[0]]
+    Channels = [Channels[0]]
+if not isCheck and not isSep:
+    print("Add either --isCheck or --isSep in the command line")
+    exit()
 
 os.system("mkdir -p tmpSub/log")
 logDir = "log"
@@ -35,15 +58,14 @@ for y, d, c in itertools.product(Years, Decays, Channels):
     jdlFile = open('tmpSub/%s'%jdlName,'w')
     jdlFile.write('Executable =  runMakeHists.sh \n')
     jdlFile.write(common_command)
-    for s in Samples:
-        args = 'Arguments  = %s %s %s %s Base %s \n'%(y, d, c, s, outDir)
+    for r in Regions.keys():
+        args = 'Arguments  = %s %s %s %s Base %s \n'%(y, d, c, r, outDir)
         args += 'Queue 1\n\n' 
         jdlFile.write(args)
         for syst, var in itertools.product(Systematics, SystLevels):
-            args = 'Arguments  = %s %s %s %s %s_%s %s \n'%(y, d, c, s, syst, var, outDir)
+            args = 'Arguments  = %s %s %s %s %s_%s %s \n'%(y, d, c, r, syst, var, outDir)
             args += 'Queue 1\n\n'
-            if "Data" not in s:
-                jdlFile.write(args)
+            jdlFile.write(args)
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
 subFile.close()

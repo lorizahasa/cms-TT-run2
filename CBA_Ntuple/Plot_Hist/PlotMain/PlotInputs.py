@@ -3,6 +3,7 @@ import ROOT as rt
 dirCBA  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple"
 dirHist = "%s/Hist_Ntuple/HistMain"%dirCBA
 dirPlot = "%s/Plot_Hist/PlotMain"%dirCBA
+dirTwiki= "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
 Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
 #Year 	      =	["2017"]

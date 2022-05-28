@@ -24,7 +24,7 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-python runMakeHists.py -y $1 -d $2 -c $3 -s $4 --syst $5 
+python runMakeHists.py -y $1 -d $2 -c $3 -r $4 --syst $5 
 printf "Done Histogramming at ";/bin/date
 
 #---------------------------------------------

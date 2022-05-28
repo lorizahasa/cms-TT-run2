@@ -45,7 +45,7 @@ if isCheck:
     Decays = [Decays[0]]
     Channels = [Channels[0]]
     rList  = [rList[0]]
-    hList = ["Jet_pt"]
+    hList = ["Reco_mass_lgamma"]
 if isSep: 
     isComb = False
     outTxt = "SepYears"
@@ -61,21 +61,42 @@ if not isCheck and not isSep and not isComb:
 #-----------------------------------------
 #Path of the I/O histrograms/plots
 #----------------------------------------
-isRaw = True
-if isRaw:
-    dir_ = "Merged"
+#dir_ = "Merged"
+dir_  = "Rebin"
 os.system("mkdir -p %s"%dirPlot)
-fPath = open("%s/plotBySample_%s.txt"%(dirPlot, outTxt), 'w')
+fPath = open("%s/plotByPhoton_%s.txt"%(dirPlot, outTxt), 'w')
 for decay, region, hName, channel, year in itertools.product(Decays, rList, hList, Channels, Years):
+    #-----------------------------------------
+    #Basic flags
+    #----------------------------------------
+    isData   = True
+    isRatio  = True
+    isSig    = True
+    isUnc    = True 
+    isLog    = True
     print("----------------------------------------------")
     print("%s, %s, %s, %s, %s"%(decay, hName, region, channel, year))
-    if "tt_" in region: continue 
+    if "tt_" in region: 
+        continue 
+    if "mass_lgamma" not in hName:
+        continue
+    if ("Ele" in hName and "Mu" in channel):
+        continue
+    if ("Mu" in hName and "Ele" in channel):
+        continue
+    if "SR" in region: 
+        isData  = False
+        isRatio = False
+        isUnc   = False
+    if "lgamma" in hName:
+        isLog = False
     ydc = "%s/%s/%s"%(year, decay, channel)
     inHistDir  = "%s/%s/%s"%(dirHist, dir_, ydc)
     outPlotDir = "%s/%s/%s"%(dirPlot, dir_, ydc)
     os.system("mkdir -p %s"%outPlotDir)
     inFile = TFile("%s/AllInc.root"%(inHistDir), "read")
-    if isCheck: print(inFile)
+    if isCheck: 
+        print(inFile)
 
     DYJetsSF  = 1.0 
     MisIDSF   = 1.0 
@@ -106,11 +127,11 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
             canvas.cd()
         #Get nominal histograms
         allBkgHists = {}
-        allBkgHists[hName] = getBkgBaseHists(inFile, hName, region)
+        allBkgHists[hName] = getHists(inFile, SampleBkg, region, "Base", hName)
         catBkgHists = []
         for cat in phoCat.keys():
             newName = "%s_%s"%(hName, cat)
-            hists = getBkgBaseHists(inFile, newName, region)
+            hists = getHists(inFile, SampleBkg, region, "Base", newName)
             allBkgHists[newName] = hists 
             catBkgHists.append(addHists(hists, newName))
 
@@ -135,28 +156,28 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         
         #Data hists
         if isData:
-            dataHist = getDataHists(inFile, hName, region)
-            decoHist(dataHist[0], xTitle, yTitle, SampleData["Data"][0])
-            dataHist[0].SetMarkerStyle(20)
-            dataHist[0].Draw("EPsame")
+            dataHist = getHist(inFile, "data_obs", region, "Base", hName)
+            decoHist(dataHist, xTitle, yTitle, SampleData["Data"][0])
+            dataHist.SetMarkerStyle(20)
+            dataHist.Draw("EPsame")
         
         #Signal hists
         if isSig:
             allSigHists = {}
-            allSigHists[hName] = getSigBaseHists(inFile, hName, region)
+            allSigHists[hName] = getHists(inFile, SampleSignal, region, "Base", hName)
             for cat in phoCat.keys():
                 newName = "%s_%s"%(hName, cat)
-                allSigHists[newName] = getSigBaseHists(inFile, newName, region)
-            sigHists  = getSigBaseHists(inFile, hName, region)
+                allSigHists[newName] = getHists(inFile, SampleSignal, region, "Base", newName)
+            sigHists  = getHists(inFile, SampleSignal, region, "Base", hName)
             sortedSigHists = sortHists(sigHists, True)
             for hSig in sigHists:
                 hSig.Draw("HISTsame")
         
         # Unc band
         if isUnc:
-            hSumBkgs, hSumUps, hSumDowns = getBkgSystHists(inFile, hName, region)
-            print("Nom, uncUp, uncDown:", hSumBkgs.Integral(), hSumUps.Integral(), hSumDowns.Integral())
-            uncGraphTop  = getUncBand(hSumBkgs, hSumUps, hSumDowns, False)
+            hSumBkgs, hUncUp, hUncDown = getHistSyst(inFile, SampleBkg, region, Systematics, hName)
+            print("Nom, uncUp, uncDown:", hSumBkgs.Integral(), hUncUp.Integral(), hUncDown.Integral())
+            uncGraphTop  = getUncBand(hSumBkgs, hUncUp, hUncDown, False)
             uncGraphTop.SetFillColor(2);
             uncGraphTop.SetFillStyle(3001);
             uncGraphTop.Draw(" E2 same ");
@@ -169,8 +190,8 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         hSumAllBkg = catBkgHists[0].Clone("AllBkg")
         hSumAllBkg.Reset()
         if isData:
-            plotLegend.AddEntry(dataHist[0], SampleData["Data"][1], "PEL")
-            yDict["Data"] = [round(dataHist[0].Integral()), "---", "---", "---", "---"]
+            plotLegend.AddEntry(dataHist, SampleData["Data"][1], "PEL")
+            yDict["Data"] = [round(dataHist.Integral()), "---", "---", "---", "---"]
         for h in hForLegend:
             for cat in phoCat.keys():
                 if cat in h.GetName():
@@ -203,12 +224,12 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         if isLog and hSumAllBkg.Integral() !=0:
             gPad.SetLogy(True)
             if isData:
-                hStack.SetMaximum(500*dataHist[0].GetMaximum())
+                hStack.SetMaximum(500*dataHist.GetMaximum())
             else:
                 hStack.SetMaximum(500*hStack.GetMaximum())
         else: 
             if isData:
-                hStack.SetMaximum(1.5*dataHist[0].GetMaximum())
+                hStack.SetMaximum(1.5*dataHist.GetMaximum())
             else:
                 hStack.SetMaximum(1.3*hStack.GetMaximum())
         hStack.GetXaxis().SetTitle(xTitle)
@@ -222,8 +243,8 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
         extraText   = "#splitline{Preliminary}{%s}"%chCRName
         if isData and isRatio:
-            nData  = str(int(dataHist[0].Integral()))
-            nRatio = str(round(dataHist[0].Integral()/hSumAllBkg.Integral(),2))
+            nData  = str(int(dataHist.Integral()))
+            nRatio = str(round(dataHist.Integral()/hSumAllBkg.Integral(),2))
             extraText   = "#splitline{Preliminary, Data = %s, Ratio = %s}{%s}"%(nData, nRatio, chCRName)
         else:
             nBkg  = str(round(hSumAllBkg.Integral(), 2))
@@ -241,14 +262,14 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
             #gPad.SetTickx(0);
             gPad.SetPad(xPadRange[0],yPadRange[0],xPadRange[1],yPadRange[2]);
             gPad.RedrawAxis();
-            hRatio = dataHist[0].Clone("hRatio")
+            hRatio = dataHist.Clone("hRatio")
             hRatio.Divide(hSumAllBkg)
             decoHistRatio(hRatio, xTitle, "Data/Bkgs", 1)
             sList.append("Data/Bkgs")
-            yDict["Data/Bkgs"] = ["---", round(dataHist[0].Integral()/hSumAllBkg.Integral(),2), " --- (---)"]
+            yDict["Data/Bkgs"] = ["---", round(dataHist.Integral()/hSumAllBkg.Integral(),2), " --- (---)"]
             hRatio.Draw()
             if isUnc:
-                uncGraphRatio  = getUncBand(hSumBkgs, hSumUps, hSumDowns, True)
+                uncGraphRatio  = getUncBand(hSumBkgs, hUncUp, hUncDown, True)
                 uncGraphRatio.SetFillColor(2);
                 uncGraphRatio.SetFillStyle(3001);
                 uncGraphRatio.Draw("E2same");
@@ -256,27 +277,15 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
             baseLine.SetLineColor(3);
             baseLine.Draw("SAME");
             hRatio.Draw("same")
-        pdf = "%s/%s_%s.pdf"%(outPlotDir, hName, region)
+        pdf = "%s/plotByPhoton_%s_%s.pdf"%(outPlotDir, hName, region)
         canvas.SaveAs(pdf)
         fPath.write("%s\n"%pdf)
         cap = "%s, %s, %s, %s"%(year, channel, region, hName)
         tHead = "Process & Yield & Gen. $\\gamma$ & N. $\\gamma$ & M. e & Multi. \\\\\n" 
         tHead += " &  & (\%) & (\%) & (\%) & (\%)  \\\\\n" 
-        table = createTable(yDict, sList, 6, tHead, cap.replace("_", "\\_"))
-        tableFile = open("%s/%s_%s.tex"%(outPlotDir, hName, region), "w")
+        table = createTable(Samples, yDict, sList, 6, tHead, cap.replace("_", "\\_"))
+        tableFile = open(pdf.replace(".pdf", ".tex"), "w")
         print table
         tableFile.write(table)
-    #-----------------------------------------
-    #Finally make the plot for each histogram
-    #----------------------------------------
-    isData   = True
-    isRatio  = True
-    if "SR" in region: 
-        isData  = False
-        isRatio = False
-    isSig    = True
-    #isUnc    = True 
-    isUnc    = False
-    isLog    = True
     makePlot(hName, region, isSig,  isData, isLog, isRatio, isUnc)
 print(fPath)

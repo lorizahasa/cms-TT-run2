@@ -1323,6 +1323,7 @@ void makeNtuple::FillEvent(std::string year){
 	// [6] is mur=2 muf=0.5 ; 
 	// [7] is mur=2 muf=1 ; 
 	// [8] is mur=2 muf=2 
+    // https://twiki.cern.ch/twiki/bin/viewauth/CMS/TopSystematics
     std::vector<float>   _genScaleSystWeights;
 	if (tree->nLHEScaleWeight_==9){
 	    for (int i = 0; i < 9; i++){

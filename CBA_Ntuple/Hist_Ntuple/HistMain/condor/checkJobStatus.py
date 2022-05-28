@@ -10,6 +10,29 @@ sys.dont_write_bytecode = True
 #IMPORT MODULES FROM OTHER DIR
 sys.path.insert(0, os.getcwd().replace("condor",""))
 from HistInputs import *
+from optparse import OptionParser
+
+#----------------------------------------
+#INPUT Command Line Arguments 
+#----------------------------------------
+parser = OptionParser()
+parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
+parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
+(options, args) = parser.parse_args()
+isCheck = options.isCheck
+isSep = options.isSep
+
+if isSep:
+    isCheck = False
+if isCheck:
+    isSep  = True
+    isComb = False
+    Years  = [Years[0]]
+    Decays = [Decays[0]]
+    Channels = [Channels[0]]
+if not isCheck and not isSep:
+    print("Add either --isCheck or --isSep in the command line")
+    exit()
 
 logDir = "tmpSub/log"
 #logDir = "tmpSub/log_resub"
@@ -81,7 +104,7 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
         rootFile = "%s_%s_Base.root"%(s, r)
         submittedDict[rootFile] = s
         for syst, level in itertools.product(Systematics, SystLevels): 
-            if "Data" not in s:
+            if "data_obs" not in s:
                 rootFile = "%s_%s_%s_%s.root"%(s, r, syst, level)
                 submittedDict[rootFile] = s
     print(colored("(1): Checking unfinished jobs ...", 'red'))

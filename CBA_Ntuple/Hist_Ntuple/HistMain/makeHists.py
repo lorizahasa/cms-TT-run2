@@ -55,7 +55,10 @@ if "jer_up" in syst:
     systDir = "JER_up"
 if "jer_down" in syst:
     systDir = "JER_down"
-if "Data" in sample:
+
+isData = False
+if "data_obs" in sample:
+    isData  = True
     systDir = "JetBase"
 samples = getSamples(year, decay, systDir)
 inDirNtuple = "root://cmseos.fnal.gov/%s/%s/%s/%s"%(dirNtuple, year, decay, systDir) 
@@ -91,10 +94,8 @@ w_fsr = 1.
 w_btag="Weight_btag"
 w_ttag="Weight_ttag"
 histDirInFile = "%s/%s/Base"%(sample, region)
-if "Data" in sample:
-    histDirInFile = "data_obs/%s/Base"%(region)
 sample_ = sample
-if "Data" in sample or "QCD" in sample:
+if isData or "QCD" in sample:
     sample_ = "%s%s"%(sample, channel)
 
 #-----------------------------------------
@@ -159,7 +160,7 @@ for fileName in fileList:
 print "Number of events:", tree.GetEntries()
 for index, hist in enumerate(histogramsToMake, start=1):
     hInfo = histogramInfo[hist]
-    if ('Data' in sample) and not hInfo[2]: continue
+    if isData and not hInfo[2]: continue
     if "tt_Enriched" in region:
         w_pho = "1.0"
     else:
@@ -175,11 +176,11 @@ for index, hist in enumerate(histogramsToMake, start=1):
     toPrint("%s/%s: Filling the histogram"%(index, len(histogramsToMake)), hist)
     toPrint("Extra cuts ", extraCuts)
     histograms.append(TH1F("%s"%(hist),"%s"%(hist),hInfo[1][0],hInfo[1][1],hInfo[1][2]))
-    if "Data" in sample:
+    if isData: 
         tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, "1.0"), "goff")
     else:
         tree.Draw("%s>>%s"%(hist,hist), "%s%s*%s"%(extraCuts, weights, w_pho), "goff")
-        if isCat and "tty" in region:
+        if isCat and "tty" in region and "mass_lgamma" in hist:
             for cat in phoCat.keys():
                 histograms.append(TH1F("%s_%s"%(hist, cat),"%s_%s"%(hist, cat),hInfo[1][0],hInfo[1][1],hInfo[1][2]))
                 extraCuts_ = extraCuts.replace(")", " && %s[0] )"%phoCat[cat])

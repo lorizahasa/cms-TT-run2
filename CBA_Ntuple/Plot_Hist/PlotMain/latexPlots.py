@@ -2,7 +2,7 @@ import os
 import sys
 sys.dont_write_bytecode = True
 import numpy as np
-from PlotInputs import dirPlot 
+from PlotInputs import dirPlot, dirTwiki 
 from optparse import OptionParser
 
 #----------------------------------------
@@ -21,16 +21,18 @@ isComb = options.isMerge
 
 byWhat = "Sample"
 if isCat:
-    byWhat = "Cat"
+    byWhat = "Photon"
 
 outTxt = "SepYears"
 if isComb:
     outTxt = "CombYears"
 
-fName = "%s/plotBy%s_%s"%(dirPlot, byWhat, outTxt)
-txtFile = open("%s.txt"%fName, "r")
-texFile = open("%s.tex"%fName, "w")
-#texFile = open("./ratioWeight.tex", "w")
+fName = "plotBy%s_%s"%(byWhat, outTxt)
+txtFile = open("%s/%s.txt"%(dirPlot, fName), "r")
+texFile = open("%s/%s.tex"%(dirPlot, fName), "w")
+os.system("mkdir -p %s"%dirTwiki)
+twikiFile = open("%s/%s.log"%(dirTwiki, fName), "w")
+
 allPlotPath = []
 allPlotName = []
 
@@ -58,5 +60,9 @@ for page in np.arange(nPage):
     texFile.write("\caption{Distribution of $%s$}\n"%(figCap.replace("_", "\_")))
     texFile.write("\end{figure}\n")
     texFile.write("\n")
+twikiFile.write("%s/%s.pdf"%(dirPlot, fName))
 print(texFile)
+txtFile.close()
+texFile.close()
+twikiFile.close()
 #os.system("tex2pdf %s.tex"%fName)

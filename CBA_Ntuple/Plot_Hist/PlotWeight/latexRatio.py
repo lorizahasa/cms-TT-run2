@@ -1,11 +1,15 @@
+import os
 import sys
 sys.dont_write_bytecode = True
 import numpy as np
-from PlotInputs import dirPlot 
+from PlotInputs import dirPlot, dirTwiki 
 
-txtFile = open("%s/ratioWeight.txt"%dirPlot, "r")
-texFile = open("%s/ratioWeight.tex"%dirPlot, "w")
-#texFile = open("./ratioWeight.tex", "w")
+fName = "ratioWeight"
+txtFile = open("%s/%s.txt"%(dirPlot, fName), "r")
+texFile = open("%s/%s.tex"%(dirPlot, fName), "w")
+os.system("mkdir -p %s"%dirTwiki)
+twikiFile = open("%s/%s.log"%(dirTwiki, fName), "w")
+
 allPlotPath = []
 allPlotName = []
 
@@ -28,4 +32,9 @@ for page in np.arange(nPage):
     texFile.write("\caption{Distribution of $%s$}\n"%(figCap.replace("_", "\_")))
     texFile.write("\end{figure}\n")
     texFile.write("\n")
+twikiFile.write("%s/%s.pdf"%(dirPlot, fName))
 print(texFile)
+#print(twikiFile)
+txtFile.close()
+texFile.close()
+twikiFile.close()

@@ -13,3 +13,9 @@ charge and mass window in 91.18+-10 GeV
 #It seems we have to evaluate electron Trigger SFs using TnP method for UL samples
 #Document details about PDF, ISR/FSR systematics in the AN
 #Describe HEM veto in the AN
+
+
+#------------------- UL --------------------
+## The Q2 unc is around 25%. Double check it
+## The integral of Jet_pt (30 bins) differs with Jet_eta. However, with 300 bins,
+it matches. Similar for Jet_mass. Don't really understand it.

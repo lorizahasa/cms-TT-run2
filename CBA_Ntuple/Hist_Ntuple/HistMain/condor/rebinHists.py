@@ -2,9 +2,10 @@ import os
 import sys
 sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor", ""))
-import numpy
+sys.path.insert(0, os.getcwd().replace("HistMain/condor", ""))
 import itertools
 from HistInputs import *
+from HistRebins import dictRebin
 from optparse import OptionParser
 from HistInfo import GetHistogramInfo
 from ROOT import TFile, TH1F, gDirectory
@@ -21,13 +22,26 @@ isCheck = options.isCheck
 isSep = options.isSep
 isComb = options.isMerge
 
+rList = Regions.keys()
+#-----------------------------------------
+# Collect all syst 
+#----------------------------------------
+sysList = []
+sysList.append("Base")
+for syst, level in itertools.product(Systematics, SystLevels):
+    sysType = "%s_%s"%(syst, level)
+    sysList.append(sysType)
+
 if isCheck:
     isSep  = True
     isComb = False
     Years  = [Years[0]]
     Decays = [Decays[0]]
     Channels = [Channels[0]]
-    Samples = [Samples[0]]
+    #Samples = [Samples[0]]
+    Samples = ["TTGamma"]
+    rList   = [Regions.keys()[0]]
+    sysList = [sysList[0]]
 if isSep: 
     isComb = False
 if isComb:
@@ -39,12 +53,6 @@ if not isCheck and not isSep and not isComb:
     exit()
 
 hists = GetHistogramInfo()
-dictRebin = {}
-dictRebin["Reco_mass_T"] = numpy.array([0,200,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1800.,2500.,6000.])
-dictRebin["Photon_et"]   = numpy.array([0,100,200,300,400,500,600,700,900,1200,2000.])
-dictRebin["Reco_ht"]     = numpy.array([0,500,700,900,1100,1300,1500,1700,1900,2200,2500,3000,5000,9000.])
-dictRebin["Reco_st"]     = numpy.array([0,500,700,900,1100,1300,1500,1700,1900,2200,2500,3000,5000,9000.])
-
 #-----------------------------------------
 #Functions to read/write histograms
 #----------------------------------------
@@ -80,30 +88,32 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
     outputFile.cd()
 
 #-----------------------------------------
-# Collect all syst 
-#----------------------------------------
-allSysType = []
-for syst, level in itertools.product(Systematics, SystLevels):
-    sysType = "%s_%s"%(syst, level)
-    if syst in ["Weight_lumi", "1"] and level in ["up", "down"]:
-        continue
-    allSysType.append(sysType)
-
-#-----------------------------------------
 # Do the rebining here
 #----------------------------------------
 for year, decay, channel in itertools.product(Years, Decays, Channels):
-    inDir = "%s/Merged/%s/%s/%s"%(outHistDir, year, decay, channel)
+    inDir = "%s/Merged/%s/%s/%s"%(dirHist, year, decay, channel)
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
+    if isCheck:
+        print inFile
     outDir = inDir.replace("Merged", "Rebin")
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outputFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
     print("==> %s, %s, %s"%(year, decay, channel))
-    for s, r, sys, h in itertools.product(Samples, Regions.keys(), allSysType, hists.keys()):
+    for s, r, sys, h in itertools.product(Samples, rList, sysList, hists.keys()):
+        if "data_obs" in s and "Base" not in sys:
+            continue
         if isCheck:
             print("%s, %s, %s, %s"%(s, r, sys, h))
         histDir = getHistDir(s, r, sys)
         h4 = inFile.Get("%s/%s"%(histDir, h))
         writeHist(s, r, sys, h4, outputFile)
+        if "tty_" in r and "mass_lgamma" in h:
+            if "data_obs" in s:
+                continue
+            for cat in phoCat.keys():
+                newName = "%s_%s"%(h, cat)
+                hNew = inFile.Get("%s/%s"%(histDir, newName))
+                writeHist(s, r, sys, hNew, outputFile)
+
     outputFile.Close()
     print "/eos/uscms/%s/AllInc.root\n"%outDir

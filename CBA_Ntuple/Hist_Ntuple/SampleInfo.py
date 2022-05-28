@@ -37,7 +37,7 @@ def gs(y, d, syst, s_array):
             sample += eval("%s_%s__%s_FileList_%s"%(d, syst, s, y))
     return sample
 
-def getSamples(y, d, syst):
+def getSamples(y, d, syst):#commented samples don't exist
     samples = {
                "Signal_M700"  : gs(y, d, syst, ["Signal_M700"]),  
                "Signal_M800"  : gs(y, d, syst, ["Signal_M800"]),  
@@ -118,8 +118,8 @@ def getSamples(y, d, syst):
                    "GJets_HT400To600",
                    "GJets_HT600ToInf"
                              ]),
-               "DataMu" : gs(y, d, syst, dataAllMu[y]),
-               "DataEle" : gs(y, d, syst, dataAllEle[y])
+               "data_obsMu" : gs(y, d, syst, dataAllMu[y]),
+               "data_obsEle" : gs(y, d, syst, dataAllEle[y])
                }
                
     Others_List= [

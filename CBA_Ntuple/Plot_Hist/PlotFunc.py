@@ -1,49 +1,26 @@
 import ROOT as rt
-from PlotInputs import *
 import numpy as np
 import sys
-#-----------------------------------------
-#Get historgams from the root files 
-#-----------------------------------------
-def getDataHists(inFile, hName, CR):
-    dataHist     = []
-    for sample in SampleData.keys():
-        #hPath = "data_obs/%s/Base/%s"%(CR, hName)
-        hPath = "data_obs/%s/Base/%s"%(CR, hName)
-        try:
-            hist = inFile.Get(hPath)
-            hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
-        except Exception:
-            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
-            sys.exit()
-        dataHist.append(hist)
-    return dataHist
 
-def getBkgBaseHists(inFile, hName, CR, syst="Base"):
-    bkgHists     = []
-    for sample in SampleBkg.keys():
-        hPath = "%s/%s/%s/%s"%(sample, CR, syst, hName)
-        try:
-            hist = inFile.Get(hPath)
-            hist = hist.Clone("%s_%s_%s_%s"%(sample, CR, syst, hName))
-        except Exception:
-            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
-            sys.exit()
-        bkgHists.append(hist)
-    return bkgHists
+#-----------------------------------------
+#Get, add, substract histograms 
+#-----------------------------------------
+def getHist(inFile, sample, region, syst, hName):
+    hPath = "%s/%s/%s/%s"%(sample, region, syst, hName)
+    try:
+        hist = inFile.Get(hPath)
+        hist = hist.Clone(hPath.replace("/", "_"))
+    except Exception:
+        print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
+        sys.exit()
+    return hist
 
-def getSigBaseHists(inFile, hName, CR):
-    sigHists     = []
-    for sample in SampleSignal.keys():
-        hPath = "%s/%s/Base/%s"%(sample, CR, hName)
-        try:
-            hist = inFile.Get(hPath)
-            hist = hist.Clone("%s_%s_%s"%(sample, CR, hName))
-        except Exception:
-            print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
-            sys.exit()
-        sigHists.append(hist)
-    return sigHists
+def getHists(inFile, samples, region, syst, hName):
+    hists = []
+    for sample in samples: 
+        hist = getHist(inFile, sample, region, syst, hName)
+        hists.append(hist)
+    return hists
 
 def addHists(hList, name):
     if len(hList)==0:
@@ -56,6 +33,17 @@ def addHists(hList, name):
             hSum.Add(h)
     return hSum
 
+def addHistInQuad(h1, h2):
+    h = h1.Clone("h")
+    h.Reset()
+    bins = h1.GetNbinsX()
+    for i in range(bins):
+        n1 = h1.GetBinContent(i)
+        n2 = h2.GetBinContent(i)
+        nsq  = (n1*n1 + n2*n2)**0.5
+        h.SetBinContent(i, nsq)
+    return h
+
 def absDiffHists(h1, h2):
     h = h1.Clone("h")
     h.Reset()
@@ -65,28 +53,31 @@ def absDiffHists(h1, h2):
         h.SetBinContent(i, c)
     return h
     
-def getBkgSystHists(inFile, hName, CR):
-    hBases = getBkgBaseHists(inFile, hName, CR, "Base")#list
-    hSumBase = addHists(hBases, "SumBases_%s_%s"%(hName, CR))# single hist
+#-----------------------------------------
+#Get histograms for systematics band
+#-----------------------------------------
+def getHistSyst(inFile, samples, region, systs, hName):
+    hBases   = getHists(inFile, samples, region, "Base", hName)#list
+    hSumBase = addHists(hBases, "SumBases_%s_%s"%(region, hName))# single hist
     hAllDiffUp   = hSumBase.Clone()
     hAllDiffDown = hSumBase.Clone()
     hAllDiffUp.Reset()
     hAllDiffDown.Reset()
     print("----------------------------------------------")
     print("%20s %10s %10s"%("Syst", "Up(%)", "Down(%)"))
-    for syst in Systematics:
-        hUps   = getBkgBaseHists(inFile, hName, CR, "%s_up"%(syst))
-        hDowns = getBkgBaseHists(inFile, hName, CR, "%s_down"%(syst))
-        hSumUps   = addHists(hUps, "SumUps_%s_%s_%s"%(syst, hName, CR))
-        hSumDowns = addHists(hDowns, "SumDowns_%s_%s_%s"%(syst, hName, CR))
+    for syst in systs: 
+        hUps   = getHists(inFile, samples, region, "%s_up"%(syst), hName) 
+        hDowns = getHists(inFile, samples, region, "%s_down"%(syst), hName)
+        hSumUps   = addHists(hUps, "SumUps_%s_%s_%s"%(syst, hName, region))
+        hSumDowns = addHists(hDowns, "SumDowns_%s_%s_%s"%(syst, hName, region))
         n = hSumBase.Integral()
         nUp = hSumUps.Integral()
         nDown = hSumDowns.Integral()
         pUp = round(100*abs(n-nUp)/n, 2)
         pDown = round(100*abs(n-nDown)/n, 2)
         print("%20s %10s %10s"%(syst, pUp, pDown))
-        hAllDiffUp.Add(absDiffHists(hSumBase, hSumUps))
-        hAllDiffDown.Add(absDiffHists(hSumBase, hSumDowns))
+        hAllDiffUp   = addHistInQuad(hAllDiffUp, absDiffHists(hSumBase, hSumUps))
+        hAllDiffDown = addHistInQuad(hAllDiffDown, absDiffHists(hSumBase, hSumDowns))
     return hSumBase, hAllDiffUp, hAllDiffDown
 
 #-----------------------------------------
@@ -157,40 +148,43 @@ def getUncBand(hBase, hDiffUp, hDiffDown, isRatio):
     error band.
     '''
     yValues     = []
-    yErrorsUp   = []
-    yErrorsDown = []
+    yErrsUp     = []
+    yErrsDo     = []
     xValues     = []
-    xErrorsUp   = []
-    xErrorsDown = []
+    xErrsUp     = []
+    xErrsDo     = []
     nBins = hBase.GetNbinsX()
     for i in range(nBins):
         yValue      = hBase.GetBinContent(i+1)
-        statError   = hBase.GetBinError(i+1)
-        yErrorUp    = abs(hDiffUp.GetBinContent(i+1))+statError 
-        yErrorDown  = abs(hDiffDown.GetBinContent(i+1))+statError 
+        statErr     = hBase.GetBinError(i+1)
+        valUp       = abs(hDiffUp.GetBinContent(i+1))
+        valDo       = abs(hDiffDown.GetBinContent(i+1))
+        lumiErr     = yValue*2.5/100 #2.5% unc on each Bkg
+        yErrUp      = (valUp*valUp + statErr*statErr+ lumiErr*lumiErr)**0.5 
+        yErrDo      = (valDo*valDo + statErr*statErr+ lumiErr*lumiErr)**0.5
         if isRatio:
             yValues.append(1)
             if yValue >0:
-                yErrorsUp.append(abs(yErrorUp)/yValue)
-                yErrorsDown.append(abs(yErrorDown)/yValue)
+                yErrsUp.append(abs(yErrUp)/yValue)
+                yErrsDo.append(abs(yErrDo)/yValue)
             else:
-                yErrorsUp.append(0.0)
-                yErrorsDown.append(0.0)
+                yErrsUp.append(0.0)
+                yErrsDo.append(0.0)
         else:
             yValues.append (yValue)
-            yErrorsUp.append(abs(yErrorUp))
-            yErrorsDown.append(abs(yErrorDown))
+            yErrsUp.append(abs(yErrUp))
+            yErrsDo.append(abs(yErrDo))
     
         xValues.append(hBase.GetBinCenter(i+1))
-        xErrorsUp.append(hBase.GetBinWidth(i+1)/2)
-        xErrorsDown.append(hBase.GetBinWidth(i+1)/2)
-    uncGraph = rt.TGraphAsymmErrors( nBins, 
+        xErrsUp.append(hBase.GetBinWidth(i+1)/2)
+        xErrsDo.append(hBase.GetBinWidth(i+1)/2)
+        uncGraph = rt.TGraphAsymmErrors( nBins, 
             np.array(xValues    , dtype='double'),
             np.array(yValues    , dtype='double'),
-            np.array(xErrorsDown, dtype='double'),
-            np.array(xErrorsUp  , dtype='double'),
-            np.array(yErrorsDown, dtype='double'),
-            np.array(yErrorsUp  , dtype='double'))
+            np.array(xErrsDo    , dtype='double'),
+            np.array(xErrsUp    , dtype='double'),
+            np.array(yErrsDo    , dtype='double'),
+            np.array(yErrsUp    , dtype='double'))
     return uncGraph
 
 #-----------------------------------------
@@ -254,8 +248,8 @@ def sortGraphs(graphs, isReverse = True):
 #Jet selection naming: a3j_e2b = atleast 3 jet, out of which 2 are b jets: nJet >= 3, nBJet ==2
 def formatCRString(region):
     name = region
-    name = name.replace("FatJet_size", "AK8")
-    name = name.replace("Jet_size", "AK4")
+    name = name.replace("FatJet_size", "t")
+    name = name.replace("Jet_size", "j")
     name = name.replace("Jet_b_size", "b")
     name = name.replace("Photon_size", "#gamma")
     name = name.replace("Photon_et", "p_{T}^{#gamma}")
@@ -264,10 +258,10 @@ def formatCRString(region):
     name = name.replace("==", "=")
     return name 
 
-def createTable(tDict, sList, nCol, tHead, tCaption):
-    table = "\\begin{minipage}[c]{0.32\\textwidth}\n"
+def createTable(samples, tDict, sList, nCol, tHead, tCaption):
+    table = "\\begin{minipage}[c]{0.24\\textwidth}\n"
     table += "\\centering\n"
-    table += "\\tiny{\n"
+    table += "\\scalebox{.40}{\n"
     col = ""
     for i in range(nCol):
         col += "c"
@@ -276,10 +270,10 @@ def createTable(tDict, sList, nCol, tHead, tCaption):
     table += tHead 
     table += "\\hline\n"
     row = ""
-    #print Samples.keys()
+    #print samples.keys()
     for key in sList:
-        if key in Samples.keys():
-            row += "$ %s $"%Samples[key][1].replace("#", "\\")
+        if key in samples.keys():
+            row += "$ %s $"%samples[key][1].replace("#", "\\")
         else:
             row += key
         for r in tDict[key]:

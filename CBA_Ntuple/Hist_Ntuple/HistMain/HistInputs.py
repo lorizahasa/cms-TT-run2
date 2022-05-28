@@ -3,7 +3,7 @@ dirNtuple = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 dirHist   = "/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistMain"
 #-----------------------------------------------------------------
 Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
-#Years 	      =	["2017"]
+#Years 	      =	["2016PreVFP"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
@@ -33,7 +33,7 @@ Samples.append("WGamma")
 Samples.append("ZGamma")
 Samples.append("Others")
 Samples.append("QCD")
-Samples.append("Data")
+Samples.append("data_obs")
 
 Systematics   =	[]
 Systematics.append("Weight_pu")

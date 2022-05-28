@@ -3,8 +3,8 @@ outNtupleDir = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 #-----------------------------------------------------------------
 Years   =  ['2016PreVFP', '2016PostVFP', '2017', '2018']
 #Years 	      =	["2018"]
-#Decays 	      =	["Semilep", "Dilep"]
-Decays 	      =	["Semilep"]
+Decays 	      =	["Semilep", "Dilep"]
+#Decays 	      =	["Dilep"]
 Systs         = ["JetBase", "JECTotal_up", "JECTotal_down", "JER_up", "JER_down"]
 #Systs         = ["JetBase"]
 #Systs         = ["JECTotal_up"]

@@ -202,7 +202,7 @@ for sample, decay, channel, year in itertools.product(Samples, Decays, Channels,
             gPad.SetBottomMargin(0.0)
         #Draw Leg
         leg = TLegend(0.20,0.15,0.93,0.45)
-        decoLegend(leg, 5, 0.09)
+        decoLegend(leg, 5, 0.12)
         leg.SetNColumns(3)
         sysLabel = {"down":"-", "base":"0", "up":"+"}
         for k, syst in enumerate(systDict_[key]):

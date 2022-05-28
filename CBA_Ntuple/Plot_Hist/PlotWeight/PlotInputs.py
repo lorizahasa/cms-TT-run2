@@ -3,6 +3,7 @@ import ROOT as rt
 dirCBA  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple"
 dirHist = "%s/Hist_Ntuple/HistWeight/Rebin"%dirCBA
 dirPlot = "%s/Plot_Hist/PlotWeight/Rebin"%dirCBA
+dirTwiki= "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
 Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
 #Years 	      =	["2016PostVFP", "2017", "2018"]
@@ -19,6 +20,7 @@ systDict = {}
 systDict["Weight_mu"]   = ["Weight_mu_id", "Weight_mu_iso", "Weight_mu_trig"]
 systDict["Weight_ele"]  = ["Weight_ele_id", "Weight_ele_reco", "Weight_ele_trig"]
 systDict["Weight_btag"] = ["Weight_btag_b", "Weight_btag_l"]
+systDict["Weight_ttag"] = ["Weight_ttag"]
 systDict["Weight_pho"]  = ["Weight_pho_id", "Weight_pho_ps", "Weight_pho_cs"]
 systDict["Weight_jet"]  = ["Weight_jes", "Weight_jer"]
 systDict["Weight_pu"]   = ["Weight_pu"]
