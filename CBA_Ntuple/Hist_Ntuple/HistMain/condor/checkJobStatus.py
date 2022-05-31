@@ -105,7 +105,7 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
         submittedDict[rootFile] = s
         for syst, level in itertools.product(Systematics, SystLevels): 
             if "data_obs" not in s:
-                rootFile = "%s_%s_%s_%s.root"%(s, r, syst, level)
+                rootFile = "%s_%s_%s%s.root"%(s, r, syst, level)
                 submittedDict[rootFile] = s
     print(colored("(1): Checking unfinished jobs ...", 'red'))
     print "Total submitted jobs: %s"%len(submittedDict.keys())

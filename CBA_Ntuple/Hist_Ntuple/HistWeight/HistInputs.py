@@ -60,9 +60,9 @@ Systematics.append("Weight_isr")
 Systematics.append("Weight_fsr")                
 
 SystLevels = []
-SystLevels.append("base")
-SystLevels.append("down")
-SystLevels.append("up")
+SystLevels.append("Base")
+SystLevels.append("Down")
+SystLevels.append("Up")
 
 Regions = {}
 #Regions['tt_Enriched_a3j_a1b_e0y']   = "Jet_size>=3 && Jet_b_size>=1 && Photon_size==0"

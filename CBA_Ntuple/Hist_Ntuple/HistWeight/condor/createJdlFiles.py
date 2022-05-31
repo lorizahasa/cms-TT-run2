@@ -39,7 +39,7 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
         run_command =  \
 		'Arguments  = %s %s %s %s %s %s \n\
 Queue 1\n\n' %(year, decay, channel, syst, level, outDir)
-        if syst in ["Weight_lumi", "1"] and level in ["up", "down"]:
+        if syst in ["Weight_lumi", "1"] and level in ["Up", "Down"]:
             continue
         jdlFile.write(run_command)
 	#print "condor_submit jdl/%s"%jdlFile

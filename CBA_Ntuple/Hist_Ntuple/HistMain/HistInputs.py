@@ -53,8 +53,8 @@ Systematics.append("Weight_jer")
 #Systematics   =	[]
 
 SystLevels = []
-SystLevels.append("up")
-SystLevels.append("down")
+SystLevels.append("Up")
+SystLevels.append("Down")
 
 phoCat = {}
 phoCat["genuine"]          = "Photon_genuine"         

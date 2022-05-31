@@ -13,26 +13,21 @@ else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    scramv1 project CMSSW CMSSW_10_6_10
-    cd CMSSW_10_6_10/src
+	tar -zxf CMSSW_10_2_13.tar.gz 
+    #scramv1 project CMSSW CMSSW_10_2_14
+    cd CMSSW_10_2_13/src
+    scram b -r ProjectRename
     eval `scramv1 runtime -sh`
-	cd ../..
-	tar --strip-components=1 -zxvf Hist_Ntuple.tar.gz
-    cd HistDYSF
+    mv ../../FitDYSF.tar.gz .
+	tar --strip-components=1 -zxf FitDYSF.tar.gz
 fi
 
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-python runMakeHists.py -y $1 -d $2 -c $3 -r $4 --syst $5 
-printf "Done Histogramming at ";/bin/date
 
-#---------------------------------------------
-#Copy the ouput root files
-#---------------------------------------------
-printf "Copying output files ..."
-xrdcp -f hists/$1/$2/$3/*.root root://cmseos.fnal.gov/$6
-cd ..
-rm -rf CMSSW*
-rm -rf hists
+python performFit.py -y $1 -d $2 -c $3 -r $4 --isT2W --isImpact
+printf "Done fitting at ";/bin/date
+xrdcp -rf ./output/ root://cmseos.fnal.gov/$5
+rm -r ./output
 printf "Done ";/bin/date

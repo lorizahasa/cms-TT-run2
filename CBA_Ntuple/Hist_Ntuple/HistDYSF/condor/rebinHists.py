@@ -2,7 +2,7 @@ import os
 import sys
 sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor", ""))
-sys.path.insert(0, os.getcwd().replace("HistMain/condor", ""))
+sys.path.insert(0, os.getcwd().replace("HistDYSF/condor", ""))
 import itertools
 from HistInputs import *
 from HistRebins import dictRebin
@@ -39,7 +39,7 @@ if isCheck:
     Decays = [Decays[0]]
     Channels = [Channels[0]]
     #Samples = [Samples[0]]
-    Samples = ["TTGamma"]
+    Samples = ["DYJets"]
     rList   = [Regions.keys()[0]]
     sysList = [sysList[0]]
 if isSep: 

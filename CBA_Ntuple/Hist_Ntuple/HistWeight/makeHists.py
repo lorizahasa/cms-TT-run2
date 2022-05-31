@@ -47,13 +47,13 @@ print parser.parse_args()
 #----------------------------------------
 condorNtupleDir = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 systDir = "JetBase"
-if "jes" in syst and "up" in level:
+if "jes" in syst and "Up" in level:
     systDir = "JECTotal_up"
-if "jes" in syst and "down" in level:
+if "jes" in syst and "Down" in level:
     systDir = "JECTotal_down"
-if "jer" in syst and "up" in level:
+if "jer" in syst and "Up" in level:
     systDir = "JER_up"
-if "jer" in syst and "down" in level:
+if "jer" in syst and "Down" in level:
     systDir = "JER_down"
 if "Data" in sample:
     systDir = "JetBase"
@@ -88,7 +88,7 @@ if "base" in level:
     if syst in ["Weight_btag_b", "Weight_btag_l"]:
         weights = "Weight_btag"
 else:
-    weights = "%s_%s"%(syst, level)
+    weights = "%s%s"%(syst, level)
 
 if syst in ["Weight_jes", "Weight_jer"]:
     weights = "%s[0]"%syst
@@ -104,9 +104,9 @@ if "Data" in sample or "QCD" in sample:
 #-----------------------------------------
 #For Systematics
 #----------------------------------------
-histDirInFile = "%s/%s/%s_%s"%(sample, region, syst,level) 
-variation = "%s_%s"%(syst,level) 
-toPrint("Running for systematics", "%s_%s"%(syst, level))
+histDirInFile = "%s/%s/%s%s"%(sample, region, syst,level) 
+variation = "%s%s"%(syst,level) 
+toPrint("Running for systematics", "%s%s"%(syst, level))
 
 #-----------------------------------------
 #Select channels
@@ -146,9 +146,9 @@ tree = TChain("AnalysisTree")
 fileList = samples[sample_]
 for fileName in fileList:
     fullPath = "%s/%s"%(analysisNtupleLocation, fileName)
-    if "JE" in syst and "up" in level:
+    if "JE" in syst and "Up" in level:
         fullPath = "%s/%s_up_%s"%(analysisNtupleLocation, syst, fileName)
-    if "JE" in syst and "down" in level: 
+    if "JE" in syst and "Down" in level: 
         fullPath = "%s/%s_down_%s"%(analysisNtupleLocation, syst, fileName)
     print fullPath
     tree.Add("%s/%s"%(analysisNtupleLocation,fileName))

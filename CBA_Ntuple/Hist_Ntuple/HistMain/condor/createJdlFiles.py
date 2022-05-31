@@ -63,7 +63,7 @@ for y, d, c in itertools.product(Years, Decays, Channels):
         args += 'Queue 1\n\n' 
         jdlFile.write(args)
         for syst, var in itertools.product(Systematics, SystLevels):
-            args = 'Arguments  = %s %s %s %s %s_%s %s \n'%(y, d, c, r, syst, var, outDir)
+            args = 'Arguments  = %s %s %s %s %s%s %s \n'%(y, d, c, r, syst, var, outDir)
             args += 'Queue 1\n\n'
             jdlFile.write(args)
     subFile.write("condor_submit %s\n"%jdlName)

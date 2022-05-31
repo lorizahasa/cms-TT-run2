@@ -84,8 +84,8 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
 #----------------------------------------
 allSysType = []
 for syst, level in itertools.product(Systematics, SystLevels):
-    sysType = "%s_%s"%(syst, level)
-    if syst in ["Weight_lumi", "1"] and level in ["up", "down"]:
+    sysType = "%s%s"%(syst, level)
+    if syst in ["Weight_lumi", "1"] and level in ["Up", "Down"]:
         continue
     allSysType.append(sysType)
 

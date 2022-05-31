@@ -78,9 +78,9 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
     #----------------------------------------
     submittedDict = {}
     for s, r, syst, level in itertools.product(Samples, Regions.keys(), Systematics, SystLevels): 
-        if syst in ["Weight_lumi", "1"] and level in ["up", "down"]:
+        if syst in ["Weight_lumi", "1"] and level in ["Up", "Down"]:
             continue
-        rootFile = "%s_%s_%s_%s.root"%(s, r, syst, level)
+        rootFile = "%s_%s_%s%s.root"%(s, r, syst, level)
         submittedDict[rootFile] = s
 
     print(colored("(1): Checking unfinished jobs ...", 'red'))

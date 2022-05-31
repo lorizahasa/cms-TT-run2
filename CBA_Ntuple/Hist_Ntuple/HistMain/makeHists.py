@@ -47,13 +47,13 @@ print parser.parse_args()
 #INPUT AnalysisNtuples Directory
 #----------------------------------------
 systDir = "JetBase"
-if "jes_up" in syst:
+if "jesUp" in syst:
     systDir = "JECTotal_up"
-if "jes_down" in syst:
+if "jesDown" in syst:
     systDir = "JECTotal_down"
-if "jer_up" in syst:
+if "jerUp" in syst:
     systDir = "JER_up"
-if "jer_down" in syst:
+if "jerDown" in syst:
     systDir = "JER_down"
 
 isData = False

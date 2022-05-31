@@ -1,49 +1,63 @@
-from ROOT import TFile, TH1F, gDirectory
 import os
 import sys
+sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor", ""))
-from HistInputs import *
-import numpy
 import itertools
-import json
+from HistInputs import *
 from optparse import OptionParser
+from HistInfo import GetHistogramInfo
+from ROOT import TFile, TH1F, gDirectory
 
-#-----------------------------------------
-#INPUT command-line arguments 
+#----------------------------------------
+#INPUT Command Line Arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016",type='str',
-                     help="Specify the year of the data taking" )
-parser.add_option("-d", "--decayMode", dest="decayMode", default="Dilep",type='str',
-                     help="Specify which decayMode moded of ttbar Semilep or ? default is Semilep")
-parser.add_option("-c", "--channel", dest="channel", default="Ele",type='str',
-		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("--hist", "--hist", dest="inHistName", default="Reco_mass_dilep",type='str',
-		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("--cr", "--CR", dest="CR", default="DY_Enriched_a2j_e0b_e0y",type='str', 
-                     help="which control selection and region")
+parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
+parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
+parser.add_option("--isComb","--isComb", dest="isMerge",action="store_true",default=False, help="Merge for combined years and channels")
 (options, args) = parser.parse_args()
-year            = options.year
-decayMode       = options.decayMode
-channel         = options.channel
-inHistName      = options.inHistName
-CR              = options.CR
+isCheck = options.isCheck
+isSep = options.isSep
+isComb = options.isMerge
 
+rList = Regions.keys()
 #-----------------------------------------
-#Path of the I/O histograms/datacards
+# Collect all syst 
 #----------------------------------------
-inDir = "%s/%s/%s/%s/Merged"%(condorHistDir, year, decayMode, channel)
-inFile = TFile.Open("%s/AllInc.root"%inDir, "read")
-outDir = inDir.replace("Raw", "forDYSF")
-if not os.path.exists(outDir):
-    os.system("mkdir -p %s"%outDir)
-outputFile = TFile("%s/AllInc.root"%outDir,"update")
-print inFile
+sysList = []
+sysList.append("Base")
+for syst, level in itertools.product(Systematics, ["up", "down"]): 
+    sysList.append("%s_%s"%(syst, level))
+
+#Remove me----------
+sysList_ = []
+sysList_.append("Base")
+for syst, level in itertools.product(Systematics, ["Up", "Down"]):
+    sysList_.append("%s%s"%(syst, level))
+#--------------------
+
+if isCheck:
+    isSep  = True
+    isComb = False
+    Years  = [Years[0]]
+    Decays = [Decays[0]]
+    Channels = [Channels[0]]
+    rList   = [Regions.keys()[0]]
+    sysList = [sysList[0]]
+if isSep: 
+    isComb = False
+if isComb:
+    isSep = False
+    Years = Years_
+    Channels = Channels_
+if not isCheck and not isSep and not isComb:
+    print("Add either --isCheck or --isSep or --isComb in the command line")
+    exit()
+
+hists = GetHistogramInfo()
 #-----------------------------------------
 #Functions to read/write histograms
 #----------------------------------------
-newBins = numpy.arange(80.,102.,2) #dont put space
-
 def addHist(histList, name):
     if len(histList) ==0:
         print "Hist list | %s, %s | is empty"%(histList, name)
@@ -55,74 +69,91 @@ def addHist(histList, name):
             hist.Add(h)
         return hist
 
-def getHistDir(sample, sysType, CR):
-    histDir = "%s/%s/%s"%(sample, CR, sysType)
-    return histDir
+def getHist(inFile, hPath, hName):
+    hPath_ = "%s/%s"%(hPath, hName)
+    try:
+        hist = inFile.Get(hPath_)
+        hist = hist.Clone(hName)
+    except Exception:
+        print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath_))
+        sys.exit()
+    return hist
 
-def writeHist(hist, procDir, histNewName, outputFile):
-    outHistDir = getHistDir(procDir, inHistName, CR)
-    if not outputFile.GetDirectory(outHistDir):
-        outputFile.mkdir(outHistDir)
-    outputFile.cd(outHistDir)
-    gDirectory.Delete("%s;*"%(hist.GetName()))
-    print "%20s, %15s, %10s, %10s"%(inHistName, procDir, histNewName, round(hist.Integral()))
-    hNew = hist.Rebin(len(newBins)-1, histNewName, newBins) 
-    hNew.Write()
-    #hist.Write()
-
-def getHistData(inHistName, procDir, sysType):
-    histDir = getHistDir(procDir, sysType, CR)
-    #print "Hist: %s/%s"%(histDir, inHistName)
-    hist = inFile.Get("%s/%s"%(histDir, inHistName)).Clone(sysType)
-    return hist, procDir, sysType
-
-#-----------------------------------------
-#Functions 
-#----------------------------------------
-def getHistAlone(inHistName, procDir, sysType):
-    for sample in Samples:
-        histDir = getHistDir(sample, sysType, CR)
-        if sample in procDir:
-            h = inFile.Get("%s/%s"%(histDir, inHistName)).Clone(sysType)
-    return h, procDir, sysType
-
-def getHistOther(inHistName, procDir, sysType):
-    SampleOther = []
-    for s in Samples:
-        others = True
-        if "TT_tytg" in s: others = False
-        if "Data" in s: others = False
-        if "DY" in s: others = False
-        if others: 
-            SampleOther.append(s)
+def getHistOther(inFile, reg, syst, hName):
     hList = []
-    sysType_ = sysType
-    for sample in SampleOther:
-        histDir = getHistDir(sample, sysType, CR)
-        h = inFile.Get("%s/%s"%(histDir, inHistName))
-        hList.append(h)
-        #print "%s = %s"%(sample, round(h.Integral(), 2))
-    return addHist(hList, sysType), procDir, sysType_
+    for s in Samples:
+        if ("Singal" in s) or ("data_obs" in s) or ("DYJets" in s): 
+            continue
+        hPath = "%s/%s/%s"%(s, reg, syst)
+        hList.append(getHist(inFile, hPath, hName))
+    return addHist(hList, hName)
+
+def writeHist(outFile, hPath, hist):
+    if not outFile.GetDirectory(hPath):
+        outFile.mkdir(hPath)
+    outFile.cd(hPath)
+    gDirectory.Delete("%s;*"%(hist.GetName()))
+    if isCheck:
+        print "%60s, %20s, %10s"%(hPath, hist.GetName(), round(hist.Integral()))
+    hist.Write()
+
 
 #-----------------------------------------
-#Categorise hists here
+# Do the rebining here
 #----------------------------------------
-allSysType = []
-allSysType.append("Base")
-for syst, level in itertools.product(Systematics, SystLevels):
-    sysType = "%s%s"%(syst, level)
-    allSysType.append(sysType)
-writeList = []
-for sysType in allSysType:
-#for sysType in ["Base"]: 
-    writeList.append(getHistData(inHistName, "data_obs", "Base"))
-    writeList.append(getHistAlone(inHistName,  "DYJets",  sysType))
-    writeList.append(getHistOther(inHistName,  "OtherBkgs",   sysType))
-    # signal sample for plotting purpose
-    writeList.append(getHistAlone(inHistName,  "Signal_M800",   sysType))
-    writeList.append(getHistAlone(inHistName,  "Signal_M1200",  sysType))
-    writeList.append(getHistAlone(inHistName,  "Signal_M1600",  sysType))
-for write in writeList:
-    writeHist(write[0], write[1], write[2], outputFile)
-outputFile.Close()
-print outDir
+for year, decay, channel in itertools.product(Years, Decays, Channels):
+    inDir = "%s/Rebin/%s/%s/%s"%(dirHist, year, decay, channel)
+    inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
+    if isCheck:
+        print inFile
+    outDir = inDir.replace("Rebin", "ForDYSF")
+    os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
+    outFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
+    print("==> %s, %s, %s"%(year, decay, channel))
+    '''
+    for r, syst, hName in itertools.product(rList, sysList, hists.keys()):
+        #DY
+        hPath = "%s/%s/%s"%("DYJets", r, syst)
+        writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
+        #Signal
+        hPath = "%s/%s/%s"%("Signal_M800", r, syst)
+        writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
+        hPath = "%s/%s/%s"%("Signal_M1200", r, syst)
+        writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
+        hPath = "%s/%s/%s"%("Signal_M1600", r, syst)
+        writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
+        #OtherBkgs
+        hPath = "%s/%s/%s"%("OtherBkgs", r, syst)
+        writeHist(outFile, hPath, getHistOther(inFile, r, syst, hName))
+        #data_obs for base
+        if "Base" in syst:
+            hPath = "%s/%s/%s"%("data_obs", r, syst)
+            writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
+    '''
+    #Remove me ------
+    for r, hName in itertools.product(rList, hists.keys()):
+        for i in range(len(sysList)):
+            #DY
+            hPath = "%s/%s/%s"%("DYJets", r, sysList[i])
+            hPath_ = "%s/%s/%s"%("DYJets", r, sysList_[i])
+            writeHist(outFile,  hPath_, getHist(inFile, hPath, hName))
+            #Signal
+            hPath = "%s/%s/%s"%("Signal_M800", r, sysList[i])
+            hPath_ = "%s/%s/%s"%("Signal_M800", r, sysList_[i])
+            writeHist(outFile,  hPath_, getHist(inFile, hPath, hName))
+            hPath = "%s/%s/%s"%("Signal_M1200", r, sysList[i])
+            hPath_ = "%s/%s/%s"%("Signal_M1200", r, sysList_[i])
+            writeHist(outFile,  hPath_, getHist(inFile, hPath, hName))
+            hPath = "%s/%s/%s"%("Signal_M1600", r, sysList[i])
+            hPath_ = "%s/%s/%s"%("Signal_M1600", r, sysList_[i])
+            writeHist(outFile,  hPath_, getHist(inFile, hPath, hName))
+            #OtherBkgs
+            hPath_ = "%s/%s/%s"%("OtherBkgs", r, sysList_[i])
+            writeHist(outFile, hPath_, getHistOther(inFile, r, sysList[i], hName))
+            #data_obs for base
+            if "Base" in sysList[i]:
+                hPath = "%s/%s/%s"%("data_obs", r, sysList[i])
+                writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
+    #------------
+    outFile.Close()
+    print "/eos/uscms/%s/AllInc.root\n"%outDir

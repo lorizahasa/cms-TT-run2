@@ -60,7 +60,7 @@ for page in np.arange(nPage):
     texFile.write("\caption{Distribution of $%s$}\n"%(figCap.replace("_", "\_")))
     texFile.write("\end{figure}\n")
     texFile.write("\n")
-twikiFile.write("%s/%s.pdf"%(dirPlot, fName))
+twikiFile.write("%s/%s.pdf\n"%(dirPlot, fName))
 print(texFile)
 txtFile.close()
 texFile.close()
