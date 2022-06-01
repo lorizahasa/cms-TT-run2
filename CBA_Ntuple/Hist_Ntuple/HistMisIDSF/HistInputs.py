@@ -1,11 +1,17 @@
 #-----------------------------------------------------------------
-condorHistDir = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Hist_Ntuple/HistMisIDSF/Raw"
+dirNtuple = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
+dirHist   = "/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistMisIDSF"
 #-----------------------------------------------------------------
-Years 	      =	["2016", "2017", "2018"]
-#Years 	      =	["2016"]
+Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
+#Years 	      =	["2017"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Ele"]
 Decays 	      =	["Semilep"]
+
+#Years and channels to be commbined
+Years_         = ["2016PreVFP__2016PostVFP__2017__2018"]
+Channels_      = ["Mu", "Ele", "Mu__Ele"]
+#Channels_      = ["Mu__Ele"]
 
 Samples = []
 #bkg and data
@@ -20,13 +26,13 @@ Samples.append("WGamma")
 Samples.append("ZGamma")
 Samples.append("Others")
 Samples.append("QCD")
-Samples.append("Data")
+Samples.append("data_obs")
 
 Systematics   =	[]
 Systematics.append("Weight_pu")
 Systematics.append("Weight_mu")
 Systematics.append("Weight_ele")
-#Systematics.append("Weight_pho")
+Systematics.append("Weight_pho")
 Systematics.append("Weight_btag_b")
 Systematics.append("Weight_btag_l")
 Systematics.append("Weight_prefire")
