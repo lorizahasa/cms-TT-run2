@@ -1,78 +1,62 @@
-from ROOT import TFile, TH1F, gDirectory
 import os
 import sys
+sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor", ""))
-from HistInputs import *
-import numpy
+pathDYSF = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Fit_Hist/FitDYSF"
+pathMisIDSF = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Fit_Hist/FitMisIDSF"
+sys.path.insert(0, pathDYSF) 
+sys.path.insert(0, pathMisIDSF) 
+from FitDYSF_dictDYSF import DYSF
+from FitMisIDSF_dictMisIDSF import MisIDSF
 import itertools
-import json
+from HistInputs import *
 from optparse import OptionParser
+from HistInfo import GetHistogramInfo
+from ROOT import TFile, TH1F, gDirectory
 
-#-----------------------------------------
-#INPUT command-line arguments 
+#----------------------------------------
+#INPUT Command Line Arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016",type='str',
-                     help="Specify the year of the data taking" )
-parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
-                     help="Specify which decayMode moded of ttbar Semilep or ? default is Semilep")
-parser.add_option("-c", "--channel", dest="channel", default="Ele",type='str',
-		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("--hist", "--hist", dest="inHistName", default="Reco_mass_lgamma",type='str',
-		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("--cr", "--CR", dest="CR", default="MisID_Enriched_a2j_e0b_e1y",type='str', 
-                     help="which control selection and region")
+parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
+parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
+parser.add_option("--isComb","--isComb", dest="isMerge",action="store_true",default=False, help="Merge for combined years and channels")
 (options, args) = parser.parse_args()
-year            = options.year
-decayMode       = options.decayMode
-channel         = options.channel
-inHistName      = options.inHistName
-CR              = options.CR
+isCheck = options.isCheck
+isSep = options.isSep
+isComb = options.isMerge
 
+rList = Regions.keys()
 #-----------------------------------------
-#Path of the I/O histograms/datacards
+# Collect all syst 
 #----------------------------------------
-inDir = "%s/%s/%s/%s/Merged"%(condorHistDir, year, decayMode, channel)
-inFile = TFile.Open("%s/AllInc.root"%inDir, "read")
-outDir = inDir.replace("Raw", "afterMisIDSF")
-if not os.path.exists(outDir):
-    os.system("mkdir -p %s"%outDir)
-outputFile = TFile("%s/AllInc.root"%outDir,"update")
-print inFile
+sysList = []
+sysList.append("Base")
+for syst, level in itertools.product(Systematics, SystLevels): 
+    sysList.append("%s%s"%(syst, level))
+
+if isCheck:
+    isSep  = True
+    isComb = False
+    Years  = [Years[0]]
+    Decays = [Decays[0]]
+    Channels = [Channels[0]]
+    rList   = [Regions.keys()[0]]
+    sysList = [sysList[0]]
+if isSep: 
+    isComb = False
+if isComb:
+    isSep = False
+    Years = Years_
+    Channels = Channels_
+if not isCheck and not isSep and not isComb:
+    print("Add either --isCheck or --isSep or --isComb in the command line")
+    exit()
+
+hists = GetHistogramInfo()
 #-----------------------------------------
 #Functions to read/write histograms
 #----------------------------------------
-if "le" in channel:
-    #newBins = numpy.array([0,80,84,88,92,96,100,180.])
-    newBins = numpy.array([0,80,100,200.])
-else:
-    newBins = numpy.array([0,100,200.])
-newBins = numpy.arange(0.,240.,20) #dont put space
-
-pathDY = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitDYSF/"
-nameDY  = "RP_%s_%s_%s_%s_%s"%(year, "Dilep", "Mu_Ele", "DY_Enriched_a2j_e0b_e0y", "Reco_mass_dilep")
-with open ("%s/RateParams.json"%pathDY) as jsonFileDY:
-    jsonDataDY = json.load(jsonFileDY)
-
-path = "/uscms_data/d3/rverma/codes/CMSSW_10_2_13/src/TopRunII/cms-TT-run2/Fit_Hist/FitMisIDSF/"
-name  = "RP_%s_%s_%s_%s_%s"%(year, decayMode, "Mu_Ele", CR, inHistName)
-with open ("%s/RateParams.json"%path) as jsonFile:
-    jsonData = json.load(jsonFile)
-
-def getRateParam(jsonData_, name, param):
-    paramDicts = jsonData_[name]
-    rateParam = 1.0
-    for paramDict in paramDicts:
-        for key, val in paramDict.iteritems():
-            if param==key:
-                rateParam = val
-    return rateParam
-dySF      = getRateParam(jsonDataDY, nameDY,"r")[1]
-misIDSF   = getRateParam(jsonData, name,"r")[1]
-wGammaSF  = getRateParam(jsonData, name,"WGammaSF")[1]
-zGammaSF  = getRateParam(jsonData, name,"ZGammaSF")[1]
-print "%s: dySF = %s, miIDSF = %s, wGammaSF = %s, zGammaSF = %s"%(CR, dySF, misIDSF, wGammaSF, zGammaSF)
-
 def addHist(histList, name):
     if len(histList) ==0:
         print "Hist list | %s, %s | is empty"%(histList, name)
@@ -84,107 +68,128 @@ def addHist(histList, name):
             hist.Add(h)
         return hist
 
-def getHistDir(sample, sysType, CR):
-    histDir = "%s/%s/%s"%(sample, CR, sysType)
-    return histDir
-
-def writeHist(hist, procDir, histNewName, outputFile):
-    outHistDir = getHistDir(procDir, inHistName, CR)
-    if not outputFile.GetDirectory(outHistDir):
-        outputFile.mkdir(outHistDir)
-    outputFile.cd(outHistDir)
-    gDirectory.Delete("%s;*"%(hist.GetName()))
-    print "%20s, %15s, %10s, %10s"%(inHistName, procDir, histNewName, round(hist.Integral()))
-    hNew = hist.Rebin(len(newBins)-1, histNewName, newBins) 
-    hNew.Write()
-    #hist.Write()
-
-def getHistData(inHistName, procDir, sysType):
-    histDir = getHistDir(procDir, sysType, CR)
-    #print "Hist: %s/%s"%(histDir, inHistName)
-    hist = inFile.Get("%s/%s"%(histDir, inHistName)).Clone(sysType)
-    return hist, procDir, sysType
+def getHist(inFile, hPath, hName):
+    hPath_ = "%s/%s"%(hPath, hName)
+    try:
+        hist = inFile.Get(hPath_)
+        hist = hist.Clone(hName)
+    except Exception:
+        print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath_))
+        sys.exit()
+    return hist
 
 #-----------------------------------------
 #Functions for misID 
 #----------------------------------------
-def getHistMisID(inHistName, procDir, sysType):
+def getHistMisID(inFile, reg, syst, hName):
     hList = []
-    sysType_ = sysType
-    for sample in Samples:
-        if "TT_tytg" not in sample and "Data" not in sample:
-            histDir = getHistDir(sample, sysType, CR)
-            h = inFile.Get("%s/%s_misid_ele"%(histDir, inHistName))
-            if "DYJets" in sample:
-                h.Scale(dySF)
-            h.Scale(misIDSF)
-            hList.append(h)
-    return addHist(hList, sysType), procDir, sysType_
+    for s in Samples:
+        if ("Singal" in s) or ("data_obs" in s): 
+            continue
+        hPath = "%s/%s/%s"%(s, reg, syst)
+        hist = getHist(inFile, hPath, "%s_misid_ele"%hName) 
+        if "DYJets" in hPath:
+            hist.Scale(sfDY)
+        hist.Scale(sfMisID)
+        hList.append(hist)
+    return addHist(hList, hName)
 
-def getHistVGamma(inHistName, procDir, sysType):
+def getHistVGamma(inFile, samp, reg, syst, hName):
     hList = []
-    sysType_ = sysType
-    for sample in Samples:
-        if procDir in sample:
-            histDir = getHistDir(sample, sysType, CR)
-            h1 = inFile.Get("%s/%s_genuine"%(histDir, inHistName))
-            h2 = inFile.Get("%s/%s_hadronic_photon"%(histDir, inHistName))
-            h3 = inFile.Get("%s/%s_hadronic_fake"%(histDir, inHistName))
-            vGammaSF = 1.0
-            if "ZGamma" in procDir: vGammaSF = zGammaSF
-            if "WGamma" in procDir: vGammaSF = wGammaSF
-            h1.Scale(vGammaSF)
-            h2.Scale(vGammaSF)
-            h3.Scale(vGammaSF)
-            hList.append(h1)
-            hList.append(h2)
-            hList.append(h3)
-    return addHist(hList, sysType), procDir, sysType_
+    for s in Samples:
+        if samp not in s:
+            continue
+        hPath = "%s/%s/%s"%(s, reg, syst)
+        hist1 = getHist(inFile, hPath, "%s_genuine"%hName) 
+        hist2 = getHist(inFile, hPath, "%s_hadronic_photon"%hName) 
+        hist3 = getHist(inFile, hPath, "%s_hadronic_fake"%hName) 
+        vGammaSF = 1.0
+        if "ZGamma" in samp: vGammaSF = sfZGamma
+        if "WGamma" in samp: vGammaSF = sfWGamma
+        hist1.Scale(vGammaSF)
+        hist2.Scale(vGammaSF)
+        hist3.Scale(vGammaSF)
+        hList.append(hist1)
+        hList.append(hist2)
+        hList.append(hist3)
+    return addHist(hList, hName)
 
 
-def getHistOther(inHistName, procDir, sysType):
+def getHistOther(inFile, reg, syst, hName):
     hList = []
-    sysType_ = sysType
-    for sample in Samples:
-        isOther = True
-        if "TT_tytg" in sample: isOther = False
-        if "Data" in sample: isOther  = False
-        if "WGamma" in sample: isOther = False
-        if "ZGamma" in sample: isOther = False
-        if isOther:
-            histDir = getHistDir(sample, sysType, CR)
-            h1 = inFile.Get("%s/%s_genuine"%(histDir, inHistName))
-            h2 = inFile.Get("%s/%s_hadronic_photon"%(histDir, inHistName))
-            h3 = inFile.Get("%s/%s_hadronic_fake"%(histDir, inHistName))
-            if "DYJets" in sample:
-                h1.Scale(dySF)
-                h2.Scale(dySF)
-                h3.Scale(dySF)
-            hList.append(h1)
-            hList.append(h2)
-            hList.append(h3)
-    return addHist(hList, sysType), procDir, sysType_
+    for s in Samples:
+        if ("Singal" in s) or ("data_obs" in s) or ("WGamma" in s) or ("ZGamma" in s): 
+            continue
+        hPath = "%s/%s/%s"%(s, reg, syst)
+        hist1 = getHist(inFile, hPath, "%s_genuine"%hName) 
+        hist2 = getHist(inFile, hPath, "%s_hadronic_photon"%hName) 
+        hist3 = getHist(inFile, hPath, "%s_hadronic_fake"%hName) 
+        if "DYJets" in s:
+            hist1.Scale(sfDY)
+            hist2.Scale(sfDY)
+            hist3.Scale(sfDY)
+        hList.append(hist1)
+        hList.append(hist2)
+        hList.append(hist3)
+    return addHist(hList, hName)
+
+def writeHist(outFile, hPath, hist):
+    if not outFile.GetDirectory(hPath):
+        outFile.mkdir(hPath)
+    outFile.cd(hPath)
+    gDirectory.Delete("%s;*"%(hist.GetName()))
+    if isCheck:
+        print "%60s, %20s, %10s"%(hPath, hist.GetName(), round(hist.Integral()))
+    hist.Write()
+
 
 #-----------------------------------------
-#Categorise hists here
+# Do the rebining here
 #----------------------------------------
-allSysType = []
-allSysType.append("Base")
-for syst, level in itertools.product(Systematics, SystLevels):
-    sysType = "%s%s"%(syst, level)
-    allSysType.append(sysType)
-writeList = []
-writeList.append(getHistData(inHistName, "data_obs", "Base"))
-for sysType in allSysType:
-    writeList.append(getHistMisID(inHistName,  "MisIDEle",  sysType))
-    writeList.append(getHistOther(inHistName, "OtherPhotons", sysType))
-    writeList.append(getHistVGamma(inHistName, "ZGamma", sysType))
-    writeList.append(getHistVGamma(inHistName, "WGamma", sysType))
-    # signal sample for plotting purpose
-    writeList.append(getHistData(inHistName,  "Signal_M800",   sysType))
-    writeList.append(getHistData(inHistName,  "Signal_M1200",  sysType))
-    writeList.append(getHistData(inHistName,  "Signal_M1600",  sysType))
-for write in writeList:
-    writeHist(write[0], write[1], write[2], outputFile)
-outputFile.Close()
-print outDir
+for year, decay, channel in itertools.product(Years, Decays, Channels):
+    inDir = "%s/Rebin/%s/%s/%s"%(dirHist, year, decay, channel)
+    inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
+    if isCheck:
+        print inFile
+    outDir = inDir.replace("Rebin", "AfterMisIDSF")
+    os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
+    outFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
+    print("==> %s, %s, %s"%(year, decay, channel))
+    for r, syst, hName in itertools.product(rList, sysList, hists.keys()):
+        sfDYKey = "DYSF_%s_%s_%s_%s"%(year, "Dilep", "Mu__Ele", "DY_Enriched_a2j_e0b_e0y")
+        sfMisIDKey = "MisIDSF_%s_%s_%s_%s"%(year, "Semilep", channel, r)
+        sfDY  = DYSF[sfDYKey]
+        sfMisIDs  = MisIDSF[sfMisIDKey]
+        sfMisID  = sfMisIDs[0]
+        sfZGamma = sfMisIDs[1]
+        sfWGamma = sfMisIDs[2]
+        print(sfDYKey, sfDY)
+        print(sfMisIDKey, sfMisIDs)
+
+        hPath = "%s/%s/%s"%("MisIDEle", r, syst)
+        writeHist(outFile,  hPath, getHistMisID(inFile, r, syst, hName))
+
+        hPath = "%s/%s/%s"%("WGamma", r, syst)
+        writeHist(outFile,  hPath, getHistVGamma(inFile, "WGamma", r, syst, hName))
+
+        hPath = "%s/%s/%s"%("ZGamma", r, syst)
+        writeHist(outFile,  hPath, getHistVGamma(inFile, "ZGamma", r, syst, hName))
+
+        #OtherBkgs
+        hPath = "%s/%s/%s"%("OtherPhotons", r, syst)
+        writeHist(outFile, hPath, getHistOther(inFile, r, syst, hName))
+
+        #Signal
+        hPath = "%s/%s/%s"%("Signal_M800", r, syst)
+        writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
+        hPath = "%s/%s/%s"%("Signal_M1200", r, syst)
+        writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
+        hPath = "%s/%s/%s"%("Signal_M1600", r, syst)
+        writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
+
+        #data_obs for base
+        if "Base" in syst:
+            hPath = "%s/%s/%s"%("data_obs", r, syst)
+            writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
+    outFile.Close()
+    print "/eos/uscms/%s/AllInc.root\n"%outDir

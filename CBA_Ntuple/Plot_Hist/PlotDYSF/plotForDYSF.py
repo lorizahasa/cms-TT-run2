@@ -65,7 +65,7 @@ if not isCheck and not isSep and not isComb:
 #dir_ = "Rebin"
 dir_ = "ForDYSF"
 os.system("mkdir -p %s"%dirPlot)
-fPath = open("%s/plotForDYSF_%s.txt"%(dirPlot, outTxt), 'w')
+fPath = open("%s/plot%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
 for decay, region, hName, channel, year in itertools.product(Decays, rList, hList, Channels, Years):
     #-----------------------------------------
@@ -258,7 +258,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
             baseLine.SetLineColor(3);
             baseLine.Draw("SAME");
             hRatio.Draw("same")
-        pdf = "%s/plotForDYSF_%s_%s.pdf"%(outPlotDir, hName, region)
+        pdf = "%s/plot%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region)
         canvas.SaveAs(pdf)
         fPath.write("%s\n"%pdf)
         cap = "%s, %s, %s, %s"%(year, channel, region, hName)

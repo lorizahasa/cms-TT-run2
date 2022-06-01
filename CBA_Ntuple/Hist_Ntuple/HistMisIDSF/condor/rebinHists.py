@@ -2,7 +2,7 @@ import os
 import sys
 sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor", ""))
-sys.path.insert(0, os.getcwd().replace("HistDYSF/condor", ""))
+sys.path.insert(0, os.getcwd().replace("HistMisIDSF/condor", ""))
 import itertools
 from HistInputs import *
 from HistRebins import dictRebin
@@ -107,7 +107,7 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
         histDir = getHistDir(s, r, sys)
         h4 = inFile.Get("%s/%s"%(histDir, h))
         writeHist(s, r, sys, h4, outputFile)
-        if "tty_" in r and "mass_lgamma" in h:
+        if "MisID_" in r and "mass_lgamma" in h:
             if "data_obs" in s:
                 continue
             for cat in phoCat.keys():

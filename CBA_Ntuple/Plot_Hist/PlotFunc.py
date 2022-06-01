@@ -66,8 +66,8 @@ def getHistSyst(inFile, samples, region, systs, hName):
     print("----------------------------------------------")
     print("%20s %10s %10s"%("Syst", "Up(%)", "Down(%)"))
     for syst in systs: 
-        hUps   = getHists(inFile, samples, region, "%s_up"%(syst), hName) 
-        hDowns = getHists(inFile, samples, region, "%s_down"%(syst), hName)
+        hUps   = getHists(inFile, samples, region, "%sUp"%(syst), hName) 
+        hDowns = getHists(inFile, samples, region, "%sDown"%(syst), hName)
         hSumUps   = addHists(hUps, "SumUps_%s_%s_%s"%(syst, hName, region))
         hSumDowns = addHists(hDowns, "SumDowns_%s_%s_%s"%(syst, hName, region))
         n = hSumBase.Integral()
