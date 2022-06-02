@@ -1,6 +1,7 @@
 import sys
 sys.dont_write_bytecode = True
 def sampleDict(year):
+    #https://twiki.cern.ch/twiki/bin/viewauth/CMS/PdmVRun2LegacyAnalysis
     # MCv1
     mcTypes = {}
     mcTypes["2016PreVFP"]  = 'RunIISummer20UL16NanoAODAPVv9-106X_mcRun2_asymptotic_preVFP_v11-v1'
@@ -17,18 +18,6 @@ def sampleDict(year):
     mcTypes3["2016PostVFP"] = 'RunIISummer19UL16NanoAODv2-106X_mcRun2_asymptotic_v15-v1'
     mcTypes3['2017'] = 'RunIISummer19UL17NanoAODv2-106X_mc2017_realistic_v8-v1'
     mcTypes3['2018'] = 'RunIISummer19UL18NanoAODv2-106X_upgrade2018_realistic_v15_L1v1-v1'
-
-    #Data 2016
-    DataType16              ='UL2016_MiniAODv2_NanoAODv9-v1'
-    DataType16_hipm         ='HIPM_UL2016_MiniAODv2_NanoAODv9-v2'
-    DataType16_hipm_ver1    ='ver1_HIPM_UL2016_MiniAODv2_NanoAODv9-v2'
-    DataType16_hipm_ver2    ='ver2_HIPM_UL2016_MiniAODv2_NanoAODv9-v2'
-    #Data 2017
-    DataType17 = 'UL2017_MiniAODv2_NanoAODv9-v1'
-    #Data 2018
-    DataType18       = 'UL2018_MiniAODv2_NanoAODv9-v1'
-    DataType18_v2    = DataType18.replace('-v1','-v2')
-    DataType18_v3    = DataType18.replace('-v1','-v3')
 
     #Using legacy signal samples for now, switch to UL later
     leg = {}
@@ -179,6 +168,18 @@ def sampleDict(year):
     #--------------------------
     # Data 
     #--------------------------
+    #Data 2016
+    DataType16              ='UL2016_MiniAODv2_NanoAODv9-v1'
+    DataType16_hipm         ='HIPM_UL2016_MiniAODv2_NanoAODv9-v2'
+    DataType16_hipm_ver1    ='ver1_HIPM_UL2016_MiniAODv2_NanoAODv9-v2'
+    DataType16_hipm_ver2    ='ver2_HIPM_UL2016_MiniAODv2_NanoAODv9-v2'
+    #Data 2017
+    DataType17 = 'UL2017_MiniAODv2_NanoAODv9-v1'
+    #Data 2018
+    DataType18       = 'UL2018_MiniAODv2_NanoAODv9-v1'
+    DataType18_v2    = DataType18.replace('-v1','-v2')
+    DataType18_v3    = DataType18.replace('-v1','-v3')
+
     dataSamp16Pre = {
     # muon
     'Data_SingleMu_b1_preVFP' : '/SingleMuon/Run2016B-'+DataType16_hipm_ver1+'/NANOAOD',

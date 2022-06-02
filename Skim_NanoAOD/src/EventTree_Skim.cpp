@@ -214,47 +214,22 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchStatus("HLT_TkMu50",1);
         chain->SetBranchAddress("HLT_TkMu50",&HLT_TkMu50_);
         //electron
-        chain->SetBranchStatus("HLT_Ele27_WPTight_Gsf",1);
-        chain->SetBranchAddress("HLT_Ele27_WPTight_Gsf",&HLT_Ele27_WPTight_Gsf_);
-        chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
-        chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
         chain->SetBranchStatus("HLT_Photon175",1);
         chain->SetBranchAddress("HLT_Photon175",&HLT_Photon175_);
     }
     
-    if (year=="2017"){
+    if (year=="2017" || year=="2018"){
         //muon
         chain->SetBranchStatus("HLT_Mu50",1);
         chain->SetBranchAddress("HLT_Mu50",&HLT_Mu50_);
         chain->SetBranchStatus("HLT_TkMu100",1);
         chain->SetBranchAddress("HLT_TkMu100",&HLT_TkMu100_);
-        chain->SetBranchStatus("HLT_OldMu100",1);
-        chain->SetBranchAddress("HLT_OldMu100",&HLT_OldMu100_);
+        chain->SetBranchStatus("HLT_Mu100",1);
+        chain->SetBranchAddress("HLT_Mu100",&HLT_Mu100_);
         //electron
-        chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
-        chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
-        chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
-        chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
         chain->SetBranchStatus("HLT_Photon200",1);
         chain->SetBranchAddress("HLT_Photon200",&HLT_Photon200_);
     }
-
-    if (year=="2018"){
-        //muon
-        chain->SetBranchStatus("HLT_Mu50",1);
-        chain->SetBranchAddress("HLT_Mu50",&HLT_Mu50_);
-        chain->SetBranchStatus("HLT_TkMu100",1);
-        chain->SetBranchAddress("HLT_TkMu100",&HLT_TkMu100_);
-        chain->SetBranchStatus("HLT_OldMu100",1);
-        chain->SetBranchAddress("HLT_OldMu100",&HLT_OldMu100_);
-        //electrom
-        chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
-        chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
-        chain->SetBranchStatus("HLT_Ele115_CaloIdVT_GsfTrkIdT",1);
-        chain->SetBranchAddress("HLT_Ele115_CaloIdVT_GsfTrkIdT",&HLT_Ele115_CaloIdVT_GsfTrkIdT_);
-        chain->SetBranchStatus("HLT_Photon200",1);
-        chain->SetBranchAddress("HLT_Photon200",&HLT_Photon200_);
-    }	
 }
 
 EventTree::~EventTree(){

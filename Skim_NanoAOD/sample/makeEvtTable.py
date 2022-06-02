@@ -5,7 +5,7 @@ from JobsNano_cff import Samples_2016PreVFP, Samples_2016PostVFP,  Samples_2017,
 
 sampMC = []
 for s in Samples_2017.keys():
-    if "Data" in s: 
+    if  "Data" in s: 
         continue
     sampMC.append(s)
 

@@ -14,41 +14,18 @@ void EventPick::process_event(EventTree* tree){
     passSkim = false;
     bool passTrigMu  = false;
     bool passTrigEle = false;
-    //Check muon and electron triggers
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgHLTRunIISummary
-    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2016
+    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2016
     if (year.find("2016")!=std::string::npos){
-        passTrigMu = 
-            tree->HLT_Mu50_ || 
-            tree->HLT_TkMu50_;                 
-        passTrigEle = 
-            tree->HLT_Ele27_WPTight_Gsf_ ||
-            tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_||
-            tree->HLT_Photon175_ ;
+        passTrigMu  = tree->HLT_Mu50_ || tree->HLT_TkMu50_;                 
+        passTrigEle = tree->HLT_Photon175_ ;
     }                                                                           
-    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2017
-    if (year=="2017"){                                                          
-        passTrigMu = 
-            tree->HLT_Mu50_ || 
-            tree->HLT_OldMu100_||
-            tree->HLT_TkMu100_ ; 
-        passTrigEle = 
-            tree->HLT_Ele35_WPTight_Gsf_ ||
-            tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_||
-            tree->HLT_Photon200_;
-    }                                                                           
-    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2018
-    if (year=="2018"){                                                          
-        passTrigMu = 
-            tree->HLT_Mu50_ || 
-            tree->HLT_OldMu100_||
-            tree->HLT_TkMu100_;
-        passTrigEle = 
-            tree->HLT_Ele32_WPTight_Gsf_ ||
-            tree->HLT_Ele115_CaloIdVT_GsfTrkIdT_||
-            tree->HLT_Photon200_ ;
+    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2017
+    //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2018
+    if (year=="2017" || year=="2018"){
+        passTrigMu  = tree->HLT_Mu50_ || tree->HLT_TkMu100_ || tree->HLT_Mu100_;
+        passTrigEle = tree->HLT_Photon200_ ;
     }
-    //Check MET filters    
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2
     bool filters = 
             (tree->Flag_goodVertices_ &&
@@ -74,18 +51,24 @@ void EventPick::process_event(EventTree* tree){
     cutflow["g15MET"]  = 0;
 
     if(passTrigEle || passTrigMu){
-    cutflow["LepTrig"] = 1;
-    if(filters){
-    cutflow["Filters"] = 1;
-    if(!zeroLep){
-    cutflow["g0Lep"] = 1;
-    if(tree->nGoodVtx_>0){ 
-    cutflow["g0PV"] = 1;
-    if(tree->nJet_>0){ 
-    cutflow["g0Jet"] = 1;
-    if(tree->MET_pt_ > 15){ 
-    cutflow["g15MET"] = 1;
-    passSkim = true;
-    }}}}}}
+        cutflow["LepTrig"] = 1;
+        if(filters){
+            cutflow["Filters"] = 1;
+            if(tree->nGoodVtx_>0){ 
+                cutflow["g0PV"] = 1;
+                passSkim = true;
+                if(!zeroLep){
+                    cutflow["g0Lep"] = 1;
+                    if(tree->nJet_>0){ 
+                        cutflow["g0Jet"] = 1;
+                        if(tree->MET_pt_ > 15){ 
+                            cutflow["g15MET"] = 1;
+    
+                        }
+                    }
+                }
+            }
+        }
+    }
     
 }

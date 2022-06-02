@@ -37,11 +37,7 @@ class EventTree{
     Bool_t  HLT_Mu50_;
     Bool_t  HLT_TkMu50_;
     Bool_t  HLT_TkMu100_;
-    Bool_t  HLT_OldMu100_;
-    Bool_t  HLT_Ele27_WPTight_Gsf_;
-    Bool_t  HLT_Ele32_WPTight_Gsf_;
-    Bool_t  HLT_Ele35_WPTight_Gsf_;
-    Bool_t  HLT_Ele115_CaloIdVT_GsfTrkIdT_;
+    Bool_t  HLT_Mu100_;
     Bool_t  HLT_Photon175_;
     Bool_t  HLT_Photon200_;
     
