@@ -207,10 +207,10 @@ class makeNtuple {
     std::vector<bool>    _phoMediumID;
     std::vector<int>     _phoGenMatchInd;
 
-    std::vector<bool>  _photonIsGenuine;
-    std::vector<bool>  _photonIsMisIDEle;
-    std::vector<bool>  _photonIsHadronicPhoton;
-    std::vector<bool>  _photonIsHadronicFake;
+    std::vector<int>  _photonIsGenuine;
+    std::vector<int>  _photonIsMisIDEle;
+    std::vector<int>  _photonIsHadronicPhoton;
+    std::vector<int>  _photonIsHadronicFake;
 
     std::vector<float>    _phoEffWeight;
     std::vector<float>    _phoEffWeight_Up;

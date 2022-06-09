@@ -111,15 +111,15 @@ def getSamples(y, d, syst):
                    "QCD_Pt470To600_Mu",
                    "QCD_Pt600To800_Mu",
                    "QCD_Pt800To1000_Mu",
-                   "QCD_Pt1000ToInf_Mu",
+                   #"QCD_Pt1000ToInf_Mu",
                    #"GJets_HT40To100",
                    #"GJets_HT100To200",
                    "GJets_HT200To400",
                    "GJets_HT400To600",
                    "GJets_HT600ToInf"
                              ]),
-               "DataMu" : gs(y, d, syst, dataAllMu[y]),
-               "DataEle" : gs(y, d, syst, dataAllEle[y])
+               "data_obsMu" : gs(y, d, syst, dataAllMu[y]),
+               "data_obsEle" : gs(y, d, syst, dataAllEle[y])
                }
                
     Others_List= [

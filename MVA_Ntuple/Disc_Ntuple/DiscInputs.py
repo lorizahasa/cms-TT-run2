@@ -1,6 +1,9 @@
 import ROOT
 #-----------------------------------------------------------------
-condorOutDir = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Disc_Ntuple/DiscMain"
+dirNtuple = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
+dirMVA    = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/"
+dirClass  = "%s/Disc_Ntuple/DiscMain"%dirMVA
+dirRead   = "%s/Disc_Ntuple/DiscMain"%dirMVA
 #-----------------------------------------------------------------
 Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
 #Years 	      =	["2017"]
@@ -10,28 +13,41 @@ Decays 	      =	["Semilep"]
 #Mass          = ["800", "1600"]
 Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"]
 
-Samples = []
-Samples.append("TT_tytg_M700")
-Samples.append("TT_tytg_M800")
-Samples.append("TT_tytg_M900")
-Samples.append("TT_tytg_M1000")
-##Samples.append("TT_tytg_M1100")
-Samples.append("TT_tytg_M1200")
-Samples.append("TT_tytg_M1300")
-Samples.append("TT_tytg_M1400")
-Samples.append("TT_tytg_M1500")
-Samples.append("TT_tytg_M1600")
+#Years and channels to be combined
+Years_         = ["2016PreVFP__2016PostVFP__2017__2018"]
+Channels_      = ["Mu", "Ele", "Mu__Ele"]
+#Channels_      = ["Mu__Ele"]
 
-#bkg and data
-Samples.append("TTbar")
-Samples.append("TTGamma")
-Samples.append("WJets")
-Samples.append("DYJets")
-Samples.append("WGamma")
-Samples.append("ZGamma")
-Samples.append("Others")
-Samples.append("QCD")
-Samples.append("Data")
+S1 = []
+S1.append("Signal_M700")
+S1.append("Signal_M800")
+S1.append("Signal_M900")
+S1.append("Signal_M1000")
+##S1.append("Signal_M1100")
+S1.append("Signal_M1200")
+S1.append("Signal_M1300")
+S1.append("Signal_M1400")
+S1.append("Signal_M1500")
+S1.append("Signal_M1600")
+S1.append("TTGamma")
+S1.append("WJets")
+S1.append("DYJets")
+S1.append("WGamma")
+S1.append("ZGamma")
+S1.append("Others")
+S1.append("QCD")
+
+S2 = []
+S2.append("TTbar")
+S3 = []
+S3.append("data_obs")
+
+Samples  = S1+S2+S3
+
+SampDict = {}
+SampDict["S1"] = S1
+SampDict["S2"] = S2
+SampDict["S3"] = S3
 
 Systematics   =	[]
 Systematics.append("Weight_pu")
@@ -40,18 +56,38 @@ Systematics.append("Weight_pho")
 Systematics.append("Weight_ele")
 Systematics.append("Weight_btag_b")
 Systematics.append("Weight_btag_l")
+Systematics.append("Weight_ttag")
 Systematics.append("Weight_prefire")
 Systematics.append("Weight_q2")
-#Systematics.append("Weight_pdf")
+Systematics.append("Weight_pdf")
 Systematics.append("Weight_isr")
 Systematics.append("Weight_fsr")
-#Systematics.append("Weight_jes")
-#Systematics.append("Weight_jer")
+Systematics.append("Weight_jes")
+Systematics.append("Weight_jer")
 #Systematics   =	[]
 
 SystLevels = []
 SystLevels.append("Up")
 SystLevels.append("Down")
+
+systToNorm = []
+systToNorm.append("Weight_q2Up")
+systToNorm.append("Weight_q2Down")
+systToNorm.append("Weight_pdfUp")
+systToNorm.append("Weight_pdfDown")
+systToNorm.append("Weight_isrUp")
+systToNorm.append("Weight_isrDown")
+systToNorm.append("Weight_fsrUp")
+systToNorm.append("Weight_fsrDown")
+#----------------------------------------------
+#Bkg scale factors: DY, MisID, ZGamma, WGamma
+#----------------------------------------------
+dictSFs = {}
+dictSFs['2016PreVFP']  = [1.34, 1.79, 1.11, 1.20]
+dictSFs['2016PostVFP'] = [1.47, 2.22, 0.54, 1.64]
+dictSFs['2017']        = [1.38, 1.01, 1.17, 1.01]
+dictSFs['2018']        = [1.38, 1.42, 0.66, 1.23]
+dictSFs['2016PreVFP__2016PostVFP__2017__2018'] = [1.38, 1.40, 0.96, 1.22]
 
 Regions = {}
 isTTYG = True 

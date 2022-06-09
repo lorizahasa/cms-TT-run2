@@ -12,7 +12,7 @@ from array import array
 #INPUT command-line arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--years", dest="years", default="2016",type='str',
+parser.add_option("-y", "--years", dest="years", default="2017",type='str',
                      help="Specify the years of the data taking" )
 parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")

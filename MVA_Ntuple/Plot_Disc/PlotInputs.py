@@ -1,48 +1,72 @@
 import ROOT as rt
-Year = []
-Year.append("2016")
-#Year.append("2017")
-#Year.append("2018")
-#Year.append("2016__2017__2018")
+#-----------------------------------------------------------------
+dirCBA  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple"
+dirDisc = "%s/Disc_Ntuple/DiscMain"%dirCBA
+dirPlot = "%s/Plot_Disc/PlotMain"%dirCBA
+dirTwiki= "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Twiki"
+#-----------------------------------------------------------------
+Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
+#Year 	      =	["2017"]
+Channels 	  =	["Mu", "Ele"]
+#Channel 	  =	["Ele"]
+Decays 	      =	["Semilep"]
 
-Channel = []
-Channel.append("Mu")
-#Channel.append("Ele")
-#Channel.append("Mu__Ele")
+#Years and channels to be commbined
+Years_         = ["2016PreVFP__2016PostVFP__2017__2018"]
+#Channels_      = ["Mu", "Ele", "Mu__Ele"]
+Channels_      = ["Mu__Ele"]
+#Channels_      = ["Mu__Ele"]
 
-Decay 	  =	["Semilep"]
-Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"]
-#Mass      = ["700"]
+Systematics   =	[]
+Systematics.append("Weight_pu")
+Systematics.append("Weight_mu")
+Systematics.append("Weight_pho")
+Systematics.append("Weight_ele")
+Systematics.append("Weight_btag_b")
+Systematics.append("Weight_btag_l")
+Systematics.append("Weight_prefire")
+Systematics.append("Weight_q2")
+Systematics.append("Weight_pdf")
+Systematics.append("Weight_isr")
+Systematics.append("Weight_fsr")
+Systematics.append("Weight_jes")
+Systematics.append("Weight_jer")
+Systematics.append("Weight_ttag")
 
-regionList = []
-#regionList.append("ttyg_Enriched_SR")
-#regionList.append("ttyg_Enriched_SR_Boosted")
-#regionList.append("ttyg_Enriched_SR_Resolved")
-regionList.append("ttyg_Enriched_CR_Boosted")
-regionList.append("ttyg_Enriched_CR_Resolved")
-#regionList.append("ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved")
+SystLevels = []
+SystLevels.append("Up")
+SystLevels.append("Down")
 
-histList = []
-histList.append("Reco_mass_T")
-histList.append("Photon_et")
-histList.append("Reco_st")
-histList.append("Reco_ht")
-histList = []
+SampleSignal = {
+         "Signal_M800"    : [rt.kMagenta,  "m_{T} = 800"],
+         "Signal_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
+         "Signal_M1600"   : [rt.kPink,     "m_{T} = 1600"],
+         }
 
-xss = {}
-xss["700"]   = 0.03*0.97*2*4.92
-xss["800"]   = 0.03*0.97*2*1.68
-xss["900"]   = 0.03*0.97*2*0.636
-xss["1000"]  = 0.03*0.97*2*0.262
-xss["1100"]  = 0.03*0.97*2*0.116
-xss["1200"]  = 0.03*0.97*2*0.0537
-xss["1300"]  = 0.03*0.97*2*0.0261
-xss["1400"]  = 0.03*0.97*2*0.0131
-xss["1500"]  = 0.03*0.97*2*0.00677
-xss["1600"]  = 0.03*0.97*2*0.00359
+SampleBkg = {
+         "TTGamma"   : [rt.kGreen, "t#bar{t}#gamma"],
+         "OtherBkgs"    : [rt.kRed, "OtherBkgs"]
+         }
+'''
+SampleBkg = {
+         "TTGamma"   : [rt.kGreen, "t#bar{t}#gamma"],
+         "TTbar"     : [rt.kRed, "t/t#bar{t}"],
+         "WJets"     : [rt.kOrange, "W+jets"],
+         "DYJets"    : [rt.kYellow, "DY+jets"],
+         "WGamma"    : [rt.kGray, "W+#gamma"],
+         "ZGamma"    : [rt.kMagenta, "Z+#gamma"],
+         "QCD"       : [rt.kCyan, "QCD"],
+         "Others"    : [rt.kBlue, "Others"]
+         }
+'''
+SampleData = {
+         "Data"   : [rt.kBlack, "Data"]
+         }
+SampleWeight = ["TTGamma", "TTbar", "Signal_M800"]
+SampleLumi = SampleBkg
+#SampleLumi.update(SampleSignal)
+SampleSyst = ["TTGamma", "TTbar", "WJets", "DYJets", "WGamma", "ZGamma", "QCD", "Others"] 
+#SampleSyst = SampleBkg.keys()
+Samples = SampleSignal.keys() + SampleBkg.keys() + SampleData.keys()
+Samples = dict(SampleSignal.items() + SampleBkg.items() + SampleData.items())
 
-regionDict = {}
-regionDict["ttyg_Enriched_SR"] = "Inclusive"
-regionDict["ttyg_Enriched_SR_Boosted"] = "Boosted"
-regionDict["ttyg_Enriched_SR_Resolved"]= "Resolved"
-regionDict["ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved"]="Boosted+Resolved"

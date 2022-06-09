@@ -24,9 +24,7 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
     allJobs = 0
     for sampleName, fEvt in sampleList.items():
         if "Data" in sampleName and "_" in syst: continue
-        nJob = fEvt[0]
-        if nJob > reduceJobBy:
-            nJob = nJob/reduceJobBy
+        nJob = reducedJob(fEvt[0], sampleName)
         allJobs+=nJob
         extraArgs = "%s_Ntuple*.root"%sampleName
         fileList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s/%s/%s/%s/%s'%(outNtupleDir, year, decay, syst, extraArgs),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')

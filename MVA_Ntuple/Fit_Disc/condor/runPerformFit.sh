@@ -26,7 +26,7 @@ fi
 echo "All arguements: "$@
 echo "Number of arguements: "$#
 
-python performFit.py -y $1 -d $2 -c $3 --mass $4 --method $5 -r $6 --hist $7 --isT2W --isLimit 
+python performFit.py -y $1 -d $2 -c $3 --mass $4 --method $5 -r $6 --hist $7 --isT2W --isLimit --isImpact 
 printf "Done fitting at ";/bin/date
 xrdcp -rf ./output/ root://cmseos.fnal.gov/$8
 rm -r ./output

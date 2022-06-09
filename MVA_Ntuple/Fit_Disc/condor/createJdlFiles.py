@@ -41,9 +41,9 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
     jdlFile = open('tmpSub/%s'%jdlName,'w')
     jdlFile.write('Executable =  runPerformFit.sh \n')
     jdlFile.write(common_command)
-    for mass, r, h in itertools.product(Mass, regionList, discDict.keys()):
+    for mass, r, h in itertools.product(xss.keys(), regionList, discDict.keys()):
         for method in discDict[h]:
-            run_command =  'arguments  = %s %s %s %s %s %s %s %s \nqueue 1\n' %(year, decay, channel, mass, method, r, h, condorOutDir)
+            run_command =  'arguments  = %s %s %s %s %s %s %s %s \nqueue 1\n' %(year, decay, channel, int(float(mass)), method, r, h, condorOutDir)
             jdlFile.write(run_command)
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 

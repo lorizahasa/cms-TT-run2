@@ -1,14 +1,12 @@
 import os
 import sys
+import math
 sys.dont_write_bytecode = True
-sys.path.insert(0, os.getcwd().replace("condor", ""))
-pathDYSF = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Fit_Hist/FitDYSF"
-sys.path.insert(0, pathDYSF) 
-from FitDYSF_dictDYSF import DYSF
+sys.path.insert(0, os.getcwd().replace("condor_read", ""))
 import itertools
-from HistInputs import *
+from DiscInputs import *
 from optparse import OptionParser
-from HistInfo import GetHistogramInfo
+from VarInfo import GetVarInfo
 from ROOT import TFile, TH1F, gDirectory
 
 #----------------------------------------
@@ -24,13 +22,15 @@ isSep = options.isSep
 isComb = options.isMerge
 
 rList = Regions.keys()
+
+
 #-----------------------------------------
 # Collect all syst 
 #----------------------------------------
 sysList = []
 sysList.append("Base")
-for syst, level in itertools.product(Systematics, ["up", "down"]): 
-    sysList.append("%s_%s"%(syst, level))
+for syst, level in itertools.product(Systematics, SystLevels): 
+    sysList.append("%s%s"%(syst, level))
 
 if isCheck:
     isSep  = True
@@ -39,7 +39,7 @@ if isCheck:
     Decays = [Decays[0]]
     Channels = [Channels[0]]
     rList   = [Regions.keys()[0]]
-    sysList = [sysList[0]]
+    sysList = [sysList[0], 'Weight_pdfUp', 'Weight_jesUp']
 if isSep: 
     isComb = False
 if isComb:
@@ -50,7 +50,6 @@ if not isCheck and not isSep and not isComb:
     print("Add either --isCheck or --isSep or --isComb in the command line")
     exit()
 
-hists = GetHistogramInfo()
 #-----------------------------------------
 #Functions to read/write histograms
 #----------------------------------------
@@ -73,17 +72,25 @@ def getHist(inFile, hPath, hName):
     except Exception:
         print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath_))
         sys.exit()
-    if "DYJets" in hPath:
-        hist.Scale(sfVal)
     return hist
 
-def getHistOther(inFile, reg, syst, hName):
+#def getHistOther(inFile, reg, syst, hName):
+def getHistOther(inFile, year, reg, syst, hName):
     hList = []
     for s in Samples:
-        if ("Signal" in s) or ("data_obs" in s) or ("DYJets" in s): 
+        if ("Signal" in s) or ("data_obs" in s) or ("TTGamma" in s): 
             continue
         hPath = "%s/%s/%s"%(s, reg, syst)
-        hList.append(getHist(inFile, hPath, hName))
+        #-----------Remove me------------
+        hTemp = getHist(inFile, hPath, hName)
+        if "TTbar" in s:
+            ttbarSF = 1+dictSFs[year][1]*25/100 #Assuming 25% misID in ttbar
+            if isCheck:
+                print(ttbarSF)
+            hTemp.Scale(ttbarSF)
+        hList.append(hTemp)
+        #-------------------------------
+        #hList.append(getHist(inFile, hPath, hName))
     return addHist(hList, hName)
 
 def writeHist(outFile, hPath, hist):
@@ -99,32 +106,53 @@ def writeHist(outFile, hPath, hist):
 #-----------------------------------------
 # Do the rebining here
 #----------------------------------------
-for year, decay, channel in itertools.product(Years, Decays, Channels):
-    inDir = "%s/Rebin/%s/%s/%s"%(dirHist, year, decay, channel)
+for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList):
+    inDir = "%s/Rebin/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
-    if isCheck:
-        print inFile
-    outDir = inDir.replace("Rebin", "AfterDYSF")
+    outDir = inDir.replace("Rebin", "ForMain")
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
-    print("==> %s, %s, %s"%(year, decay, channel))
-    for r, syst, hName in itertools.product(rList, sysList, hists.keys()):
-        sfKey = "DYSF_%s_%s_%s_%s"%(year, decay, channel, r)
-        sfVal  = DYSF[sfKey]
-        print(sfKey, sfVal)
-        #DY
-        hPath = "%s/%s/%s"%("DYJets", r, syst)
-        writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
-        #Signal
-        hPath = "%s/%s/%s"%("Signal_M800", r, syst)
-        writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
-        hPath = "%s/%s/%s"%("Signal_M1200", r, syst)
-        writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
-        hPath = "%s/%s/%s"%("Signal_M1600", r, syst)
-        writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
+    print("==> %s, %s, %s, %s"%(year, decay, channel, r))
+    hList = GetVarInfo(r, channel).keys()
+    hList.append('Disc')
+    if isCheck:
+        print inFile
+        hList = ['Disc']
+    for syst, hName in itertools.product(sysList, hList):
+        #Signal and TTGamma
+        for sample in Samples:
+            if "Signal" in sample or 'TTGamma' in sample:
+                hPath = "%s/%s/%s"%(sample, r, syst)
+                if syst in systToNorm:
+                    h = getHist(inFile, hPath, hName)
+                    hPath_ = "%s/%s/%s"%(sample, r, "Base")
+                    h_ = getHist(inFile, hPath_, hName)
+                    sysInt  = h.Integral()
+                    if sysInt ==0 or math.isnan(sysInt):
+                        print(year, channel, sample, r, syst, sysInt)
+                    else:
+                        h.Scale(h_.Integral()/sysInt)
+                    writeHist(outFile,  hPath, h)
+                else:
+                    h = getHist(inFile, hPath, hName)
+                    writeHist(outFile,  hPath, h)
+
         #OtherBkgs
         hPath = "%s/%s/%s"%("OtherBkgs", r, syst)
-        writeHist(outFile, hPath, getHistOther(inFile, r, syst, hName))
+        if syst in systToNorm:
+            h = getHistOther(inFile, year, r, syst, hName)
+            hPath_ = "%s/%s/%s"%("OtherBkgs", r, "Base")
+            h_ = getHistOther(inFile, year, r, "Base", hName)
+            sysInt  = h.Integral()
+            if sysInt ==0 or math.isnan(sysInt):
+                print(year, channel, sample, r, syst, sysInt)
+            else:
+                h.Scale(h_.Integral()/sysInt)
+            writeHist(outFile,  hPath, h)
+        else:
+            h = getHistOther(inFile, year, r, syst, hName)
+            writeHist(outFile,  hPath, h)
+        #writeHist(outFile, hPath, getHistOther(inFile, r, syst, hName))
         #data_obs for base
         if "Base" in syst:
             hPath = "%s/%s/%s"%("data_obs", r, syst)

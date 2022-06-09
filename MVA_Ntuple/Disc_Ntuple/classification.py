@@ -2,6 +2,7 @@ import ROOT
 
 import os
 import sys
+sys.dont_write_bytecode = True
 sys.path.insert(0, "%s/%s"%(os.getcwd(), "sample"))
 from SampleInfo import getSamples
 from DiscInputs import *
@@ -73,7 +74,7 @@ for s in allSamples.keys():
             for bkgF in bkgs:
                 bkgList.append(bkgF)
 if isCheck:
-    bkgList = ["TTGamma_SingleLept_Ntuple_1of2.root"]
+    bkgList = ["TTGamma_SingleLept_Ntuple_1of1.root"]
 
 #-----------------------------------------
 #Add trees in the TChain

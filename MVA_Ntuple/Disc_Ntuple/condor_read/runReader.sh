@@ -13,8 +13,9 @@ else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    scramv1 project CMSSW CMSSW_10_2_14
-    cd CMSSW_10_2_14/src
+    export SCRAM_ARCH=slc7_amd64_gcc700
+    scramv1 project CMSSW CMSSW_10_6_10
+    cd CMSSW_10_6_10/src
     eval `scramv1 runtime -sh`
 	cd ../..
 	tar --strip-components=1 -zxvf Disc_Ntuple.tar.gz
@@ -23,29 +24,14 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-if [ $# -eq 7 ] 
-then
-    python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5 -r $6
-    outDir=$7
-elif [ $# -eq 8 ] 
-then
-    python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5 -r $6 --allSyst
-    outDir=$8
-elif [ $# -eq 9 ] 
-then
-    python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5 -r $6 --syst $7 --level $8 
-    outDir=$9
-
-#For over/under flow of arguments
-else
-    echo "The number of command line areguments should be 6 or 8" 
-fi
+python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5 -r $6 --syst $7
 printf "Done Histogramming at ";/bin/date
 
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
 printf "Copying output files ..."
-xrdcp -rf discs/Read root://cmseos.fnal.gov/$outDir
+xrdcp -rf discs/Read root://cmseos.fnal.gov/$8
 rm -r discs
+rm -r CMSSW_10_6_10
 printf "Done ";/bin/date

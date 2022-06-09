@@ -1,5 +1,6 @@
 import os
 import sys
+sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor_class", ""))
 import itertools
 from DiscInputs import *
@@ -38,7 +39,8 @@ for year, decay, channel, in itertools.product(Years, Decays, Channels):
 		'arguments  = %s %s %s %s %s %s\n\
 queue 1\n\n' %(year, decay, channel, method, r, condorOutDir)
         print run_command 
-        jdlFile.write(run_command)
+        if "SR" in r:
+            jdlFile.write(run_command)
     #Create for Syst, Control region
     for method, r, syst, level in itertools.product(methodDict.keys(), Regions.keys(), Systematics, SystLevels):
         run_command =  \

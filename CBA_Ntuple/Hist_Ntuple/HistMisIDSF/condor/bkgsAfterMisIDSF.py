@@ -84,7 +84,7 @@ def getHist(inFile, hPath, hName):
 def getHistMisID(inFile, reg, syst, hName):
     hList = []
     for s in Samples:
-        if ("Singal" in s) or ("data_obs" in s): 
+        if ("Signal" in s) or ("data_obs" in s): 
             continue
         hPath = "%s/%s/%s"%(s, reg, syst)
         hist = getHist(inFile, hPath, "%s_misid_ele"%hName) 
@@ -118,7 +118,7 @@ def getHistVGamma(inFile, samp, reg, syst, hName):
 def getHistOther(inFile, reg, syst, hName):
     hList = []
     for s in Samples:
-        if ("Singal" in s) or ("data_obs" in s) or ("WGamma" in s) or ("ZGamma" in s): 
+        if ("Signal" in s) or ("data_obs" in s) or ("WGamma" in s) or ("ZGamma" in s): 
             continue
         hPath = "%s/%s/%s"%(s, reg, syst)
         hist1 = getHist(inFile, hPath, "%s_genuine"%hName) 

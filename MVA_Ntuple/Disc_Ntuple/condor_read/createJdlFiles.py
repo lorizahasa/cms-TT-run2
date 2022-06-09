@@ -1,5 +1,6 @@
 import os
 import sys
+sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor_read", ""))
 import itertools
 from DiscInputs import *
@@ -10,7 +11,7 @@ os.system("mkdir -p %s/%s"%(tmpDir, condorLogDir))
 tarFile = "%s/Disc_Ntuple.tar.gz"%tmpDir
 exDir = '../../Disc_Ntuple'
 ex = '--exclude=%s/discs --exclude=%s/condor_read --exclude=%s/condor_class'%(exDir, exDir, exDir)
-os.system("tar %s -zcvf %s ../../Disc_Ntuple "%(ex, tarFile))
+#os.system("tar %s -zcvf %s ../../Disc_Ntuple "%(ex, tarFile))
 os.system("cp runReader.sh %s"%tmpDir)
 common_command = \
 'Universe   = vanilla\n\
@@ -25,37 +26,26 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-os.system("mkdir -p /eos/uscms/%s"%condorOutDir)
+os.system("eos root://cmseos.fnal.gov mkdir -p %s"%dirRead)
 subFile = open('%s/condorSubmit.sh'%tmpDir,'w')
 
-sepSyst = ["TTbar", "TTGamma", "WJets", "Others", "Data"]
-allSyst = list(set(Samples) - set(sepSyst))
 for year, decay, channel in itertools.product(Years, Decays, Channels):
+    outDir  = "%s/"
     jdlName = 'submitJobs_%s%s%s.jdl'%(year, decay, channel)
     jdlFile = open('%s/%s'%(tmpDir, jdlName),'w')
     jdlFile.write('Executable =  runReader.sh \n')
     jdlFile.write(common_command)
     #Create for Base
-    for sample, method, r in itertools.product(Samples, methodDict.keys(), Regions.keys()):
-        run_command =  \
-		'arguments  = %s %s %s %s %s %s %s\n\
-queue 1\n\n' %(year, decay, channel, sample, method, r, condorOutDir)
-        jdlFile.write(run_command)
-    
-    #Create for allSyst
-    for sample, method, r in itertools.product(allSyst, methodDict.keys(), Regions.keys()):
-        run_command =  \
-		'arguments  = %s %s %s %s %s %s --allSyst  %s\n\
-queue 1\n\n' %(year, decay, channel, sample, method, r, condorOutDir)
-        jdlFile.write(run_command)
-
-    #Create for sepSyst
-    for sample, method, r, syst, level in itertools.product(sepSyst, methodDict.keys(), Regions.keys(), Systematics, SystLevels):
-        run_command =  \
-		'arguments  = %s %s %s %s %s %s %s %s %s\n\
-queue 1\n\n' %(year, decay, channel, sample, method, r, syst, level, condorOutDir)
-        if not sample in ["Data"]:
-            jdlFile.write(run_command)
+    for method, r, samp in itertools.product(methodDict.keys(), Regions.keys(), SampDict.keys()):
+        args =  'Arguments  = %s %s %s %s %s %s Base %s\n' %(year, decay, channel, samp, method, r, dirRead)
+        args += 'Queue 1\n\n'
+        jdlFile.write(args)
+        for syst, level in itertools.product(Systematics, SystLevels):
+            if "data_obs" in SampDict[samp]:
+                continue
+            args =  'Arguments  = %s %s %s %s %s %s %s%s %s\n' %(year, decay, channel, samp, method, r, syst, level, dirRead)
+            args += 'Queue 1\n\n'
+            jdlFile.write(args)
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
 subFile.close()

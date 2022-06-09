@@ -11,7 +11,7 @@ from FitInputs import *
 #INPUT command-line arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016",type='str',
+parser.add_option("-y", "--year", dest="year", default="2016PreVFP",type='str',
                      help="Specify the year of the data taking" )
 parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
@@ -42,12 +42,12 @@ isQCDMC         = options.isQCDMC
 #----------------------------------------
 #inFile = "AllInc_forMain.root"
 inFile = "AllInc.root"
-inFileDir = "%s/Disc_Ntuple/DiscMain/Reader/%s/%s/%s/CombMass/%s/Merged"%(condorOutDir, year, decayMode, channel, method)
+inFileDir = "%s/Disc_Ntuple/DiscMain/ForMain/%s/%s/%s/CombMass/%s"%(condorOutDir, year, decayMode, channel, method)
 outFileDir      = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method, region, hName)
 os.system("mkdir -p %s"%outFileDir)
 inFileName = "%s/%s"%(outFileDir, inFile)
 print(inFileDir)
-os.system("xrdcp -rf root://cmseos.fnal.gov/%s/%s %s"%(inFileDir, inFile, outFileDir))
+os.system("xrdcp -f root://cmseos.fnal.gov/%s/%s %s"%(inFileDir, inFile, outFileDir))
 inHistDirBase   = "$PROCESS/%s/Base/$BIN"%region
 inHistDirSys    = "$PROCESS/%s/$SYSTEMATIC/$BIN"%region
 
@@ -59,8 +59,8 @@ datacardPath    = "%s/Datacard_Alone.txt"%(outFileDir)
 #-----------------------------------
 cb = ch.CombineHarvester()
 #cb.SetVerbosity(4)
-AllBkgs = ["TTbar", "TTGamma", "WJets", "DYJets", "WGamma", "ZGamma", "Others","QCD"]
-Signal  = ["TT_tytg_M%s"%mass]
+AllBkgs = ["TTGamma", "OtherBkgs"]
+Signal  = ["Signal_M%s"%mass]
 allMC   = Signal + AllBkgs
 #------------------
 #Add observed data
@@ -75,21 +75,23 @@ cb.AddProcesses(["*"],["TT"],["13TeV"],[channel],AllBkgs,[(-1, hName)], False)
 #Add systematics
 #------------------
 cb.cp().process(allMC).AddSyst(cb, "lumi_$ERA", "lnN",ch.SystMap("era") (["13TeV"], 1.025))
-cb.cp().process(["TTbar"]).AddSyst(cb, "CMS_norm_tt", "lnN",ch.SystMap("era") (["13TeV"], 1.055))
+#cb.cp().process(["TTbar"]).AddSyst(cb, "CMS_norm_tt", "lnN",ch.SystMap("era") (["13TeV"], 1.055))
 cb.cp().process(["TTGamma"]).AddSyst(cb, "CMS_norm_tty", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
-cb.cp().process(["Others"]).AddSyst(cb, "CMS_norm_others", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
+cb.cp().process(["OtherBkgs"]).AddSyst(cb, "CMS_norm_others", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
 cb.cp().process(allMC).AddSyst(cb, "Weight_ele",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_btag_l", "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_prefire","shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_isr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-#cb.cp().process(allMC).AddSyst(cb, "Weight_fsr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_fsr",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_pu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_mu",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_pho",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_btag_b", "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_q2",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
-#cb.cp().process(allMC).AddSyst(cb, "Weight_jer",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-#cb.cp().process(allMC).AddSyst(cb, "Weight_pdf",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_jes",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_jer",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_pdf",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "Weight_ttag",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 #------------------
 #Add rateParam
 #------------------

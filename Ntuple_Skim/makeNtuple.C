@@ -1068,10 +1068,10 @@ void makeNtuple::FillEvent(std::string year){
             cout << "        Fake:    "<<isHadronicFake << endl;
             cout << "        PUPhoton:"<<isPUPhoton << endl;
             }
-            _photonIsGenuine.push_back(isGenuine);
-            _photonIsMisIDEle.push_back(isMisIDEle);
-            _photonIsHadronicPhoton.push_back(isHadronicPhoton);
-            _photonIsHadronicFake.push_back(isHadronicFake || isPUPhoton);
+            _photonIsGenuine.push_back((int)isGenuine);
+            _photonIsMisIDEle.push_back((int)isMisIDEle);
+            _photonIsHadronicPhoton.push_back((int)isHadronicPhoton);
+            _photonIsHadronicFake.push_back((int)(isHadronicFake || isPUPhoton));
             
         }//isMC
         _dRPhotonLepton.push_back(phoVector.DeltaR(lepVector));

@@ -82,7 +82,7 @@ def getHist(inFile, hPath, hName):
 def getHistOther(inFile, reg, syst, hName):
     hList = []
     for s in Samples:
-        if ("Singal" in s) or ("data_obs" in s) or ("DYJets" in s): 
+        if ("Signal" in s) or ("data_obs" in s) or ("DYJets" in s): 
             continue
         hPath = "%s/%s/%s"%(s, reg, syst)
         hList.append(getHist(inFile, hPath, hName))
