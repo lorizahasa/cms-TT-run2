@@ -38,8 +38,8 @@ region = "tty_Enriched_le4j_a1b_e1y"
 
 sampDict = {
          "Signal_M800"    : [rt.kMagenta,  "m_{T} = 800"],
-         #"Signal_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
-         #"Signal_M1600"   : [rt.kPink,     "m_{T} = 1600"],
+         "Signal_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
+         "Signal_M1600"   : [rt.kPink,     "m_{T} = 1600"],
          "TTGamma"   : [rt.kGreen, "t#bar{t}#gamma"],
          "TTbar"     : [rt.kRed, "t/t#bar{t}"],
          "WJets"     : [rt.kOrange, "W+jets"],

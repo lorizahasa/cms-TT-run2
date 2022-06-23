@@ -9,25 +9,27 @@ from optparse import OptionParser
 #INPUT Command Line Arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
-parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
-parser.add_option("--isComb","--isComb", dest="isMerge",action="store_true",default=False, help="Merge for combined years and channels")
+parser.add_option("--isComb","--isComb", dest="isComb",action="store_true",default=False, help="Merge for combined years and channels")
+parser.add_option("--isCR","--isCR", dest="isCR",action="store_true",default=False, help="Merge for combined years and channels")
 (options, args) = parser.parse_args()
-isCheck = options.isCheck
-isSep = options.isSep
-isComb = options.isMerge
+isComb = options.isComb
+isCR = options.isCR
 
-#byWhat = "ForDYSF"
-#byWhat = "AfterDYSF"
-#byWhat = "Rebin"
-byWhat = "ForMain"
+#dir_ = "ForDYSF"
+#dir_ = "AfterDYSF"
+#dir_ = "Rebin"
+dir_ = "ForMain"
+extra = "SR"
+if isCR:
+    extra = 'CR'
 outTxt = "SepYears"
 if isComb:
     outTxt = "CombYears"
 
-#fName = "plot%s_%s"%(byWhat, outTxt)
-fName = "syst%s_%s"%(byWhat, outTxt)
-txtFile = open("%s/%s.txt"%(dirPlot, fName), "r")
+fName = "plotDisc_%s_%s_%s"%(dir_, extra, outTxt)
+#fName = "systRatioDisc_%s_%s"%(dir_, outTxt)
+#fName = "overlayDisc_%s_%s"%(dir_, outTxt)
+txtFile = open("%s/%s.txt"%(dirPlot, fName.replace("_%s"%extra, "")), 'r')
 texFile = open("%s/%s.tex"%(dirPlot, fName), "w")
 os.system("mkdir -p %s"%dirTwiki)
 twikiFile = open("%s/%s.log"%(dirTwiki, fName), "w")
@@ -36,6 +38,10 @@ allPlotPath = []
 allPlotName = []
 
 for line in txtFile:
+    if isCR and "SR" in line:
+        continue
+    if not isCR and "CR" in line:
+        continue
     allPlotPath.append(line)
     allPlotName.append(line.split("/")[-1])
 
@@ -45,15 +51,22 @@ widthFor   = 4
 if isComb:
     showPerFig = 12
     widthFor   = 3
-showPerFig = 16
-widthFor   = 4
 figWidth = round((1-0.05)/widthFor, 2)#5% margin
+if len(allPlotPath) < showPerFig:
+    showPerFig = len(allPlotPath)
 nPage = len(allPlotPath)/showPerFig
+remainder = len(allPlotPath)%showPerFig
+if remainder != 0:
+    nPage = nPage +1
 for page in np.arange(nPage):
     texFile.write("\\begin{figure}\n")
     texFile.write("\centering\n")
     perFigName = []
-    for n in np.arange(showPerFig):
+    showPerPage = showPerFig
+    if remainder != 0:
+        if page == nPage -1:
+            showPerPage = remainder
+    for n in np.arange(showPerPage):
         perFigName.append(allPlotName[showPerFig*page + n])
         plotPath = allPlotPath[showPerFig*page + n]
         texFile.write("\includegraphics[width=%s\linewidth]{%s}\n"%(figWidth, plotPath.strip()))

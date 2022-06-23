@@ -67,7 +67,16 @@ def checkNanInBins(hist):
             print "%s: bin %s is nan"%(hist.GetName(), b)
             checkNan = True
     return checkNan
-                
+        
+def getContent(h):
+    ratio = []
+    for i in range(h.GetNbinsX()):
+        content = h.GetBinContent(i)
+        if content == 0.0:
+            continue
+        ratio.append(h.GetBinContent(i))
+    return(ratio)
+
 #-----------------------------------------
 #Path of the I/O histrograms/plots
 #----------------------------------------
@@ -75,20 +84,18 @@ def checkNanInBins(hist):
 #dir_ = "Rebin"
 dir_ = "ForMain"
 os.system("mkdir -p %s"%dirPlot)
-fPath = open("%s/syst%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
+fPath = open("%s/systRatioDisc_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
+fPath_ = open("%s/systRatioDisc_%s_%s.py"%(dirPlot, dir_, outTxt), 'w')
 
 allBkgs = False
 sample  = "TTGamma"
 hName = 'Disc'
+rangeDict = {}
 for decay, region, channel, year in itertools.product(Decays, rList, Channels, Years):
     print("----------------------------------------------")
     print("%s, %s, %s, %s, %s"%(decay, hName, region, channel, year))
     if "tt_" in region and ("gamma" in hName or "Pho" in hName): 
         continue 
-    if ("Ele" in hName and "Mu" in channel):
-        continue
-    if ("Mu" in hName and "Ele" in channel):
-        continue
     ydc = "%s/%s/%s"%(year, decay, channel)
     inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydc)
     outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydc)
@@ -127,8 +134,6 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     samples.append("Others")
     samples.append("QCD")
     for index, syst in enumerate(Systematics):
-        if "ele" in syst and "u" in channel: continue
-        if "mu" in syst and "e" in channel: continue
         if allBkgs:
             for i, s in enumerate(samples):
                 hPathBase   = "%s/%s/Base/%s"%(s, region, hName)
@@ -200,9 +205,9 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
         #Ratio Up
         hRatioUp = hUp.Clone(syst)
         hRatioUp.Divide(hBase)
-        myColor = index
-        if myColor >9:
-            myColor = 32+index
+        myColor = index+1
+        if myColor >8:
+            myColor = 40+index
         decoHistRatio(hRatioUp, hName, "RatioUp (solid), RatioDown (dashed)", myColor)
         hRatioUp.SetMarkerStyle(20+index)
         hRatioUp.SetMarkerColor(myColor)
@@ -227,6 +232,9 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
         hRatioDown.SetMarkerStyle(index)
         allHistUp.append(hRatioUp)#Don't comment
         allHistDown.append(hRatioDown)#Don't comment
+        rangeDict["%s_%s_%s_%s"%(year, channel, region, syst)] = [
+                min(getContent(hRatioUp)), max(getContent(hRatioUp)), 
+                min(getContent(hRatioDown)), max(getContent(hRatioDown))]
 
     #Draw Leg
     leg = TLegend(0.83,0.15,0.93,0.90)
@@ -235,11 +243,8 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     allHistUpSorted = sortHists(allHistUp, True)
     maxRatio = []
     for h in allHistUpSorted:
-        ratio = []
-        for i in range(h.GetNbinsX()):
-            ratio.append(round(h.GetBinContent(i),2))
-        maxRatio.append(max(ratio))
-        #print h.GetName(), ratio
+        max_ = max(getContent(h))
+        maxRatio.append(round(max_, 2))
     yMax = max(maxRatio)
     print yMax
     for i, h in enumerate(allHistUpSorted):
@@ -275,7 +280,9 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     baseLine.SetLineColor(1);
     baseLine.Draw("same");
 
-    pdf = "%s/syst%s_%s_%s_%s.pdf"%(outPlotDir, dir_, sample, hName, region)
+    pdf = "%s/systRatioDisc_%s_%s_%s_%s.pdf"%(outPlotDir, dir_, sample, hName, region)
     fPath.write("%s\n"%pdf)
     canvas.SaveAs(pdf)
+fPath_.write("systDict = %s"%rangeDict)
 print(fPath)
+print(fPath_)

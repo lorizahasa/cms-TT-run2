@@ -1,7 +1,17 @@
 import sys
 sys.dont_write_bytecode = True
 import pandas as pd
+from collections import OrderedDict
 from JobsNano_cff import Samples_2016PreVFP, Samples_2016PostVFP,  Samples_2017, Samples_2018 
+
+
+dicts = [Samples_2016PreVFP, Samples_2016PostVFP, Samples_2017, Samples_2018]
+for dict_ in dicts:
+    print("\n------------------\n")
+    dict_ = OrderedDict(sorted(dict_.items(), key=lambda t: t[0]))
+    for k, v in dict_.items():
+        if  "Data" in k: 
+            print(k, v)
 
 sampMC = []
 for s in Samples_2017.keys():
@@ -20,6 +30,7 @@ for s in sampMC[0:len(sampMC)/2]:
     n17     = Samples_2017[s][1]
     n18     = Samples_2018[s][1]
     dictMC1[s] = [n16Pre, n16Post, n17, n18] 
+dictMC1 = OrderedDict(sorted(dictMC1.items(), key=lambda t: t[0]))
 mcDF = pd.DataFrame.from_dict(dictMC1)
 fMC.write("\\begin{minipage}[c]{0.50\\textwidth}\n")
 fMC.write("\\scalebox{.70}{\n")
@@ -35,6 +46,7 @@ for s in sampMC[len(sampMC)/2:len(sampMC)]:
     n17     = Samples_2017[s][1]
     n18     = Samples_2018[s][1]
     dictMC2[s] = [n16Pre, n16Post, n17, n18] 
+dictMC2 = OrderedDict(sorted(dictMC2.items(), key=lambda t: t[0]))
 mcDF = pd.DataFrame.from_dict(dictMC2)
 fMC.write("\\begin{minipage}[c]{0.50\\textwidth}\n")
 fMC.write("\\scalebox{.70}{\n")

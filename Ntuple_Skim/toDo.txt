@@ -19,3 +19,7 @@ charge and mass window in 91.18+-10 GeV
 ## The Q2 unc is around 25%. Double check it
 ## The integral of Jet_pt (30 bins) differs with Jet_eta. However, with 300 bins,
 it matches. Similar for Jet_mass. Don't really understand it.
+
+## why TTGamma hadronic sample has smaller xss compared to semilep?
+## Include TTGamma CPTune up/down in the limit computation
+## Why TTGamma and Others lumiSF is different for muon and electron channel

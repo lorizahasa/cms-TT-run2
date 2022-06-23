@@ -110,7 +110,7 @@ for decay, channel in itertools.product(Decays, Channels):
     
     graphs_ = sortGraphs(graphs)
     for index, graph_ in enumerate(graphs_):
-        graph_.GetYaxis().SetRangeUser(0.1*min(list_), 1000*max(list_))
+        graph_.GetYaxis().SetRangeUser(0.1*min(list_), 100000*max(list_))
         #graph_.GetYaxis().SetRangeUser(0.1*min(list_), 1.1*max(list_))
         graph_.GetXaxis().SetNdivisions(3)
         if index ==0:

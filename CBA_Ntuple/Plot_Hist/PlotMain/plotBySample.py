@@ -45,7 +45,8 @@ if isCheck:
     Decays = [Decays[0]]
     Channels = [Channels[0]]
     rList  = [rList[0]]
-    hList = ["Jet_pt"]
+    #hList = ["Jet_pt"]
+    hList = ['Reco_mass_lgamma']
 if isSep: 
     isComb = False
     outTxt = "SepYears"
@@ -62,10 +63,13 @@ if not isCheck and not isSep and not isComb:
 #Path of the I/O histrograms/plots
 #----------------------------------------
 #dir_ = "Merged"
-dir_ = "Rebin"
+#dir_ = "Rebin"
+dir_ = "ForMain"
 os.system("mkdir -p %s"%dirPlot)
-fPath = open("%s/plotBySample_%s.txt"%(dirPlot, outTxt), 'w')
+fPath = open("%s/plotBySample_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
+if 'Main' in dir_:
+    hList = ['Reco_mass_lgamma']
 for decay, region, hName, channel, year in itertools.product(Decays, rList, hList, Channels, Years):
     #-----------------------------------------
     #Basic flags
@@ -257,7 +261,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
             baseLine.SetLineColor(3);
             baseLine.Draw("SAME");
             hRatio.Draw("same")
-        pdf = "%s/plotBySample_%s_%s.pdf"%(outPlotDir, hName, region)
+        pdf = "%s/plotBySample_%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region)
         canvas.SaveAs(pdf)
         fPath.write("%s\n"%pdf)
         cap = "%s, %s, %s, %s"%(year, channel, region, hName)

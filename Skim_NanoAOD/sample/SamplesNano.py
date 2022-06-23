@@ -54,7 +54,7 @@ def sampleDict(year):
     #Inclusive
     'TTGamma_Hadronic'   : '/TTGamma_Hadronic_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
     'TTGamma_SingleLept' : '/TTGamma_SingleLept_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
-    'TTGamma_Dilepton'     : '/TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
+    'TTGamma_Dilepton'   : '/TTGamma_Dilept_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes[year]+'/NANOAODSIM',
     #pT binned 
     'TTGamma_Hadronic_Pt100' : '/TTGamma_Hadronic_ptGamma100-200_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM',
     'TTGamma_Hadronic_Pt200' : '/TTGamma_Hadronic_ptGamma200inf_TuneCP5_13TeV-madgraph-pythia8/'+mcTypes2[year]+'/NANOAODSIM', #UL not avial for 2017
@@ -137,9 +137,9 @@ def sampleDict(year):
     #--------------------------
     # ttV 
     #--------------------------
-    'TTZtoQQ' : '/TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8/'+mcTypes[year]+'/NANOAODSIM',
     'TTWtoQQ' : '/TTWJetsToQQ_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+mcTypes[year]+'/NANOAODSIM',
     'TTWtoLNu' : '/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/'+mcTypes[year]+'/NANOAODSIM',
+    'TTZtoQQ' : '/TTZToQQ_TuneCP5_13TeV-amcatnlo-pythia8/'+mcTypes[year]+'/NANOAODSIM',
     'TTZtoLL' : '/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/'+mcTypes[year]+'/NANOAODSIM',
     }
 

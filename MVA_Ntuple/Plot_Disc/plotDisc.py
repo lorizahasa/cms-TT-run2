@@ -16,6 +16,7 @@ from PlotTDRStyle import *
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 
 rList = Regions.keys()
+print(rList)
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
@@ -62,7 +63,7 @@ if not isCheck and not isSep and not isComb:
 #dir_ = "Rebin"
 dir_ = "ForMain"
 os.system("mkdir -p %s"%dirPlot)
-fPath = open("%s/plot%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
+fPath = open("%s/plotDisc_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
 for decay, region, channel, year in itertools.product(Decays, rList, Channels, Years):
     hInfo = GetVarInfo(region, channel)
@@ -262,7 +263,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
                 baseLine.SetLineColor(3);
                 baseLine.Draw("SAME");
                 hRatio.Draw("same")
-            pdf = "%s/plot%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region)
+            pdf = "%s/plotDisc_%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region)
             canvas.SaveAs(pdf)
             fPath.write("%s\n"%pdf)
             cap = "%s, %s, %s, %s"%(year, channel, region, hName)

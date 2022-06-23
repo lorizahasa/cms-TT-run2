@@ -4,8 +4,8 @@ import math
 import numpy
 import itertools
 sys.dont_write_bytecode = True
-sys.path.insert(0, os.getcwd().replace("PlotDYSF", "")) 
-sys.path.insert(0, os.getcwd().replace("Plot_Hist/PlotDYSF", "Hist_Ntuple/HistDYSF"))
+sys.path.insert(0, os.getcwd().replace("PlotMisIDSF", "")) 
+sys.path.insert(0, os.getcwd().replace("Plot_Hist/PlotMisIDSF", "Hist_Ntuple/HistMisIDSF"))
 from optparse import OptionParser
 from PlotFunc import *
 from PlotCMSLumi import *
@@ -71,12 +71,12 @@ def checkNanInBins(hist):
 #----------------------------------------
 #dir_ = "Merged"
 #dir_ = "Rebin"
-dir_ = "ForDYSF"
+dir_ = "ForMisIDSF"
 os.system("mkdir -p %s"%dirPlot)
 fPath = open("%s/syst%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
-allBkgs = False
-sample  = "DYJets"
+allBkgs = True
+sample  = "WGamma"
 for decay, region, hName, channel, year in itertools.product(Decays, rList, hList, Channels, Years):
     print("----------------------------------------------")
     print("%s, %s, %s, %s, %s"%(decay, hName, region, channel, year))
@@ -114,20 +114,11 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
     allHistDown = []
     allSystPercentage = {}
     print Systematics
-    samples = []
-    samples.append("TTbar")
-    samples.append("TTGamma")
-    samples.append("WJets")
-    samples.append("DYJets")
-    samples.append("WGamma")
-    samples.append("ZGamma")
-    samples.append("Others")
-    samples.append("QCD")
     for index, syst in enumerate(Systematics):
         if "ele" in syst and "u" in channel: continue
         if "mu" in syst and "e" in channel: continue
         if allBkgs:
-            for i, s in enumerate(samples):
+            for i, s in enumerate(Samples):
                 hPathBase   = "%s/%s/Base/%s"%(s, region, hName)
                 hPathUp     = "%s/%s/%sUp/%s"%(s, region, syst, hName)
                 hPathDown   = "%s/%s/%sDown/%s"%(s, region, syst, hName)

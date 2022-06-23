@@ -1,17 +1,21 @@
-#!/usr/bin/env python
-from ROOT import gROOT, TGraph, TCanvas, TLegend, TFile, gPad
 import os
 import sys
-sys.path.insert(0, os.getcwd().replace("MVA_Ntuple/Plot_Disc", "CBA_Ntuple/Plot_Hist/PlotMain"))
-sys.path.insert(0, os.getcwd().replace("Plot_Disc", "Disc_Ntuple"))
 import json
+sys.dont_write_bytecode = True
+sys.path.insert(0, os.getcwd().replace("MVA_Ntuple/Plot_Disc", "CBA_Ntuple/Plot_Hist")) 
+sys.path.insert(0, os.getcwd().replace("Plot_Disc", "Disc_Ntuple"))
+from DiscInputs import Regions
+from VarInfo import GetVarInfo
+from optparse import OptionParser
+from collections import OrderedDict
+import itertools
+from PlotFunc import *
+from PlotInputs import *
 from PlotCMSLumi import *
 from PlotTDRStyle import *
-from array import array
-from PlotInputs import *
-from optparse import OptionParser
-from DiscInputs import methodDict
+from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 
+rList = Regions.keys()
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
@@ -19,141 +23,129 @@ setTDRStyle()
 xPadRange = [0.0,1.0]
 yPadRange = [0.0,0.30-padGap, 0.30+padGap,1.0]
 
+#----------------------------------------
+#INPUT Command Line Arguments 
+#----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016",type='str',
-                     help="Specify the year of the data taking" )
-parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
-                     help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
-parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
-		  help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
-                     help="which control selection and region"), 
-parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
-                     help="which histogram to be used for making datacard")
-parser.add_option("--mass","--mass",dest="mass", default='800', type='str', 
-		  help="mass of the Tprime")
-parser.add_option("--method","--method",dest="method", default='BDTA', type='str', 
-		  help="MVA method")
+parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Check for minimum inputs")
+parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
+parser.add_option("--isComb","--isComb", dest="isComb",action="store_true",default=False, help="Merge for combined years and channels")
 (options, args) = parser.parse_args()
-year            = options.year
-decayMode       = options.decayMode
-channel         = options.channel
-mass           = options.mass
-method           = options.method
-region          = options.region
-hName           = options.hName
-gROOT.SetBatch(True)
+isCheck = options.isCheck
+isSep = options.isSep
+isComb = options.isComb
+outTxt = ""
 
-limits = "tex/allLimits.json"
-pDict = {}
-#-----------------------------------------------------------------
-condorHistDir  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple" 
-#-----------------------------------------------------------------
-path = "%s/Disc_Ntuple/DiscMain/Reader/%s/%s/%s"%(condorHistDir, year, decayMode, channel)
-print path
-discFile = TFile.Open("%s/CombMass/%s/Merged/AllInc_forMain.root"%(path, method))
+if isCheck:
+    isSep  = True
+    isComb = False
+    Years  = [Years[0]]
+    Decays = [Decays[0]]
+    Channels = [Channels[0]]
+    rList  = [rList[0]]
+if isSep: 
+    isComb = False
+    outTxt = "SepYears"
+if isComb:
+    isSep  = False
+    outTxt = "CombYears"
+    Years = Years_
+    Channels = Channels_
+if not isCheck and not isSep and not isComb:
+    print("Add either --isCheck or --isSep or --isComb in the command line")
+    exit()
 
-plotPath = path.replace("Disc_Ntuple/Disc", "Plot_Disc/Plot")
-plotPath = "%s/%s/%s/%s"%(plotPath, mass, method, region)
-os.system("mkdir -p %s"%plotPath)
+#-----------------------------------------
+#Path of the I/O histrograms/plots
+#----------------------------------------
+#dir_ = "Merged"
+#dir_ = "Rebin"
+dir_ = "ForMain"
+os.system("mkdir -p %s"%dirPlot)
+fPath = open("%s/overlayDisc_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
-#Mass = ["700", "1200"]
-Mass = ["700", "1000", "1200", "1600"]
-for mass in Mass: 
-    sigDisc = discFile.Get("TT_tytg_M%s/%s/Base/%s"%(mass, region, hName))
-    #sigDisc.Scale(10)
-    pDict["Signal, M%s"%mass] = sigDisc
-
-#pDict["Data"] = discFile.Get("data_obs/%s/Base/%s"%(region, hName))
-#bkg and data
-Samples = []
-Samples.append("TTbar")
-Samples.append("TTGamma")
-Samples.append("WJets")
-Samples.append("DYJets")
-Samples.append("WGamma")
-Samples.append("ZGamma")
-Samples.append("Others")
-Samples.append("QCD")
-
-for i, s in enumerate(Samples):
-    dPath   = "%s/%s/Base/%s"%(s, region, hName)
-    if i==0:
-        bkgDisc = discFile.Get(dPath)
-    else:
-        bkgDisc.Add(discFile.Get(dPath))
-#bkgDisc.Scale(1/bkgDisc.Integral())
-pDict["All Background"] = bkgDisc
-
-canvas = TCanvas()
-legend = TLegend(0.65,0.65,0.85,0.90);
-legend.SetFillStyle(0);
-legend.SetBorderSize(0);
-legend.SetTextFont(42);
-legend.SetTextAngle(0);
-legend.SetTextSize(0.04);
-legend.SetTextAlign(12);
-canvas.cd()
-gPad.SetLogy(True);
-maxInt = 0.0;
-for index, s in enumerate(pDict.keys()):
-    pDict[s].SetLineColor(index+1)
-    pDict[s].SetLineWidth(3)
-    pDict[s].SetMarkerStyle(20+index);
-    pDict[s].SetMarkerColor(index+1);
-    pDict[s].GetYaxis().SetTitle("Events") 
-    pDict[s].GetYaxis().SetLabelSize(.040)
-    pDict[s].GetXaxis().SetLabelSize(.035)
-    if "Disc" in hName:
-        pDict[s].GetXaxis().SetTitle("%s_%s"%(hName, method))
-    else:
-        pDict[s].GetXaxis().SetTitle("%s"%hName)
-    if index==0 and not "Data" in s:
-        print s
-        #pDict[s].SetMaximum(1.0)
-        pDict[s].SetMaximum(100*pDict["All Background"].GetMaximum())
-        pDict[s].SetMinimum(0.01)
-        pDict[s].Draw("HIST")
-    elif "Data" in s:
-        pDict[s].Draw("EPsame")
-        pDict[s].SetMarkerStyle(20)
-        pDict[s].SetMarkerColor(1)
-        pDict[s].SetLineColor(1)
-    else:
-        pDict[s].Draw("Histsame")
-    #legName = "%s, mean = %i, int = %i"%(econDict[s][1], pDict[s].GetMean(), pDict[s].Integral())
-    legend.AddEntry(pDict[s], s,  "L")
-    canvas.Update()
+hName = 'Reco_mass_T'
+for decay, region, channel, year in itertools.product(Decays, rList, Channels, Years):
+    isLog    = False
+    print("----------------------------------------------")
+    print("%s, %s, %s, %s, %s"%(decay, hName, region, channel, year))
+    ydc = "%s/%s/%s"%(year, decay, channel)
+    inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydc)
+    outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydc)
+    os.system("mkdir -p %s"%outPlotDir)
+    inFile = TFile("%s/AllInc.root"%(inHistDir), "read")
+    if isCheck:
+        print(inFile)
+    gROOT.SetBatch(True)
+    legend = TLegend(0.60,0.60,0.80,0.88); 
+    decoLegend(legend, 4, 0.030)
+    pDict = {}
+    #pDict["Data"] = inFile.Get("data_obs/%s/Base/%s"%(region, hName))
+    for i, s in enumerate(SampleBkg.keys()):
+        dPath   = "%s/%s/Base/%s"%(s, region, hName)
+        if i==0:
+            bkgDisc = inFile.Get(dPath)
+        else:
+            bkgDisc.Add(inFile.Get(dPath))
+    name = "All Background (%s)"%(round(bkgDisc.Integral(), 3))
+    bkgDisc.Scale(1/bkgDisc.Integral())
+    pDict[name] = bkgDisc
+    legend.AddEntry(bkgDisc, name,  "L")
     
-legend.Draw()
-#---------------------------
-#Draw CMS, Lumi, channel
-#---------------------------
-chColor = 1
-if channel in ["mu", "Mu", "m"]:
-    chColor = 3 #ROOT.kCyan
-    chName = "1 #color[%i]{#mu}, p_{T}^{miss} > 20"%chColor
-elif channel in ["ele", "Ele"]:
-    chColor = 2#ROOT.kRust - 1
-    chName = "1 #color[%i]{e}, p_{T}^{miss}  > 20"%chColor
-else:
-    chColor = 4#ROOT.kRed + 1
-    chName = "1 #color[%i]{#mu + e}, p_{T}^{miss}  > 20"%chColor
-#chName = "#splitline{%s}{%s}"%(chName, region)
-chName = "%s, #bf{%s}"%(chName, region)
-crName = region 
-#chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
-chCRName = "#splitline{#font[42]{%s}}{#font[42]{%s}}"%(chName, "")
-extraText   = "#splitline{Preliminary}{%s}"%chCRName
-lumi_13TeV = "35.9 fb^{-1}"
-col_year = 3 
-if year=="2016":
-    lumi_13TeV = "35.9 fb^{-1}(2016)" 
-elif year=="2017":
-    lumi_13TeV = "41.5 fb^{-1}(2017)" 
-elif year=="2018":
-    lumi_13TeV = "59.7 fb^{-1}(2018)" 
-else:
-    lumi_13TeV = "137.2 fb^{-1} (#color[%i]{Run2})"%(col_year)
-CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
-canvas.SaveAs("%s/%s.pdf"%(plotPath, hName))
+    #Mass = ["700", "1200"]
+    Mass  = ["700", '1000', "1200", "1400", "1600"]
+    for mass in Mass: 
+        sigDisc = inFile.Get("Signal_M%s/%s/Base/%s"%(mass, region, hName))
+        int_ = sigDisc.Integral()
+        if int_==0.0:
+            continue
+        name = "Signal, M%s (%s)"%(mass, round(sigDisc.Integral(), 3))
+        sigDisc.Scale(1/int_)
+        pDict[name] = sigDisc
+        legend.AddEntry(sigDisc, name,  "L")
+
+    canvas = TCanvas()
+    canvas.cd()
+    if isLog:
+        gPad.SetLogy(True);
+    maxInt = 0.0;
+    pDict = OrderedDict(sorted(pDict.items(), key=lambda t: t[0]))
+    for index, s in enumerate(pDict.keys()):
+        pDict[s].SetLineColor(index+1)
+        pDict[s].SetLineWidth(3)
+        pDict[s].SetMarkerStyle(20+index);
+        pDict[s].SetMarkerColor(index+1);
+        pDict[s].GetYaxis().SetTitle("Events (norm. to 1)") 
+        pDict[s].GetYaxis().SetLabelSize(.040)
+        pDict[s].GetXaxis().SetLabelSize(.035)
+        pDict[s].GetXaxis().SetTitle("%s"%hName)
+        if index==0 and not "Data" in s:
+            print s
+            pDict[s].SetMaximum(0.5)
+            pDict[s].GetXaxis().SetRangeUser(0, 2000)
+            #pDict[s].SetMaximum(100*pDict["All Background"].GetMaximum())
+            #pDict[s].SetMinimum(0.01)
+            pDict[s].Draw("HIST")
+        elif "Data" in s:
+            pDict[s].Draw("EPsame")
+            pDict[s].SetMarkerStyle(20)
+            pDict[s].SetMarkerColor(1)
+            pDict[s].SetLineColor(1)
+        else:
+            pDict[s].Draw("Histsame")
+        #legName = "%s, mean = %i, int = %i"%(econDict[s][1], pDict[s].GetMean(), pDict[s].Integral())
+        canvas.Update()
+        
+    legend.Draw()
+    #---------------------------
+    #Draw CMS, Lumi, channel
+    #---------------------------
+    chName = getChLabel(decay, channel)
+    chCRName = "#splitline{#font[42]{%s}}{#font[42]{%s}}"%(chName, region)
+    extraText   = "#splitline{Preliminary}{%s}"%chCRName
+    lumi_13TeV = getLumiLabel(year)
+    CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
+    pdf = "%s/overlayDisc_%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region)
+    canvas.SaveAs(pdf)
+    fPath.write("%s\n"%pdf)
+print(fPath)

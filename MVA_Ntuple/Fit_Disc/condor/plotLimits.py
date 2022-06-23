@@ -30,11 +30,11 @@ parser.add_argument(
 #     '--debug-output', '-d', help="""If specified, write the
 #     TGraphs into this output ROOT file""")
 parser.add_argument(
-    '--x-title', default='m_{T} (GeV)', help="""Title for the x-axis""")
+    '--x-title', default='m_{t*} (GeV)', help="""Title for the x-axis""")
 parser.add_argument(
     '--y-title', default=None, help="""Title for the y-axis""")
 parser.add_argument(
-    '--limit-on', default='#sigma_{TT} B(T #rightarrow t#gamma)B(T #rightarrow tg) [pb]', help="""Shortcut for setting the y-axis label""")
+    '--limit-on', default='#sigma_{t*#bar{t*}} B(t* #rightarrow t#gamma)B(#bar{t*} #rightarrow #bar{t}g) [pb]', help="""Shortcut for setting the y-axis label""")
 parser.add_argument(
     '--cms-sub', default='Internal', help="""Text below the CMS logo""")
 parser.add_argument(
