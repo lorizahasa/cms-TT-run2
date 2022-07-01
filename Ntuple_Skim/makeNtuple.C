@@ -228,10 +228,14 @@ makeNtuple::makeNtuple(int ac, char** av)
     //ID files
     std::map<std::string, string> eIDFiles;
     string comEleID = "weight/EleSF/egammaEffi.txt_";
-    eIDFiles["2016PreVFP"]  = comEleID+"Ele_wp80iso_preVFP_EGM2D.root"; 
-    eIDFiles["2016PostVFP"] = comEleID+"Ele_wp80iso_postVFP_EGM2D.root"; 
-    eIDFiles["2017"]        = comEleID+"EGM2D_MVA80iso_UL17.root"; 
-    eIDFiles["2018"]        = comEleID+"Ele_wp80iso_EGM2D.root"; 
+    //eIDFiles["2016PreVFP"]  = comEleID+"Ele_wp80iso_preVFP_EGM2D.root"; 
+    //eIDFiles["2016PostVFP"] = comEleID+"Ele_wp80iso_postVFP_EGM2D.root"; 
+    //eIDFiles["2017"]        = comEleID+"EGM2D_MVA80iso_UL17.root"; 
+    //eIDFiles["2018"]        = comEleID+"Ele_wp80iso_EGM2D.root"; 
+    eIDFiles["2016PreVFP"]  = comEleID+"Ele_Tight_preVFP_EGM2D.root";
+    eIDFiles["2016PostVFP"] = comEleID+"Ele_Tight_postVFP_EGM2D.root";
+    eIDFiles["2017"]        = comEleID+"EGM2D_Tight_UL17.root";
+    eIDFiles["2018"]        = comEleID+"Ele_Tight_EGM2D.root";
     //Reco files
     std::map<std::string, string> eRecoFiles;
     string comEleReco = "weight/EleSF/egammaEffi_ptAbove20.txt_EGM2D_"; 
@@ -240,13 +244,14 @@ makeNtuple::makeNtuple(int ac, char** av)
     eRecoFiles["2017"]        = comEleReco+"UL2017.root"; 
     eRecoFiles["2018"]        = comEleReco+"UL2018.root"; 
     //Trig files
-    //These triggers are for legacy rereco. Need to evaluate them for UL using
-    //https://hypernews.cern.ch/HyperNews/CMS/get/egamma-hlt/289.html
+    //Taken from W' analysis
+    //https://indico.cern.ch/event/1146225/contributions/4835158/attachments/2429997/4160813/HLTSFsWprime%20.pdf
     std::map<std::string, string> eTrigFiles;
-    eTrigFiles["2016PreVFP"]  = "weight/EleSF/electron_16.root";
-    eTrigFiles["2016PostVFP"] = "weight/EleSF/electron_16.root";
-    eTrigFiles["2017"]        = "weight/EleSF/electron_17.root";
-    eTrigFiles["2018"]        = "weight/EleSF/electron_18.root";
+    string comEleTrig = "weight/EleSF/egammaEffi.txt_TrigSFTightID_";
+    eTrigFiles["2016PreVFP"]  = comEleTrig+"2016Pre.root";
+    eTrigFiles["2016PostVFP"] = comEleTrig+"2016Post.root";
+    eTrigFiles["2017"]        = comEleTrig+"2017.root";
+    eTrigFiles["2018"]        = comEleTrig+"2018.root";
     //Initiate the electron SF reader
 	eleSF = new ElectronSF(eIDFiles[year], eRecoFiles[year], eTrigFiles[year]);
 

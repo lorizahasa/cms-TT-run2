@@ -18,19 +18,22 @@
 * python createJdlFiles.py
 * cd tmpSub
 * source condorSubmit.sh
+
 Monitor the conodr jobs on linux terminal
 * condor_q 
-Better analyse a held job using
 * condor_q -better-analyze 75671743.5
-Release held jobs
 * condor_release rverma -name lpcschedd3.fnal.gov
-We can change the requested RAM 
 * condor_qedit rverma RequestMemory 3072 -name lpcschedd3.fnal.gov
+
 Once all condor jobs are finished, check the output Skim directories to collect
 failed or corrupted jobs
 * python checkJobStatus.py
+
 Resubmit the failed jobs again using
 * condor_submit resubmitJobs.jdl
+
+If the jobs are failing multiple times, run them locally
+* source condor/tmpSub/localResubmitJobs.sh
 
 
 ## To produce Ntuple from Skim files 

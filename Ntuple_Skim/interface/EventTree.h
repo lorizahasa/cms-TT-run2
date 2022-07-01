@@ -83,6 +83,7 @@ class EventTree{
     Float_t         eleDeltaEtaSC_[25];
     Int_t           eleCharge_[25];
     Float_t         eleMass_[25];
+    Int_t           eleID_[25];
     Float_t         eleMiniPFRelIso_[25];
     Bool_t          eleMVAFall17V2Iso_WP80_[25];
     Bool_t          eleMVAFall17V2Iso_WPL_[25];

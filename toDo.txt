@@ -1,0 +1,28 @@
+Skim:
+# Include UL signal samples
+# Include 2018 UL datasets including fix for high pT muons
+
+Ntuple:
+#Add Weight_jer for AK8
+# Update the DY_Enriched selection where we require the two muons of opposite 
+charge and mass window in 91.18+-10 GeV
+# Apply electron HLT Zvtx sf = 0.991 for 2017
+# It seems we have to evaluate electron Trigger SFs using TnP method for UL samples
+# Document details about PDF, ISR/FSR systematics in the AN
+# Describe HEM veto in the AN
+# The Q2 unc is around 25%. Double check it
+# Why TTGamma hadronic sample has smaller xss compared to semilep?
+# Add many new variables for MVA based on H -> cc
+
+MVA:
+Define two CRb inverting the b-tag requirment
+
+Plot:
+Add stat unc in the ratioSyst plots
+
+#------------------- UL --------------------
+HistMain:
+## The integral of Jet_pt (30 bins) differs with Jet_eta. However, with 300 bins,
+it matches. Similar for Jet_mass. Don't really understand it.
+## Include TTGamma CPTune up/down in the limit computation
+## Why TTGamma and Others lumiSF is different for muon and electron channel

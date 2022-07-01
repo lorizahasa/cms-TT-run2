@@ -67,6 +67,7 @@ for err in np.unique(errList):
 #print(argList)
 
 resubJobs = 0
+forLocal = []
 for year in Years:
     print("\n++++++++++++++++++++++++++++")
     print(colored("Running for: %s"%year, 'green'))
@@ -129,7 +130,8 @@ for year in Years:
             corruptedList.append(finished)
             continue
         h = f.Get("hEvents")
-        nEvents[finished] = h.Integral()
+        #nEvents[finished] = h.Integral()
+        nEvents[finished] = 1 
     print "Finished but corrupted jobs: %s"%len(corruptedList)
     resubJobs += len(corruptedList)
 
@@ -170,17 +172,31 @@ for year in Years:
             n1 = nJobs[1]
             args = 'Arguments  = %s %s %s %s %s \nQueue 1\n\n' %(year, samp, n0, n1, outDir)
             jdlFile.write(args)
-            localFile.write("./makeSkim %s %sof%s %s_Skim.root $%s_FileList_%s\n"%(year, n0, n1, samp, samp, year))
-            localFile.write("xrdcp -f %s_Skim_%sof%s.root root://cmseos.fnal.gov/%s\n\n"%(samp, n0, n1, outDir))
+            forLocal.append([year, n0, n1, samp, outDir])
         for arg in argListYear:
             samp = arg[1]
             n0 = arg[2]
             n1 = arg[3]
             args = 'Arguments  = %s %s %s %s %s \nQueue 1\n\n' %(arg[0], samp, n0, n1, arg[4])
             jdlFile.write(args)
-            localFile.write("./makeSkim %s %sof%s %s_Skim.root $%s_FileList_%s\n"%(year, n0, n1, samp, samp, year))
-            localFile.write("xrdcp -f %s_Skim_%sof%s.root root://cmseos.fnal.gov/%s\n\n"%(samp, n0, n1, outDir))
+            forLocal.append([year, n0, n1, samp, outDir])
     print outDir 
+
+for i, loc in enumerate(forLocal):
+    year    = loc[0]
+    n0      = loc[1]
+    n1      = loc[2]
+    samp    = loc[3]
+    outDir  = loc[4]
+    outFile = "%s_Skim_%sof%s.root"%(samp, n0, n1)
+    outFile_ = "%s_Skim_%s_%sof%s.root"%(samp, year, n0, n1)
+    cmd1 = "./makeSkim %s %sof%s %s_Skim_%s.root $%s_FileList_%s"%(year, n0, n1, samp, year, samp, year)
+    cmd2 = "xrdcp -f  %s root://cmseos.fnal.gov/%s/%s"%(outFile_, outDir, outFile)
+    cmd3 = "rm %s"%outFile_
+    if (i+1)%4==0:
+        localFile.write("%s && %s && %s\n\n"%(cmd1, cmd2, cmd3))
+    else:
+        localFile.write("%s && %s && %s &\n"%(cmd1, cmd2, cmd3))
 jdlFile.close() 
 localFile.close()
 print("Total jobs to be resubmitted for all years = %s"%resubJobs)

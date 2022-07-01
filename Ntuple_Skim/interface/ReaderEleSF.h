@@ -15,7 +15,7 @@ class ElectronSF
 	recoHist = (TH2F*) recoFile->Get("EGamma_SF2D");
 
 	TFile* trigFile = TFile::Open(trig_fname.c_str(),"READ");
-	trigHist = (TH2F*) trigFile->Get("h2D_SF");
+	trigHist = (TH2F*) trigFile->Get("EGamma_SF2D");
     }
     double getEleSF(TH2F *h2, double pt, double eta, int systLevel);
     vector<double> getEleSFs(double pt, double eta, int systLevel, bool print=false);

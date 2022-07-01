@@ -18,13 +18,17 @@ void EventPick::process_event(EventTree* tree){
     //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2016
     if (year.find("2016")!=std::string::npos){
         passTrigMu  = tree->HLT_Mu50_ || tree->HLT_TkMu50_;                 
-        passTrigEle = tree->HLT_Photon175_ ;
+        passTrigEle = tree->HLT_Photon175_ || tree->HLT_Ele27_WPTight_Gsf_;
     }                                                                           
     //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2017
     //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2018
-    if (year=="2017" || year=="2018"){
+    if (year.find("2017")!=std::string::npos){
         passTrigMu  = tree->HLT_Mu50_ || tree->HLT_TkMu100_ || tree->HLT_Mu100_;
-        passTrigEle = tree->HLT_Photon200_ ;
+        passTrigEle = tree->HLT_Photon200_ || tree->HLT_Ele35_WPTight_Gsf_;
+    }
+    if (year.find("2018")!=std::string::npos){
+        passTrigMu  = tree->HLT_Mu50_ || tree->HLT_TkMu100_ || tree->HLT_Mu100_;
+        passTrigEle = tree->HLT_Photon200_ || tree->HLT_Ele32_WPTight_Gsf_;
     }
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2
     bool filters = 

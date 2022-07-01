@@ -135,8 +135,11 @@ void Selector::filter_electrons(){
         // make sure it doesn't fall within the gap
         bool passEtaEBEEGap = (absSCEta < 1.4442) || (absSCEta > 1.566);
 
-        bool passTightID = tree->eleMVAFall17V2Iso_WP80_[eleInd];
-        bool passVetoID  = tree->eleMVAFall17V2Iso_WPL_[eleInd]; 
+        Int_t eleID = tree->eleID_[eleInd];
+        //bool passVetoID  = tree->eleMVAFall17V2Iso_WPL_[eleInd]; 
+        //bool passTightID = tree->eleMVAFall17V2Iso_WP80_[eleInd];
+        bool passVetoID  = (eleID==1); 
+        bool passTightID = (eleID==4);
 
         bool eleSel = (passEtaEBEEGap && 
                        absEta <= 2.2 &&

@@ -10,6 +10,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         //string dir = "root://cms-xrd-global.cern.ch/";
         string dir = "root://cmsxrootd.fnal.gov/";
         //string dir = "root://xrootd-cms.infn.it/";
+        //string dir = "/uscms_data/d3/rverma/codes/CMSSW_10_6_10/src/cms-TT-run2/Skim_NanoAOD/";
         for(int fileI=0; fileI<nFiles; fileI++){
             string fName = (string) fileNames[fileI];
             chain->Add( (dir + fName).c_str() );
@@ -214,6 +215,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchStatus("HLT_TkMu50",1);
         chain->SetBranchAddress("HLT_TkMu50",&HLT_TkMu50_);
         //electron
+        chain->SetBranchStatus("HLT_Ele27_WPTight_Gsf",1);
+        chain->SetBranchAddress("HLT_Ele27_WPTight_Gsf",&HLT_Ele27_WPTight_Gsf_);
         chain->SetBranchStatus("HLT_Photon175",1);
         chain->SetBranchAddress("HLT_Photon175",&HLT_Photon175_);
     }
@@ -227,6 +230,10 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchStatus("HLT_Mu100",1);
         chain->SetBranchAddress("HLT_Mu100",&HLT_Mu100_);
         //electron
+        chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
+        chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
+        chain->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
+        chain->SetBranchAddress("HLT_Ele32_WPTight_Gsf",&HLT_Ele32_WPTight_Gsf_);
         chain->SetBranchStatus("HLT_Photon200",1);
         chain->SetBranchAddress("HLT_Photon200",&HLT_Photon200_);
     }

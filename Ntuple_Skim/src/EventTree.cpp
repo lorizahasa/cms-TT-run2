@@ -92,6 +92,9 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     
     chain->SetBranchStatus("Electron_mass",1);
     chain->SetBranchAddress("Electron_mass", &eleMass_);
+
+    chain->SetBranchStatus("Electron_cutBased",1);
+    chain->SetBranchAddress("Electron_cutBased", &eleID_);
     
     chain->SetBranchStatus("Electron_miniPFRelIso_all",1);
     chain->SetBranchAddress("Electron_miniPFRelIso_all", &eleMiniPFRelIso_);
