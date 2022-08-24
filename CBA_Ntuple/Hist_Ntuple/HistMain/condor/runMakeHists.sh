@@ -13,6 +13,7 @@ else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
+    export SCRAM_ARCH=slc7_amd64_gcc700
     scramv1 project CMSSW CMSSW_10_6_10
     cd CMSSW_10_6_10/src
     eval `scramv1 runtime -sh`

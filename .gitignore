@@ -1,6 +1,14 @@
 NanoAOD_Gen/Others
+NanoAOD_Gen/tmp
+NanoAOD_Gen/SpinStudy
 Skim_NanoAOD/*.root
 Ntuple_Skim/*.root
+
+Skim_NanoAOD/sample/FilesNano_cff.sh
+Skim_NanoAOD/sample/JobsNano_cff.py
+Ntuple_Skim/sample/FilesSkim_cff.sh
+CBA_Ntuple/Hist_Ntuple/FilesNtuple_cff.py
+
 
 MVA_Ntuple/*.root
 MVA_Ntuple/*/*.root

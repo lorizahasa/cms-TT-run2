@@ -10,6 +10,9 @@
 * make clean
 * make
 * voms-proxy-init -voms cms
+* cd sample
+* python getFiles.py
+* cd ..
 * source sample/FilesNano_cff.sh
 * ./runSkim.sh -y 2017 -f 1of22 -o "out.root" -i "$Signal_M800_FileList_2017" 
 
@@ -40,6 +43,9 @@ If the jobs are failing multiple times, run them locally
 * cd Ntuple_Skim 
 * make clean
 * make
+* cd sample
+* python getFiles.py
+* cd ..
 * source sample/FilesSkim_cff.sh
 * ./makeNtuple Semilep 2017 DYjetsM50__JetBase 1of10 . $DYjetsM50_FileList_2017
 

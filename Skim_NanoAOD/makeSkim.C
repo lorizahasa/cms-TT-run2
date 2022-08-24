@@ -184,8 +184,8 @@ int main(int ac, char** av){
     cutBins["NanoAOD"] = 1;
     cutBins["LepTrig"] = 2;
     cutBins["Filters"] = 3;
-    cutBins["g0Lep"]   = 4;
-    cutBins["g0PV"]    = 5;
+    cutBins["g0PV"]    = 4;
+    cutBins["g0Lep"]   = 5;
     cutBins["g0Jet"]   = 6;
     cutBins["g15MET"]  = 7;
     std::map<std::string, int>::iterator itr;

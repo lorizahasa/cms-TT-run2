@@ -8,7 +8,7 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("CBA_Ntuple/Hist_Ntuple","Ntuple_Skim"))
 sys.path.insert(0, os.getcwd().replace("CBA_Ntuple/Hist_Ntuple","Skim_NanoAOD/sample"))
 from NtupleInputs import * 
-from JobsNano_cff import Samples_2016PreVFP, Samples_2016PostVFP,  Samples_2017, Samples_2018 
+from JobsNano_cff import Samples_2016Pre, Samples_2016Post,  Samples_2017, Samples_2018 
 
 ntupleFile = open('FilesNtuple_cff.py','w')
 #for year in [2016]:

@@ -175,16 +175,40 @@ class makeNtuple {
     Float_t  _DilepMass;
     Float_t  _DiphoMass;
     Float_t  _DilepDelR;
-    Float_t  _Reco_dr_TT;
+
+    //DeltaR between photon and other particles
+    //hadronic side
+    Float_t _Reco_dr_pho_tstarHad     ;
+    Float_t _Reco_dr_pho_tHad         ;
+    Float_t _Reco_dr_pho_bHad         ;
+    Float_t _Reco_dr_pho_Wj1          ;
+    Float_t _Reco_dr_pho_Wj2          ;
+    //leptonic side
+    Float_t _Reco_dr_pho_tstarLep     ;
+    Float_t _Reco_dr_pho_tLep         ;
+    Float_t _Reco_dr_pho_gluon        ;
+    Float_t _Reco_dr_pho_bLep         ;
+    Float_t _Reco_dr_pho_lep          ;
+    Float_t _Reco_dr_pho_nu           ;
+    //DeltaR between gluon and others 
+    Float_t _Reco_dr_gluon_tstarHad   ;
+    Float_t _Reco_dr_gluon_tHad       ;
+    Float_t _Reco_dr_gluon_tstarLep   ;
+    Float_t _Reco_dr_gluon_tLep       ;
+    //DeltaR between t and t* 
+    Float_t _Reco_dr_tHad_tstarHad    ;
+    Float_t _Reco_dr_tLep_tstarLep    ;
+    Float_t _Reco_dr_tstarHad_tstarLep;
+
     Float_t  _Reco_eta_hadT;
     Float_t  _Reco_pt_hadT;
     Float_t  _Reco_phi_hadT;
     Float_t  _Reco_eta_lepT;
     Float_t  _Reco_pt_lepT;
     Float_t  _Reco_phi_lepT;
-    Float_t  _Reco_angle_leadPhoton_lepton;
     Float_t  _Reco_angle_lepton_met;
-    Float_t  _Reco_angle_leadPhoton_met;
+    Float_t  _Reco_angle_pho_lepton;
+    Float_t  _Reco_angle_pho_met;
     Float_t  _Reco_angle_leadJet_met;
     Float_t  _Reco_angle_leadBjet_met;
     Float_t  _M_jj;
@@ -228,7 +252,6 @@ class makeNtuple {
     std::vector<float>    _phoEffWeight_CS_Up;
     std::vector<float>    _phoEffWeight_CS_Do;
 
-    std::vector<float>   _dRPhotonLepton;
     std::vector<float>   _MPhotonLepton;
     std::vector<float>   _AnglePhotonLepton;
 
@@ -457,16 +480,35 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Reco_ht"     , &_HT ); 
     outputTree->Branch("Reco_st"     , &_ST ); 
     outputTree->Branch("Reco_chi2"  , &_chi2 );
-    outputTree->Branch("Reco_mass_dipho"                , &_DiphoMass                   ); 
-    outputTree->Branch("Reco_mass_dilep"                , &_DilepMass                   );
-    outputTree->Branch("Reco_dr_dilep"                  , &_DilepDelR                   );
-    outputTree->Branch("Reco_dr_TT"                     , &_Reco_dr_TT                  );
-    outputTree->Branch("Reco_eta_hadT"                  , &_Reco_eta_hadT               );
-    outputTree->Branch("Reco_pt_hadT"                   , &_Reco_pt_hadT                );
-    outputTree->Branch("Reco_phi_hadT"                  , &_Reco_phi_hadT               );
-    outputTree->Branch("Reco_eta_lepT"                  , &_Reco_eta_lepT               );
-    outputTree->Branch("Reco_pt_lepT"                   , &_Reco_pt_lepT                );
-    outputTree->Branch("Reco_phi_lepT"                  , &_Reco_phi_lepT               );
+    outputTree->Branch("Reco_mass_dipho"            , &_DiphoMass                ); 
+    outputTree->Branch("Reco_mass_dilep"            , &_DilepMass                );
+    outputTree->Branch("Reco_dr_dilep"              , &_DilepDelR                );
+
+    outputTree->Branch("Reco_dr_pho_tstarHad"       , &_Reco_dr_pho_tstarHad     );
+    outputTree->Branch("Reco_dr_pho_tHad"           , &_Reco_dr_pho_tHad         );
+    outputTree->Branch("Reco_dr_pho_bHad"           , &_Reco_dr_pho_bHad         );
+    outputTree->Branch("Reco_dr_pho_Wj1"            , &_Reco_dr_pho_Wj1          );
+    outputTree->Branch("Reco_dr_pho_Wj2"            , &_Reco_dr_pho_Wj2          );
+    outputTree->Branch("Reco_dr_pho_tstarLep"       , &_Reco_dr_pho_tstarLep     );
+    outputTree->Branch("Reco_dr_pho_tLep"           , &_Reco_dr_pho_tLep         );
+    outputTree->Branch("Reco_dr_pho_gluon"          , &_Reco_dr_pho_gluon        );
+    outputTree->Branch("Reco_dr_pho_bLep"           , &_Reco_dr_pho_bLep         );
+    outputTree->Branch("Reco_dr_pho_lep"            , &_Reco_dr_pho_lep          );
+    outputTree->Branch("Reco_dr_pho_nu"             , &_Reco_dr_pho_nu           );
+    outputTree->Branch("Reco_dr_gluon_tstarHad"     , &_Reco_dr_gluon_tstarHad   );
+    outputTree->Branch("Reco_dr_gluon_tHad"         , &_Reco_dr_gluon_tHad       );
+    outputTree->Branch("Reco_dr_gluon_tstarLep"     , &_Reco_dr_gluon_tstarLep   );
+    outputTree->Branch("Reco_dr_gluon_tLep"         , &_Reco_dr_gluon_tLep       );
+    outputTree->Branch("Reco_dr_tHad_tstarHad"      , &_Reco_dr_tHad_tstarHad    );
+    outputTree->Branch("Reco_dr_tLep_tstarLep"      , &_Reco_dr_tLep_tstarLep    );
+    outputTree->Branch("Reco_dr_tstarHad_tstarLep"  , &_Reco_dr_tstarHad_tstarLep);
+
+    outputTree->Branch("Reco_eta_hadT"              , &_Reco_eta_hadT            );
+    outputTree->Branch("Reco_pt_hadT"               , &_Reco_pt_hadT             );
+    outputTree->Branch("Reco_phi_hadT"              , &_Reco_phi_hadT            );
+    outputTree->Branch("Reco_eta_lepT"              , &_Reco_eta_lepT            );
+    outputTree->Branch("Reco_pt_lepT"               , &_Reco_pt_lepT             );
+    outputTree->Branch("Reco_phi_lepT"              , &_Reco_phi_lepT            );
     outputTree->Branch("Reco_mass_jj"  , &_M_jj );
     outputTree->Branch("Reco_mass_t_had"  , &_TopHad_mass );
     outputTree->Branch("Reco_mass_t_lep"  , &_TopLep_mass );
@@ -474,62 +516,80 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Reco_mass_lepT"     , &_TopStarLep_mass );
     outputTree->Branch("Reco_mass_T"     , &_TopStar_mass );
     outputTree->Branch("Reco_mass_TT"  , &_tgtg_mass );
-    outputTree->Branch("Reco_angle_leadPhoton_lepton"   , &_Reco_angle_leadPhoton_lepton ); 
+    outputTree->Branch("Reco_angle_pho_lepton"   , &_Reco_angle_pho_lepton ); 
     outputTree->Branch("Reco_angle_lepton_met"   , &_Reco_angle_lepton_met    ); 
-    outputTree->Branch("Reco_angle_leadPhoton_met"   , &_Reco_angle_leadPhoton_met    ); 
+    outputTree->Branch("Reco_angle_pho_met"   , &_Reco_angle_pho_met    ); 
     outputTree->Branch("Reco_angle_leadJet_met"   , &_Reco_angle_leadJet_met      ); 
     outputTree->Branch("Reco_angle_leadBjet_met"   , &_Reco_angle_leadBjet_met     ); 
     outputTree->Branch("Reco_mass_lgamma"   , &_phoMassLepGamma ); 
-    outputTree->Branch("Reco_dr_photon_lepton", &_dRPhotonLepton );
     outputTree->Branch("Reco_mass_photon_lepton" , &_MPhotonLepton );
 }
 
 void makeNtuple::InitVariables()
 {
 
-    _run      = -9999;
-    _event    = -9999;
-    _lumis		     = -9999;
+    _run      = -9;
+    _event    = -9;
+    _lumis		     = -9;
     _isData		     = false;
-    _pfMET		     = -9999;
-    _pfMETPhi	     = -9999;
-    _WtransMass      = -9999;
+    _pfMET		     = -9.;
+    _pfMETPhi	     = -9.;
+    _WtransMass      = -9.;
     
-    _Reco_angle_leadPhoton_lepton  = -9999;
-    _Reco_angle_lepton_met  = -9999;
-    _Reco_angle_leadPhoton_met= -9999;
-    _Reco_angle_leadJet_met  = -9999;
-    _Reco_angle_leadBjet_met  = -9999;
+    _Reco_angle_pho_lepton  = -9.;
+    _Reco_angle_lepton_met  = -9.;
+    _Reco_angle_pho_met= -9.;
+    _Reco_angle_leadJet_met  = -9.;
+    _Reco_angle_leadBjet_met  = -9.;
 
-    _M_jj     = -9999;
-    _TopHad_mass     = -9999;
-    _TopLep_mass     = -9999;
-    _TopStarLep_mass     = -9999;
-    _TopStarHad_mass     = -9999;
-    _TopStar_mass     = -9999;
-    _tgtg_mass     = -9999;
-    _chi2   = -9999;
-    _HT		 = -9999;
-    _ST		 = -9999;
-    _DilepMass   = -9999;
-    _DilepDelR   = -9999;
-    _Reco_dr_TT   = -9999;
-    _Reco_eta_hadT = -9999;
-    _Reco_pt_hadT = -9999;
-    _Reco_phi_hadT = -9999;
-    _Reco_eta_lepT = -9999;
-    _Reco_pt_lepT = -9999;
-    _Reco_phi_lepT = -9999;
-    _DiphoMass       = -9999;
+    _M_jj     = -9.;
+    _TopHad_mass     = -9.;
+    _TopLep_mass     = -9.;
+    _TopStarLep_mass     = -9.;
+    _TopStarHad_mass     = -9.;
+    _TopStar_mass     = -9.;
+    _tgtg_mass     = -9.;
+    _chi2   = -9.;
+    _HT		 = -9.;
+    _ST		 = -9.;
+    _DilepMass   = -9.;
+    _DilepDelR   = -9.;
 
-    _nPho		 = -9999;
-    _nEle		     = -9999;
-    _nMu		     = -9999;
-    _nMuLoose 	     = -9999;
-    _nEleLoose    = -9999;
-    _nJet     = -9999;  
-    _nFatJet  =-9999;  
-    _nBJet    = -9999;    
+    _Reco_dr_pho_tstarHad      = -9.;
+    _Reco_dr_pho_tHad          = -9.;
+    _Reco_dr_pho_bHad          = -9.;
+    _Reco_dr_pho_Wj1           = -9.;
+    _Reco_dr_pho_Wj2           = -9.;
+    _Reco_dr_pho_tstarLep      = -9.;
+    _Reco_dr_pho_tLep          = -9.;
+    _Reco_dr_pho_gluon         = -9.;
+    _Reco_dr_pho_bLep          = -9.;
+    _Reco_dr_pho_lep           = -9.;
+    _Reco_dr_pho_nu            = -9.;
+    _Reco_dr_gluon_tstarHad    = -9.;
+    _Reco_dr_gluon_tHad        = -9.;
+    _Reco_dr_gluon_tstarLep    = -9.;
+    _Reco_dr_gluon_tLep        = -9.;
+    _Reco_dr_tHad_tstarHad     = -9.;
+    _Reco_dr_tLep_tstarLep     = -9.;
+    _Reco_dr_tstarHad_tstarLep = -9.;
+
+    _Reco_eta_hadT = -9.;
+    _Reco_pt_hadT = -9.;
+    _Reco_phi_hadT = -9.;
+    _Reco_eta_lepT = -9.;
+    _Reco_pt_lepT = -9.;
+    _Reco_phi_lepT = -9.;
+    _DiphoMass       = -9.;
+
+    _nPho		 = -9;
+    _nEle		     = -9;
+    _nMu		     = -9;
+    _nMuLoose 	     = -9;
+    _nEleLoose    = -9;
+    _nJet     = -9;  
+    _nFatJet  =-9;  
+    _nBJet    = -9;    
 
     _passPresel_Ele  = false;
     _passPresel_Mu   = false;
@@ -583,17 +643,17 @@ void makeNtuple::InitVariables()
     _muEffWeight_Trig_Do = 1.;
     _muEffWeight_Trig_Up = 1.;
 
-    _PUweight = 1;
-    _PUweight_Up = 1;
-    _PUweight_Do = 1;
+    _PUweight = 1.;
+    _PUweight_Up = 1.;
+    _PUweight_Do = 1.;
 
-    _TopWeight = 1;
-    _TopWeight_Up = 1;
-    _TopWeight_Do = 1;
+    _TopWeight = 1.;
+    _TopWeight_Up = 1.;
+    _TopWeight_Do = 1.;
 
-    _prefireSF = 1;
-    _prefireSF_Up = 1;
-    _prefireSF_Do = 1;
+    _prefireSF = 1.;
+    _prefireSF_Up = 1.;
+    _prefireSF_Do = 1.;
 
     _phoEffWeight.clear();
     _phoEffWeight_Do.clear();
@@ -654,7 +714,6 @@ void makeNtuple::InitVariables()
     _fatJetMass.clear();
     _fatJetMassSoftDrop.clear();
 
-    _dRPhotonLepton.clear();
     _MPhotonLepton.clear();
 }
 

@@ -553,6 +553,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     double nMC_total = 0.;
     char** fileNames = av+4;
     for(int fileI=0; fileI<ac-4; fileI++){
+    cout << fileNames[fileI] << endl;
         TFile *_file = TFile::Open(fileNames[fileI],"read");
         TH1D *hEvents = (TH1D*) _file->Get("hEvents");
         nMC_total += (hEvents->GetBinContent(2)); 
@@ -815,6 +816,12 @@ makeNtuple::makeNtuple(int ac, char** av)
                     _eleEffWeight_Trig    = eleWeights.at(3);
                     _eleEffWeight_Trig_Do = eleWeights_Do.at(3);
                     _eleEffWeight_Trig_Up = eleWeights_Up.at(3);
+                    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaUL2016To2018#HLT_Zvtx_Scale_Factor
+                    if (year=="2017"){
+                        _eleEffWeight    = 0.991*eleWeights.at(0);
+                        _eleEffWeight_Do = 0.990*eleWeights_Do.at(0);
+                        _eleEffWeight_Up = 0.992*eleWeights_Up.at(0);
+        	        }
         	    }
                 //https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
                 if (year=="2016PreVFP" || year=="2016PostVFP" || year=="2017"){
@@ -1079,7 +1086,6 @@ void makeNtuple::FillEvent(std::string year){
             _photonIsHadronicFake.push_back((int)(isHadronicFake || isPUPhoton));
             
         }//isMC
-        _dRPhotonLepton.push_back(phoVector.DeltaR(lepVector));
         _MPhotonLepton.push_back((phoVector+lepVector).M());
     }//phoLoop
     
@@ -1218,9 +1224,32 @@ void makeNtuple::FillEvent(std::string year){
             _Reco_phi_lepT     = Reco_lepT.Phi();
             _TopStarLep_mass   = Reco_lepT.M();
             //Combined TT
-            _Reco_dr_TT     = Reco_hadT.DeltaR(Reco_lepT);
             _tgtg_mass      = (Reco_hadT + Reco_lepT).M();
             _TopStar_mass   = (_TopStarHad_mass + _TopStarLep_mass)/2.;
+
+            //DeltaR between photon and other particles
+            //hadronic side
+            _Reco_dr_pho_tstarHad     = phoVectors[topEvent.getPho()].DeltaR(Reco_hadT);
+            _Reco_dr_pho_tHad         = phoVectors[topEvent.getPho()].DeltaR(bhad + Wj1 + Wj2);
+            _Reco_dr_pho_bHad         = phoVectors[topEvent.getPho()].DeltaR(bhad);
+            _Reco_dr_pho_Wj1          = phoVectors[topEvent.getPho()].DeltaR(Wj1);
+            _Reco_dr_pho_Wj2          = phoVectors[topEvent.getPho()].DeltaR(Wj2);
+            //leptonic side
+            _Reco_dr_pho_tstarLep     = phoVectors[topEvent.getPho()].DeltaR(Reco_lepT);
+            _Reco_dr_pho_tLep         = phoVectors[topEvent.getPho()].DeltaR(blep + lepVector + METVector);
+            _Reco_dr_pho_gluon        = phoVectors[topEvent.getPho()].DeltaR(jetVectors[topEvent.getG()]);
+            _Reco_dr_pho_bLep         = phoVectors[topEvent.getPho()].DeltaR(blep);
+            _Reco_dr_pho_lep          = phoVectors[topEvent.getPho()].DeltaR(lepVector);
+            _Reco_dr_pho_nu           = phoVectors[topEvent.getPho()].DeltaR(METVector);
+            //DeltaR between gluon and other particles
+            _Reco_dr_gluon_tstarHad   = jetVectors[topEvent.getG()].DeltaR(Reco_hadT);
+            _Reco_dr_gluon_tHad       = jetVectors[topEvent.getG()].DeltaR(bhad + Wj1 + Wj2);
+            _Reco_dr_gluon_tstarLep   = jetVectors[topEvent.getG()].DeltaR(Reco_lepT);
+            _Reco_dr_gluon_tLep       = jetVectors[topEvent.getG()].DeltaR(blep + lepVector + METVector);
+            //DeltaR between t and t* 
+            _Reco_dr_tHad_tstarHad    = (bhad + Wj1 + Wj2).DeltaR(Reco_hadT);
+            _Reco_dr_tLep_tstarLep    = (blep + lepVector + METVector).DeltaR(Reco_lepT);
+            _Reco_dr_tstarHad_tstarLep= Reco_hadT.DeltaR(Reco_lepT);
 
             if (tree->event_==eventNum){
                 cout << "  Resolved Case " << endl;
@@ -1273,10 +1302,32 @@ void makeNtuple::FillEvent(std::string year){
             _Reco_phi_lepT     = Reco_lepT.Phi();
             _TopStarLep_mass   = Reco_lepT.M();
             //Combined TT
-            _Reco_dr_TT     = Reco_hadT.DeltaR(Reco_lepT);
             _tgtg_mass      = (Reco_hadT + Reco_lepT).M();
             _TopStar_mass   = (_TopStarHad_mass + _TopStarLep_mass)/2.;
-            _M_jj  = -9999.0; //In the boosted category, we don't reconstruct W_had
+            _M_jj  = -9.0; //In the boosted category, we don't reconstruct W_had
+            //DeltaR between photon and other particles
+            //hadronic side
+            _Reco_dr_pho_tstarHad     = phoVectors[topEvent.getPho()].DeltaR(Reco_hadT);
+            _Reco_dr_pho_tHad         = phoVectors[topEvent.getPho()].DeltaR(bhad + Wj1 + Wj2);
+            _Reco_dr_pho_bHad         = -9.0; 
+            _Reco_dr_pho_Wj1          = -9.0;  
+            _Reco_dr_pho_Wj2          = -9.0; 
+            //leptonic side
+            _Reco_dr_pho_tstarLep     = phoVectors[topEvent.getPho()].DeltaR(Reco_lepT);
+            _Reco_dr_pho_tLep         = phoVectors[topEvent.getPho()].DeltaR(blep + lepVector + METVector);
+            _Reco_dr_pho_gluon        = phoVectors[topEvent.getPho()].DeltaR(jetVectors[topEvent.getG()]);
+            _Reco_dr_pho_bLep         = phoVectors[topEvent.getPho()].DeltaR(blep);
+            _Reco_dr_pho_lep          = phoVectors[topEvent.getPho()].DeltaR(lepVector);
+            _Reco_dr_pho_nu           = phoVectors[topEvent.getPho()].DeltaR(METVector);
+            //DeltaR between gluon and other particles
+            _Reco_dr_gluon_tstarHad   = jetVectors[topEvent.getG()].DeltaR(Reco_hadT);
+            _Reco_dr_gluon_tHad       = jetVectors[topEvent.getG()].DeltaR(topHad);
+            _Reco_dr_gluon_tstarLep   = jetVectors[topEvent.getG()].DeltaR(Reco_lepT);
+            _Reco_dr_gluon_tLep       = jetVectors[topEvent.getG()].DeltaR(blep + lepVector + METVector);
+            //DeltaR between t and t* 
+            _Reco_dr_tHad_tstarHad    = (topHad).DeltaR(Reco_hadT);
+            _Reco_dr_tLep_tstarLep    = (blep + lepVector + METVector).DeltaR(Reco_lepT);
+            _Reco_dr_tstarHad_tstarLep= Reco_hadT.DeltaR(Reco_lepT);
 
             if (tree->event_==eventNum){
                 cout << "  Resolved Case " << endl;
@@ -1300,8 +1351,8 @@ void makeNtuple::FillEvent(std::string year){
     }
     _Reco_angle_lepton_met = lepVector.Angle(METVector.Vect()); 
     if(phoVectors.size()>0){
-        _Reco_angle_leadPhoton_met = phoVectors.at(0).Angle(METVector.Vect()); 
-        _Reco_angle_leadPhoton_lepton = phoVectors.at(0).Angle(lepVector.Vect()); 
+        _Reco_angle_pho_met = phoVectors.at(0).Angle(METVector.Vect()); 
+        _Reco_angle_pho_lepton = phoVectors.at(0).Angle(lepVector.Vect()); 
     }
     if(jetVectors.size()>0){
         _Reco_angle_leadJet_met = jetVectors.at(0).Angle(METVector.Vect()); 

@@ -9,7 +9,7 @@ sys.path.insert(0, os.getcwd().replace("Ntuple_Skim/sample","Skim_NanoAOD"))
 sys.path.insert(0, os.getcwd().replace("Ntuple_Skim/sample","Skim_NanoAOD/sample"))
 from SkimInputs import outSkimDir
 from NtupleInputs import Years
-from JobsNano_cff import Samples_2016PreVFP, Samples_2016PostVFP,  Samples_2017, Samples_2018 
+from JobsNano_cff import Samples_2016Pre, Samples_2016Post,  Samples_2017, Samples_2018 
 
 skimFiles = open('FilesSkim_cff.sh','w')
 #for year in [2016]:

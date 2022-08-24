@@ -171,8 +171,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchStatus("LHEScaleWeight",1);
         chain->SetBranchStatus("nLHEPdfWeight",1);
         chain->SetBranchStatus("nLHEPart",1);
-        chain->SetBranchStatus("LHEPart_pt",1);
-        chain->SetBranchStatus("LHEPart_pdgId",1);
+        chain->SetBranchStatus("LHEPart_*",1);
         chain->SetBranchStatus("LHEPdfWeight",1);
         chain->SetBranchStatus("PSWeight",1);
         chain->SetBranchStatus("nPSWeight",1);

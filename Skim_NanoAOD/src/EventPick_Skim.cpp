@@ -49,30 +49,22 @@ void EventPick::process_event(EventTree* tree){
     cutflow["NanoAOD"] = 1;
     cutflow["LepTrig"] = 0;
     cutflow["Filters"] = 0;
-    cutflow["g0Lep"]   = 0;
     cutflow["g0PV"]    = 0;
+    cutflow["g0Lep"]   = 0;
     cutflow["g0Jet"]   = 0;
     cutflow["g15MET"]  = 0;
 
-    if(passTrigEle || passTrigMu){
-        cutflow["LepTrig"] = 1;
-        if(filters){
-            cutflow["Filters"] = 1;
-            if(tree->nGoodVtx_>0){ 
-                cutflow["g0PV"] = 1;
-                passSkim = true;
-                if(!zeroLep){
-                    cutflow["g0Lep"] = 1;
-                    if(tree->nJet_>0){ 
-                        cutflow["g0Jet"] = 1;
-                        if(tree->MET_pt_ > 15){ 
-                            cutflow["g15MET"] = 1;
-    
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
+    bool stage = passTrigEle || passTrigMu;
+    if (stage) cutflow["LepTrig"] = 1;
+    stage = stage && filters;
+    if (stage) cutflow["Filters"] = 1;
+    stage = stage && (tree->nGoodVtx_ > 0);
+    if (stage) cutflow["g0PV"] = 1;
+    stage = stage && !zeroLep;
+    if (stage) cutflow["g0Lep"] = 1;
+    stage = stage && (tree->nJet_ > 0);
+    if (stage) cutflow["g0Jet"] = 1;
+    stage = stage && (tree->MET_pt_ > 15);
+    if (stage) cutflow["g15MET"] = 1;
+    if (stage) passSkim = true;
 }

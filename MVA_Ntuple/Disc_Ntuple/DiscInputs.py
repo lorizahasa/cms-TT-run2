@@ -5,7 +5,7 @@ dirMVA    = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/"
 dirClass  = "%s/Disc_Ntuple/DiscMain"%dirMVA
 dirRead   = "%s/Disc_Ntuple/DiscMain"%dirMVA
 #-----------------------------------------------------------------
-Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
 #Years 	      =	["2017"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Mu"]
@@ -14,7 +14,7 @@ Decays 	      =	["Semilep"]
 Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"]
 
 #Years and channels to be combined
-Years_         = ["2016PreVFP__2016PostVFP__2017__2018"]
+Years_         = ["2016Pre__2016Post__2017__2018"]
 Channels_      = ["Mu", "Ele", "Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
 
@@ -83,11 +83,11 @@ systToNorm.append("Weight_fsrDown")
 #Bkg scale factors: DY, MisID, ZGamma, WGamma
 #----------------------------------------------
 dictSFs = {}
-dictSFs['2016PreVFP']  = [1.34, 1.79, 1.11, 1.20]
-dictSFs['2016PostVFP'] = [1.47, 2.22, 0.54, 1.64]
+dictSFs['2016Pre']  = [1.34, 1.79, 1.11, 1.20]
+dictSFs['2016Post'] = [1.47, 2.22, 0.54, 1.64]
 dictSFs['2017']        = [1.38, 1.01, 1.17, 1.01]
 dictSFs['2018']        = [1.38, 1.42, 0.66, 1.23]
-dictSFs['2016PreVFP__2016PostVFP__2017__2018'] = [1.38, 1.40, 0.96, 1.22]
+dictSFs['2016Pre__2016Post__2017__2018'] = [1.38, 1.40, 0.96, 1.22]
 
 #--------------------------------
 #tt+gamma+gluon control regions

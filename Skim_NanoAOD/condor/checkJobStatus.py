@@ -10,10 +10,10 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor",""))
 sys.path.insert(0, os.getcwd().replace("condor","sample"))
 from SkimInputs import *
-from JobsNano_cff import Samples_2016PreVFP, Samples_2016PostVFP,  Samples_2017, Samples_2018 
+from JobsNano_cff import Samples_2016Pre, Samples_2016Post,  Samples_2017, Samples_2018 
 
-condorLogDir = "tmpSub/log"
-#condorLogDir = "tmpSub/log_resub"
+#condorLogDir = "tmpSub/log"
+condorLogDir = "tmpSub/log_resub"
 #-----------------------------------------
 #Function to compare two lists
 #----------------------------------------
@@ -130,8 +130,11 @@ for year in Years:
             corruptedList.append(finished)
             continue
         h = f.Get("hEvents")
-        #nEvents[finished] = h.Integral()
-        nEvents[finished] = 1 
+        if not h:
+            print("hEvents does not exist: %s"%fROOT)
+            corruptedList.append(finished)
+            continue
+        nEvents[finished] = h.Integral()
     print "Finished but corrupted jobs: %s"%len(corruptedList)
     resubJobs += len(corruptedList)
 
@@ -196,7 +199,8 @@ for i, loc in enumerate(forLocal):
     if (i+1)%4==0:
         localFile.write("%s && %s && %s\n\n"%(cmd1, cmd2, cmd3))
     else:
-        localFile.write("%s && %s && %s &\n"%(cmd1, cmd2, cmd3))
+        #localFile.write("%s && %s && %s &\n"%(cmd1, cmd2, cmd3))
+        localFile.write("%s && %s && %s \n"%(cmd1, cmd2, cmd3))
 jdlFile.close() 
 localFile.close()
 print("Total jobs to be resubmitted for all years = %s"%resubJobs)

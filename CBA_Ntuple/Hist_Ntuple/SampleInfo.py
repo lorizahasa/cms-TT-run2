@@ -26,8 +26,8 @@ for d in era17:
 for d in era18:
     data18Mu.append("Data_SingleMu_%s"%d)
     data18Ele.append("Data_SingleEle_%s"%d)
-dataAllMu = {"2016PreVFP":data16MuPre, "2016PostVFP":data16MuPost, "2017":data17Mu, "2018":data18Mu}
-dataAllEle = {"2016PreVFP":data16ElePre, "2016PostVFP":data16ElePost, "2017":data17Ele, "2018":data18Ele}
+dataAllMu = {"2016Pre":data16MuPre, "2016Post":data16MuPost, "2017":data17Mu, "2018":data18Mu}
+dataAllEle = {"2016Pre":data16ElePre, "2016Post":data16ElePost, "2017":data17Ele, "2018":data18Ele}
 def gs(y, d, syst, s_array):
     sample = []
     for s in s_array:
@@ -111,7 +111,7 @@ def getSamples(y, d, syst):#commented samples don't exist
                    "QCD_Pt470To600_Mu",
                    "QCD_Pt600To800_Mu",
                    "QCD_Pt800To1000_Mu",
-                   ##"QCD_Pt1000ToInf_Mu",
+                   "QCD_Pt1000ToInf_Mu",
                    #"GJets_HT40To100",
                    #"GJets_HT100To200",
                    "GJets_HT200To400",

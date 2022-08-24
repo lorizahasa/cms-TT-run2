@@ -14,7 +14,7 @@ from SampleInfo import *
 #INPUT Command Line Arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016PreVFP",type='str',
+parser.add_option("-y", "--year", dest="year", default="2016Pre",type='str',
                      help="Specifyi the year of the data taking" )
 parser.add_option("-d", "--decay", dest="decay", default="Dilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")

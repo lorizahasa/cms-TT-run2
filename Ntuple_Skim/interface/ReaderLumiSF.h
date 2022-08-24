@@ -7,17 +7,38 @@ void initCrossSections(){
     //--------------------------
     // Signal samples
     //--------------------------
-    double bTyTg = 0.03*0.97*2;
-    crossSections["Signal_M700"]   =  {bTyTg*4.92};    
-    crossSections["Signal_M800"]   =  {bTyTg*1.68};    
-    crossSections["Signal_M900"]   =  {bTyTg*0.636};   
-    crossSections["Signal_M1000"]  =  {bTyTg*0.262};   
-    crossSections["Signal_M1100"]  =  {bTyTg*0.116};   
-    crossSections["Signal_M1200"]  =  {bTyTg*0.0537};  
-    crossSections["Signal_M1300"]  =  {bTyTg*0.0261};  
-    crossSections["Signal_M1400"]  =  {bTyTg*0.0131};  
-    crossSections["Signal_M1500"]  =  {bTyTg*0.00677}; 
-    crossSections["Signal_M1600"]  =  {bTyTg*0.00359}; 
+    double br_tytg = 0.03*0.97*2;
+    //xss for spin 3/2: p p > t* t* > tytg
+    //crossSections["Signal_M700"]   =  {br_tytg*4.92};    
+    //crossSections["Signal_M800"]   =  {br_tytg*1.68};    
+    //crossSections["Signal_M900"]   =  {br_tytg*0.636};   
+    //crossSections["Signal_M1000"]  =  {br_tytg*0.262};   
+    //crossSections["Signal_M1100"]  =  {br_tytg*0.116};   
+    //crossSections["Signal_M1200"]  =  {br_tytg*0.0537};  
+    //crossSections["Signal_M1300"]  =  {br_tytg*0.0261};  
+    //crossSections["Signal_M1400"]  =  {br_tytg*0.0131};  
+    //crossSections["Signal_M1500"]  =  {br_tytg*0.00677}; 
+    //crossSections["Signal_M1600"]  =  {br_tytg*0.00359}; 
+
+    //xss for spin 1/2: p p > t* t* > tytg
+    crossSections["Signal_M700"]   =  {br_tytg*0.2659};
+    crossSections["Signal_M800"]   =  {br_tytg*0.1147};
+    crossSections["Signal_M900"]   =  {br_tytg*0.05318};
+    crossSections["Signal_M1000"]  =  {br_tytg*0.02590};
+    crossSections["Signal_M1100"]  =  {br_tytg*0.01322};
+    crossSections["Signal_M1200"]  =  {br_tytg*0.006897};
+    crossSections["Signal_M1300"]  =  {br_tytg*0.003732};
+    crossSections["Signal_M1400"]  =  {br_tytg*0.002061};
+    crossSections["Signal_M1500"]  =  {br_tytg*0.001165};
+    crossSections["Signal_M1600"]  =  {br_tytg*0.0006675};
+    crossSections["Signal_M1700"]  =  {br_tytg*0.0003911};
+    crossSections["Signal_M1800"]  =  {br_tytg*0.0002329};
+    crossSections["Signal_M1900"]  =  {br_tytg*0.0001404};
+    crossSections["Signal_M2000"]  =  {br_tytg*0.00008614};
+    crossSections["Signal_M2250"]  =  {br_tytg*0.00002748};
+    crossSections["Signal_M2500"]  =  {br_tytg*0.000009695};
+    crossSections["Signal_M2750"]  =  {br_tytg*0.000003746};
+    crossSections["Signal_M3000"]  =  {br_tytg*0.000001535};
 
     //--------------------------
     // tty samples
@@ -45,48 +66,51 @@ void initCrossSections(){
     // tt samples
     //--------------------------
     //ttbar NNLO (http://inspirehep.net/search?p=find+eprint+1112.5675)
+    //NLO/NNLO
     crossSections["TTbarPowheg"]              =  {831.76}; 
     crossSections["TTbarPowheg_Hadronic"]     =  {380.095};
     crossSections["TTbarPowheg_Semilept"]     =  {364.352};
-    crossSections["TTbarPowheg_Dilepton"]     =  { 87.315};
+    crossSections["TTbarPowheg_Dilepton"]     =  {87.315};
 
     //--------------------------
     // single t 
     //--------------------------
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#Single_top
+    crossSections["ST_tW_channel"]      ={35.85};//{35.85};  ()/NNLO
+    crossSections["ST_tbarW_channel"]   ={35.85};//{35.85};  ()/NNLO 
+    crossSections["ST_t_channel"]       ={44.33};//{136.02}; ()/NLO
+    crossSections["ST_tbar_channel"]    ={26.38};//{80.95};  ()/NLO
+    crossSections["ST_s_channel"]       ={3.36};//{3.36};    ()/NLO
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns//TT_X
-    crossSections["ST_s_channel"]       =  {3.68064};
-    crossSections["ST_t_channel"]       =  {136.02}; 
-    crossSections["ST_tbarW_channel"]   =  { 35.85}; 
-    crossSections["ST_tW_channel"]      =  { 35.85}; 
-    crossSections["ST_tbar_channel"]    =  { 80.95}; 
-    crossSections["TGJets"]             =  {2.967};
+    crossSections["TGJets"]             ={1.186};//{1.02};   ()/NLO, 3.697*32.08/100
 
     //--------------------------
     // y+jets
     //--------------------------
-    // GJets cross sections taken from AN2016_471_v6 (SUSY photon + MET analysis)
-    crossSections["GJets_HT40To100"]  = {20790.};
-    crossSections["GJets_HT100To200"] = {9238.}; 
-    crossSections["GJets_HT200To400"] = {2305.}; 
-    crossSections["GJets_HT400To600"] = {274.4}; 
-    crossSections["GJets_HT600ToInf"] = {93.46}; 
+    // https://twiki.cern.ch/twiki/bin/viewauth/CMS/XsdbTutorialSep#Gamma_jets
+    // LO/LO (kf = 1.0)
+    crossSections["GJets_HT40To100"]  ={17420.};//{20790.};
+    crossSections["GJets_HT100To200"] ={5391.};//{9238.}; 
+    crossSections["GJets_HT200To400"] ={1168.};//{2305.}; 
+    crossSections["GJets_HT400To600"] ={132.5};//{274.4}; 
+    crossSections["GJets_HT600ToInf"] ={44.05};//{93.46}; 
 
     //--------------------------
     // DY+jets
     //--------------------------
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
-    crossSections["DYjetsM50"]         =  {6077.22}; 
-    crossSections["DYjetsM10to50"]     =  {18610.};  
+    crossSections["DYJetsM50"]         =  {6077.22}; 
+    crossSections["DYJetsM10to50"]     =  {18610.};  
     
     //--------------------------
     // W + jets samples
     //--------------------------
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns//W_jets
-    // Unused crossSections["WjetsInclusive"]    = {61526.7, 61526.7, 61526.7}; 
-    crossSections["W1jets"]            =  {11775.9345}; //9493.0;
-    crossSections["W2jets"]            =  { 3839.4345};  //3120.0;
-    crossSections["W3jets"]            =  { 1165.8108}; //942.3;
-    crossSections["W4jets"]            =  {  592.9176}; //524.2;
+    // Unused crossSections["WJetsInclusive"]    = {61526.7, 61526.7, 61526.7}; 
+    crossSections["W1Jets"]            =  {11775.9345}; //9493.0;
+    crossSections["W2Jets"]            =  { 3839.4345};  //3120.0;
+    crossSections["W3Jets"]            =  { 1165.8108}; //942.3;
+    crossSections["W4Jets"]            =  {  592.9176}; //524.2;
 
     //--------------------------
     //QCD mu

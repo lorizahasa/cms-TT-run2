@@ -2,14 +2,14 @@
 dirNtuple = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 dirHist   = "/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistDYSF"
 #-----------------------------------------------------------------
-Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
 #Years 	      =	["2017"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Ele"]
 Decays 	      =	["Dilep"]
 
 #Years and channels to be commbined
-Years_         = ["2016PreVFP__2016PostVFP__2017__2018"]
+Years_         = ["2016Pre__2016Post__2017__2018"]
 Channels_      = ["Mu", "Ele", "Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
 

@@ -20,7 +20,6 @@ def GetVarInfo(region, channel):
              "Reco_mass_T_lep"      : ["Reco_mass_T_lep", [30,0,6000], True],
              "Reco_mass_T"          : ["Reco_mass_T", [30,0,6000], True],
              "Reco_mass_TT"          : ["Reco_mass_TT", [300,0,9000], True],
-             "Reco_chi2"            : ["Reco_chi2", [20,0,100], True],
              "Reco_dr_photon_lepton" : ["Reco_dr_photon_lepton[0]", [20,0,5], True],
              "Reco_eta_hadT"    : ["Reco_eta_hadT", [20,-5,5], True],
              "Reco_pt_hadT"     : ["Reco_pt_hadT" , [30,0,3000], True],
@@ -65,6 +64,7 @@ def GetVarInfo(region, channel):
              "Reco_angle_leadBjet_met"      : ["Reco_angle_leadBjet_met", [20,0,5], True],
              "Reco_dr_TT"           : ["Reco_dr_TT", [20,0,10], True],
              "Photon_eta"       : ["Photon_eta[0]", [12,-2.88,2.88], True],
+             "Reco_chi2"            : ["Reco_chi2", [1000,0,1000], True],
              }
     if "Boosted" in region: 
         varBase.update(varFatJet)
