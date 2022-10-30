@@ -340,11 +340,13 @@ makeNtuple::makeNtuple(int ac, char** av)
     //--------------------------
     //Luminosity
     //--------------------------
+    //https://twiki.cern.ch/twiki/bin/view/CMS/PdmVRun2LegacyAnalysis
+    //https://twiki.cern.ch/twiki/bin/view/CMS/LumiRecommendationsRun2
     std::map<std::string, double> lumiValues;
-    lumiValues["2016PreVFP"]  = 19695.422959;
-    lumiValues["2016PostVFP"] = 16226.452636;
-    lumiValues["2017"]        = 41529.548819;
-    lumiValues["2018"]        = 59740.565202;
+    lumiValues["2016PreVFP"]  = 19.52; 
+    lumiValues["2016PostVFP"] = 16.81; 
+    lumiValues["2017"]        = 41.48; 
+    lumiValues["2018"]        = 59.83; 
     
     //--------------------------
     // t-tagging WPs

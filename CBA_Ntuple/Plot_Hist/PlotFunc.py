@@ -334,15 +334,15 @@ def getRowCatBkgs(hName, hSum, catBkgs, catDict):
 def getLumiLabel(year):
     lumi = "35.9 fb^{-1}"
     if "16Pre" in year:
-        lumi = "19.7 fb^{-1} (2016PreVFP)"
+        lumi = "19.5 fb^{-1} (2016PreVFP)"
     if "16Post" in year:
-        lumi = "16.2 fb^{-1} (2016PostVFP)"
+        lumi = "16.8 fb^{-1} (2016PostVFP)"
     if "17" in year:
         lumi = "41.5 fb^{-1} (2017)"
     if "18" in year:
-        lumi = "59.7 fb^{-1} (2018)"
+        lumi = "59.8 fb^{-1} (2018)"
     if "__" in year:
-        lumi = "137.2 fb^{-1} (Run2)"
+        lumi = "138 fb^{-1} (Run2)"
     return lumi
 
 def getChLabel(decay, channel):

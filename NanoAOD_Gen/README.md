@@ -1,4 +1,4 @@
-## Signal generation and grid-pack prodcution
+## Signal generation and grid-pack prodcution for UL Run2
 
 Clone the genproduction repo (do everyting outside of CMSSW)
 * git clone https://github.com/cms-sw/genproductions.git

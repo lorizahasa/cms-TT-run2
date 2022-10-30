@@ -12,28 +12,53 @@ Runs["2018"] = 'RunIISummer20UL18NanoAODv9-106X_upgrade2018_realistic_v16_L1v1'
 #--------------------------
 # t*t* signal
 #--------------------------
-def getSignal(year, ch):
+def getSignalSpin12(year, ch):
     vs = {'2016Pre': 'v1', '2016Post': 'v1', '2017': 'v1', '2018': 'v1'}
     runV = "%s-%s"%(Runs[year], vs[year])
     sampDict = {
-    'Signal_M700':   '/TstarTstarTo%s_M-700_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    'Signal_M800':   '/TstarTstarTo%s_M-800_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M900':   '/TstarTstarTo%s_M-900_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M1000':  '/TstarTstarTo%s_M-1000_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M1100':  '/TstarTstarTo%s_M-1100_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    'Signal_M1200':  '/TstarTstarTo%s_M-1200_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    'Signal_M1300':  '/TstarTstarTo%s_M-1300_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M1400':  '/TstarTstarTo%s_M-1400_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    'Signal_M1500':  '/TstarTstarTo%s_M-1500_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M1600':  '/TstarTstarTo%s_M-1600_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M1700':  '/TstarTstarTo%s_M-1700_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M1800':  '/TstarTstarTo%s_M-1800_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M1900':  '/TstarTstarTo%s_M-1900_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M2000':  '/TstarTstarTo%s_M-2000_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M2250':  '/TstarTstarTo%s_M-2250_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M2500':  '/TstarTstarTo%s_M-2500_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M2750':  '/TstarTstarTo%s_M-2750_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
-    #'Signal_M3000':  '/TstarTstarTo%s_M-3000_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin12_M700':   '/TstarTstarTo%s_M-700_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin12_M800':   '/TstarTstarTo%s_M-800_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin12_M900':   '/TstarTstarTo%s_M-900_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin12_M1000':  '/TstarTstarTo%s_M-1000_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin12_M1100':  '/TstarTstarTo%s_M-1100_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin12_M1200':  '/TstarTstarTo%s_M-1200_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin12_M1300':  '/TstarTstarTo%s_M-1300_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin12_M1400':  '/TstarTstarTo%s_M-1400_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin12_M1500':  '/TstarTstarTo%s_M-1500_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin12_M1600':  '/TstarTstarTo%s_M-1600_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin12_M1700':  '/TstarTstarTo%s_M-1700_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin12_M1800':  '/TstarTstarTo%s_M-1800_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin12_M1900':  '/TstarTstarTo%s_M-1900_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin12_M2000':  '/TstarTstarTo%s_M-2000_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin12_M2250':  '/TstarTstarTo%s_M-2250_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin12_M2500':  '/TstarTstarTo%s_M-2500_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin12_M2750':  '/TstarTstarTo%s_M-2750_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin12_M3000':  '/TstarTstarTo%s_M-3000_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    }
+    return sampDict
+
+def getSignalSpin32(year, ch):
+    vs = {'2016Pre': 'v1', '2016Post': 'v1', '2017': 'v1', '2018': 'v1'}
+    runV = "%s-%s"%(Runs[year], vs[year])
+    sampDict = {
+    'SignalSpin32_M700':   '/TstarTstarTo%s_M-700_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin32_M800':   '/TstarTstarTo%s_M-800_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin32_M900':   '/TstarTstarTo%s_M-900_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin32_M1000':  '/TstarTstarTo%s_M-1000_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin32_M1100':  '/TstarTstarTo%s_M-1100_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin32_M1200':  '/TstarTstarTo%s_M-1200_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin32_M1300':  '/TstarTstarTo%s_M-1300_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin32_M1400':  '/TstarTstarTo%s_M-1400_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    'SignalSpin32_M1500':  '/TstarTstarTo%s_M-1500_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin32_M1600':  '/TstarTstarTo%s_M-1600_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin32_M1700':  '/TstarTstarTo%s_M-1700_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin32_M1800':  '/TstarTstarTo%s_M-1800_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin32_M1900':  '/TstarTstarTo%s_M-1900_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin32_M2000':  '/TstarTstarTo%s_M-2000_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin32_M2250':  '/TstarTstarTo%s_M-2250_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin32_M2500':  '/TstarTstarTo%s_M-2500_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin32_M2750':  '/TstarTstarTo%s_M-2750_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
+    #'SignalSpin32_M3000':  '/TstarTstarTo%s_M-3000_TuneCP5_13TeV-madgraph-pythia8/'%ch+runV+'/NANOAODSIM',
     }
     return sampDict
 
@@ -82,7 +107,7 @@ def getTTbar(year):
     vs = {'2016Pre': 'v1', '2016Post': 'v1', '2017': 'v1', '2018': 'v1'}
     runV = "%s-%s"%(Runs[year], vs[year])
     sampDict = {
-    'TTbarPowheg_Hadronic' : '/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/'+runV+'/NANOAODSIM',
+    ##'TTbarPowheg_Hadronic' : '/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/'+runV+'/NANOAODSIM',
     'TTbarPowheg_Semilept' : '/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/'+runV+'/NANOAODSIM',
     'TTbarPowheg_Dilepton' : '/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/'+runV+'/NANOAODSIM',
     }
@@ -353,26 +378,27 @@ def getData(year):
 def getMC(year):
     sampDict = {}
     #signal
-    #sampDict.update(getSignal(year, "TgluonTgluon"))
-    #sampDict.update(getSignal(year, "TgammaTgamma"))
-    sampDict.update(getSignal(year, "TgluonTgamma"))
+    #sampDict.update(getSignalSpin12(year, "TgluonTgluon"))
+    #sampDict.update(getSignalSpin12(year, "TgammaTgamma"))
+    sampDict.update(getSignalSpin12(year, "TgluonTgamma"))
+    sampDict.update(getSignalSpin32(year, "TgluonTgamma"))
     #bkgs
-    sampDict.update(getTTGamma(year))
+    ##sampDict.update(getTTGamma(year))
     sampDict.update(getTTbar(year))
-    sampDict.update(getST(year))
-    sampDict.update(getGJets(year))
-    sampDict.update(getDYJets(year))
-    sampDict.update(getWJets(year))
-    sampDict.update(getWZGamma(year))
-    sampDict.update(getVV(year))
-    sampDict.update(getTTV(year))
-    sampDict.update(getQCDMu(year))
-    sampDict.update(getQCDEle(year))
+    ##sampDict.update(getST(year))
+    ##sampDict.update(getGJets(year))
+    ##sampDict.update(getDYJets(year))
+    ##sampDict.update(getWJets(year))
+    ##sampDict.update(getWZGamma(year))
+    ##sampDict.update(getVV(year))
+    ##sampDict.update(getTTV(year))
+    ##sampDict.update(getQCDMu(year))
+    ##sampDict.update(getQCDEle(year))
     return sampDict
 
 def sampleDict(year):
     allSamples = {}
-    allSamples.update(getData(year))
+    ##allSamples.update(getData(year))
     allSamples.update(getMC(year))
     return allSamples
 
