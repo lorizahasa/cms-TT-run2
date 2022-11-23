@@ -1,7 +1,6 @@
 NanoAOD_Gen/Others
 NanoAOD_Gen/tmp
 NanoAOD_Gen/SpinStudy
-NanoAOD_Gen/spin32/
 NanoAOD_Gen/xss/
 Skim_NanoAOD/*.root
 Ntuple_Skim/*.root
