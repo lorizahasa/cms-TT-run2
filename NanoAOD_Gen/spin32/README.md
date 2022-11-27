@@ -5,6 +5,8 @@ Clone the genproduction repo (do everyting outside of CMSSW)
 
 Copy the UFO, create MG cards, and produce 1 grid-pack 
 * source createCards.sh 
+* Use MG_aMC_v2.6.5  with CMSSW_10_6_19 with slc7_amd64_gcc700 in gridpack_generation.sh
+* Use MG_aMC_v2.7.3  with CMSSW_12_4_8 with slc7_amd64_gcc700 in gridpack_generation.sh
 * ./gridpack_generation.sh TpTp_M1000_ttga_channel cards/TpTp_production/TpTp_M1000_ttga_channel
 
 
