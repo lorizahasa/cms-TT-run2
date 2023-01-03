@@ -176,15 +176,15 @@ makeNtuple::makeNtuple(int ac, char** av)
     //PV data files
     std::map<std::string, string> puDataFiles;
     string comPuData = "weight/PileupSF/PileupHistogram-";
-    puDataFiles["2016PreVFP"]  = comPuData+"UL2016-100bins_withVar.root"; 
-    puDataFiles["2016PostVFP"] = comPuData+"UL2016-100bins_withVar.root";
+    puDataFiles["2016Pre"]  = comPuData+"UL2016-100bins_withVar.root"; 
+    puDataFiles["2016Post"] = comPuData+"UL2016-100bins_withVar.root";
     puDataFiles["2017"]        = comPuData+"UL2017-100bins_withVar.root";
     puDataFiles["2018"]        = comPuData+"UL2018-100bins_withVar.root";
     //PV MC files
     std::map<std::string, string> puMCFiles;
     string comPuMC = "weight/PileupSF/mcPileup";
-    puMCFiles["2016PreVFP"]  = comPuMC+"UL2016.root";
-    puMCFiles["2016PostVFP"] = comPuMC+"UL2016.root";
+    puMCFiles["2016Pre"]  = comPuMC+"UL2016.root";
+    puMCFiles["2016Post"] = comPuMC+"UL2016.root";
     puMCFiles["2017"]        = comPuMC+"UL2017.root";
     puMCFiles["2018"]        = comPuMC+"UL2018.root";
     //Initiate the pileup SF reader
@@ -198,14 +198,14 @@ makeNtuple::makeNtuple(int ac, char** av)
     //ID files
     std::map<std::string, string> muIDFiles;
     string comMu = "weight/MuSF/Efficiencies_muon_generalTracks_Z_"; 
-    muIDFiles["2016PreVFP"]  = comMu+"Run2016_UL_HIPM_ID.root";
-    muIDFiles["2016PostVFP"] = comMu+"Run2016_UL_ID.root";
+    muIDFiles["2016Pre"]  = comMu+"Run2016_UL_HIPM_ID.root";
+    muIDFiles["2016Post"] = comMu+"Run2016_UL_ID.root";
     muIDFiles["2017"]        = comMu+"Run2017_UL_ID.root";
     muIDFiles["2018"]        = comMu+"Run2018_UL_ID.root";
     //Iso files
     std::map<std::string, string> muIsoFiles;
-    muIsoFiles["2016PreVFP"]  = comMu+"Run2016_UL_HIPM_ISO.root";
-    muIsoFiles["2016PostVFP"] = comMu+"Run2016_UL_ISO.root";
+    muIsoFiles["2016Pre"]  = comMu+"Run2016_UL_HIPM_ISO.root";
+    muIsoFiles["2016Post"] = comMu+"Run2016_UL_ISO.root";
     muIsoFiles["2017"]        = comMu+"Run2017_UL_ISO.root";
     muIsoFiles["2018"]        = comMu+"Run2018_UL_ISO.root";
     //Trig file
@@ -214,8 +214,8 @@ makeNtuple::makeNtuple(int ac, char** av)
     string muIDHist     = "NUM_HighPtID_DEN_TrackerMuons_abseta_pt";
     string muIsoHist    = "NUM_TightRelTkIso_DEN_HighPtIDandIPCut_abseta_pt";
     std::map<std::string, string> muTrigHists;
-    muTrigHists["2016PreVFP"]  = "SF_2016";
-    muTrigHists["2016PostVFP"] = "SF_2016";
+    muTrigHists["2016Pre"]  = "SF_2016";
+    muTrigHists["2016Post"] = "SF_2016";
     muTrigHists["2017"]        = "SF_2017";
     muTrigHists["2018"]        = "SF_2018";
     //Initiate the muon SF reader
@@ -228,19 +228,19 @@ makeNtuple::makeNtuple(int ac, char** av)
     //ID files
     std::map<std::string, string> eIDFiles;
     string comEleID = "weight/EleSF/egammaEffi.txt_";
-    //eIDFiles["2016PreVFP"]  = comEleID+"Ele_wp80iso_preVFP_EGM2D.root"; 
-    //eIDFiles["2016PostVFP"] = comEleID+"Ele_wp80iso_postVFP_EGM2D.root"; 
+    //eIDFiles["2016Pre"]  = comEleID+"Ele_wp80iso_preVFP_EGM2D.root"; 
+    //eIDFiles["2016Post"] = comEleID+"Ele_wp80iso_postVFP_EGM2D.root"; 
     //eIDFiles["2017"]        = comEleID+"EGM2D_MVA80iso_UL17.root"; 
     //eIDFiles["2018"]        = comEleID+"Ele_wp80iso_EGM2D.root"; 
-    eIDFiles["2016PreVFP"]  = comEleID+"Ele_Tight_preVFP_EGM2D.root";
-    eIDFiles["2016PostVFP"] = comEleID+"Ele_Tight_postVFP_EGM2D.root";
+    eIDFiles["2016Pre"]  = comEleID+"Ele_Tight_preVFP_EGM2D.root";
+    eIDFiles["2016Post"] = comEleID+"Ele_Tight_postVFP_EGM2D.root";
     eIDFiles["2017"]        = comEleID+"EGM2D_Tight_UL17.root";
     eIDFiles["2018"]        = comEleID+"Ele_Tight_EGM2D.root";
     //Reco files
     std::map<std::string, string> eRecoFiles;
     string comEleReco = "weight/EleSF/egammaEffi_ptAbove20.txt_EGM2D_"; 
-    eRecoFiles["2016PreVFP"]  = comEleReco+"UL2016preVFP.root"; 
-    eRecoFiles["2016PostVFP"] = comEleReco+"UL2016postVFP.root"; 
+    eRecoFiles["2016Pre"]  = comEleReco+"UL2016preVFP.root"; 
+    eRecoFiles["2016Post"] = comEleReco+"UL2016postVFP.root"; 
     eRecoFiles["2017"]        = comEleReco+"UL2017.root"; 
     eRecoFiles["2018"]        = comEleReco+"UL2018.root"; 
     //Trig files
@@ -248,8 +248,8 @@ makeNtuple::makeNtuple(int ac, char** av)
     //https://indico.cern.ch/event/1146225/contributions/4835158/attachments/2429997/4160813/HLTSFsWprime%20.pdf
     std::map<std::string, string> eTrigFiles;
     string comEleTrig = "weight/EleSF/egammaEffi.txt_TrigSFTightID_";
-    eTrigFiles["2016PreVFP"]  = comEleTrig+"2016Pre.root";
-    eTrigFiles["2016PostVFP"] = comEleTrig+"2016Post.root";
+    eTrigFiles["2016Pre"]  = comEleTrig+"2016Pre.root";
+    eTrigFiles["2016Post"] = comEleTrig+"2016Post.root";
     eTrigFiles["2017"]        = comEleTrig+"2017.root";
     eTrigFiles["2018"]        = comEleTrig+"2018.root";
     //Initiate the electron SF reader
@@ -262,22 +262,22 @@ makeNtuple::makeNtuple(int ac, char** av)
     //ID files
     std::map<std::string, string> phoIDFiles;
     string comPhoID = "weight/PhoSF/egammaEffi.txt_EGM2D_";
-    phoIDFiles["2016PreVFP"]  = comPhoID+"Pho_wp80_UL16.root";
-    phoIDFiles["2016PostVFP"] = comPhoID+"Pho_MVA80_UL16_postVFP.root";
+    phoIDFiles["2016Pre"]  = comPhoID+"Pho_wp80_UL16.root";
+    phoIDFiles["2016Post"] = comPhoID+"Pho_MVA80_UL16_postVFP.root";
     phoIDFiles["2017"]        = comPhoID+"PHO_MVA80_UL17.root";
     phoIDFiles["2018"]        = comPhoID+"Pho_wp80.root_UL18.root";
     //Electron veto (reject photon which has pixel seed)
     std::map<std::string, string> phoPSFiles;
     string comPhoPS = "weight/PhoSF/HasPix_SummaryPlot_";
-    phoPSFiles["2016PreVFP"]  = comPhoPS+"UL16_preVFP.root";
-    phoPSFiles["2016PostVFP"] = comPhoPS+"UL16_postVFP.root";
+    phoPSFiles["2016Pre"]  = comPhoPS+"UL16_preVFP.root";
+    phoPSFiles["2016Post"] = comPhoPS+"UL16_postVFP.root";
     phoPSFiles["2017"]        = comPhoPS+"UL17.root"; 
     phoPSFiles["2018"]        = comPhoPS+"UL18.root"; 
     //Electron veto (conversion safe EV)
     std::map<std::string, string> phoCSFiles;
     string comPhoCS = "weight/PhoSF/CSEV_SummaryPlot_";
-    phoCSFiles["2016PreVFP"]  = comPhoCS+"UL16_preVFP.root";
-    phoCSFiles["2016PostVFP"] = comPhoCS+"UL16_postVFP.root";
+    phoCSFiles["2016Pre"]  = comPhoCS+"UL16_preVFP.root";
+    phoCSFiles["2016Post"] = comPhoCS+"UL16_postVFP.root";
     phoCSFiles["2017"]        = comPhoCS+"UL17.root"; 
     phoCSFiles["2018"]        = comPhoCS+"UL18.root"; 
     //Initiate the phton SF reader
@@ -294,25 +294,25 @@ makeNtuple::makeNtuple(int ac, char** av)
     //deepCSV
     std::map<std::string, string> deepCSVFiles;
     string comCSV = "weight/BtagSF/wp_deepCSV_106X";
-    deepCSVFiles["2016PreVFP"]  = comCSV+"UL16preVFP_v2_formatted.csv";
-    deepCSVFiles["2016PostVFP"] = comCSV+"UL16postVFP_v3_formatted.csv";
+    deepCSVFiles["2016Pre"]  = comCSV+"UL16preVFP_v2_formatted.csv";
+    deepCSVFiles["2016Post"] = comCSV+"UL16postVFP_v3_formatted.csv";
     deepCSVFiles["2017"]        = comCSV+"UL17_v3_formatted.csv";
     deepCSVFiles["2018"]        = comCSV+"UL18_v2_formatted.csv";
     std::map<std::string, double> deepCSVWPs;//medium WPs
-    deepCSVWPs["2016PreVFP"]  = 0.6001; 
-    deepCSVWPs["2016PostVFP"] = 0.5847; 
+    deepCSVWPs["2016Pre"]  = 0.6001; 
+    deepCSVWPs["2016Post"] = 0.5847; 
     deepCSVWPs["2017"]        = 0.4506; 
     deepCSVWPs["2018"]        = 0.4168; 
     //deepJet
     std::map<std::string, string> deepJetFiles;
     string comJet = "weight/BtagSF/wp_deepJet_106X";
-    deepJetFiles["2016PreVFP"]  = comJet+"UL16preVFP_v2_formatted.csv";
-    deepJetFiles["2016PostVFP"] = comJet+"UL16postVFP_v3_formatted.csv";
+    deepJetFiles["2016Pre"]  = comJet+"UL16preVFP_v2_formatted.csv";
+    deepJetFiles["2016Post"] = comJet+"UL16postVFP_v3_formatted.csv";
     deepJetFiles["2017"]        = comJet+"UL17_v3_formatted.csv";
     deepJetFiles["2018"]        = comJet+"UL18_v2_formatted.csv";
     std::map<std::string, double> deepJetWPs;//medium WPs
-    deepJetWPs["2016PreVFP"]  = 0.2598; 
-    deepJetWPs["2016PostVFP"] = 0.2489; 
+    deepJetWPs["2016Pre"]  = 0.2598; 
+    deepJetWPs["2016Post"] = 0.2489; 
     deepJetWPs["2017"]        = 0.3040; 
     deepJetWPs["2018"]        = 0.2783; 
     
@@ -324,16 +324,16 @@ makeNtuple::makeNtuple(int ac, char** av)
     //Partial file name here, full name in init_JER function
     std::map<std::string, string> jerFiles;
     string comJER = "weight/JetSF/JER/";
-    jerFiles["2016PreVFP"]  = comJER+"Summer20UL16APV_JRV3";
-    jerFiles["2016PostVFP"] = comJER+"Summer20UL16_JRV3";
+    jerFiles["2016Pre"]  = comJER+"Summer20UL16APV_JRV3";
+    jerFiles["2016Post"] = comJER+"Summer20UL16_JRV3";
     jerFiles["2017"]        = comJER+"Summer19UL17_JRV3";
     jerFiles["2018"]        = comJER+"Summer19UL18_JRV2";
 
     //https://github.com/cms-jet/JECDatabase/tree/master/textFiles
     std::map<std::string, string> jesFiles;
     string comJES = "weight/JetSF/JEC/"+year+"/";
-    jesFiles["2016PreVFP"]  = comJES+"Summer19UL16APV_V7";
-    jesFiles["2016PostVFP"] = comJES+"Summer19UL16_V7";
+    jesFiles["2016Pre"]  = comJES+"Summer19UL16APV_V7";
+    jesFiles["2016Post"] = comJES+"Summer19UL16_V7";
     jesFiles["2017"]        = comJES+"Summer19UL17_V5";
     jesFiles["2018"]        = comJES+"Summer19UL18_V5";
     
@@ -343,8 +343,8 @@ makeNtuple::makeNtuple(int ac, char** av)
     //https://twiki.cern.ch/twiki/bin/view/CMS/PdmVRun2LegacyAnalysis
     //https://twiki.cern.ch/twiki/bin/view/CMS/LumiRecommendationsRun2
     std::map<std::string, double> lumiValues;
-    lumiValues["2016PreVFP"]  = 19.52; 
-    lumiValues["2016PostVFP"] = 16.81; 
+    lumiValues["2016Pre"]  = 19.52; 
+    lumiValues["2016Post"] = 16.81; 
     lumiValues["2017"]        = 41.48; 
     lumiValues["2018"]        = 59.83; 
     
@@ -354,8 +354,8 @@ makeNtuple::makeNtuple(int ac, char** av)
     //https://indico.cern.ch/event/1152827/contributions/4840404/attachments/2428856/4162159/ParticleNet_SFs_ULNanoV9_JMAR_25April2022_PK.pdf
     //For mis-tag rate of 0.5%
     std::map<std::string, double> topTagWPs;
-    topTagWPs["2016PreVFP"]  = 0.74; 
-    topTagWPs["2016PostVFP"] = 0.73; 
+    topTagWPs["2016Pre"]  = 0.74; 
+    topTagWPs["2016Post"] = 0.73; 
     topTagWPs["2017"]        = 0.80; 
     topTagWPs["2018"]        = 0.80; 
 	topSF = new TopSF();
@@ -442,20 +442,20 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (sampleType.find("TTGamma")!= std::string::npos) {
 	doOverlapInvert_TTG = true;
     }    
-    if( sampleType == "W1jets" || sampleType == "W2jets" ||  sampleType == "W3jets" || sampleType == "W4jets"){
+    if( sampleType == "W1Jets" || sampleType == "W2Jets" ||  sampleType == "W3Jets" || sampleType == "W4Jets"){
 	doOverlapRemoval_W = true;
     }
     if (sampleType.find("WGamma")!= std::string::npos) {
 	doOverlapInvert_WG = true;
     }    
-    if (sampleType=="DYjetsM10to50" || sampleType=="DYjetsM50" || sampleType=="DYjetsM10to50_MLM" || sampleType=="DYjetsM50_MLM"){
+    if (sampleType=="DYJetsM10to50" || sampleType=="DYJetsM50" || sampleType=="DYJetsM10to50_MLM" || sampleType=="DYJetsM50_MLM"){
 	doOverlapRemoval_Z = true;
     }
     if (sampleType.find("ZGamma")!= std::string::npos) {
 	doOverlapInvert_ZG = true;
     }    
     
-    if( sampleType == "ST_t-channel" || sampleType == "ST_tbar-channel") {
+    if( sampleType == "ST_t_channel" || sampleType == "ST_tbar_channel") {
 	doOverlapRemoval_Tchannel = true;
     }
     if (sampleType.find("TGJets")!= std::string::npos) {
@@ -826,7 +826,7 @@ makeNtuple::makeNtuple(int ac, char** av)
         	        }
         	    }
                 //https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
-                if (year=="2016PreVFP" || year=="2016PostVFP" || year=="2017"){
+                if (year=="2016Pre" || year=="2016Post" || year=="2017"){
                     _prefireSF_Do   = tree->prefireDn_;
                     _prefireSF      = tree->prefireNom_; 
                     _prefireSF_Up   = tree->prefireUp_; 
@@ -913,7 +913,6 @@ void makeNtuple::FillEvent(std::string year){
 
     _pfMET		     = tree->MET_pt_;
     _pfMETPhi    	 = tree->MET_phi_;
-    
     _nPho		     = selector->Photons.size();
     _nLoosePho	     = selector->LoosePhotons.size();
     _nPhoNoID	     = selector->PhotonsNoID.size();
@@ -1467,8 +1466,8 @@ void makeNtuple::loadBtagEff(string sampleName, string year){
     //--------------------------
     std::map<std::string, string> btagFiles;
     string comBtag = "weight/BtagSF/btag_efficiencies_"; 
-    btagFiles["2016PreVFP"]  = comBtag+"2016.root";
-    btagFiles["2016PostVFP"] = comBtag+"2016.root";
+    btagFiles["2016Pre"]  = comBtag+"2016.root";
+    btagFiles["2016Post"] = comBtag+"2016.root";
     btagFiles["2017"]        = comBtag+"2017.root";
     btagFiles["2018"]        = comBtag+"2018.root";
     std::string fName = btagFiles[year]; 

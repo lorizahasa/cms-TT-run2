@@ -76,16 +76,15 @@ void initCrossSections(){
     // single t 
     //--------------------------
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#Single_top
-    crossSections["ST_tW_channel"]      ={35.85};//{35.85};  ()/NNLO
-    crossSections["ST_tbarW_channel"]   ={35.85};//{35.85};  ()/NNLO 
-    crossSections["ST_t_channel"]       ={44.33};//{136.02}; ()/NLO
-    crossSections["ST_tbar_channel"]    ={26.38};//{80.95};  ()/NLO
-    crossSections["ST_s_channel"]       ={3.36};//{3.36};    ()/NLO
-    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns//TT_X
-    crossSections["TGJets"]             ={1.186};//{1.02};   ()/NLO, 3.697*32.08/100
+    crossSections["ST_tW_channel"]      ={35.85}; //NNLO
+    crossSections["ST_tbarW_channel"]   ={35.85}; //NNLO 
+    crossSections["ST_t_channel"]       ={136.02};//NLO
+    crossSections["ST_tbar_channel"]    ={80.95}; //NLO
+    crossSections["ST_s_channel"]       ={3.36};  //NLO
+    crossSections["TGJets"]             ={0.952};//NLO, 2.967*0.3208
 
     //--------------------------
-    // y+jets
+    // Gamma+Jets
     //--------------------------
     // https://twiki.cern.ch/twiki/bin/viewauth/CMS/XsdbTutorialSep#Gamma_jets
     // LO/LO (kf = 1.0)
@@ -96,14 +95,14 @@ void initCrossSections(){
     crossSections["GJets_HT600ToInf"] ={44.05};//{93.46}; 
 
     //--------------------------
-    // DY+jets
+    // DY+Jets
     //--------------------------
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
     crossSections["DYJetsM50"]         =  {6077.22}; 
     crossSections["DYJetsM10to50"]     =  {18610.};  
     
     //--------------------------
-    // W + jets samples
+    // W + Jets samples
     //--------------------------
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns//W_jets
     // Unused crossSections["WJetsInclusive"]    = {61526.7, 61526.7, 61526.7}; 

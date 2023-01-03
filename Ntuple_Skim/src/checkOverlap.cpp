@@ -42,11 +42,11 @@ int main(int ac, char** av){
 		doOverlapRemoval_TT = true;
 	}
 
-	if( outDirName.find("W1Jets") != std::string::npos || outDirName.find("W2Jets") != std::string::npos || outDirName.find("W3Jets") != std::string::npos || outDirName.find("W4Jets") != std::string::npos || outDirName.find("DYjetsM10to50") != std::string::npos || outDirName.find("DYjetsM50") != std::string::npos) {
+	if( outDirName.find("W1Jets") != std::string::npos || outDirName.find("W2Jets") != std::string::npos || outDirName.find("W3Jets") != std::string::npos || outDirName.find("W4Jets") != std::string::npos || outDirName.find("DYJetsM10to50") != std::string::npos || outDirName.find("DYJetsM50") != std::string::npos) {
 		doOverlapRemoval_WZ = true;
 	}
 
-	if( outDirName.find("ST_t-channel") != std::string::npos || outDirName.find("ST_tbar-channel") != std::string::npos) {
+	if( outDirName.find("ST_t_channel") != std::string::npos || outDirName.find("ST_tbar_channel") != std::string::npos) {
 		doOverlapRemoval_Tchannel = true;
 	}
 
