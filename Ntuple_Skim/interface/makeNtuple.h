@@ -47,9 +47,9 @@
 #include "ReaderMuSF.h"
 #include "ReaderEleSF.h"
 #include "ReaderPhoSF.h"
+#include "ReaderLumiMask.h"
 
 #include "UncertaintySourcesList.h"
-
 #include "OverlapRemove.h"
 
 class makeNtuple {
@@ -85,6 +85,7 @@ class makeNtuple {
     TopSF* topSF;
     MuonSF* muSF;
     ElectronSF* eleSF;
+    LumiMask* lumiMask;
     PhotonSF* phoSF;
 
     TH2D* l_eff;
@@ -532,29 +533,84 @@ void makeNtuple::InitVariables()
     _event    = -9;
     _lumis		     = -9;
     _isData		     = false;
+    
+    _PUweight = 1.;
+    _PUweight_Up = 1.;
+    _PUweight_Do = 1.;
+
+    _TopWeight = 1.;
+    _TopWeight_Up = 1.;
+    _TopWeight_Do = 1.;
+
+    _q2weight_nominal = 1.;
+    _q2weight_Up = 1.;
+    _q2weight_Do = 1.;
+    _genWeight = 0.;
+
+    _pdfWeight    = 1.;
+    _pdfweight_Up = 1.;
+    _pdfweight_Do = 1.;
+
+    _ISRweight = 1.;
+    _ISRweight_Up = 1.;
+    _ISRweight_Do = 1.;
+
+    _FSRweight    = 1.;
+    _FSRweight_Up = 1.;
+    _FSRweight_Do = 1.;
+
+    _prefireSF = 1.;
+    _prefireSF_Up = 1.;
+    _prefireSF_Do = 1.;
+
+    _btagWeight_1a = 1.;
+    _btagWeight_1a_b_Up = 1.;
+    _btagWeight_1a_b_Do = 1.;
+    _btagWeight_1a_l_Up = 1.;
+    _btagWeight_1a_l_Do = 1.;
+
+    _muEffWeight    = 1.;
+    _muEffWeight_Do = 1.;
+    _muEffWeight_Up = 1.;
+
+    _muEffWeight_Id    = 1.;
+    _muEffWeight_Id_Do = 1.;
+    _muEffWeight_Id_Up = 1.;
+
+    _muEffWeight_Iso    = 1.;
+    _muEffWeight_Iso_Do = 1.;
+    _muEffWeight_Iso_Up = 1.;
+
+    _muEffWeight_Trig    = 1.;
+    _muEffWeight_Trig_Do = 1.;
+    _muEffWeight_Trig_Up = 1.;
+
+    _eleEffWeight    = 1.;
+    _eleEffWeight_Do = 1.;
+    _eleEffWeight_Up = 1.;
+
+    _eleEffWeight_Trig    = 1.;
+    _eleEffWeight_Trig_Do = 1.;
+    _eleEffWeight_Trig_Up = 1.;
+
+    _eleEffWeight_Id    = 1.;
+    _eleEffWeight_Id_Do = 1.;
+    _eleEffWeight_Id_Up = 1.;
+
+    _eleEffWeight_Reco    = 1.;
+    _eleEffWeight_Reco_Do = 1.;
+    _eleEffWeight_Reco_Up = 1.;
+
+    _evtWeight = 1.;
+    _lumiWeight= 1.;
+
     _pfMET		     = -9.;
     _pfMETPhi	     = -9.;
     _WtransMass      = -9.;
-    
-    _Reco_angle_pho_lepton  = -9.;
-    _Reco_angle_lepton_met  = -9.;
-    _Reco_angle_pho_met= -9.;
-    _Reco_angle_leadJet_met  = -9.;
-    _Reco_angle_leadBjet_met  = -9.;
-
-    _M_jj     = -9.;
-    _TopHad_mass     = -9.;
-    _TopLep_mass     = -9.;
-    _TopStarLep_mass     = -9.;
-    _TopStarHad_mass     = -9.;
-    _TopStar_mass     = -9.;
-    _tgtg_mass     = -9.;
-    _chi2   = -9.;
-    _HT		 = -9.;
-    _ST		 = -9.;
     _DilepMass   = -9.;
+    _DiphoMass       = -9.;
     _DilepDelR   = -9.;
-
+    
     _Reco_dr_pho_tstarHad      = -9.;
     _Reco_dr_pho_tHad          = -9.;
     _Reco_dr_pho_bHad          = -9.;
@@ -580,141 +636,98 @@ void makeNtuple::InitVariables()
     _Reco_eta_lepT = -9.;
     _Reco_pt_lepT = -9.;
     _Reco_phi_lepT = -9.;
-    _DiphoMass       = -9.;
+    _Reco_angle_lepton_met  = -9.;
+    _Reco_angle_pho_lepton  = -9.;
+    _Reco_angle_pho_met= -9.;
+    _Reco_angle_leadJet_met  = -9.;
+    _Reco_angle_leadBjet_met  = -9.;
+    _M_jj     = -9.;
+    _TopHad_mass     = -9.;
+    _TopLep_mass     = -9.;
+    _TopStarLep_mass     = -9.;
+    _TopStarHad_mass     = -9.;
+    _TopStar_mass     = -9.;
+    _tgtg_mass     = -9.;
+    _chi2   = -9.;
 
     _nPho		 = -9;
-    _nEle		     = -9;
-    _nMu		     = -9;
-    _nMuLoose 	     = -9;
-    _nEleLoose    = -9;
-    _nJet     = -9;  
-    _nFatJet  =-9;  
-    _nBJet    = -9;    
-
-    _passPresel_Ele  = false;
-    _passPresel_Mu   = false;
-
-    _pdfWeight    = 1.;
-    _pdfweight_Up = 1.;
-    _pdfweight_Do = 1.;
-    _genWeight = 0.;
-
-    _q2weight_nominal = 1.;
-    _q2weight_Up = 1.;
-    _q2weight_Do = 1.;
-
-    _ISRweight = 1.;
-    _ISRweight_Up = 1.;
-    _ISRweight_Do = 1.;
-
-    _FSRweight    = 1.;
-    _FSRweight_Up = 1.;
-    _FSRweight_Do = 1.;
-
-    _eleEffWeight    = 1.;
-    _eleEffWeight_Do = 1.;
-    _eleEffWeight_Up = 1.;
-
-    _eleEffWeight_Trig    = 1.;
-    _eleEffWeight_Trig_Do = 1.;
-    _eleEffWeight_Trig_Up = 1.;
-
-    _eleEffWeight_Id    = 1.;
-    _eleEffWeight_Id_Do = 1.;
-    _eleEffWeight_Id_Up = 1.;
-
-    _eleEffWeight_Reco    = 1.;
-    _eleEffWeight_Reco_Do = 1.;
-    _eleEffWeight_Reco_Up = 1.;
-
-    _muEffWeight    = 1.;
-    _muEffWeight_Do = 1.;
-    _muEffWeight_Up = 1.;
-
-    _muEffWeight_Id    = 1.;
-    _muEffWeight_Id_Do = 1.;
-    _muEffWeight_Id_Up = 1.;
-
-    _muEffWeight_Iso    = 1.;
-    _muEffWeight_Iso_Do = 1.;
-    _muEffWeight_Iso_Up = 1.;
-
-    _muEffWeight_Trig    = 1.;
-    _muEffWeight_Trig_Do = 1.;
-    _muEffWeight_Trig_Up = 1.;
-
-    _PUweight = 1.;
-    _PUweight_Up = 1.;
-    _PUweight_Do = 1.;
-
-    _TopWeight = 1.;
-    _TopWeight_Up = 1.;
-    _TopWeight_Do = 1.;
-
-    _prefireSF = 1.;
-    _prefireSF_Up = 1.;
-    _prefireSF_Do = 1.;
+    _phoEt.clear();
+    _phoEta.clear();
+    _phoPhi.clear();
+    _phoPFRelIso.clear();
+    _phoMassLepGamma.clear();
+    _phoTightID.clear();
+    _phoMediumID.clear();
+    _phoGenMatchInd.clear();
+    _photonIsGenuine.clear();
+    _photonIsMisIDEle.clear();
+    _photonIsHadronicPhoton.clear();
+    _photonIsHadronicFake.clear();
 
     _phoEffWeight.clear();
-    _phoEffWeight_Do.clear();
     _phoEffWeight_Up.clear();
+    _phoEffWeight_Do.clear();
     _phoEffWeight_Id.clear();
-    _phoEffWeight_Id_Do.clear();
     _phoEffWeight_Id_Up.clear();
+    _phoEffWeight_Id_Do.clear();
     _phoEffWeight_PS.clear();
-    _phoEffWeight_PS_Do.clear();
     _phoEffWeight_PS_Up.clear();
+    _phoEffWeight_PS_Do.clear();
     _phoEffWeight_CS.clear();
-    _phoEffWeight_CS_Do.clear();
     _phoEffWeight_CS_Up.clear();
+    _phoEffWeight_CS_Do.clear();
 
-    _btagWeight_1a = 1.;
-    _btagWeight_1a_b_Up = 1.;
-    _btagWeight_1a_b_Do = 1.;
-    _btagWeight_1a_l_Up = 1.;
-    _btagWeight_1a_l_Do = 1.;
+    _MPhotonLepton.clear();
+    _AnglePhotonLepton.clear();
 
+    _nLoosePho    = -9;
+    _nPhoNoID     = -9;
+    _nEle		  = -9;
+    _nEleLoose    = -9;
     _elePt.clear();
     _elePhi.clear();
     _eleEta.clear();
     _eleSCEta.clear();
     _elePFRelIso.clear();
 
+    _nMu		     = -9;
+    _nMuLoose 	     = -9;
     _muPt.clear();
     _muEta.clear();
     _muPhi.clear();
     _muTkRelIso.clear();
 
-    _phoEt.clear();
-    _phoEta.clear();
-    _phoPhi.clear();
-    _phoMassLepGamma.clear();
-    _phoPFRelIso.clear();
-
-    _photonIsGenuine.clear();
-    _photonIsMisIDEle.clear();
-    _photonIsHadronicPhoton.clear();
-    _photonIsHadronicFake.clear();
-
+    _nJet     = -9;  
+    _nBJet    = -9;    
     _jetPt.clear();
     _jetQGL.clear();
     _jetEta.clear();
     _jetPhi.clear();
     _jetMass.clear();
-    _jesWeight.clear();
     _jetRes.clear();
     _jerWeight.clear();
+    _jesWeight.clear();
     _jetCSVV2.clear();
     _jetDeepB.clear();
-
     _jetGenJetIdx.clear();
+
+    _nFatJet  =-9;  
     _fatJetPt.clear();
     _fatJetEta.clear();
     _fatJetPhi.clear();
     _fatJetMass.clear();
     _fatJetMassSoftDrop.clear();
 
-    _MPhotonLepton.clear();
+    _HT		 = -9.;
+    _ST		 = -9.;
+    _passPresel_Ele  = false;
+    _passPresel_Mu   = false;
+    dileptonsample   = false;
+    _inHEMVeto       = false;
+
+    lepCharge  = -9.;
+
+
 }
 
 

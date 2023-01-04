@@ -347,7 +347,15 @@ makeNtuple::makeNtuple(int ac, char** av)
     lumiValues["2016Post"] = 16.81; 
     lumiValues["2017"]        = 41.48; 
     lumiValues["2018"]        = 59.83; 
-    
+   
+    std::map<std::string, string> lumiJSON;
+    string comJSON = "weight/LumiJSON/";
+    lumiJSON["2016Pre"]     = comJSON+"Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt";
+    lumiJSON["2016Post"]    = comJSON+"Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt";
+    lumiJSON["2017"]        = comJSON+"Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt";
+    lumiJSON["2018"]        = comJSON+"Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt";
+	lumiMask = new LumiMask(lumiJSON[year]);
+
     //--------------------------
     // t-tagging WPs
     //--------------------------
@@ -579,6 +587,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 
     int count_overlap=0;
     int count_HEM=0;
+    int count_BadLumi=0;
 
     int startEntry = 0;                                                         
     int endEntry = nEntr;                                                       
@@ -737,6 +746,17 @@ makeNtuple::makeNtuple(int ac, char** av)
         }
 
         //--------------------------
+        //Apply lumi Mask 
+        //--------------------------
+        if(_isData){
+            bool valLumi = lumiMask->isValidLumi(tree->run_, tree->lumis_);
+            if(!valLumi){
+                count_BadLumi++;
+                continue;
+            }
+        }
+
+        //--------------------------
         //Process events
         //--------------------------
         if( isMC ){
@@ -878,7 +898,8 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (doOverlapInvert_GJ){
 	std::cout << "Total number of events removed from GJets:"<< count_overlap <<std::endl;
     }
-    std:cout << "Total number of HEM events removed from Data  = "<<count_HEM<<std::endl;
+    std::cout << "Total number of HEM events removed from Data  = "<<count_HEM<<std::endl;
+    std::cout << "Total number of events with bad lumi section  = "<<count_BadLumi<<std::endl;
     outputFile->cd();
     std::cout<<"nEvents_Ntuple = "<<outputTree->GetEntries()<<endl;
     outputTree->Write();
