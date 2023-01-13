@@ -39,16 +39,16 @@ def gs(y, d, syst, s_array):
 
 def getSamples(y, d, syst):#commented samples don't exist
     samples = {
-               "Signal_M700"  : gs(y, d, syst, ["Signal_M700"]),  
-               "Signal_M800"  : gs(y, d, syst, ["Signal_M800"]),  
-               "Signal_M900"  : gs(y, d, syst, ["Signal_M900"]),  
-               "Signal_M1000" : gs(y, d, syst, ["Signal_M1000"]),  
-               #"Signal_M1100" : gs(y, d, syst, ["Signal_M1100"]),  
-               "Signal_M1200" : gs(y, d, syst, ["Signal_M1200"]),  
-               "Signal_M1300" : gs(y, d, syst, ["Signal_M1300"]),  
-               "Signal_M1400" : gs(y, d, syst, ["Signal_M1400"]),  
-               "Signal_M1500" : gs(y, d, syst, ["Signal_M1500"]),  
-               "Signal_M1600" : gs(y, d, syst, ["Signal_M1600"]),  
+               "SignalSpin12_M700"  : gs(y, d, syst, ["SignalSpin12_M700"]),  
+               "SignalSpin12_M800"  : gs(y, d, syst, ["SignalSpin12_M800"]),  
+               "SignalSpin12_M900"  : gs(y, d, syst, ["SignalSpin12_M900"]),  
+               #"SignalSpin12_M1000" : gs(y, d, syst, ["SignalSpin12_M1000"]),  
+               "SignalSpin12_M1100" : gs(y, d, syst, ["SignalSpin12_M1100"]),  
+               "SignalSpin12_M1200" : gs(y, d, syst, ["SignalSpin12_M1200"]),  
+               "SignalSpin12_M1300" : gs(y, d, syst, ["SignalSpin12_M1300"]),  
+               #"SignalSpin12_M1400" : gs(y, d, syst, ["SignalSpin12_M1400"]),  
+               "SignalSpin12_M1500" : gs(y, d, syst, ["SignalSpin12_M1500"]),  
+               #"SignalSpin12_M1600" : gs(y, d, syst, ["SignalSpin12_M1600"]),  
                "TTbar" : gs(y, d, syst, [
                    "TTbarPowheg_Hadronic" , 
                    "TTbarPowheg_Dilepton" , 
@@ -72,14 +72,14 @@ def getSamples(y, d, syst):#commented samples don't exist
                    'TTGamma_SingleLept_Pt200'
                    ]),
                "WJets": gs(y, d, syst, [
-                   'W1jets', 
-                   'W2jets', 
-                   'W3jets', 
-                   'W4jets', 
+                   'W1Jets', 
+                   'W2Jets', 
+                   'W3Jets', 
+                   'W4Jets', 
                    ]),
                "DYJets": gs(y, d, syst, [
-                   'DYjetsM10to50',
-                   'DYjetsM50',
+                   'DYJetsM10to50',
+                   'DYJetsM50',
                    ]),
                "WGamma": gs(y, d, syst, [
                    'WGamma', 
@@ -88,6 +88,8 @@ def getSamples(y, d, syst):#commented samples don't exist
                    'ZGamma'
                    ]),
                "QCDEle"   : gs(y, d, syst, [
+                   "QCD_Pt15To20_Ele",
+                   "QCD_Pt20To30_Ele",
                    "QCD_Pt30To50_Ele",
                    "QCD_Pt50To80_Ele",
                    "QCD_Pt80To120_Ele",
@@ -95,13 +97,14 @@ def getSamples(y, d, syst):#commented samples don't exist
                    "QCD_Pt170To300_Ele",
                    "QCD_Pt300ToInf_Ele",
                    #'GJets_HT40To100',
-                   #'GJets_HT100To200',
+                   'GJets_HT100To200',
                    'GJets_HT200To400',
                    'GJets_HT400To600',
                    'GJets_HT600ToInf',
                    ]),
                "QCDMu"    : gs(y, d, syst, [
-                   #"QCD_Pt20To30_Mu",
+                   "QCD_Pt15To20_Mu",
+                   "QCD_Pt20To30_Mu",
                    "QCD_Pt30To50_Mu",
                    "QCD_Pt50To80_Mu",
                    "QCD_Pt80To120_Mu",
@@ -113,7 +116,7 @@ def getSamples(y, d, syst):#commented samples don't exist
                    "QCD_Pt800To1000_Mu",
                    "QCD_Pt1000ToInf_Mu",
                    #"GJets_HT40To100",
-                   #"GJets_HT100To200",
+                   "GJets_HT100To200",
                    "GJets_HT200To400",
                    "GJets_HT400To600",
                    "GJets_HT600ToInf"

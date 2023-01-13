@@ -27,13 +27,13 @@ class EventTree{
     Float_t  genWeight_;
 
     UInt_t nLHEScaleWeight_;
-    Float_t LHEScaleWeight_[200];
+    Float_t LHEScaleWeight_[300];
     
     UInt_t nLHEPdfWeight_;
-    Float_t LHEPdfWeight_[200];
+    Float_t LHEPdfWeight_[300];
     
     UInt_t nPSWeight_;
-    Float_t PSWeight_[200];
+    Float_t PSWeight_[300];
 
     Float_t LHEWeight_originalXWGTUP_;
 
@@ -58,16 +58,16 @@ class EventTree{
     Int_t     GenPart_statusFlags_[300];
     
     UInt_t    nGenJet_;
-    Float_t   GenJet_pt_[100];
-    Float_t   GenJet_eta_[100];
-    Float_t   GenJet_phi_[100];
-    Float_t   GenJet_mass_[100];
+    Float_t   GenJet_pt_[300];
+    Float_t   GenJet_eta_[300];
+    Float_t   GenJet_phi_[300];
+    Float_t   GenJet_mass_[300];
     
     UInt_t    nGenJetAK8_;
-    Float_t   GenJetAK8_pt_[100];
-    Float_t   GenJetAK8_eta_[100];
-    Float_t   GenJetAK8_phi_[100];
-    Float_t   GenJetAK8_mass_[100];
+    Float_t   GenJetAK8_pt_[300];
+    Float_t   GenJetAK8_eta_[300];
+    Float_t   GenJetAK8_phi_[300];
+    Float_t   GenJetAK8_mass_[300];
     
     // PU
     Int_t    nPU_;  
@@ -134,40 +134,40 @@ class EventTree{
 
     // Jet
     UInt_t          nJet_;
-    Float_t         jetPt_[200];
-    Float_t         jetQGL_[200];
-    Float_t         jetEta_[200];
-    Float_t         jetPhi_[200];
-    Float_t         jetMass_[200];
-    Float_t         jetRawFactor_[200];
-    Int_t           jetID_[200];
-    Float_t         jetArea_[200];
-    Float_t         fatJetArea_[200];
-    Float_t         jetBtagCSVV2_[200];
-    Float_t         jetBtagDeepB_[200];
-    Float_t         jetchEmEF_[200];
-    Float_t         jetneEmEF_[200];
-    Float_t         jetmuEF_[200];
-    Int_t           jetHadFlvr_[200];
-    Int_t           jetGenJetIdx_[200];
+    Float_t         jetPt_[300];
+    Float_t         jetQGL_[300];
+    Float_t         jetEta_[300];
+    Float_t         jetPhi_[300];
+    Float_t         jetMass_[300];
+    Float_t         jetRawFactor_[300];
+    Int_t           jetID_[300];
+    Float_t         jetArea_[300];
+    Float_t         fatJetArea_[300];
+    Float_t         jetBtagCSVV2_[300];
+    Float_t         jetBtagDeepB_[300];
+    Float_t         jetchEmEF_[300];
+    Float_t         jetneEmEF_[300];
+    Float_t         jetmuEF_[300];
+    Int_t           jetHadFlvr_[300];
+    Int_t           jetGenJetIdx_[300];
     
     //fat jets
     UInt_t          nFatJet_;
-    Float_t         fatJetPt_[200];
-    Float_t         fatJetEta_[200];
-    Float_t         fatJetPhi_[200];
-    Float_t         fatJetMass_[200];
-    Float_t         fatJetMassSoftDrop_[200];
-    Int_t           fatJetID_[200];
-    Float_t         fatJetDeepTagT_[200];
-    Float_t         fatJetDeepTagW_[200];
-    Float_t         fatJetDeepTagMDT_[200];
-    Float_t         fatJetDeepTagMDW_[200];
-    Float_t         fatJetPNET_[200];
-    Int_t           fatJetHadFlvr_[200];
-    Float_t         fatJetEleIdx_[200];
-    Float_t         fatJetMuIdx_[200];
-    Int_t           fatJetGenJetAK8Idx_[200];
+    Float_t         fatJetPt_[300];
+    Float_t         fatJetEta_[300];
+    Float_t         fatJetPhi_[300];
+    Float_t         fatJetMass_[300];
+    Float_t         fatJetMassSoftDrop_[300];
+    Int_t           fatJetID_[300];
+    Float_t         fatJetDeepTagT_[300];
+    Float_t         fatJetDeepTagW_[300];
+    Float_t         fatJetDeepTagMDT_[300];
+    Float_t         fatJetDeepTagMDW_[300];
+    Float_t         fatJetPNET_[300];
+    Int_t           fatJetHadFlvr_[300];
+    Float_t         fatJetEleIdx_[300];
+    Float_t         fatJetMuIdx_[300];
+    Int_t           fatJetGenJetAK8Idx_[300];
     Float_t  rho_;
     
 

@@ -602,7 +602,6 @@ void makeNtuple::InitVariables()
     _eleEffWeight_Reco_Up = 1.;
 
     _evtWeight = 1.;
-    _lumiWeight= 1.;
 
     _pfMET		     = -9.;
     _pfMETPhi	     = -9.;

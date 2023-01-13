@@ -5,8 +5,8 @@ dirHist = "%s/Hist_Ntuple/HistMain"%dirCBA
 dirPlot = "%s/Plot_Hist/PlotMain"%dirCBA
 dirTwiki= "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
-Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
-#Year 	      =	["2017"]
+#Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
+Years 	      =	["2017"]
 Channels 	  =	["Mu", "Ele"]
 #Channel 	  =	["Ele"]
 Decays 	      =	["Semilep"]
@@ -36,9 +36,9 @@ SystLevels.append("Up")
 SystLevels.append("Down")
 
 SampleSignal = {
-         "Signal_M800"    : [rt.kMagenta,  "m_{T} = 800"],
-         "Signal_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
-         "Signal_M1600"   : [rt.kPink,     "m_{T} = 1600"],
+         "SignalSpin12_M800"    : [rt.kMagenta,  "m_{T} = 800"],
+         "SignalSpin12_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
+         #"SignalSpin12_M1600"   : [rt.kPink,     "m_{T} = 1600"],
          }
 
 SampleBkg = {
@@ -54,7 +54,7 @@ SampleBkg = {
 SampleData = {
          "Data"   : [rt.kBlack, "Data"]
          }
-SampleWeight = ["TTGamma", "TTbar", "Signal_M800"]
+SampleWeight = ["TTGamma", "TTbar", "SignalSpin12_M800"]
 SampleLumi = SampleBkg
 #SampleLumi.update(SampleSignal)
 SampleSyst = ["TTGamma", "TTbar", "WJets", "DYJets", "WGamma", "ZGamma", "QCD", "Others"] 

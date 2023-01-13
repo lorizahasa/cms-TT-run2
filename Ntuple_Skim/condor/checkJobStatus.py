@@ -11,7 +11,7 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor",""))
 sys.path.insert(0, os.getcwd().replace("Ntuple_Skim/condor","Skim_NanoAOD/sample"))
 from NtupleInputs import *
-from JobsNano_cff import Samples_2016PreVFP, Samples_2016PostVFP,  Samples_2017, Samples_2018 
+from JobsNano_cff import Samples_2016Pre, Samples_2016Post,  Samples_2017, Samples_2018 
 
 condorLogDir = "tmpSub/log"
 #condorLogDir = "tmpSub/log_resub"

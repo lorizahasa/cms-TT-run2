@@ -45,8 +45,8 @@ if isCheck:
     Decays = [Decays[0]]
     Channels = [Channels[0]]
     rList  = [rList[0]]
-    #hList = ["Jet_pt"]
-    hList = ['Reco_mass_lgamma']
+    hList = ["Jet_pt"]
+    #hList = ['Reco_mass_lgamma']
 if isSep: 
     isComb = False
     outTxt = "SepYears"

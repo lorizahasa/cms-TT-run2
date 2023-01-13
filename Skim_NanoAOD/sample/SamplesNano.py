@@ -107,7 +107,7 @@ def getTTbar(year):
     vs = {'2016Pre': 'v1', '2016Post': 'v1', '2017': 'v1', '2018': 'v1'}
     runV = "%s-%s"%(Runs[year], vs[year])
     sampDict = {
-    ##'TTbarPowheg_Hadronic' : '/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/'+runV+'/NANOAODSIM',
+    'TTbarPowheg_Hadronic' : '/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/'+runV+'/NANOAODSIM',
     'TTbarPowheg_Semilept' : '/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/'+runV+'/NANOAODSIM',
     'TTbarPowheg_Dilepton' : '/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/'+runV+'/NANOAODSIM',
     }
@@ -383,22 +383,22 @@ def getMC(year):
     sampDict.update(getSignalSpin12(year, "TgluonTgamma"))
     sampDict.update(getSignalSpin32(year, "TgluonTgamma"))
     #bkgs
-    ##sampDict.update(getTTGamma(year))
+    sampDict.update(getTTGamma(year))
     sampDict.update(getTTbar(year))
-    ##sampDict.update(getST(year))
-    ##sampDict.update(getGJets(year))
-    ##sampDict.update(getDYJets(year))
-    ##sampDict.update(getWJets(year))
-    ##sampDict.update(getWZGamma(year))
-    ##sampDict.update(getVV(year))
-    ##sampDict.update(getTTV(year))
-    ##sampDict.update(getQCDMu(year))
-    ##sampDict.update(getQCDEle(year))
+    sampDict.update(getST(year))
+    sampDict.update(getGJets(year))
+    sampDict.update(getDYJets(year))
+    sampDict.update(getWJets(year))
+    sampDict.update(getWZGamma(year))
+    sampDict.update(getVV(year))
+    sampDict.update(getTTV(year))
+    sampDict.update(getQCDMu(year))
+    sampDict.update(getQCDEle(year))
     return sampDict
 
 def sampleDict(year):
     allSamples = {}
-    ##allSamples.update(getData(year))
+    allSamples.update(getData(year))
     allSamples.update(getMC(year))
     return allSamples
 

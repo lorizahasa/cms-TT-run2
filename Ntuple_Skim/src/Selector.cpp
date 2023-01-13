@@ -15,10 +15,7 @@ Selector::Selector(){
     elescaleLevel = 1;
     useDeepCSVbTag = false;
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
-    // CSVv2M
     btag_cut = 0.8484;  
-    // DeepCSV
-    btag_cut_DeepCSV = 0.6324;  
     topTagWP = 0.74;
 
     // whether to invert lepton requirements for 
@@ -282,7 +279,7 @@ void Selector::filter_jets(){
             jet_resolution.push_back(resolution);
             jet_smear.push_back(jetSmear);
             if (!useDeepCSVbTag){
-                if( tree->jetBtagCSVV2_[jetInd] > btag_cut){
+                if( tree->jetBtagCSVV2_[jetInd] > 0.8484){
                     bJets.push_back(jetInd);
                     jet_isTagged.push_back(true);
                 } 
@@ -291,7 +288,7 @@ void Selector::filter_jets(){
                 }
             }
             else {
-                if( tree->jetBtagDeepB_[jetInd] > btag_cut_DeepCSV){
+                if( tree->jetBtagDeepB_[jetInd] > btag_cut){
                     bJets.push_back(jetInd);
                     jet_isTagged.push_back(true);
                 } 
@@ -308,7 +305,7 @@ void Selector::filter_jets(){
             cout << " jetID=" << jetID_pass <<endl;
             cout << " dRLep=" << passDR_lep_jet <<endl;
             cout << " dRPho=" << passDR_pho_jet << endl;
-            cout << " btag="<<(tree->jetBtagDeepB_[jetInd] > btag_cut_DeepCSV) << endl; 
+            cout << " btag="<<(tree->jetBtagDeepB_[jetInd] > btag_cut) << endl; 
         }
     }//jet for loop
     }

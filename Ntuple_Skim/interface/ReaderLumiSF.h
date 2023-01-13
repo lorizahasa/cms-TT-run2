@@ -7,38 +7,38 @@ void initCrossSections(){
     //--------------------------
     // Signal samples
     //--------------------------
-    double br_tytg = 0.03*0.97*2;
     //xss for spin 3/2: p p > t* t* > tytg
-    //crossSections["Signal_M700"]   =  {br_tytg*4.92};    
-    //crossSections["Signal_M800"]   =  {br_tytg*1.68};    
-    //crossSections["Signal_M900"]   =  {br_tytg*0.636};   
-    //crossSections["Signal_M1000"]  =  {br_tytg*0.262};   
-    //crossSections["Signal_M1100"]  =  {br_tytg*0.116};   
-    //crossSections["Signal_M1200"]  =  {br_tytg*0.0537};  
-    //crossSections["Signal_M1300"]  =  {br_tytg*0.0261};  
-    //crossSections["Signal_M1400"]  =  {br_tytg*0.0131};  
-    //crossSections["Signal_M1500"]  =  {br_tytg*0.00677}; 
-    //crossSections["Signal_M1600"]  =  {br_tytg*0.00359}; 
+    double br_tytg = 0.03*0.97*2;
+    crossSections["SignalSpin32_M700"]   =  {br_tytg*4.92};    
+    crossSections["SignalSpin32_M800"]   =  {br_tytg*1.68};    
+    crossSections["SignalSpin32_M900"]   =  {br_tytg*0.636};   
+    crossSections["SignalSpin32_M1000"]  =  {br_tytg*0.262};   
+    crossSections["SignalSpin32_M1100"]  =  {br_tytg*0.116};   
+    crossSections["SignalSpin32_M1200"]  =  {br_tytg*0.0537};  
+    crossSections["SignalSpin32_M1300"]  =  {br_tytg*0.0261};  
+    crossSections["SignalSpin32_M1400"]  =  {br_tytg*0.0131};  
+    crossSections["SignalSpin32_M1500"]  =  {br_tytg*0.00677}; 
+    crossSections["SignalSpin32_M1600"]  =  {br_tytg*0.00359}; 
 
     //xss for spin 1/2: p p > t* t* > tytg
-    crossSections["Signal_M700"]   =  {br_tytg*0.2659};
-    crossSections["Signal_M800"]   =  {br_tytg*0.1147};
-    crossSections["Signal_M900"]   =  {br_tytg*0.05318};
-    crossSections["Signal_M1000"]  =  {br_tytg*0.02590};
-    crossSections["Signal_M1100"]  =  {br_tytg*0.01322};
-    crossSections["Signal_M1200"]  =  {br_tytg*0.006897};
-    crossSections["Signal_M1300"]  =  {br_tytg*0.003732};
-    crossSections["Signal_M1400"]  =  {br_tytg*0.002061};
-    crossSections["Signal_M1500"]  =  {br_tytg*0.001165};
-    crossSections["Signal_M1600"]  =  {br_tytg*0.0006675};
-    crossSections["Signal_M1700"]  =  {br_tytg*0.0003911};
-    crossSections["Signal_M1800"]  =  {br_tytg*0.0002329};
-    crossSections["Signal_M1900"]  =  {br_tytg*0.0001404};
-    crossSections["Signal_M2000"]  =  {br_tytg*0.00008614};
-    crossSections["Signal_M2250"]  =  {br_tytg*0.00002748};
-    crossSections["Signal_M2500"]  =  {br_tytg*0.000009695};
-    crossSections["Signal_M2750"]  =  {br_tytg*0.000003746};
-    crossSections["Signal_M3000"]  =  {br_tytg*0.000001535};
+    crossSections["SignalSpin12_M700"]   =  {br_tytg*0.2659};
+    crossSections["SignalSpin12_M800"]   =  {br_tytg*0.1147};
+    crossSections["SignalSpin12_M900"]   =  {br_tytg*0.05318};
+    crossSections["SignalSpin12_M1000"]  =  {br_tytg*0.02590};
+    crossSections["SignalSpin12_M1100"]  =  {br_tytg*0.01322};
+    crossSections["SignalSpin12_M1200"]  =  {br_tytg*0.006897};
+    crossSections["SignalSpin12_M1300"]  =  {br_tytg*0.003732};
+    crossSections["SignalSpin12_M1400"]  =  {br_tytg*0.002061};
+    crossSections["SignalSpin12_M1500"]  =  {br_tytg*0.001165};
+    crossSections["SignalSpin12_M1600"]  =  {br_tytg*0.0006675};
+    crossSections["SignalSpin12_M1700"]  =  {br_tytg*0.0003911};
+    crossSections["SignalSpin12_M1800"]  =  {br_tytg*0.0002329};
+    crossSections["SignalSpin12_M1900"]  =  {br_tytg*0.0001404};
+    crossSections["SignalSpin12_M2000"]  =  {br_tytg*0.00008614};
+    crossSections["SignalSpin12_M2250"]  =  {br_tytg*0.00002748};
+    crossSections["SignalSpin12_M2500"]  =  {br_tytg*0.000009695};
+    crossSections["SignalSpin12_M2750"]  =  {br_tytg*0.000003746};
+    crossSections["SignalSpin12_M3000"]  =  {br_tytg*0.000001535};
 
     //--------------------------
     // tty samples
@@ -116,6 +116,7 @@ void initCrossSections(){
     //--------------------------
     //Product fo XS and filter eff from table at:
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns//QCD
+    crossSections["QCD_Pt15To20_Mu"]    = {3819570.0   };
     crossSections["QCD_Pt20To30_Mu"]    = {2960198.4   };
     crossSections["QCD_Pt30To50_Mu"]    = {1652471.46  };
     crossSections["QCD_Pt50To80_Mu"]    = { 437504.1   };
@@ -131,6 +132,7 @@ void initCrossSections(){
     //--------------------------
     //QCD ele
     //--------------------------
+    crossSections["QCD_Pt15To20_Ele"]   = {2302200.};
     crossSections["QCD_Pt20To30_Ele"]   = {5352960.};
     crossSections["QCD_Pt30To50_Ele"]   = {9928000.};
     crossSections["QCD_Pt50To80_Ele"]   = {2890800.};

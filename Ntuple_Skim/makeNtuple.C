@@ -392,20 +392,21 @@ makeNtuple::makeNtuple(int ac, char** av)
     bool isE5 = sampleType.find("TTGamma_Hadronic_Pt200") != std::string::npos;//ISR, FSR too large
     selector->isQCD = isE0 || isE1 || isE2 || isE3 || isE4 || isE5; 
 
-    selector->btag_cut_DeepCSV = deepCSVWPs[year]; 
     selector->topTagWP = topTagWPs[year];
     if (isMC){
     	selector->init_JER(jerFiles[year]);
     }
     BTagCalibration calib;
     if (!selector->useDeepCSVbTag){
+        selector->btag_cut = deepJetWPs[year]; 
 	    calib = BTagCalibration("csvv2", deepJetFiles[year]); 
     } 
     else {
+        selector->btag_cut = deepCSVWPs[year]; 
 	    calib = BTagCalibration("csvv2", deepCSVFiles[year]); 
 	    loadBtagEff(sampleType,year);
     }
-    topEvent.SetBtagThresh(selector->btag_cut_DeepCSV);
+    topEvent.SetBtagThresh(selector->btag_cut);
     BTagCalibrationReader reader(BTagEntry::OP_MEDIUM,  // operating point
 				 "central",             // central sys type
 				 {"up", "down"});      // other sys types
@@ -740,7 +741,7 @@ makeNtuple::makeNtuple(int ac, char** av)
         }
         HEM_pho_Veto= (nHEM_pho>=1);
         _inHEMVeto=(applyHemVeto && (HEM_pho_Veto || HEM_ele_Veto) && year=="2018");
-        if(_isData &&  tree->run_>=319077 && _inHEMVeto){ 
+        if(!isMC &&  tree->run_>=319077 && _inHEMVeto){ 
             count_HEM++;
             continue; 
         }
@@ -748,7 +749,7 @@ makeNtuple::makeNtuple(int ac, char** av)
         //--------------------------
         //Apply lumi Mask 
         //--------------------------
-        if(_isData){
+        if(!isMC){
             bool valLumi = lumiMask->isValidLumi(tree->run_, tree->lumis_);
             if(!valLumi){
                 count_BadLumi++;
@@ -898,8 +899,10 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (doOverlapInvert_GJ){
 	std::cout << "Total number of events removed from GJets:"<< count_overlap <<std::endl;
     }
-    std::cout << "Total number of HEM events removed from Data  = "<<count_HEM<<std::endl;
-    std::cout << "Total number of events with bad lumi section  = "<<count_BadLumi<<std::endl;
+    if(!isMC){
+        std::cout << "Total number of HEM events removed from Data  = "<<count_HEM<<std::endl;
+        std::cout << "Total number of events with bad lumi section  = "<<count_BadLumi<<std::endl;
+    }
     outputFile->cd();
     std::cout<<"nEvents_Ntuple = "<<outputTree->GetEntries()<<endl;
     outputTree->Write();
@@ -926,6 +929,7 @@ void makeNtuple::FillEvent(std::string year){
     if (isMC){
 	    _genWeight       = tree->genWeight_/abs(tree->genWeight_); 
         _evtWeight       = _lumiWeight * _genWeight;
+        //std::cout<<_evtWeight<<std::endl;
         if(_inHEMVeto)_evtWeight = _evtWeight*0.3518;
     }
     else{
@@ -1562,7 +1566,7 @@ float makeNtuple::getBtagSF_1a(string sysType, BTagCalibrationReader reader, boo
 	    Eff = l_eff->GetBinContent(xbin,ybin);
 	}
 
-	if (jetBtag>selector->btag_cut_DeepCSV){
+	if (jetBtag>selector->btag_cut){
 	    pMC *= Eff;
 	    pData *= Eff*SFb;
 	} else {
@@ -1570,7 +1574,7 @@ float makeNtuple::getBtagSF_1a(string sysType, BTagCalibrationReader reader, boo
 	    pData *= 1. - (Eff*SFb);
 	}
 	if (verbose){
-	    cout << "    jetPt="<<jetPt<<"  jetEta="<<jetEta<<"  jetFlavor="<<jetFlavor<<"  jetBtag="<<jetBtag<<"  Tagged="<<(jetBtag>selector->btag_cut_DeepCSV)<<"  Eff="<<Eff<<"  SF="<<SFb<<endl;
+	    cout << "    jetPt="<<jetPt<<"  jetEta="<<jetEta<<"  jetFlavor="<<jetFlavor<<"  jetBtag="<<jetBtag<<"  Tagged="<<(jetBtag>selector->btag_cut)<<"  Eff="<<Eff<<"  SF="<<SFb<<endl;
 	    cout << "          --p(MC)="<<pMC<<"  --p(Data)="<<pData << endl;
 	}
     }

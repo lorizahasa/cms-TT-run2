@@ -74,7 +74,6 @@ public:
 	std::vector<bool>   jet_isTagged;
 	
 	double btag_cut;
-	double btag_cut_DeepCSV;
     double topTagWP;
 	int JERsystLevel; //0= syst down, 1 = central, 2 = syst up
 	int JECsystLevel;//0= syst down, 1 = central, 2 = syst up

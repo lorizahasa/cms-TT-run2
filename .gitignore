@@ -5,6 +5,7 @@ NanoAOD_Gen/xss/
 Skim_NanoAOD/*.root
 Ntuple_Skim/*.root
 
+Skim_NanoAOD/makeSkim
 Skim_NanoAOD/sample/tmp/
 Skim_NanoAOD/sample/FilesNano_cff.sh
 Skim_NanoAOD/sample/JobsNano_cff.py

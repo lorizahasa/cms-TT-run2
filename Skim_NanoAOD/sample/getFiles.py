@@ -18,7 +18,7 @@ def getFileList(sample, isDAS=True):
 
 #Function to print the total events in nice format 
 def getEvents(sample):
-    std_output, std_error = subprocess.Popen("dasgoclient --query='summary dataset=%s'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
+    std_output, std_error = subprocess.Popen("dasgoclient --query='summary dataset=%s' | sed  's/null/None/g'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
     num = eval(std_output)[0]['nevents']
     rawNum = num
     magnitude = 0
