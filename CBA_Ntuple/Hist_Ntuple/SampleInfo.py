@@ -49,6 +49,7 @@ def getSamples(y, d, syst):#commented samples don't exist
                #"SignalSpin12_M1400" : gs(y, d, syst, ["SignalSpin12_M1400"]),  
                "SignalSpin12_M1500" : gs(y, d, syst, ["SignalSpin12_M1500"]),  
                #"SignalSpin12_M1600" : gs(y, d, syst, ["SignalSpin12_M1600"]),  
+               "SignalSpin12_M2750" : gs(y, d, syst, ["SignalSpin12_M2750"]),  
                "TTbar" : gs(y, d, syst, [
                    "TTbarPowheg_Hadronic" , 
                    "TTbarPowheg_Dilepton" , 
@@ -96,7 +97,7 @@ def getSamples(y, d, syst):#commented samples don't exist
                    "QCD_Pt120To170_Ele",
                    "QCD_Pt170To300_Ele",
                    "QCD_Pt300ToInf_Ele",
-                   #'GJets_HT40To100',
+                   'GJets_HT40To100',
                    'GJets_HT100To200',
                    'GJets_HT200To400',
                    'GJets_HT400To600',
@@ -115,7 +116,7 @@ def getSamples(y, d, syst):#commented samples don't exist
                    "QCD_Pt600To800_Mu",
                    "QCD_Pt800To1000_Mu",
                    "QCD_Pt1000ToInf_Mu",
-                   #"GJets_HT40To100",
+                   "GJets_HT40To100",
                    "GJets_HT100To200",
                    "GJets_HT200To400",
                    "GJets_HT400To600",
@@ -139,4 +140,4 @@ def getSamples(y, d, syst):#commented samples don't exist
 
 if __name__ == '__main__':
     a = getSamples("2017", "Semilep", "JetBase")
-    print a.keys()
+    print(a.keys())

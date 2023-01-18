@@ -36,7 +36,7 @@ if not isCheck and not isSep and not isComb:
     exit()
 
 def runCmd(cmd):
-    print "\n\033[01;32m Excecuting: %s \033[00m"%cmd
+    print("\n\033[01;32m Excecuting: %s \033[00m"%cmd)
     os.system(cmd)
 
 print("In case of segmentation violation, cmsenv CMSSW_10_2_14")
@@ -59,7 +59,7 @@ if isSep:
         haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(mergeDir)
         haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'.*root\'`"%(mergeDir)
         runCmd("hadd -f  %s %s"%(haddOut, haddIn))
-        print runCmd(("eos root://cmseos.fnal.gov find --size %s")%mergeDir)
+        print(runCmd(("eos root://cmseos.fnal.gov find --size %s")%mergeDir))
 
 #-----------------------------------------
 #Merge combining years and channels
@@ -79,4 +79,4 @@ if isComb:
         runCmd("eos root://cmseos.fnal.gov rm -r %s"%mergeDir)
         runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%mergeDir)
         runCmd("hadd -f %s %s"%(haddOut, haddIn))
-        print runCmd(("eos root://cmseos.fnal.gov find --size %s")%mergeDir)
+        print(runCmd(("eos root://cmseos.fnal.gov find --size %s")%mergeDir))

@@ -58,7 +58,7 @@ hists = GetHistogramInfo()
 #----------------------------------------
 def addHist(histList, name):
     if len(histList) ==0:
-        print "Hist list | %s, %s | is empty"%(histList, name)
+        print("Hist list | %s, %s | is empty"%(histList, name))
         sys.exit()
     else:
         hist = histList[0].Clone(name)
@@ -75,11 +75,11 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
     outHistDir = getHistDir(sample, CR, sysType)
     if not outputFile.GetDirectory(outHistDir):
         outputFile.mkdir(outHistDir)
-    #print gDirectory.ls()
+    #print(gDirectory.ls())
     outputFile.cd(outHistDir)
     hName = hist_.GetName()
     gDirectory.Delete("%s;*"%(hName))
-    #print "%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, CR, sysType, hist_.GetName()) 
+    #print("%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, CR, sysType, hist_.GetName()))
     if hName in dictRebin.keys():
         hNew = hist_.Rebin(len(dictRebin[hName])-1, hist_.GetName(), dictRebin[hName]) 
         hNew.Write()
@@ -94,7 +94,7 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
     inDir = "%s/Merged/%s/%s/%s"%(dirHist, year, decay, channel)
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
     if isCheck:
-        print inFile
+        print(inFile)
     outDir = inDir.replace("Merged", "Rebin")
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outputFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
@@ -116,4 +116,4 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
                 writeHist(s, r, sys, hNew, outputFile)
 
     outputFile.Close()
-    print "/eos/uscms/%s/AllInc.root\n"%outDir
+    print("/eos/uscms/%s/AllInc.root\n"%outDir)

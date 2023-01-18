@@ -2,8 +2,8 @@
 dirNtuple = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 dirHist   = "/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistMain"
 #-----------------------------------------------------------------
-#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-Years 	      =	["2017"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years 	      =	["2017"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
@@ -50,7 +50,7 @@ Systematics.append("Weight_fsr")
 Systematics.append("Weight_jes")
 Systematics.append("Weight_jer")
 #Systematics.append("Weight_ttag")                
-#Systematics   =	[]
+Systematics   =	[]
 
 SystLevels = []
 SystLevels.append("Up")

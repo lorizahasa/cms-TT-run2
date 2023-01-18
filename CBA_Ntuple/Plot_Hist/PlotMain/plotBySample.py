@@ -16,8 +16,8 @@ from PlotTDRStyle import *
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 
 hInfo = GetHistogramInfo()
-hList = hInfo.keys()
-rList = Regions.keys()
+hList = list(hInfo.keys())
+rList = list(Regions.keys())
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
@@ -116,7 +116,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         The ratio of data and background is drawn next in a separate
         pad.
         '''
-        canvas = TCanvas()
+        canvas = TCanvas("", "", 600, 600)
         if isData and isRatio:
             canvas.Divide(1, 2)
             canvas.cd(1)
@@ -151,7 +151,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         #Data hists
         if isData:
             dataHist = getHist(inFile, "data_obs", region, "Base", hName)
-            decoHist(dataHist, xTitle, yTitle, SampleData["Data"][0])
+            decoHist(dataHist, xTitle, yTitle, SampleData["data_obs"][0])
             dataHist.SetMarkerStyle(20)
             dataHist.Draw("EPsame")
         
@@ -179,7 +179,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         hSumAllBkg = bkgHists[0].Clone("AllBkg")
         hSumAllBkg.Reset()
         if isData:
-            plotLegend.AddEntry(dataHist, SampleData["Data"][1], "PEL")
+            plotLegend.AddEntry(dataHist, SampleData["data_obs"][1], "PEL")
             yDict["Data"] = getYield(dataHist) 
         for bkgHist in hForLegend:
             hSumAllBkg.Add(bkgHist)
@@ -268,7 +268,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         tHead = "Process & Entry & Yield & Stat (Syst)\\%\\\\\n" 
         table = createTable(Samples, yDict, sList, 4, tHead, cap.replace("_", "\\_"))
         tableFile = open(pdf.replace(".pdf", ".tex"), "w")
-        print table
+        print(table)
         tableFile.write(table)
     makePlot(hName, region, isSig,  isData, isLog, isRatio, isUnc)
 print(fPath)

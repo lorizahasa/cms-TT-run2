@@ -5,14 +5,14 @@ dirHist = "%s/Hist_Ntuple/HistMain"%dirCBA
 dirPlot = "%s/Plot_Hist/PlotMain"%dirCBA
 dirTwiki= "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
-#Years 	      =	["2016PreVFP", "2016PostVFP", "2017", "2018"]
-Years 	      =	["2017"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years 	      =	["2017"]
 Channels 	  =	["Mu", "Ele"]
 #Channel 	  =	["Ele"]
 Decays 	      =	["Semilep"]
 
 #Years and channels to be commbined
-Years_         = ["2016PreVFP__2016PostVFP__2017__2018"]
+Years_         = ["2016Pre__2016Post__2017__2018"]
 Channels_      = ["Mu", "Ele", "Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
 
@@ -52,15 +52,18 @@ SampleBkg = {
          "Others"    : [rt.kBlue, "Others"]
          }
 SampleData = {
-         "Data"   : [rt.kBlack, "Data"]
+         "data_obs"   : [rt.kBlack, "Data"]
          }
 SampleWeight = ["TTGamma", "TTbar", "SignalSpin12_M800"]
 SampleLumi = SampleBkg
 #SampleLumi.update(SampleSignal)
 SampleSyst = ["TTGamma", "TTbar", "WJets", "DYJets", "WGamma", "ZGamma", "QCD", "Others"] 
 #SampleSyst = SampleBkg.keys()
-Samples = SampleSignal.keys() + SampleBkg.keys() + SampleData.keys()
-Samples = dict(SampleSignal.items() + SampleBkg.items() + SampleData.items())
+Samples = {}
+Samples.update(SampleSignal)
+Samples.update(SampleBkg)
+Samples.update(SampleData)
+#Samples = dict(SampleSignal.items() + SampleBkg.items() + SampleData.items())
 plotList = ["Muon_pt"]
 
 SamplePhoCat = {

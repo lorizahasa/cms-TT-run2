@@ -56,6 +56,10 @@ def GetHistogramInfo():
              #"Reco_ht"              : ["Reco_ht"        , [9000,-50,8950], True],
              #"Reco_mass_T"          : ["Reco_mass_T", [3000,-50,5950], True]
              }
+    hDictTemp = {
+             "Jet_pt"               : ["Jet_pt"         , [2000,-50,1950], True],
+             "Reco_st"              : ["Reco_st"        , [9000,-50,8950], True],
+             }
     return hDictTemp
     #return hDict 
     #return hDictWeight 

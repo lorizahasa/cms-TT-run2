@@ -49,9 +49,9 @@ localFile = open("tmpSub/localResubmitJobs.sh",'w')
 
 #Search in the log files to see if xrdcp was not able to copy a file
 print("Collecting error logs for all years ...")
-grepList = subprocess.Popen('grep -rn permission %s'%(condorLogDir),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+grepList = subprocess.Popen('grep -rn permission %s'%(condorLogDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
 grepList.remove("")
-grepList2 = subprocess.Popen('grep -rn truncated %s'%(condorLogDir),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+grepList2 = subprocess.Popen('grep -rn truncated %s'%(condorLogDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
 grepList2.remove("")
 errList = []
 for err in grepList+grepList2:
@@ -61,7 +61,7 @@ for err in np.unique(errList):
     if "std" not in err: continue
     search = "All arguements"
     out = err.replace("stderr", "stdout")
-    arg = subprocess.Popen('grep -rn \"%s\" %s'%(search, out),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+    arg = subprocess.Popen('grep -rn \"%s\" %s'%(search, out),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
     args = arg[0].split(" ")[2:]
     argList.append(args)
 #print(argList)
@@ -90,22 +90,22 @@ for year in Years:
             submittedDict[rootFile] = sampleName
 
     print(colored("(1): Checking unfinished jobs ...", 'red'))
-    print "Total submitted jobs: %s"%len(submittedDict.keys())
+    print("Total submitted jobs: %s"%len(submittedDict.keys()))
 
     #----------------------------------------
     #Get all finished jobs
     #----------------------------------------
-    finishedList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s'%(outDir),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+    finishedList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s'%(outDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
     finishedList.remove("")
-    print "Total finished jobs: %s"%len(finishedList)
+    print("Total finished jobs: %s"%len(finishedList))
 
     #----------------------------------------
     #Get all un-finished jobs
     #----------------------------------------
     unFinJobs = len(submittedDict.keys()) - len(finishedList)
-    print "Unfinished jobs: %s"%(unFinJobs)
+    print("Unfinished jobs: %s"%(unFinJobs))
     unFinishedList = returnNotMatches(finishedList, submittedDict.keys())   
-    print unFinishedList
+    print(unFinishedList)
     resubJobs +=unFinJobs
 
     #----------------------------------------
@@ -135,11 +135,11 @@ for year in Years:
             corruptedList.append(finished)
             continue
         nEvents[finished] = h.Integral()
-    print "Finished but corrupted jobs: %s"%len(corruptedList)
+    print("Finished but corrupted jobs: %s"%len(corruptedList))
     resubJobs += len(corruptedList)
 
     print(colored("(3): Checking same nEvents from NanoAOD and Skim ...", "red"))
-    print  "\tnDiff\t nNano\t nSkim\t Sample"
+    print("\tnDiff\t nNano\t nSkim\t Sample")
     for samp in sampleDict.keys():
         nNano = sampleDict[samp][2]
         nSkim = 0
@@ -158,7 +158,7 @@ for year in Years:
     print("Total jobs with xrdcp errors = %s"%len(argListYear))
 
     print(colored("(5): Checking Nan or Inf filled in jobs ... ", "red"))
-    grepList3 = subprocess.Popen('grep -rn nan %s'%(condorLogDir),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+    grepList3 = subprocess.Popen('grep -rn nan %s'%(condorLogDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
     grepList3.remove("")
     print("Nan/Inf is propgrated for the following jobs:", grepList3)
 
@@ -166,7 +166,7 @@ for year in Years:
     #Create jdl files
     #----------------------------------------
     if len(unFinishedList) ==0 and len(corruptedList)==0 and len(argListYear)==0:
-        print "Noting to be resubmitted"
+        print("Noting to be resubmitted")
     else:
         for f in unFinishedList[1]+corruptedList:
             samp = submittedDict[f]
@@ -183,7 +183,7 @@ for year in Years:
             args = 'Arguments  = %s %s %s %s %s \nQueue 1\n\n' %(arg[0], samp, n0, n1, arg[4])
             jdlFile.write(args)
             forLocal.append([year, n0, n1, samp, outDir])
-    print outDir 
+    print(outDir)
 
 for i, loc in enumerate(forLocal):
     year    = loc[0]

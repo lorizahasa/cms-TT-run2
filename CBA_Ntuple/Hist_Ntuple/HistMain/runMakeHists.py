@@ -33,4 +33,4 @@ for sample in Samples:
     else:
         args = "-y %s -d %s -c %s -s %s -r %s --syst %s --allHists"%(year, decay, channel, sample, region, syst)
     print("Running arguements: %s"%args)
-    os.system("python makeHists.py %s"%args)
+    os.system("python3 makeHists.py %s"%args)

@@ -343,10 +343,10 @@ makeNtuple::makeNtuple(int ac, char** av)
     //https://twiki.cern.ch/twiki/bin/view/CMS/PdmVRun2LegacyAnalysis
     //https://twiki.cern.ch/twiki/bin/view/CMS/LumiRecommendationsRun2
     std::map<std::string, double> lumiValues;
-    lumiValues["2016Pre"]  = 19.52; 
-    lumiValues["2016Post"] = 16.81; 
-    lumiValues["2017"]        = 41.48; 
-    lumiValues["2018"]        = 59.83; 
+    lumiValues["2016Pre"]       = 19.52 *1000; 
+    lumiValues["2016Post"]      = 16.81 *1000; 
+    lumiValues["2017"]          = 41.48 *1000; 
+    lumiValues["2018"]          = 59.83 *1000; 
    
     std::map<std::string, string> lumiJSON;
     string comJSON = "weight/LumiJSON/";
@@ -630,7 +630,7 @@ makeNtuple::makeNtuple(int ac, char** av)
             startClock = std::chrono::high_resolution_clock::now();			
         }
         tree->GetEntry(entry);
-
+        
         //--------------------------
         //Apply overlap removal
         //--------------------------

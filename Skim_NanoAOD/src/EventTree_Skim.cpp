@@ -22,9 +22,19 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
                 cout << singleFile << "  " << chain->GetEntries() << endl;
             }
             else{
-                chain->Add( (dir + fName).c_str() );
-                cout << dir+fName << "  " << chain->GetEntries() << endl;
+                TFile* fCheck = TFile::Open((dir+fName).c_str());
+                if(!fCheck || fCheck->IsZombie() || fCheck->GetSize()<100){
+                    cout<<"fCheck: issue with file: "<<dir+fName<<endl;
+                    continue;
                 }
+                if(!fCheck->GetListOfKeys()->Contains("Events")){
+                    cout<<"fCheck: issue with tree Events: "<<dir+fName<<endl;
+                    continue;
+                }
+                fCheck->Close();
+                chain->Add( (dir + fName).c_str());
+                cout << dir+fName << "  " << chain->GetEntries() << endl;
+            }
         }
     }
     else{
@@ -115,8 +125,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("Jet_area",1);
     chain->SetBranchStatus("Jet_muEF",1);
     chain->SetBranchStatus("Jet_qgl",1);
-    chain->SetBranchStatus("Jet_btagCSVV2",1);
-    chain->SetBranchStatus("Jet_btagDeepB",1);
+    chain->SetBranchStatus("Jet_btag*",1);
+    chain->SetBranchStatus("Jet_pu*",1);
     if (isMC){
         chain->SetBranchStatus("Jet_hadronFlavour",1);
         chain->SetBranchStatus("Jet_genJetIdx",1);

@@ -21,8 +21,8 @@ else
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
     export SCRAM_ARCH=slc7_amd64_gcc700
-    scramv1 project CMSSW CMSSW_10_6_10
-    cd CMSSW_10_6_10/src
+    scramv1 project CMSSW CMSSW_12_6_0
+    cd CMSSW_12_6_0/src
     eval `scramv1 runtime -sh`
     cd ../..
 	tar --strip-components=1 -zxf Ntuple_Skim.tar.gz
@@ -48,7 +48,7 @@ if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
 else
     xrdcp -f ${sample}*.root root://cmseos.fnal.gov/${outDir}
     echo "Cleanup"
-    rm -rf CMSSW_10_6_10
+    rm -rf CMSSW_12_6_0
     rm *.root
 fi
 printf "Done ";/bin/date

@@ -1,6 +1,7 @@
 import ROOT as rt
 import numpy as np
 import sys
+import ctypes
 
 #-----------------------------------------
 #Get, add, substract histograms 
@@ -287,11 +288,12 @@ def createTable(samples, tDict, sList, nCol, tHead, tCaption):
     return table
 
 def getYield(h):
-    err = rt.Double(0.0)
+    err = ctypes.c_double(0.0)
+    #err = rt.Double(0.0)
     norm = h.IntegralAndError(1, h.GetNbinsX(), err)
     entry = h.GetEntries()
     if(norm!=0):
-        y = [int(entry), round(norm, 1), str(round(100*err/norm, 1)) + " (---)"]
+        y = [int(entry), round(norm, 1), str(round(100.0*err.value/norm, 1)) + " (---)"]
     else:
         y = ["0", "0", "0 (---)"]
     #y = [round(norm, 2), round(100*err/norm, 2)]
@@ -334,9 +336,9 @@ def getRowCatBkgs(hName, hSum, catBkgs, catDict):
 def getLumiLabel(year):
     lumi = "35.9 fb^{-1}"
     if "16Pre" in year:
-        lumi = "19.5 fb^{-1} (2016PreVFP)"
+        lumi = "19.5 fb^{-1} (2016Pre)"
     if "16Post" in year:
-        lumi = "16.8 fb^{-1} (2016PostVFP)"
+        lumi = "16.8 fb^{-1} (2016Post)"
     if "17" in year:
         lumi = "41.5 fb^{-1} (2017)"
     if "18" in year:

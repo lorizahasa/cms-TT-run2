@@ -20,6 +20,8 @@ void initCrossSections(){
     crossSections["SignalSpin32_M1500"]  =  {br_tytg*0.00677}; 
     crossSections["SignalSpin32_M1600"]  =  {br_tytg*0.00359}; 
 
+    crossSections["SignalSpin32_M2750"]  =  {br_tytg*0.0003746};
+
     //xss for spin 1/2: p p > t* t* > tytg
     crossSections["SignalSpin12_M700"]   =  {br_tytg*0.2659};
     crossSections["SignalSpin12_M800"]   =  {br_tytg*0.1147};
