@@ -11,7 +11,7 @@ from FitInputs import *
 #INPUT command-line arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016PreVFP",type='str',
+parser.add_option("-y", "--year", dest="year", default="2016Pre",type='str',
                      help="Specify the year of the data taking" )
 parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
@@ -60,7 +60,7 @@ datacardPath    = "%s/Datacard_Alone.txt"%(outFileDir)
 cb = ch.CombineHarvester()
 #cb.SetVerbosity(4)
 AllBkgs = ["TTGamma", "OtherBkgs"]
-Signal  = ["Signal_M%s"%mass]
+Signal  = ["SignalSpin12_M%s"%mass]
 allMC   = Signal + AllBkgs
 #------------------
 #Add observed data
@@ -110,20 +110,20 @@ cb.SetAutoMCStats(cb, 0, True, 1)
 cb.cp().backgrounds().ExtractShapes(inFileName, inHistDirBase, inHistDirSys)
 cb.cp().signals().ExtractShapes(inFileName, inHistDirBase, inHistDirSys)
 #f_ = TFile.Open(inFileName)
-#print type(f_)
+#print(type(f_))
 #cb.cp().backgrounds().ExtractShapes(f_, inHistDirBase, inHistDirSys)
 #cb.cp().signals().ExtractShapes(f_, inHistDirBase, inHistDirSys)
 cb.WriteDatacard(datacardPath, outFilePath) 
 #------------------
 #print various info
 #------------------
-#print cb.PrintAll()
-#print cb.PrintObs();
-#print cb.PrintProcs();
-#print cb.PrintSysts();
-#print cb.PrintParams();
-print datacardPath
-print outFilePath
+#print(cb.PrintAll())
+#print(cb.PrintObs())
+#print(cb.PrintProcs())
+#print(cb.PrintSysts())
+#print(cb.PrintParams())
+print(datacardPath)
+print(outFilePath)
 
 #------------------
 #Add param

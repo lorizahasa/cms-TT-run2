@@ -16,8 +16,8 @@ from PlotTDRStyle import *
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 
 hInfo = GetHistogramInfo()
-hList = hInfo.keys()
-rList = Regions.keys()
+hList = list(hInfo.keys())
+rList = list(Regions.keys())
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
@@ -159,7 +159,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         #Data hists
         if isData:
             dataHist = getHist(inFile, "data_obs", region, "Base", hName)
-            decoHist(dataHist, xTitle, yTitle, SampleData["Data"][0])
+            decoHist(dataHist, xTitle, yTitle, SampleData["data_obs"][0])
             dataHist.SetMarkerStyle(20)
             dataHist.Draw("EPsame")
         
@@ -192,7 +192,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         hSumAllBkg = catBkgHists[0].Clone("AllBkg")
         hSumAllBkg.Reset()
         if isData:
-            plotLegend.AddEntry(dataHist, SampleData["Data"][1], "PEL")
+            plotLegend.AddEntry(dataHist, SampleData["data_obs"][1], "PEL")
             yDict["Data"] = [round(dataHist.Integral()), "---", "---", "---", "---"]
         for h in hForLegend:
             for cat in phoCat.keys():
@@ -287,7 +287,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         tHead += " &  & (\%) & (\%) & (\%) & (\%)  \\\\\n" 
         table = createTable(Samples, yDict, sList, 6, tHead, cap.replace("_", "\\_"))
         tableFile = open(pdf.replace(".pdf", ".tex"), "w")
-        print table
+        print(table)
         tableFile.write(table)
     makePlot(hName, region, isSig,  isData, isLog, isRatio, isUnc)
 print(fPath)

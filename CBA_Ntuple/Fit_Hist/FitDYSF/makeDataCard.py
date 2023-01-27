@@ -12,7 +12,7 @@ from FitInputs import *
 #INPUT command-line arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016PreVFP",type='str',
+parser.add_option("-y", "--year", dest="year", default="2016Pre",type='str',
                      help="Specify the year of the data taking" )
 parser.add_option("-d", "--decay", dest="decay", default="Dilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
@@ -108,13 +108,13 @@ cb.WriteDatacard(datacardPath, outFilePath)
 #------------------
 #print various info
 #------------------
-#print cb.PrintAll()
-#print cb.PrintObs();
-#print cb.PrintProcs();
-#print cb.PrintSysts();
-#print cb.PrintParams();
-print datacardPath
-print outFilePath
+#print(cb.PrintAll())
+#print(cb.PrintObs())
+#print(cb.PrintProcs())
+#print(cb.PrintSysts())
+#print(cb.PrintParams())
+print(datacardPath)
+print(outFilePath)
 
 #------------------
 #Add param

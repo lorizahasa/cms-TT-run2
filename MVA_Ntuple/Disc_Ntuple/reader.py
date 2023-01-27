@@ -17,7 +17,7 @@ package = "TMVA"
 #----------------------------------------
 from optparse import OptionParser
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016PreVFP",type='str',
+parser.add_option("-y", "--year", dest="year", default="2016Pre",type='str',
                      help="Specifyi the year of the data taking" )
 parser.add_option("-d", "--decay", dest="decay", default="Semilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
@@ -41,7 +41,7 @@ region = options.region
 syst = options.systematic
 method = options.method
 isCut     = options.isCut
-print parser.parse_args()
+print(parser.parse_args())
 
 #-----------------------------------------
 #I/O Ntuples/Disc Directory
@@ -66,13 +66,14 @@ allSamples = getSamples(year, decay, systDir)
 #----------------------------------------
 inFileName = "%s_Classification_%s.weights.xml"%(package, method)
 inFileDir = "%s/Classification/%s/%s/%s/CombMass/%s/%s/weights"%(dirClass, year, decay, channel, method, region.replace("CR", "SR"))#Evaluation in CR from SR's xml file
-outFileDir      = "./discs/Read/Reader/%s/%s/%s/CombMass/%s"%(year, decay, channel, method)
+outFileDir      = "./discs/Reader/%s/%s/%s/CombMass/%s"%(year, decay, channel, method)
 os.system("mkdir -p %s"%outFileDir)
 print(inFileDir)
 print(outFileDir)
 method = options.method
 os.system("xrdcp -rf root://cmseos.fnal.gov/%s/%s %s"%(inFileDir, inFileName, outFileDir))
-weightFile = "%s/weights/%s"%(outFileDir, inFileName)
+#weightFile = "%s/%s"%(outFileDir, inFileName)
+weightFile = "%s/%s"%(outFileDir, inFileName)
 
 #-----------------------------------------
 #TMVA specific
@@ -117,10 +118,6 @@ if "data" in sample or "QCD" in sample:
 #----------------------------------------
 if not syst=="Base":
     histDirInFile = "%s/%s/%s"%(sample, region, syst) 
-    #Remove me ----------
-    syst = syst.replace("Up", "_up")
-    syst = syst.replace("Down", "_down")
-    #--------------------
     print("Running for systematics: ", syst)
     if "Weight_pu"  in syst: w_pu = syst 
     if "Weight_q2"  in syst: w_q2 = syst 
@@ -139,10 +136,6 @@ if not syst=="Base":
 #----------------------------------------
 if not os.path.exists(outFileDir):
     os.makedirs(outFileDir)
-#Remove me ----------
-syst = syst.replace("_up", "Up")
-syst = syst.replace("_down", "Down")
-#--------------------
 outFileFullPath = "%s/%s_%s_%s.root"%(outFileDir, sample, region, syst)
 outputFile = ROOT.TFile(outFileFullPath, "RECREATE")
 print("The histogram directory inside the root file is", histDirInFile) 
@@ -188,6 +181,9 @@ selStr = selStr.replace("||", "or")
 print(selStr)
 
 totalTime = 0
+#Print 1% of events each time
+isPrint = False
+nEnt = tree.GetEntries()
 for ievt, e in enumerate(tree):
     exec("eventSel = int(%s)"%selStr)
     #print(ievt, eventSel)
@@ -199,8 +195,8 @@ for ievt, e in enumerate(tree):
             if "DYJets" in sample:
                 sf = str(dictSFs[year][0])
                 evtWeights = "%s*%s"%(evtWeights, sf)
-            #if e.Photon_misid_ele[0]>0: 
-            if False: #FIXME 
+            exec("isMisID = e.Photon_misid_ele[0]")
+            if isMisID>0: 
                 sf = str(dictSFs[year][1])
                 evtWeights = "%s*%s"%(evtWeights, sf)
             else:
@@ -223,17 +219,15 @@ for ievt, e in enumerate(tree):
                 #exec("h%s_cut.Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
                 pass
 
-    #Print 1% of events each time
-    isPrint = False
-    if(tree.GetEntries()> 100):
-        isPrint = (ievt%(tree.GetEntries()/100) == 0)
+    if(nEnt> 100):
+        isPrint = int(ievt%(int(nEnt/100)) == 1)
     else:
         isPrint = True
     if isPrint:
         totalTime = time.time() - start_time
         sec_ = (int)(totalTime)%60
-        min_ = (int)(totalTime)/60
-        print('Event = %s%s %10sm %ss'%(100*ievt/tree.GetEntries(), "%", min_, sec_))
+        min_ = int(totalTime/60)
+        print('    %s%s   %sm %ss'%(int(100*ievt/nEnt), "%", min_, sec_))
         
 #-----------------------------------
 # Write final histograms in the file
@@ -248,4 +242,6 @@ for h in dictHist.values():
     h.Write()
 print("Path of output root file:\n%s/%s"%(os.getcwd(), outFileFullPath))
 outputFile.Close()
-print("--- %s seconds ---" % (time.time() - start_time))
+os.system("rm %s"%weightFile)
+
+print("--- Total time: %sm %ss ---" %(int((time.time() - start_time)/60), int((time.time() - start_time)%60)))

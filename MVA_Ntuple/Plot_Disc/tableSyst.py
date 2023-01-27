@@ -91,7 +91,7 @@ table += tHead
 table += "\\hline\n"
 row = ""
 toSort = OrderedDict(sorted(toSort.items(), key=lambda t: t[1]))
-for sys in toSort.keys():
+for sys in list(toSort.keys()):
     row += " \\SF{%s}"%label[sys]
     yVals = sysDict_[sys]
     for vals in yVals:
@@ -101,7 +101,7 @@ for sys in toSort.keys():
 table += "%s\\hline\n"%row
 table += "\\end{tabular}\n"
 table += "}"
-print table
+print(table)
 tableFile = open("%s/systRatioDisc_ForMain_SepYears.tex"%systPath, "w")
 tableFile.write(table)
 print(tableFile)

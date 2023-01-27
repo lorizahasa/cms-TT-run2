@@ -24,13 +24,13 @@ isComb = options.isMerge
 #Bkg scale factors: DY, MisID, ZGamma, WGamma
 #----------------------------------------------
 dictSFs = {}
-dictSFs['2016PreVFP']  = [1.34, 1.79, 1.11, 1.20]
-dictSFs['2016PostVFP'] = [1.47, 2.22, 0.54, 1.64]
-dictSFs['2017']        = [1.38, 1.01, 1.17, 1.01]
-dictSFs['2018']        = [1.38, 1.42, 0.66, 1.23]
-dictSFs['2016PreVFP__2016PostVFP__2017__2018'] = [1.38, 1.40, 0.96, 1.22]
+dictSFs['2016Pre']      = [1.29, 1.75, 1.22, 1.10]
+dictSFs['2016Post']     = [1.40, 2.27, 0.46, 1.64]
+dictSFs['2017']         = [1.24, 1.08, 1.01, 1.03]
+dictSFs['2018']         = [1.16, 1.34, 0.91, 0.97]
+dictSFs['2016Pre__2016Post__2017__2018'] = [1.18, 1.40, 0.90, 1.12]
 
-rList = Regions.keys()
+rList = list( Regions.keys())
 #hists = GetHistogramInfo().keys()
 hists = ['Reco_mass_lgamma']
 #-----------------------------------------
@@ -38,8 +38,7 @@ hists = ['Reco_mass_lgamma']
 #----------------------------------------
 sysList = []
 sysList.append("Base")
-#for syst, level in itertools.product(Systematics, SystLevels):
-for syst, level in itertools.product(Systematics, ['_up', '_down']):
+for syst, level in itertools.product(Systematics, SystLevels):
     sysType = "%s%s"%(syst, level)
     sysList.append(sysType)
 
@@ -49,7 +48,7 @@ if isCheck:
     Years  = [Years[0]]
     Decays = [Decays[0]]
     Channels = [Channels[0]]
-    rList   = [Regions.keys()[0]]
+    rList   = [rList[0]]
     sysList = [sysList[0]]
     #Samples = [Samples[0]]
 if isSep: 
@@ -67,7 +66,7 @@ if not isCheck and not isSep and not isComb:
 #----------------------------------------
 def addHist(histList, name):
     if len(histList) ==0:
-        print "Hist list | %s, %s | is empty"%(histList, name)
+        print("Hist list | %s, %s | is empty"%(histList, name))
         sys.exit()
     else:
         hist = histList[0].Clone(name)
@@ -84,10 +83,10 @@ def writeHist(sample, sysType, hist_, outFile):
     outHistDir = getHistDir(sample, region, sysType)
     if not outFile.GetDirectory(outHistDir):
         outFile.mkdir(outHistDir)
-    #print gDirectory.ls()
+    #print(gDirectory.ls())
     outFile.cd(outHistDir)
     gDirectory.Delete("%s;*"%(hist_.GetName()))
-    #print "%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, region, sysType, hist_.GetName()) 
+    #print("%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, region, sysType, hist_.GetName()))
     hist_.Write()
     outFile.cd()
 
@@ -101,7 +100,7 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
     if isCheck:
-        print inFile
+        print(inFile)
     DYJetsSF  = dictSFs[year][0]
     MisIDSF   = dictSFs[year][1]
     WGammaSF  = dictSFs[year][2]
@@ -152,4 +151,4 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
                writeHist(sample, sysType, h3, outFile)
                writeHist(sample, sysType, h4, outFile)
     outFile.Close()
-    print "/eos/uscms/%s/AllInc.root"%outDir
+    print("/eos/uscms/%s/AllInc.root"%outDir)

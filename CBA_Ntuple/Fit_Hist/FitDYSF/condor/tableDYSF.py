@@ -68,7 +68,7 @@ for c in Channel:
             jsonFile.close()
         lepDict[r] = sfList
     lepDicts[c] = lepDict
-    #print lepDict
+    #print(lepDict)
 
 #make table from reformated dicts
 #---------------------
@@ -93,7 +93,7 @@ tHead += "\\\\\n"
 table += tHead
 table += "\\hline\n"
 row = ""
-#print Samples.keys()
+#print(Samples.keys())
 #for ch in lepDicts.keys():
 for ch in Channel: 
     row ="\\multirow{%s}{*}{%s}"%(len(Regions.keys()), ch.replace("__", "+"))
@@ -116,7 +116,7 @@ table += "\\end{tabular}\n"
 table += "}"
 table += "\\caption{DYJetsSF}"
 table += "\\end{table}"
-print table
+print(table)
 texFile.write(table)
 pyFile.write("DYSF = %s"%sfDict)
 print(txtFile)

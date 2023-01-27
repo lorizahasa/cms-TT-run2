@@ -14,24 +14,24 @@ else
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
     export SCRAM_ARCH=slc7_amd64_gcc700
-    scramv1 project CMSSW CMSSW_10_6_10
-    cd CMSSW_10_6_10/src
+    scramv1 project CMSSW CMSSW_12_6_0
+    cd CMSSW_12_6_0/src
     eval `scramv1 runtime -sh`
 	cd ../..
-	tar --strip-components=1 -zxvf Disc_Ntuple.tar.gz
+	tar --strip-components=1 -xvf Disc_Ntuple.tar.gz
 fi
 
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-python runReader.py -y $1 -d $2 -c $3 -s $4 --method $5 -r $6 --syst $7
+python3 runReader.py -y $1 -d $2 -c $3 -s $4 --method $5 -r $6 --syst $7
 printf "Done Histogramming at ";/bin/date
 
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
 printf "Copying output files ..."
-xrdcp -rf discs/Read root://cmseos.fnal.gov/$8
+xrdcp -rf discs/Reader root://cmseos.fnal.gov/$8
 rm -r discs
-rm -r CMSSW_10_6_10
+rm -r CMSSW*
 printf "Done ";/bin/date

@@ -197,7 +197,8 @@ int main(int ac, char** av){
     std::cout<<setw(10)<<"Progress"<<setw(10)<<"Time"<<std::endl;
     std::cout<<"---------------------------"<<std::endl;
 	for(Long64_t entry= startEntry; entry < endEntry; entry++){
-        //if(entry>100000) break;; 
+        //if(entry>4235) break; 
+        //if(entry<4228) continue; 
 		if(entry%(eventsPerJob/100) == 0){// print after every 1% of events
             totalTime+= std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count();
             int sec = (int)(totalTime)%60;
@@ -206,6 +207,7 @@ int main(int ac, char** av){
 			startClock = std::chrono::high_resolution_clock::now();			
 		}
 		tree->GetEntry(entry);
+        //tree->Show(entry);
 		hEvents_->Fill(0.);
 		evtPick->process_event(tree);
         //fill the cutflow histogram 

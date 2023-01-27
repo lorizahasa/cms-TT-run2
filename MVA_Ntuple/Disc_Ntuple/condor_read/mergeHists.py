@@ -36,7 +36,7 @@ if not isCheck and not isSep and not isComb:
     exit()
 
 def runCmd(cmd):
-    print "\n\033[01;32m Excecuting: %s \033[00m"%cmd
+    print("\n\033[01;32m Excecuting: %s \033[00m"%cmd)
     os.system(cmd)
 
 print("In case of segmentation violation, cmsenv CMSSW_10_2_14")
@@ -45,8 +45,8 @@ print("In case of segmentation violation, cmsenv CMSSW_10_2_14")
 #-----------------------------------------
 if isSep:
     for y, d, c in itertools.product(Years, Decays, Channels):
-        histDir  = "%s/Read/Reader/%s/%s/%s/CombMass/BDTA"%(dirRead, y, d, c)
-        mergeDir = histDir.replace("Read/Reader", "Merged")
+        histDir  = "%s/Reader/%s/%s/%s/CombMass/BDTA"%(dirRead, y, d, c)
+        mergeDir = histDir.replace("Reader", "Merged")
         #if os.path.exists("/eos/uscms/%s"%mergeDir):
         runCmd("eos root://cmseos.fnal.gov rm -r %s"%mergeDir)
         runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%mergeDir)
@@ -54,12 +54,12 @@ if isSep:
         for s in Samples:
             haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(mergeDir, s)
             haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'%s.*root\'`"%(histDir,s)
-            runCmd("hadd -f  %s %s"%(haddOut, haddIn))
+            runCmd("hadd -f -v 0 %s %s"%(haddOut, haddIn))
         #Merge for all sample
         haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(mergeDir)
         haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'.*root\'`"%(mergeDir)
-        runCmd("hadd -f  %s %s"%(haddOut, haddIn))
-        print runCmd(("eos root://cmseos.fnal.gov find --size %s")%mergeDir)
+        runCmd("hadd -f -v 0 %s %s"%(haddOut, haddIn))
+        print(runCmd(("eos root://cmseos.fnal.gov find --size %s")%mergeDir))
 
 #-----------------------------------------
 #Merge combining years and channels
@@ -78,5 +78,5 @@ if isComb:
         haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(mergeDir)
         runCmd("eos root://cmseos.fnal.gov rm -r %s"%mergeDir)
         runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%mergeDir)
-        runCmd("hadd -f %s %s"%(haddOut, haddIn))
-        print runCmd(("eos root://cmseos.fnal.gov find --size %s")%mergeDir)
+        runCmd("hadd -f -v 0 %s %s"%(haddOut, haddIn))
+        print(runCmd(("eos root://cmseos.fnal.gov find --size %s")%mergeDir))

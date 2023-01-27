@@ -13,7 +13,7 @@ from SampleInfo import *
 #INPUT Command Line Arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016",type='str',
+parser.add_option("-y", "--year", dest="year", default="2016Pre",type='str',
                      help="Specifyi the year of the data taking" )
 parser.add_option("-d", "--decay", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
@@ -23,7 +23,7 @@ parser.add_option("-s", "--sample", dest="sample", default="Signal_M800",type='s
                      help="Specify which sample to run on" )
 parser.add_option("-r", "--region", dest="region", default="tty_Enriched_le4j_a1b_e1y",type='str', 
                      help="which control selection and region"), 
-parser.add_option("--level", "--level", dest="level", default="base",type='str',
+parser.add_option("--level", "--level", dest="level", default="Base",type='str',
                      help="Specify up/down of systematic")
 parser.add_option("--syst", "--systematic", dest="systematic", default="Weight_lumi",type='str',
                      help="Specify which systematic to run on")
@@ -40,7 +40,7 @@ region = options.region
 syst = options.systematic
 level =options.level
 makeAllHists = options.makeAllHists
-print parser.parse_args()
+print(parser.parse_args())
 
 #-----------------------------------------
 #INPUT AnalysisNtuples Directory
@@ -66,12 +66,12 @@ analysisNtupleLocation = "%s/%s/%s/%s"%(condorNtupleDir, year, decayMode, systDi
 def toPrint(string, value):
     length = (len(string)+len(str(value))+2)
     line = "-"*length
-    print ""
-    print "* "+ line +                    " *"
-    print "| "+ " "*length +              " |"
-    print "| "+ string+ ": "+ str(value)+ " |"
-    print "| "+ " "*length +              " |"
-    print "* "+ line +                    " *"
+    print("")
+    print("* "+ line +                    " *")
+    print("| "+ " "*length +              " |")
+    print("| "+ string+ ": "+ str(value)+ " |")
+    print("| "+ " "*length +              " |")
+    print("* "+ line +                    " *")
 toPrint("Running for Year, Channel, Sample", "%s, %s, %s"%(year, channel, sample))
 
 #-----------------------------------------
@@ -81,7 +81,7 @@ outFileMainDir = "./hists"
 gROOT.SetBatch(True)
 isQCD = False
 
-if "base" in level:
+if "Base" in level:
     weights = syst
     if syst in ["Weight_q2", "Weight_pdf", "Weight_isr", "Weight_fsr"]:
         weights = "1.0"
@@ -119,7 +119,7 @@ elif channel=="Ele":
     outFileFullDir = outFileMainDir+"/%s/%s/Ele"%(year,decayMode)
     extraCuts            = "(Event_pass_presel_ele && %s)*"%Regions[region]
 else:
-    print "Unknown final state, options are Mu and Ele"
+    print("Unknown final state, options are Mu and Ele")
     sys.exit()
 
 #-----------------------------------------
@@ -131,7 +131,7 @@ if makeAllHists:
     histogramsToMake = allHistList
 for hist in histogramsToMake:
     if not hist in histogramInfo:
-        print "Histogram %s is not defined in HistInfo.py"%hist
+        print("Histogram %s is not defined in HistInfo.py"%hist)
         sys.exit()
 
 #-----------------------------------------
@@ -139,8 +139,8 @@ for hist in histogramsToMake:
 #----------------------------------------
 histograms=[]
 if not sample_ in samples:
-    print "Sample isn't in list"
-    print samples.keys()
+    print("Sample isn't in list")
+    print(samples.keys())
     sys.exit()
 tree = TChain("AnalysisTree")
 fileList = samples[sample_]
@@ -150,9 +150,9 @@ for fileName in fileList:
         fullPath = "%s/%s_up_%s"%(analysisNtupleLocation, syst, fileName)
     if "JE" in syst and "Down" in level: 
         fullPath = "%s/%s_down_%s"%(analysisNtupleLocation, syst, fileName)
-    print fullPath
+    print(fullPath)
     tree.Add("%s/%s"%(analysisNtupleLocation,fileName))
-print "Number of events:", tree.GetEntries()
+print("Number of events:", tree.GetEntries())
 for index, hist in enumerate(histogramsToMake, start=1):
     hInfo = histogramInfo[hist]
     if ('Data' in sample or isQCD) and not hInfo[2]: continue

@@ -128,8 +128,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("Jet_btag*",1);
     chain->SetBranchStatus("Jet_pu*",1);
     if (isMC){
-        chain->SetBranchStatus("Jet_hadronFlavour",1);
         chain->SetBranchStatus("Jet_genJetIdx",1);
+        chain->SetBranchStatus("Jet_hadronFlavour",1);
     }
 
     //fat jets

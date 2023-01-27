@@ -16,12 +16,12 @@ tarDir  = "../../FitDYSF"
 ex = ' --exclude=%s/output --exclude=%s/condor'%(tarDir, tarDir)
 os.system("tar %s -zcvf %s %s"%(ex, tarFile, tarDir))
 os.system("cp runPerformFit.sh %s"%tmpDir)
-os.system("cp /uscms_data/d3/rverma/codes/limitTools/CMSSW_10_2_13.tar.gz %s"%tmpDir)
+os.system("cp /uscms_data/d3/rverma/codes/limitTools/CMSSW_12_6_0.tar.gz %s"%tmpDir)
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
-Transfer_Input_Files = CMSSW_10_2_13.tar.gz, FitDYSF.tar.gz, runPerformFit.sh\n\
+Transfer_Input_Files = CMSSW_12_6_0.tar.gz, FitDYSF.tar.gz, runPerformFit.sh\n\
 use_x509userproxy = true\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\

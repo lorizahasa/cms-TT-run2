@@ -7,7 +7,7 @@ from FitInputs import dirFit_, dirTwiki
 from optparse import OptionParser
 
 
-fName = "FitDYSF_nuisImpact"
+fName = "FitMisIDSF_nuisImpact"
 txtFile = open("%s/%s.txt"%(dirFit_, fName), 'r')
 texFile = open("%s/%s.tex"%(dirFit_, fName), 'w')
 os.system("mkdir -p %s"%dirTwiki)
@@ -26,11 +26,11 @@ widthFor   = 4
 #figWidth = (1-0.05)/showPerFig#5% margin
 figWidth = round((1-0.05)/widthFor, 2)#5% margin
 nPage = len(allPlotPath)/showPerFig
-for page in np.arange(nPage):
+for page in np.arange(int(nPage)):
     texFile.write("\\begin{figure}\n")
     texFile.write("\centering\n")
     perFigName = []
-    for n in np.arange(showPerFig):
+    for n in np.arange(int(showPerFig)):
         perFigName.append(allPlotName[showPerFig*page + n])
         plotPath = allPlotPath[showPerFig*page + n]
         texFile.write("\includegraphics[width=%s\linewidth]{%s}\n"%(figWidth, plotPath.strip()))

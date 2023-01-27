@@ -15,7 +15,7 @@ from PlotCMSLumi import *
 from PlotTDRStyle import *
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 
-rList = Regions.keys()
+rList = list(Regions.keys())
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
@@ -80,7 +80,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     legend = TLegend(0.60,0.60,0.80,0.88); 
     decoLegend(legend, 4, 0.030)
     pDict = {}
-    #pDict["Data"] = inFile.Get("data_obs/%s/Base/%s"%(region, hName))
+    #pDict["data_obs"] = inFile.Get("data_obs/%s/Base/%s"%(region, hName))
     for i, s in enumerate(SampleBkg.keys()):
         dPath   = "%s/%s/Base/%s"%(s, region, hName)
         if i==0:
@@ -93,9 +93,9 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     legend.AddEntry(bkgDisc, name,  "L")
     
     #Mass = ["700", "1200"]
-    Mass  = ["700", '1000', "1200", "1400", "1600"]
+    Mass  = ["800", '1100', "1200", "1500", "2750"]
     for mass in Mass: 
-        sigDisc = inFile.Get("Signal_M%s/%s/Base/%s"%(mass, region, hName))
+        sigDisc = inFile.Get("SignalSpin12_M%s/%s/Base/%s"%(mass, region, hName))
         int_ = sigDisc.Integral()
         if int_==0.0:
             continue
@@ -119,14 +119,14 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
         pDict[s].GetYaxis().SetLabelSize(.040)
         pDict[s].GetXaxis().SetLabelSize(.035)
         pDict[s].GetXaxis().SetTitle("%s"%hName)
-        if index==0 and not "Data" in s:
-            print s
+        if index==0 and not "data_obs" in s:
+            print(s)
             pDict[s].SetMaximum(0.5)
             pDict[s].GetXaxis().SetRangeUser(0, 2000)
             #pDict[s].SetMaximum(100*pDict["All Background"].GetMaximum())
             #pDict[s].SetMinimum(0.01)
             pDict[s].Draw("HIST")
-        elif "Data" in s:
+        elif "data_obs" in s:
             pDict[s].Draw("EPsame")
             pDict[s].SetMarkerStyle(20)
             pDict[s].SetMarkerColor(1)

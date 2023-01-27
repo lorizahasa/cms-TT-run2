@@ -13,8 +13,9 @@ else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    scramv1 project CMSSW CMSSW_10_6_10
-    cd CMSSW_10_6_10/src
+    export SCRAM_ARCH=slc7_amd64_gcc700
+    scramv1 project CMSSW CMSSW_12_6_0
+    cd CMSSW_12_6_0/src
     eval `scramv1 runtime -sh`
 	cd ../..
 	tar --strip-components=1 -zxvf Hist_Ntuple.tar.gz
@@ -24,7 +25,7 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-python runMakeHists.py -y $1 -d $2 -c $3 --syst $4 --level $5
+python3 runMakeHists.py -y $1 -d $2 -c $3 --syst $4 --level $5
 printf "Done Histogramming at ";/bin/date
 
 #---------------------------------------------

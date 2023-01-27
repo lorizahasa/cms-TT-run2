@@ -30,7 +30,7 @@ isCheck = options.isCheck
 isSep = options.isSep
 isComb = options.isMerge
 
-Samples = sampDict.keys()
+Samples = list(sampDict.keys())
 if isCheck:
     isSep  = True
     isComb = False
@@ -52,7 +52,7 @@ def checkNanInBins(hist):
     checkNan = False
     for b in range(hist.GetNbinsX()):
         if math.isnan(hist.GetBinContent(b)):
-            print "%s: bin %s is nan"%(hist.GetName(), b)
+            print("%s: bin %s is nan"%(hist.GetName(), b))
             checkNan = True
     return checkNan
 
@@ -62,9 +62,9 @@ os.system("mkdir -p %s"%dirPlot)
 fPath = open("%s/ratioWeight.txt"%dirPlot, 'w')
 for sample, decay, channel, year in itertools.product(Samples, Decays, Channels, Years):
     ydc = "%s/%s/%s"%(year, decay, channel)
-    print "--------------------------------------------"
-    print "%s, %s, %s"%(ydc, sample, hName)
-    print "--------------------------------------------"
+    print("--------------------------------------------")
+    print("%s, %s, %s"%(ydc, sample, hName))
+    print("--------------------------------------------")
     inHistFullDir  = "%s/%s"%(dirHist, ydc)
     outPlotFullDir = "%s/%s/%s"%(dirPlot, ydc, region)
     if not os.path.exists(outPlotFullDir):
@@ -86,10 +86,10 @@ for sample, decay, channel, year in itertools.product(Samples, Decays, Channels,
     for key in systDict.keys():
         systList = []
         for index, syst in enumerate(systDict[key]):
-            hPathNoSF   = "%s/%s/1_base/%s"%(sample, region, hName)
-            hPathBase   = "%s/%s/%s_base/%s"%(sample, region, syst, hName)
-            hPathUp     = "%s/%s/%s_up/%s"%(sample, region, syst, hName)
-            hPathDown   = "%s/%s/%s_down/%s"%(sample, region, syst, hName)
+            hPathNoSF   = "%s/%s/1Base/%s"%(sample, region, hName)
+            hPathBase   = "%s/%s/%sBase/%s"%(sample, region, syst, hName)
+            hPathUp     = "%s/%s/%sUp/%s"%(sample, region, syst, hName)
+            hPathDown   = "%s/%s/%sDown/%s"%(sample, region, syst, hName)
             if isCheck:
                 print(hPathBase)
             hBase = rootFile.Get(hPathBase).Clone("Base_")
@@ -117,23 +117,23 @@ for sample, decay, channel, year in itertools.product(Samples, Decays, Channels,
             oEvtDown = round(hDown.GetBinContent(hDown.GetNbinsX()+1),0)
             errFrom  = "%s, %s, %s"%(ydc, sample, syst)
             if uEvtBase >1000 or oEvtBase >1000:
-                print "WE: %s: Base:  Overflow or Undeflow is more than 1000"%errFrom
+                print("WE: %s: Base:  Overflow or Undeflow is more than 1000"%errFrom)
             if uEvtNoSF >1000 or oEvtNoSF >1000:
-                print "WE: %s: NoSF:  Overflow or Undeflow is more than 1000"%errFrom
+                print("WE: %s: NoSF:  Overflow or Undeflow is more than 1000"%errFrom)
             if uEvtUp >1000 or oEvtUp >1000:
-                print "WE: %s: Up:  Overflow or Undeflow is more than 1000"%errFrom
+                print("WE: %s: Up:  Overflow or Undeflow is more than 1000"%errFrom)
             if uEvtDown >1000 or oEvtDown >1000:
-                print "WE: %s: Down:  Overflow or Undeflow is more than 1000"%errFrom
+                print("WE: %s: Down:  Overflow or Undeflow is more than 1000"%errFrom)
             if evtBase ==0.0:
-                print "WE: %s evtBase is zero"%errFrom
+                print("WE: %s evtBase is zero"%errFrom)
                 continue
             #check if intergal is NaN
             if math.isnan(evtUp) or math.isnan(evtDown):
-                print "WE: %s: Inegral is nan"%errFrom
+                print("WE: %s: Inegral is nan"%errFrom)
                 continue
             #check if bins are nan
             if checkNanInBins(hUp) or checkNanInBins(hBase) or checkNanInBins(hDown):
-                print "WE: %s: Some of the bins are nan"%errFrom
+                print("WE: %s: Some of the bins are nan"%errFrom)
                 continue
             allSystPercentage[syst] = 100*max(abs(evtUp -evtBase),abs(evtBase-evtDown))/evtBase
             print("%18s" 
@@ -146,7 +146,7 @@ for sample, decay, channel, year in itertools.product(Samples, Decays, Channels,
                  uEvtUp, iEvtUp, oEvtUp,
                 allSystPercentage[syst]))
             if allSystPercentage[syst] > 100.0:
-                print "WE: Large uncertainty for %s: %10.2f"%(errFrom, allSystPercentage[syst])
+                print("WE: Large uncertainty for %s: %10.2f"%(errFrom, allSystPercentage[syst]))
             #Ratio Up
             hRatioUp = hUp.Clone("%s_up"%syst)
             hRatioNoSF = hNoSF.Clone("%s_base"%syst)

@@ -42,7 +42,7 @@ mass        = options.mass
 method      = options.methodMVA
 isCheck     = options.isCheck
 isSep       = options.isSep
-print parser.parse_args()
+print(parser.parse_args())
 
 #-----------------------------------------
 #INPUT AnalysisNtuples Directory

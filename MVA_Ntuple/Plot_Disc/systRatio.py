@@ -19,7 +19,7 @@ from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, TF1, TH1F
 
 #hInfo = GetVarInfo(region, channel)
 #hList = hInfo.keys() + ['Disc']
-rList = Regions.keys()
+rList = list(Regions.keys())
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
@@ -64,7 +64,7 @@ def checkNanInBins(hist):
     checkNan = False
     for b in range(hist.GetNbinsX()):
         if math.isnan(hist.GetBinContent(b)):
-            print "%s: bin %s is nan"%(hist.GetName(), b)
+            print("%s: bin %s is nan"%(hist.GetName(), b))
             checkNan = True
     return checkNan
         
@@ -123,7 +123,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     allHistUp = []
     allHistDown = []
     allSystPercentage = {}
-    print Systematics
+    print(Systematics)
     samples = []
     samples.append("TTbar")
     samples.append("TTGamma")
@@ -151,8 +151,8 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
             hPathBase   = "%s/%s/Base/%s"%(sample, region, hName)
             hPathUp     = "%s/%s/%sUp/%s"%(sample, region, syst, hName)
             hPathDown   = "%s/%s/%sDown/%s"%(sample, region, syst, hName)
-            #print hPathBase
-            #print hPathUp
+            #print(hPathBase)
+            #print(hPathUp)
             if isCheck:
                 print(hPathBase)
             hBase = inFile.Get(hPathBase).Clone("Base_")
@@ -174,21 +174,21 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
         oEvtUp   = round(hUp.GetBinContent(hUp.GetNbinsX()+1),0)
         oEvtDown = round(hDown.GetBinContent(hDown.GetNbinsX()+1),0)
         if uEvtBase >1000 or oEvtBase >1000:
-            print "%s: Base:  Overflow or Undeflow is more than 1000"%syst
+            print("%s: Base:  Overflow or Undeflow is more than 1000"%syst)
         if uEvtUp >1000 or oEvtUp >1000:
-            print "%s: Up:  Overflow or Undeflow is more than 1000"%syst
+            print("%s: Up:  Overflow or Undeflow is more than 1000"%syst)
         if uEvtDown >1000 or oEvtDown >1000:
-            print "%s: Down:  Overflow or Undeflow is more than 1000"%syst
+            print("%s: Down:  Overflow or Undeflow is more than 1000"%syst)
         if evtBase ==0.0:
-            print "evtBase is zero"
+            print("evtBase is zero")
             continue
         #check if intergal is NaN
         if math.isnan(evtUp) or math.isnan(evtDown):
-            print "Inegral is nan"
+            print("Inegral is nan")
             continue
         #check if bins are nan
         if checkNanInBins(hUp) or checkNanInBins(hBase) or checkNanInBins(hDown):
-            print "Some of the bins are nan"
+            print("Some of the bins are nan")
             continue
         allSystPercentage[syst] = 100*max(abs(evtUp -evtBase),abs(evtBase-evtDown))/evtBase
         print("%10s" 
@@ -201,7 +201,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
              uEvtUp, iEvtUp, oEvtUp,
             allSystPercentage[syst]))
         if allSystPercentage[syst] > 100.0:
-            print "Large uncertainty for %s: %10.2f"%(syst, allSystPercentage[syst])
+            print("Large uncertainty for %s: %10.2f"%(syst, allSystPercentage[syst]))
         #Ratio Up
         hRatioUp = hUp.Clone(syst)
         hRatioUp.Divide(hBase)
@@ -246,7 +246,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
         max_ = max(getContent(h))
         maxRatio.append(round(max_, 2))
     yMax = max(maxRatio)
-    print yMax
+    print(yMax)
     for i, h in enumerate(allHistUpSorted):
         #h.GetYaxis().SetRangeUser(1-0.2*yMax, 1+0.2*yMax)
         h.GetYaxis().SetRangeUser(1-0.2, 1+0.4)

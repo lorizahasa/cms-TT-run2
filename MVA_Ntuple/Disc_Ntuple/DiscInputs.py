@@ -5,13 +5,13 @@ dirMVA    = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/"
 dirClass  = "%s/Disc_Ntuple/DiscMain"%dirMVA
 dirRead   = "%s/Disc_Ntuple/DiscMain"%dirMVA
 #-----------------------------------------------------------------
-Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-#Years 	      =	["2017"]
-Channels 	  =	["Mu", "Ele"]
-#Channels 	  =	["Mu"]
+#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+Years 	      =	["2016Pre"]
+#Channels 	  =	["Mu", "Ele"]
+Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 #Mass          = ["800", "1600"]
-Mass      = ["700", "800", "900", "1000", "1200", "1300", "1400", "1500", "1600"]
+Mass      = ["700", "800", "900", "1100", "1200", "1300", "1500", "2750"]
 
 #Years and channels to be combined
 Years_         = ["2016Pre__2016Post__2017__2018"]
@@ -19,16 +19,14 @@ Channels_      = ["Mu", "Ele", "Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
 
 S1 = []
-S1.append("Signal_M700")
-S1.append("Signal_M800")
-S1.append("Signal_M900")
-S1.append("Signal_M1000")
-##S1.append("Signal_M1100")
-S1.append("Signal_M1200")
-S1.append("Signal_M1300")
-S1.append("Signal_M1400")
-S1.append("Signal_M1500")
-S1.append("Signal_M1600")
+S1.append("SignalSpin12_M700")
+S1.append("SignalSpin12_M800")
+S1.append("SignalSpin12_M900")
+S1.append("SignalSpin12_M1100")
+S1.append("SignalSpin12_M1200")
+S1.append("SignalSpin12_M1300")
+S1.append("SignalSpin12_M1500")
+S1.append("SignalSpin12_M2750")
 S1.append("TTGamma")
 S1.append("WJets")
 S1.append("DYJets")
@@ -95,11 +93,11 @@ dictSFs['2016Pre__2016Post__2017__2018'] = [1.38, 1.40, 0.96, 1.22]
 Regions = {}
 Regions['ttyg_Enriched_SR_Resolved'] = "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]>100 && e.FatJet_size ==0"
 Regions['ttyg_Enriched_CR_Resolved'] = "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size ==0"
-Regions['ttyg_Enriched_CRb_Resolved']= "e.Jet_size >=5 && e.Jet_b_size <1  && e.Photon_size==1 && e.Photon_et[0]>0   && e.FatJet_size ==0"
+#Regions['ttyg_Enriched_CRb_Resolved']= "e.Jet_size >=5 && e.Jet_b_size <1  && e.Photon_size==1 && e.Photon_et[0]>0   && e.FatJet_size ==0"
 
 Regions['ttyg_Enriched_SR_Boosted']  = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]>100 && e.FatJet_size >=1"
 Regions['ttyg_Enriched_CR_Boosted']  = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size >=1"
-Regions['ttyg_Enriched_CRb_Boosted'] = "e.Jet_size >=2 && e.Jet_b_size <1  && e.Photon_size==1 && e.Photon_et[0]>0   && e.FatJet_size >=1"
+#Regions['ttyg_Enriched_CRb_Boosted'] = "e.Jet_size >=2 && e.Jet_b_size <1  && e.Photon_size==1 && e.Photon_et[0]>0   && e.FatJet_size >=1"
 
 #https://github.com/ViniciusMikuni/ttbb-analysis/blob/5d48e5e03bdd0ca162d3dd058f4ee02ef33a8460/python/MVA_cfg.py
 batchs = 64

@@ -43,14 +43,15 @@ dictRebin = {}
 dictRebin["Reco_mass_T"] = numpy.array([0,200,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1800.,2500.,6000.])
 dictRebin["Photon_et"]   = numpy.array([0,100,200,300,400,500,600,700,900,1200,2000.])
 dictRebin["Reco_ht"]     = numpy.array([0,500,700,900,1100,1300,1500,1700,1900,2200,2500,3000,5000,9000.])
-dictRebin["Reco_st"]     = numpy.array([0,500,700,900,1100,1300,1500,1700,1900,2200,2500,3000,5000,9000.])
+dictRebin["Reco_st"]     = numpy.array([0.,300,600,900,1200,1500,1800,2100,2400,3000,3300,4200,5100,9000])
+#dictRebin["Reco_st"]     = numpy.array([0,500,700,900,1100,1300,1500,1700,1900,2200,2500,3000,5000,9000.])
 
 #-----------------------------------------
 #Functions to read/write histograms
 #----------------------------------------
 def addHist(histList, name):
     if len(histList) ==0:
-        print "Hist list | %s, %s | is empty"%(histList, name)
+        print("Hist list | %s, %s | is empty"%(histList, name))
         sys.exit()
     else:
         hist = histList[0].Clone(name)
@@ -67,11 +68,11 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
     outHistDir = getHistDir(sample, CR, sysType)
     if not outputFile.GetDirectory(outHistDir):
         outputFile.mkdir(outHistDir)
-    #print gDirectory.ls()
+    #print(gDirectory.ls())
     outputFile.cd(outHistDir)
     hName = hist_.GetName()
     gDirectory.Delete("%s;*"%(hName))
-    #print "%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, CR, sysType, hist_.GetName()) 
+    #print("%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, CR, sysType, hist_.GetName()))
     if hName in dictRebin.keys():
         hNew = hist_.Rebin(len(dictRebin[hName])-1, hist_.GetName(), dictRebin[hName]) 
         hNew.Write()
@@ -106,4 +107,4 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
         h4 = inFile.Get("%s/%s"%(histDir, h))
         writeHist(s, r, sys, h4, outputFile)
     outputFile.Close()
-    print "/eos/uscms/%s/AllInc.root\n"%outDir
+    print("/eos/uscms/%s/AllInc.root\n"%outDir)

@@ -22,7 +22,7 @@ Samples.append("SignalSpin12_M800")
 Samples.append("SignalSpin12_M1200")
 #Samples.append("SignalSpin12_M1300")
 #Samples.append("SignalSpin12_M1400")
-#Samples.append("SignalSpin12_M1500")
+Samples.append("SignalSpin12_M1500")
 #Samples.append("SignalSpin12_M1600")
 #bkg and data
 Samples.append("TTbar")
@@ -50,7 +50,7 @@ Systematics.append("Weight_fsr")
 Systematics.append("Weight_jes")
 Systematics.append("Weight_jer")
 #Systematics.append("Weight_ttag")                
-Systematics   =	[]
+#Systematics   =	[]
 
 SystLevels = []
 SystLevels.append("Up")

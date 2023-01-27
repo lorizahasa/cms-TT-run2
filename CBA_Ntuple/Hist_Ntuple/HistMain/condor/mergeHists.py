@@ -54,11 +54,11 @@ if isSep:
         for s in Samples:
             haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(mergeDir, s)
             haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'%s.*root\'`"%(histDir,s)
-            runCmd("hadd -f  %s %s"%(haddOut, haddIn))
+            runCmd("hadd -f -v 0  %s %s"%(haddOut, haddIn))
         #Merge for all sample
         haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(mergeDir)
         haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'.*root\'`"%(mergeDir)
-        runCmd("hadd -f  %s %s"%(haddOut, haddIn))
+        runCmd("hadd -f -v 0  %s %s"%(haddOut, haddIn))
         print(runCmd(("eos root://cmseos.fnal.gov find --size %s")%mergeDir))
 
 #-----------------------------------------
@@ -78,5 +78,5 @@ if isComb:
         haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(mergeDir)
         runCmd("eos root://cmseos.fnal.gov rm -r %s"%mergeDir)
         runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%mergeDir)
-        runCmd("hadd -f %s %s"%(haddOut, haddIn))
+        runCmd("hadd -f -v 0 %s %s"%(haddOut, haddIn))
         print(runCmd(("eos root://cmseos.fnal.gov find --size %s")%mergeDir))

@@ -1,6 +1,6 @@
 ## Basic setups 
-* cmsrel CMSSW_10_2_13
-* cd CMSSW_10_2_13/src
+* cmsrel CMSSW_12_6_0
+* cd CMSSW_12_6_0/src
 * cmsenv
 * git clone git@github.com:ravindkv/cms-TT-run2.git
 

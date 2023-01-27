@@ -39,10 +39,10 @@ allJobs = 0
 for year in Years: 
 #for year in ['2017']: 
     splitJobs = {}
-    print '---------------------------------------'
-    print  year 
-    print  "nFiles\t  nJobs\t nEvents\t Samples"
-    print '---------------------------------------'
+    print('---------------------------------------')
+    print(year)
+    print("nFiles\t  nJobs\t nEvents\t Samples")
+    print('---------------------------------------')
     line = ""
     jobs = 0
     for sampleName, sample in sampleDict(year).items():
@@ -70,12 +70,12 @@ for year in Years:
         splitJobs[sampleName] = [nJob, evtStr, evt, nFiles]
         jobs += nJob
         print("%i\t %i\t %s\t %s"%(nFiles, nJob, evtStr, sampleName))
-    f1.write(line.encode('ascii'))
+    f1.write(str(line.encode('ascii')))
     f2.write("Samples_%s = %s \n"%(str(year), str(splitJobs)))
     f2.write("AllJobs_%s = %s \n"%(str(year), str(jobs)))
-    print '=================='
-    print "AllJobs_%s = %i"%(year, jobs)
-    print '=================='
+    print('==================')
+    print("AllJobs_%s = %i"%(year, jobs))
+    print('==================')
     allJobs += jobs
 f2.write("AllJobs_AllYears = %s \n"%str(allJobs))
  

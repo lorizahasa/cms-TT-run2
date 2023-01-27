@@ -63,8 +63,8 @@ if not isCheck and not isSep and not isComb:
 #Path of the I/O histrograms/plots
 #----------------------------------------
 #dir_ = "Merged"
-dir_ = "Rebin"
-#dir_ = "ForMain"
+#dir_ = "Rebin"
+dir_ = "ForMain"
 os.system("mkdir -p %s"%dirPlot)
 fPath = open("%s/plotBySample_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
@@ -77,7 +77,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
     isData   = True
     isRatio  = True
     isSig    = True
-    isUnc    = False 
+    isUnc    = True 
     isLog    = True
     print("----------------------------------------------")
     print("%s, %s, %s, %s, %s"%(decay, hName, region, channel, year))

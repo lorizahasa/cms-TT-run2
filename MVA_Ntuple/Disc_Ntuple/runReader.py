@@ -34,6 +34,6 @@ syst    = options.systematic
 
 for s in SampDict[sample]: 
     args = "-y %s -d %s -c %s -s %s --method %s -r %s --syst %s "%(year, decay, channel, s, method, region, syst)
-    os.system("python reader.py %s"%args)
+    os.system("python3 reader.py %s"%args)
     print(args)
 

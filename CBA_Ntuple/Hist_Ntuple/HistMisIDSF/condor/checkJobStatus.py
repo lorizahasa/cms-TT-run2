@@ -69,9 +69,9 @@ jdlFile.write(common_command)
 
 #Search in the log files to see if xrdcp was not able to copy a file
 print("Collecting error logs for all years ...")
-grepList = subprocess.Popen('grep -rn nan %s'%(logDir),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+grepList = subprocess.Popen('grep -rn nan %s'%(logDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
 grepList.remove("")
-grepList2 = subprocess.Popen('grep -rn rror %s'%(logDir),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+grepList2 = subprocess.Popen('grep -rn rror %s'%(logDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
 grepList2.remove("")
 errList = []
 for err in grepList+grepList2:
@@ -81,7 +81,7 @@ for err in np.unique(errList):
     if "std" not in err: continue
     search = "All arguements"
     out = err.replace("stderr", "stdout")
-    arg = subprocess.Popen('grep -rn \"%s\" %s'%(search, out),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+    arg = subprocess.Popen('grep -rn \"%s\" %s'%(search, out),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
     args = arg[0].split(" ")[2:]
     argList.append(args)
 #print(argList)
@@ -108,22 +108,22 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
                 rootFile = "%s_%s_%s%s.root"%(s, r, syst, level)
                 submittedDict[rootFile] = s
     print(colored("(1): Checking unfinished jobs ...", 'red'))
-    print "Total submitted jobs: %s"%len(submittedDict.keys())
+    print("Total submitted jobs: %s"%len(submittedDict.keys()))
 
     #----------------------------------------
     #Get all finished jobs
     #----------------------------------------
-    finishedList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s'%(outDir),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+    finishedList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s'%(outDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
     finishedList.remove("")
-    print "Total finished jobs: %s"%len(finishedList)
+    print("Total finished jobs: %s"%len(finishedList))
 
     #----------------------------------------
     #Get all un-finished jobs
     #----------------------------------------
     unFinJobs = len(submittedDict.keys()) - len(finishedList)
-    print "Unfinished jobs: %s"%(unFinJobs)
+    print("Unfinished jobs: %s"%(unFinJobs))
     unFinishedList = returnNotMatches(finishedList, submittedDict.keys())   
-    print unFinishedList
+    print(unFinishedList)
     resubJobs +=unFinJobs
 
     #----------------------------------------
@@ -147,7 +147,7 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
             print("Empty file: %s"%fROOT)
             corruptedList.append(finished)
             continue
-    print "Finished but corrupted jobs: %s"%len(corruptedList)
+    print("Finished but corrupted jobs: %s"%len(corruptedList))
     '''
     resubJobs += len(corruptedList)
 
@@ -166,7 +166,7 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
     '''
     allResub = []
     if len(unFinishedList) ==0 and len(corruptedList)==0 and len(argListYear)==0:
-        print "Noting to be resubmitted"
+        print("Noting to be resubmitted")
     else:
         for f in unFinishedList[1]+corruptedList:
             allResub.append("%s__%s__%s__%s__%s__%s__%s"%(year, decay, ch, samp, nJobs[0], nJobs[1], outDir))
@@ -177,7 +177,7 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
          r = resub.split("__")
          args = 'Arguments  = %s %s %s %s %s %s %s \nQueue 1\n\n' %(r[0], r[1], r[2], r[3], r[4], r[5], r[6])
          jdlFile.write(args)
-    print outDir 
+    print(outDir)
     '''
 jdlFile.close() 
 print("Total jobs to be resubmitted for all years = %s"%resubJobs)

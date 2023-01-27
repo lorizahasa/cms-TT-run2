@@ -41,7 +41,7 @@ region = options.region
 syst = options.systematic
 makeAllHists = options.makeAllHists
 isCat = options.isCat
-print parser.parse_args()
+print(parser.parse_args())
 
 #-----------------------------------------
 #INPUT AnalysisNtuples Directory
@@ -69,12 +69,12 @@ inDirNtuple = "root://cmseos.fnal.gov/%s/%s/%s/%s"%(dirNtuple, year, decay, syst
 def toPrint(string, value):
     length = (len(string)+len(str(value))+2)
     line = "-"*length
-    print ""
-    print "* "+ line +                    " *"
-    print "| "+ " "*length +              " |"
-    print "| "+ string+ ": "+ str(value)+ " |"
-    print "| "+ " "*length +              " |"
-    print "* "+ line +                    " *"
+    print("")
+    print("* "+ line +                    " *")
+    print("| "+ " "*length +              " |")
+    print("| "+ string+ ": "+ str(value)+ " |")
+    print("| "+ " "*length +              " |")
+    print("* "+ line +                    " *")
 toPrint("Running for Year, Channel, Sample", "%s, %s, %s"%(year, channel, sample))
 
 #-----------------------------------------
@@ -103,10 +103,6 @@ if isData or "QCD" in sample:
 #----------------------------------------
 if not syst=="Base":
     histDirInFile = "%s/%s/%s"%(sample, region, syst) 
-    #Remove me ----------
-    syst = syst.replace("Up", "_up")
-    syst = syst.replace("Down", "_down")
-    #--------------------
     toPrint("Running for systematics: ", syst)
     if "Weight_pu"  in syst: w_pu = syst 
     if "Weight_q2"  in syst: w_q2 = syst 
@@ -130,7 +126,7 @@ elif channel=="Ele":
     outFileFullDir = outFileMainDir+"/%s/%s/Ele"%(year,decay)
     extraCuts            = "(Event_pass_presel_ele && %s)*"%Regions[region]
 else:
-    print "Unknown final state, options are Mu and Ele"
+    print("Unknown final state, options are Mu and Ele")
     sys.exit()
 
 weights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire)
@@ -144,7 +140,7 @@ if makeAllHists:
     histogramsToMake = allHistList
 for hist in histogramsToMake:
     if not hist in histogramInfo:
-        print "Histogram %s is not defined in HistInfo.py"%hist
+        print("Histogram %s is not defined in HistInfo.py"%hist)
         sys.exit()
 
 #-----------------------------------------
@@ -152,16 +148,16 @@ for hist in histogramsToMake:
 #----------------------------------------
 histograms=[]
 if not sample_ in samples:
-    print "Sample isn't in list"
-    print samples.keys()
+    print("Sample isn't in list")
+    print(samples.keys())
     sys.exit()
 tree = TChain("AnalysisTree")
 fileList = samples[sample_]
 for fileName in fileList:
     fullPath = "%s/%s"%(inDirNtuple, fileName)
-    print fullPath
+    print(fullPath)
     tree.Add("%s/%s"%(inDirNtuple,fileName))
-print "Number of events:", tree.GetEntries()
+print("Number of events:", tree.GetEntries())
 for index, hist in enumerate(histogramsToMake, start=1):
     hInfo = histogramInfo[hist]
     if isData and not hInfo[2]: continue
@@ -196,10 +192,6 @@ for index, hist in enumerate(histogramsToMake, start=1):
 #----------------------------------------
 if not os.path.exists(outFileFullDir):
     os.makedirs(outFileFullDir)
-#Remove me ----------
-syst = syst.replace("_up", "Up")
-syst = syst.replace("_down", "Down")
-#--------------------
 
 outFileFullPath = "%s/%s_%s_%s.root"%(outFileFullDir, sample, region, syst)
 outputFile = TFile(outFileFullPath,"update")

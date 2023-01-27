@@ -26,7 +26,7 @@ isCheck = options.isCheck
 isSep = options.isSep
 isComb = options.isMerge
 
-rList = Regions.keys()
+rList = list(Regions.keys())
 #-----------------------------------------
 # Collect all syst 
 #----------------------------------------
@@ -41,7 +41,7 @@ if isCheck:
     Years  = [Years[0]]
     Decays = [Decays[0]]
     Channels = [Channels[0]]
-    rList   = [Regions.keys()[0]]
+    rList   = [rList[0]]
     sysList = [sysList[0]]
 if isSep: 
     isComb = False
@@ -59,7 +59,7 @@ hists = GetHistogramInfo()
 #----------------------------------------
 def addHist(histList, name):
     if len(histList) ==0:
-        print "Hist list | %s, %s | is empty"%(histList, name)
+        print("Hist list | %s, %s | is empty"%(histList, name))
         sys.exit()
     else:
         hist = histList[0].Clone(name)
@@ -139,7 +139,7 @@ def writeHist(outFile, hPath, hist):
     outFile.cd(hPath)
     gDirectory.Delete("%s;*"%(hist.GetName()))
     if isCheck:
-        print "%60s, %20s, %10s"%(hPath, hist.GetName(), round(hist.Integral()))
+        print("%60s, %20s, %10s"%(hPath, hist.GetName(), round(hist.Integral())))
     hist.Write()
 
 
@@ -150,7 +150,7 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
     inDir = "%s/Rebin/%s/%s/%s"%(dirHist, year, decay, channel)
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
     if isCheck:
-        print inFile
+        print(inFile)
     outDir = inDir.replace("Rebin", "AfterMisIDSF")
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
@@ -180,11 +180,11 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
         writeHist(outFile, hPath, getHistOther(inFile, r, syst, hName))
 
         #Signal
-        hPath = "%s/%s/%s"%("Signal_M800", r, syst)
+        hPath = "%s/%s/%s"%("SignalSpin12_M800", r, syst)
         writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
-        hPath = "%s/%s/%s"%("Signal_M1200", r, syst)
+        hPath = "%s/%s/%s"%("SignalSpin12_M1200", r, syst)
         writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
-        hPath = "%s/%s/%s"%("Signal_M1600", r, syst)
+        hPath = "%s/%s/%s"%("SignalSpin12_M1500", r, syst)
         writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
 
         #data_obs for base
@@ -192,4 +192,4 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
             hPath = "%s/%s/%s"%("data_obs", r, syst)
             writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
     outFile.Close()
-    print "/eos/uscms/%s/AllInc.root\n"%outDir
+    print("/eos/uscms/%s/AllInc.root\n"%outDir)

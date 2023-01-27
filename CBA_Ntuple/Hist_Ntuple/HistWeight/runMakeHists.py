@@ -31,5 +31,5 @@ syst = options.systematic
 
 for s, r in itertools.product(Samples, Regions.keys()):
     args = "-y %s -d %s -c %s -s %s -r %s --syst %s --level %s --allHists"%(year, decay, channel, s, r, syst, level)
-    print args
-    os.system("python makeHists.py %s"%args)
+    print(args)
+    os.system("python3 makeHists.py %s"%args)

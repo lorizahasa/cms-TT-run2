@@ -11,7 +11,7 @@ os.system("mkdir -p %s/%s"%(tmpDir, condorLogDir))
 tarFile = "%s/Disc_Ntuple.tar.gz"%tmpDir
 exDir = '../../Disc_Ntuple'
 ex = '--exclude=%s/discs --exclude=%s/condor_read --exclude=%s/condor_class'%(exDir, exDir, exDir)
-#os.system("tar %s -zcvf %s ../../Disc_Ntuple "%(ex, tarFile))
+os.system("tar %s -zcvf %s ../../Disc_Ntuple "%(ex, tarFile))
 os.system("cp runReader.sh %s"%tmpDir)
 common_command = \
 'Universe   = vanilla\n\

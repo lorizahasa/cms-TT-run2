@@ -13,21 +13,21 @@ else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-	tar -zxf CMSSW_10_2_13.tar.gz 
-    #scramv1 project CMSSW CMSSW_10_2_14
-    cd CMSSW_10_2_13/src
+	tar -xf CMSSW_12_6_0.tar.gz 
+    cd CMSSW_12_6_0/src
     scram b -r ProjectRename
     eval `scramv1 runtime -sh`
     mv ../../FitDYSF.tar.gz .
-	tar --strip-components=1 -zxf FitDYSF.tar.gz
+	tar --strip-components=1 -xf FitDYSF.tar.gz
 fi
 
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
 
-python performFit.py -y $1 -d $2 -c $3 -r $4 --isT2W --isImpact
+python3 performFit.py -y $1 -d $2 -c $3 -r $4 --isT2W --isImpact
 printf "Done fitting at ";/bin/date
 xrdcp -rf ./output/ root://cmseos.fnal.gov/$5
-rm -r ./output
+cd ../../
+rm -rf CMSSW*
 printf "Done ";/bin/date

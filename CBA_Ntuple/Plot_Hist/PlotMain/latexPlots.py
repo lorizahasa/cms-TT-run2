@@ -29,8 +29,8 @@ outTxt = "SepYears"
 if isComb:
     outTxt = "CombYears"
 
-#dir_ = 'ForMain'
-dir_ = 'Rebin'
+dir_ = 'ForMain'
+#dir_ = 'Rebin'
 extra = "tty_Enriched"
 if isTT:
     extra = 'tt_Enriched'

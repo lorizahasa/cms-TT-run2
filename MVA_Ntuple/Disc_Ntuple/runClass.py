@@ -33,5 +33,5 @@ if level=="":
     args = "-y %s -d %s -c %s --method %s -r %s "%(year, decay, channel, method, region)
 else:
     args = "-y %s -d %s -c %s --method %s -r %s --syst %s --level %s "%(year, decay, channel, method, region, syst, level)
-print args
-os.system("python classification.py %s"%args)
+print(args)
+os.system("python3 classification.py %s"%args)

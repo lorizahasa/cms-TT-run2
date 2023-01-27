@@ -69,7 +69,7 @@ for c in Channel:
             jsonFile.close()
         lepDict[r] = sfList
     lepDicts[c] = lepDict
-    #print lepDict
+    #print(lepDict)
 
 #make table from reformated dicts
 #---------------------
@@ -94,21 +94,21 @@ tHead += "\\\\\n"
 table += tHead
 table += "\\hline\n"
 row = ""
-#print Samples.keys()
+#print(Samples.keys())
 #for ch in lepDicts.keys():
 for ch in Channel: 
     row ="\\multirow{%s}{*}{%s}"%(len(Regions.keys()), ch.replace("_", "+"))
     chDict = lepDicts[ch]
-    print ch
+    print(ch)
     for l in chDict.keys():
         #row += "& %s"%formatCRString(Regions[l]).replace("#", "\\")
         row += "& %s"%l.replace("_", "\\_")
-        print l
+        print(l)
         for sfs in chDict[l]:
             newList = []
-            print sfs
+            print(sfs)
             for sf in sfs:
-                print sf
+                print(sf)
                 valNom = roundMe(sf[1], 2) # 0 = down, 1 = up, 2 = down
                 #perUp  = roundMe(abs(100*sf[2]/sf[1]),1)
                 #perDown  = roundMe(abs(100*sf[0]/sf[1]),1)
@@ -124,7 +124,7 @@ table += "\\end{tabular}\n"
 table += "}"
 table += "\\caption{[MisIDSF, ZGammaSF, WGammaSF]}\n"
 table += "\\end{table}"
-print table
+print(table)
 texFile.write(table)
 pyFile.write("MisIDSF = %s"%sfDict)
 print(txtFile)

@@ -48,8 +48,8 @@ for decay, channel in itertools.product(Decays, Channels):
                 os.makedirs(outDir)
             rootFile = TFile("%s/AllInc.root"%(inDir), "read")
             if isCheck:
-                print rootFile
-            hPathBase = "%s/%s/Weight_lumi_base/%s"%(sample, region, hName)
+                print(rootFile)
+            hPathBase = "%s/%s/Weight_lumiBase/%s"%(sample, region, hName)
             hBase = rootFile.Get(hPathBase).Clone("Base_")
             #-----------------------------------------
             # Sanity checks
@@ -70,7 +70,7 @@ for decay, channel in itertools.product(Decays, Channels):
     xArray = numpy.array([2016., 2016.5, 2017.,2018.])
     graphs = []
     if isCheck:
-        print weights
+        print(weights)
     col = 0
     for key in weights.keys():
         col+=1
@@ -101,7 +101,7 @@ for decay, channel in itertools.product(Decays, Channels):
     gPad.RedrawAxis();
     gPad.SetLogy(True)
     if isCheck:
-        print graphs
+        print(graphs)
     leg = TLegend(0.70,0.15,1.0,0.75)
     decoLegend(leg, 5, 0.034)
     list_ = []

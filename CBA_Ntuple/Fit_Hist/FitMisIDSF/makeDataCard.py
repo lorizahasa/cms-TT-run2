@@ -12,7 +12,7 @@ from FitInputs import *
 #INPUT command-line arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016PreVFP",type='str',
+parser.add_option("-y", "--year", dest="year", default="2016Pre",type='str',
                      help="Specify the year of the data taking" )
 parser.add_option("-d", "--decay", dest="decay", default="Semilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
@@ -104,20 +104,20 @@ cb.SetAutoMCStats(cb, 0, True, 1)
 cb.cp().backgrounds().ExtractShapes(inFileName, inHistDirBase, inHistDirSys)
 cb.cp().signals().ExtractShapes(inFileName, inHistDirBase, inHistDirSys)
 #f_ = TFile.Open(inFileName)
-#print type(f_)
+#print(type(f_))
 #cb.cp().backgrounds().ExtractShapes(f_, inHistDirBase, inHistDirSys)
 #cb.cp().signals().ExtractShapes(f_, inHistDirBase, inHistDirSys)
 cb.WriteDatacard(datacardPath, outFilePath) 
 #------------------
 #print various info
 #------------------
-#print cb.PrintAll()
-#print cb.PrintObs();
-#print cb.PrintProcs();
-#print cb.PrintSysts();
-#print cb.PrintParams();
-print datacardPath
-print outFilePath
+#print(cb.PrintAll())
+#print(cb.PrintObs())
+#print(cb.PrintProcs())
+#print(cb.PrintSysts())
+#print(cb.PrintParams())
+print(datacardPath)
+print(outFilePath)
 
 #------------------
 #Add param

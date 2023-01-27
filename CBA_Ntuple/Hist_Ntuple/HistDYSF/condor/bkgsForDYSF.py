@@ -26,15 +26,8 @@ rList = Regions.keys()
 #----------------------------------------
 sysList = []
 sysList.append("Base")
-for syst, level in itertools.product(Systematics, ["up", "down"]): 
-    sysList.append("%s_%s"%(syst, level))
-
-#Remove me----------
-sysList_ = []
-sysList_.append("Base")
-for syst, level in itertools.product(Systematics, ["Up", "Down"]):
-    sysList_.append("%s%s"%(syst, level))
-#--------------------
+for syst, level in itertools.product(Systematics, ["Up", "Down"]): 
+    sysList.append("%s%s"%(syst, level))
 
 if isCheck:
     isSep  = True
@@ -42,7 +35,7 @@ if isCheck:
     Years  = [Years[0]]
     Decays = [Decays[0]]
     Channels = [Channels[0]]
-    rList   = [Regions.keys()[0]]
+    rList   = [list(Regions.keys())[0]]
     sysList = [sysList[0]]
 if isSep: 
     isComb = False
@@ -60,7 +53,7 @@ hists = GetHistogramInfo()
 #----------------------------------------
 def addHist(histList, name):
     if len(histList) ==0:
-        print "Hist list | %s, %s | is empty"%(histList, name)
+        print("Hist list | %s, %s | is empty"%(histList, name))
         sys.exit()
     else:
         hist = histList[0].Clone(name)
@@ -94,7 +87,7 @@ def writeHist(outFile, hPath, hist):
     outFile.cd(hPath)
     gDirectory.Delete("%s;*"%(hist.GetName()))
     if isCheck:
-        print "%60s, %20s, %10s"%(hPath, hist.GetName(), round(hist.Integral()))
+        print("%60s, %20s, %10s"%(hPath, hist.GetName(), round(hist.Integral())))
     hist.Write()
 
 
@@ -105,22 +98,21 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
     inDir = "%s/Rebin/%s/%s/%s"%(dirHist, year, decay, channel)
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
     if isCheck:
-        print inFile
+        print(inFile)
     outDir = inDir.replace("Rebin", "ForDYSF")
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
     print("==> %s, %s, %s"%(year, decay, channel))
-    '''
     for r, syst, hName in itertools.product(rList, sysList, hists.keys()):
         #DY
         hPath = "%s/%s/%s"%("DYJets", r, syst)
         writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
         #Signal
-        hPath = "%s/%s/%s"%("Signal_M800", r, syst)
+        hPath = "%s/%s/%s"%("SignalSpin12_M800", r, syst)
         writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
-        hPath = "%s/%s/%s"%("Signal_M1200", r, syst)
+        hPath = "%s/%s/%s"%("SignalSpin12_M1200", r, syst)
         writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
-        hPath = "%s/%s/%s"%("Signal_M1600", r, syst)
+        hPath = "%s/%s/%s"%("SignalSpin12_M1500", r, syst)
         writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
         #OtherBkgs
         hPath = "%s/%s/%s"%("OtherBkgs", r, syst)
@@ -129,31 +121,5 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
         if "Base" in syst:
             hPath = "%s/%s/%s"%("data_obs", r, syst)
             writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
-    '''
-    #Remove me ------
-    for r, hName in itertools.product(rList, hists.keys()):
-        for i in range(len(sysList)):
-            #DY
-            hPath = "%s/%s/%s"%("DYJets", r, sysList[i])
-            hPath_ = "%s/%s/%s"%("DYJets", r, sysList_[i])
-            writeHist(outFile,  hPath_, getHist(inFile, hPath, hName))
-            #Signal
-            hPath = "%s/%s/%s"%("Signal_M800", r, sysList[i])
-            hPath_ = "%s/%s/%s"%("Signal_M800", r, sysList_[i])
-            writeHist(outFile,  hPath_, getHist(inFile, hPath, hName))
-            hPath = "%s/%s/%s"%("Signal_M1200", r, sysList[i])
-            hPath_ = "%s/%s/%s"%("Signal_M1200", r, sysList_[i])
-            writeHist(outFile,  hPath_, getHist(inFile, hPath, hName))
-            hPath = "%s/%s/%s"%("Signal_M1600", r, sysList[i])
-            hPath_ = "%s/%s/%s"%("Signal_M1600", r, sysList_[i])
-            writeHist(outFile,  hPath_, getHist(inFile, hPath, hName))
-            #OtherBkgs
-            hPath_ = "%s/%s/%s"%("OtherBkgs", r, sysList_[i])
-            writeHist(outFile, hPath_, getHistOther(inFile, r, sysList[i], hName))
-            #data_obs for base
-            if "Base" in sysList[i]:
-                hPath = "%s/%s/%s"%("data_obs", r, sysList[i])
-                writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
-    #------------
     outFile.Close()
-    print "/eos/uscms/%s/AllInc.root\n"%outDir
+    print("/eos/uscms/%s/AllInc.root\n"%outDir)

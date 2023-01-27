@@ -116,7 +116,11 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
     nEvents = {}
     for finished in finishedList:
         fROOT = "root://cmsxrootd.fnal.gov/%s/%s"%(outDir, finished)
-        f = TFile.Open(fROOT, "READ")
+        try:
+            f = TFile.Open(fROOT, "READ")
+        except:
+            corruptedList.append(finished)
+            continue
         if not f:
             print("Null pointer: %s"%fROOT)
             corruptedList.append(finished)
@@ -141,14 +145,14 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
     resubJobs += len(corruptedList)
 
     print(colored("(3): Checking same nEvents from NanoAOD and Skim ...", "red"))
-    print("\tnDiff\t nSkim\t nNtuple\t Sample")
+    print(" \tnSkim\t nNtuple\t %nSkim \tSample")
     for samp in sampleDict.keys():
         nSkim = sampleDict[samp][2]
         nNtuple = 0
         for fileSkim in nEvents.keys():
             if samp == fileSkim.split("_Ntuple")[0]:
                 nNtuple+=nEvents[fileSkim]
-        print("%10s %10s, %10s\t %s"%(nSkim-int(nNtuple), nSkim, int(nNtuple), samp))
+        print("%10s %10s, %10s%s\t %s"%(nSkim, int(nNtuple), int(100*(nNtuple/nSkim)), '%', samp))
 
     print(colored("(4): Checking xrdcp errors ...", "red"))
     argListYear = []

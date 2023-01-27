@@ -13,7 +13,7 @@ from array import array
 #INPUT command-line arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--years", dest="years", default="2016PreVFP",type='str',
+parser.add_option("-y", "--years", dest="years", default="2016Pre",type='str',
                      help="Specify the years of the data taking" )
 parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
@@ -58,7 +58,7 @@ isPlotTP        = options.isPlotTP
 #Various functions
 #----------------------------------------
 def runCmd(cmd):
-    print "\n\033[01;32m Excecuting: \033[00m %s"%cmd
+    print("\n\033[01;32m Excecuting: \033[00m %s"%cmd)
     os.system(cmd)
 
 #-----------------------------------------
@@ -66,7 +66,7 @@ def runCmd(cmd):
 #----------------------------------------
 def getDataCard(year, decayMode, channel, region, hName):
     args = "-y %s -d %s -c %s -r %s --hist %s "%(year, decayMode, channel, region, hName)
-    runCmd("python makeDataCard.py  %s "%args)
+    runCmd("python3 makeDataCard.py  %s "%args)
     inDirDC = "%s/%s/%s/%s/%s/%s"%(dirFit, year, decayMode, channel, region, hName)
     name = "%s/Datacard_Alone.txt"%inDirDC
     return name
@@ -86,11 +86,11 @@ if not os.path.exists(dirDC):
 pathDC  = "%s/Datacard.txt"%(dirDC)
 pathT2W = "%s/Text2W.root"%(dirDC)
 runCmd("combineCards.py %s > %s"%(combDCText, pathDC))
-print pathDC
+print(pathDC)
 
 if isT2W:
         runCmd("text2workspace.py %s -o %s"%(pathDC, pathT2W))
-        print pathT2W
+        print(pathT2W)
 
 #-----------------------------------------
 #Fit diagnostics
@@ -103,8 +103,8 @@ paramList = ["r", "WGammaSF", "ZGammaSF"]
 params    = ','.join([str(param) for param in paramList])
 if isFD:
     runCmd("combine -M FitDiagnostics  %s --out %s --robustHesse 1  --expectSignal 1 --plots --redefineSignalPOIs %s -v2 --cminDefaultMinimizerStrategy 0 --setParameterRanges WGammaSF=0,20:ZGammaSF=0,20 --rMin=%s --rMax=%s"%(pathT2W, dirDC, params, rMin, rMax))
-    runCmd("python diffNuisances.py --all %s/fitDiagnostics.root -g %s/diffNuisances.root"%(dirDC,dirDC))
-    print dirDC
+    runCmd("python3 diffNuisances.py --all %s/fitDiagnostics.root -g %s/diffNuisances.root"%(dirDC,dirDC))
+    print(dirDC)
     #store rateparams in a json file 
     myfile = ROOT.TFile("%s/fitDiagnostics.root"%dirDC,"read")
     fit_s = myfile.Get("fit_s")
@@ -127,7 +127,7 @@ if isFD:
 
 if isTP:
     runCmd("combine -M FitDiagnostics %s --name TP -t -1 --out %s --seed=314159 --plots --saveNLL --rMin=-5 --rMax=5 --setParameterRanges nonPromptSF=-10,10 --expectSignal=1 -t 500 -v3 --skipBOnlyFit --trackParameters r,BTagSF_b,BTagSF_l,EleEff,MuEff,PhoEff,lumi_13TeV,ZGSF,TTbarSF,OtherSF,WGSF,nonPromptSF &"%(pathT2W, dirDC))
-    print dirDC
+    print(dirDC)
 
 if isLimit:
     #https://github.com/cms-analysis/CombineHarvester/blob/master/docs/Limits.md
@@ -135,7 +135,7 @@ if isLimit:
     runCmd("combineTool.py -d %s -M AsymptoticLimits --mass %s -n _TT_run2 --run blind --there --parallel 4 "%(pathT2W, mass))
     nameLimitOut = "higgsCombine_TT_run2.AsymptoticLimits.mH%s.root"%(mass)
     runCmd("combineTool.py -M CollectLimits %s/%s -o %s/limits.json"%(dirDC, nameLimitOut, dirDC))
-    print dirDC
+    print(dirDC)
 
 #-----------------------------------------
 #Impacts of Systematics
@@ -144,7 +144,7 @@ if isImpact:
     runCmd("combineTool.py -M Impacts -d %s  -m 125 --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1  --redefineSignalPOIs %s --setParameterRanges r=0,20:WGammaSF=0,20:ZGammaSF=0,20 "%(pathT2W, params)) 
     runCmd("combineTool.py -M Impacts -d %s  -m 125  --doFits --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1  --redefineSignalPOIs %s --setParameterRanges r=0,20:WGammaSF=0,20:ZGammaSF=0,20 --parallel 10"%(pathT2W, params))
     runCmd("combineTool.py -M Impacts -d %s -m 125 -o %s/nuisImpact.json --redefineSignalPOIs %s "%(pathT2W, dirDC, params))
-    runCmd("python ./plotImpacts.py --cms-label \"   Internal\" -i %s/nuisImpact.json -o %s/nuisImpact.pdf"%(dirDC, dirDC))
+    runCmd("python3 ./plotImpacts.py --cms-label \"   Internal\" -i %s/nuisImpact.json -o %s/nuisImpact.pdf"%(dirDC, dirDC))
 
 
 #-----------------------------------------
@@ -189,7 +189,7 @@ if isCM:
     h_signal.Draw('colz, Y+, TEXT0')
 
     mypal = h_signal.GetListOfFunctions().FindObject('palette')
-    print mypal
+    print(mypal)
     mypal.SetX1NDC(0.02);
     mypal.SetX2NDC(0.06);
     mypal.SetY1NDC(0.1);

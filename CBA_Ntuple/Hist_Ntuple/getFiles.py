@@ -17,7 +17,7 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
     ntupleFile.write("#Year, Decay, Syst: %s, %s, %s\n"%(year, decay, syst))
     ntupleFile.write("#----------------------------------------------------\n")
     print("Year, Decay, Syst: %s, %s, %s"%(year, decay, syst))
-    print  "Sub\t  Done\t Diff\t Sample"
+    print("Sub\t  Done\t Diff\t Sample")
     missingJobs = {}
     sampleList = eval("Samples_%s"%year)
     allJobs = 0
@@ -26,7 +26,7 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
         nJob = reducedJob(fEvt[0], sampleName)
         allJobs+=nJob
         extraArgs = "%s_Ntuple*.root"%sampleName
-        fileList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s/%s/%s/%s/%s'%(outNtupleDir, year, decay, syst, extraArgs),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+        fileList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s/%s/%s/%s/%s'%(outNtupleDir, year, decay, syst, extraArgs),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
         fileList.remove("")
         nFiles = len(fileList)
         print("%i\t %i\t %i\t %s"%(nJob, nFiles, nJob-nFiles, sampleName))
@@ -34,7 +34,7 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
             missingJobs[sampleName] = nJob -nFiles
         lineLeft= '%s_%s__%s_FileList_%s'%(decay, syst, sampleName,year)
         ntupleFile.write("\n\n%s = %s"%(lineLeft, fileList))
-    print "All jobs: ", allJobs 
-    print "Missing jobs:", missingJobs
+    print("All jobs: ", allJobs)
+    print("Missing jobs:", missingJobs)
 ntupleFile.close()
 

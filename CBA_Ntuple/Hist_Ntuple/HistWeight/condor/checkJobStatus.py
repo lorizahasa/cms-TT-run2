@@ -46,9 +46,9 @@ jdlFile.write(common_command)
 
 #Search in the log files to see if xrdcp was not able to copy a file
 print("Collecting error logs for all years ...")
-grepList = subprocess.Popen('grep -rn nan %s'%(logDir),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+grepList = subprocess.Popen('grep -rn nan %s'%(logDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
 grepList.remove("")
-grepList2 = subprocess.Popen('grep -rn rror %s'%(logDir),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+grepList2 = subprocess.Popen('grep -rn rror %s'%(logDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
 grepList2.remove("")
 errList = []
 for err in grepList+grepList2:
@@ -58,7 +58,7 @@ for err in np.unique(errList):
     if "std" not in err: continue
     search = "All arguements"
     out = err.replace("stderr", "stdout")
-    arg = subprocess.Popen('grep -rn \"%s\" %s'%(search, out),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+    arg = subprocess.Popen('grep -rn \"%s\" %s'%(search, out),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
     args = arg[0].split(" ")[2:]
     argList.append(args)
 #print(argList)
@@ -84,22 +84,22 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
         submittedDict[rootFile] = s
 
     print(colored("(1): Checking unfinished jobs ...", 'red'))
-    print "Total submitted jobs: %s"%len(submittedDict.keys())
+    print("Total submitted jobs: %s"%len(submittedDict.keys()))
 
     #----------------------------------------
     #Get all finished jobs
     #----------------------------------------
-    finishedList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s'%(outDir),shell=True,stdout=subprocess.PIPE).communicate()[0].split('\n')
+    finishedList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s'%(outDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
     finishedList.remove("")
-    print "Total finished jobs: %s"%len(finishedList)
+    print("Total finished jobs: %s"%len(finishedList))
 
     #----------------------------------------
     #Get all un-finished jobs
     #----------------------------------------
     unFinJobs = len(submittedDict.keys()) - len(finishedList)
-    print "Unfinished jobs: %s"%(unFinJobs)
+    print("Unfinished jobs: %s"%(unFinJobs))
     unFinishedList = returnNotMatches(finishedList, submittedDict.keys())   
-    print unFinishedList
+    print(unFinishedList)
     resubJobs +=unFinJobs
 
     #----------------------------------------
@@ -107,6 +107,7 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
     #----------------------------------------
     print(colored("(2): Checking corrupted files ... ", "red")) 
     corruptedList = []
+    '''
     for finished in finishedList:
         fROOT = "root://cmsxrootd.fnal.gov/%s/%s"%(outDir, finished)
         f = TFile.Open(fROOT, "READ")
@@ -122,7 +123,8 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
             print("Empty file: %s"%fROOT)
             corruptedList.append(finished)
             continue
-    print "Finished but corrupted jobs: %s"%len(corruptedList)
+    print("Finished but corrupted jobs: %s"%len(corruptedList))
+    '''
     resubJobs += len(corruptedList)
 
     print(colored("(3): Checking nan/error ...", "red"))

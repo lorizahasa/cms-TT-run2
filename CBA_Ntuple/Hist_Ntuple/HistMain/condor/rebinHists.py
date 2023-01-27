@@ -40,7 +40,7 @@ if isCheck:
     Channels = [Channels[0]]
     #Samples = [Samples[0]]
     Samples = ["TTGamma"]
-    rList   = [Regions.keys()[0]]
+    rList   = [list(Regions.keys())[0]]
     sysList = [sysList[0]]
 if isSep: 
     isComb = False

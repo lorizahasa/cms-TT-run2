@@ -32,4 +32,4 @@ for sample in Samples:
         args = "-y %s -d %s -c %s -s %s -r %s --syst %s --allHists --isCat"%(year, decay, channel, sample, region, syst)
     else:
         args = "-y %s -d %s -c %s -s %s -r %s --syst %s --allHists"%(year, decay, channel, sample, region, syst)
-    os.system("python makeHists.py %s"%args)
+    os.system("python3 makeHists.py %s"%args)

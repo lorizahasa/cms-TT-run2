@@ -21,7 +21,7 @@ isCheck = options.isCheck
 isSep = options.isSep
 isComb = options.isMerge
 
-rList = Regions.keys()
+rList = list(Regions.keys())
 
 
 #-----------------------------------------
@@ -38,7 +38,7 @@ if isCheck:
     Years  = [Years[0]]
     Decays = [Decays[0]]
     Channels = [Channels[0]]
-    rList   = [Regions.keys()[0]]
+    rList   = [rList[0]]
     sysList = [sysList[0], 'Weight_pdfUp', 'Weight_jesUp']
 if isSep: 
     isComb = False
@@ -55,7 +55,7 @@ if not isCheck and not isSep and not isComb:
 #----------------------------------------
 def addHist(histList, name):
     if len(histList) ==0:
-        print "Hist list | %s, %s | is empty"%(histList, name)
+        print("Hist list | %s, %s | is empty"%(histList, name))
         sys.exit()
     else:
         hist = histList[0].Clone(name)
@@ -81,16 +81,7 @@ def getHistOther(inFile, year, reg, syst, hName):
         if ("Signal" in s) or ("data_obs" in s) or ("TTGamma" in s): 
             continue
         hPath = "%s/%s/%s"%(s, reg, syst)
-        #-----------Remove me------------
-        hTemp = getHist(inFile, hPath, hName)
-        if "TTbar" in s:
-            ttbarSF = 1+dictSFs[year][1]*25/100 #Assuming 25% misID in ttbar
-            if isCheck:
-                print(ttbarSF)
-            hTemp.Scale(ttbarSF)
-        hList.append(hTemp)
-        #-------------------------------
-        #hList.append(getHist(inFile, hPath, hName))
+        hList.append(getHist(inFile, hPath, hName))
     return addHist(hList, hName)
 
 def writeHist(outFile, hPath, hist):
@@ -99,7 +90,7 @@ def writeHist(outFile, hPath, hist):
     outFile.cd(hPath)
     gDirectory.Delete("%s;*"%(hist.GetName()))
     if isCheck:
-        print "%60s, %20s, %10s"%(hPath, hist.GetName(), round(hist.Integral()))
+        print("%60s, %20s, %10s"%(hPath, hist.GetName(), round(hist.Integral())))
     hist.Write()
 
 
@@ -113,10 +104,10 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
     print("==> %s, %s, %s, %s"%(year, decay, channel, r))
-    hList = GetVarInfo(r, channel).keys()
+    hList = list(GetVarInfo(r, channel).keys())
     hList.append('Disc')
     if isCheck:
-        print inFile
+        print(inFile)
         hList = ['Disc']
     for syst, hName in itertools.product(sysList, hList):
         #Signal and TTGamma
@@ -158,4 +149,4 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
             hPath = "%s/%s/%s"%("data_obs", r, syst)
             writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
     outFile.Close()
-    print "/eos/uscms/%s/AllInc.root\n"%outDir
+    print("/eos/uscms/%s/AllInc.root\n"%outDir)

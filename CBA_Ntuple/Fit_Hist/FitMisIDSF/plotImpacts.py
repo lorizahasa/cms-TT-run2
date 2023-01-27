@@ -26,7 +26,7 @@ parser.add_argument("--pullDef",  default=None, help="Choose the definition of t
 parser.add_argument('--POI', default=None, help='Specify a POI to draw')
 args = parser.parse_args()
 if args.transparent:
-    print 'plotImpacts.py: --transparent is now always enabled, the option will be removed in a future update'
+    print('plotImpacts.py: --transparent is now always enabled, the option will be removed in a future update')
 
 externalPullDef = False
 if args.pullDef is not None:
@@ -103,7 +103,7 @@ if args.color_groups is not None:
 
 seen_types = set()
 
-for name, col in colors.iteritems():
+for name, col in colors.items():
     color_hists[name] = ROOT.TH1F()
     plot.Set(color_hists[name], FillColor=col, Title=name)
 
@@ -112,15 +112,15 @@ if args.color_groups is not None:
         color_group_hists[name] = ROOT.TH1F()
         plot.Set(color_group_hists[name], FillColor=col, Title=name)
 
-for page in xrange(n):
+for page in range(n):
     canv = ROOT.TCanvas("nuisanceImpact", "nuisanceImpact", 1600, 1800)
     #canv = ROOT.TCanvas(args.output, args.output, 1600, 1800)
     n_params = len(data['params'][show * page:show * (page + 1)])
     pdata = data['params'][show * page:show * (page + 1)]
-    print '>> Doing page %i, have %i parameters' % (page, n_params)
+    print('>> Doing page %i, have %i parameters' % (page, n_params))
 
     boxes = []
-    for i in xrange(n_params):
+    for i in range(n_params):
         y1 = ROOT.gStyle.GetPadBottomMargin()
         y2 = 1. - ROOT.gStyle.GetPadTopMargin()
         h = (y2 - y1) / float(n_params)
@@ -157,7 +157,7 @@ for page in xrange(n):
     text_entries = []
     text_entries_3sigma = []
     redo_boxes = []
-    for p in xrange(n_params):
+    for p in range(n_params):
         i = n_params - (p + 1)
         pre = pdata[p]['prefit']
         fit = pdata[p]['fit']
@@ -186,17 +186,17 @@ for page in xrange(n):
 
             g_pulls.SetPoint(i, pull, float(i) + 0.5)
             nuisName = Translate(pdata[p]['name'],translate)
-            #print '%s\t %f \t %f \t %f' % (nuisName, fit[0], fit[1], fit[2])
-            print '%20s\t %10f \t %10f \t %10f' % (nuisName, impact_r, max(unc), min(unc))
+            #print('%s\t %f \t %f \t %f' % (nuisName, fit[0], fit[1], fit[2]))
+            print('%20s\t %10f \t %10f \t %10f' % (nuisName, impact_r, max(unc), min(unc)))
             if(abs(pull) >2):
                 if("prop" in nuisName):
                     chName = nuisName.split("_")[1].replace("bin", "")
                     binName = nuisName.split("_")[2].replace("bin", "")
-                    #print '%s\t %s\t %s\t %f \t %f \t %f' % (nuisName, chName, binName, pull_lo, pull, pull_hi)
+                    #print('%s\t %s\t %s\t %f \t %f \t %f' % (nuisName, chName, binName, pull_lo, pull, pull_hi))
                 else:
-                    print "-----------------------------"
-                    print '%s\t %f \t %f \t %f' % (nuisName, fit[0], fit[1], fit[2])
-                    print "-----------------------------"
+                    print("-----------------------------")
+                    print('%s\t %f \t %f \t %f' % (nuisName, fit[0], fit[1], fit[2]))
+                    print("-----------------------------")
             g_pulls.SetPointError( i, pull_lo, pull_hi, 0., 0.)
             #Put a text on points not shown in the graph
             if(abs(pull) >3):

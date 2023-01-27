@@ -45,6 +45,7 @@ for line in txtFile:
     allPlotPath.append(line)
     allPlotName.append(line.split("/")[-1])
 
+print(len(allPlotName))
 showPerFig = 16
 widthFor   = 4
 #figWidth = (1-0.05)/showPerFig#5% margin
@@ -58,15 +59,15 @@ nPage = len(allPlotPath)/showPerFig
 remainder = len(allPlotPath)%showPerFig
 if remainder != 0:
     nPage = nPage +1
-for page in np.arange(nPage):
+for page in np.arange(int(nPage)):
     texFile.write("\\begin{figure}\n")
     texFile.write("\centering\n")
     perFigName = []
     showPerPage = showPerFig
     if remainder != 0:
-        if page == nPage -1:
+        if page == int(nPage -1):
             showPerPage = remainder
-    for n in np.arange(showPerPage):
+    for n in np.arange(int(showPerPage)):
         perFigName.append(allPlotName[showPerFig*page + n])
         plotPath = allPlotPath[showPerFig*page + n]
         texFile.write("\includegraphics[width=%s\linewidth]{%s}\n"%(figWidth, plotPath.strip()))

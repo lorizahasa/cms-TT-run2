@@ -21,7 +21,7 @@ isCheck = options.isCheck
 isSep = options.isSep
 isComb = options.isMerge
 
-rList = Regions.keys()
+rList = list(Regions.keys())
 #-----------------------------------------
 # Collect all syst 
 #----------------------------------------
@@ -39,8 +39,7 @@ if isCheck:
     Channels = [Channels[0]]
     #Samples = [Samples[0]]
     Samples = ["TTGamma"]
-    rList   = ['ttyg_Enriched_SR_Boosted']
-    #rList   = [Regions.keys()[0]]
+    rList   = [rList[0]]
     sysList = [sysList[0]]
 if isSep: 
     isComb = False
@@ -57,7 +56,7 @@ if not isCheck and not isSep and not isComb:
 #----------------------------------------
 def addHist(histList, name):
     if len(histList) ==0:
-        print "Hist list | %s, %s | is empty"%(histList, name)
+        print("Hist list | %s, %s | is empty"%(histList, name))
         sys.exit()
     else:
         hist = histList[0].Clone(name)
@@ -74,11 +73,11 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
     outHistDir = getHistDir(sample, CR, sysType)
     if not outputFile.GetDirectory(outHistDir):
         outputFile.mkdir(outHistDir)
-    #print gDirectory.ls()
+    #print(gDirectory.ls())
     outputFile.cd(outHistDir)
     hName = hist_.GetName()
     gDirectory.Delete("%s;*"%(hName))
-    #print "%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, CR, sysType, hist_.GetName()) 
+    #print("%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, CR, sysType, hist_.GetName()))
     if hName in dictRebin.keys():
         hNew = hist_.Rebin(len(dictRebin[hName])-1, hist_.GetName(), dictRebin[hName]) 
         hNew.Write()
@@ -93,12 +92,12 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
     inDir = "%s/Merged/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
     if isCheck:
-        print inFile
+        print(inFile)
     outDir = inDir.replace("Merged", "Rebin")
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outputFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
     print("==> %s, %s, %s, %s"%(year, decay, channel, r))
-    hists = GetVarInfo(r, channel).keys()
+    hists = list(GetVarInfo(r, channel).keys())
     hists.append('Disc')
     for s, h, sys, in itertools.product(Samples, hists, sysList):
         if "data_obs" in s and "Base" not in sys:
@@ -116,4 +115,4 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
                 hNew = inFile.Get("%s/%s"%(histDir, newName))
                 writeHist(s, r, sys, hNew, outputFile)
     outputFile.Close()
-    print "/eos/uscms/%s/AllInc.root\n"%outDir
+    print("/eos/uscms/%s/AllInc.root\n"%outDir)

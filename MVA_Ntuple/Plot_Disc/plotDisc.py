@@ -15,7 +15,7 @@ from PlotCMSLumi import *
 from PlotTDRStyle import *
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 
-rList = Regions.keys()
+rList = list(Regions.keys())
 print(rList)
 padGap = 0.01
 iPeriod = 4;
@@ -67,7 +67,7 @@ fPath = open("%s/plotDisc_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
 for decay, region, channel, year in itertools.product(Decays, rList, Channels, Years):
     hInfo = GetVarInfo(region, channel)
-    hList = hInfo.keys() + ['Disc']
+    hList = list(hInfo.keys()) + ['Disc']
     if isCheck:
         hList = ["Disc"]
         pass
@@ -142,7 +142,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
             yDict = {}
             sList = []
             if isData:
-                sList.append("Data")
+                sList.append("data_obs")
             for h in hForStack: 
                 sampleName = h.GetName().split("_")[0]
                 decoHist(h, xTitle, yTitle, SampleBkg[sampleName][0])
@@ -153,7 +153,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
             #Data hists
             if isData:
                 dataHist = getHist(inFile, "data_obs", region, "Base", hName)
-                decoHist(dataHist, xTitle, yTitle, SampleData["Data"][0])
+                decoHist(dataHist, xTitle, yTitle, SampleData["data_obs"][0])
                 dataHist.SetMarkerStyle(20)
                 dataHist.Draw("EPsame")
             
@@ -181,8 +181,8 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
             hSumAllBkg = bkgHists[0].Clone("AllBkg")
             hSumAllBkg.Reset()
             if isData:
-                plotLegend.AddEntry(dataHist, SampleData["Data"][1], "PEL")
-                yDict["Data"] = getYield(dataHist) 
+                plotLegend.AddEntry(dataHist, SampleData["data_obs"][1], "PEL")
+                yDict["data_obs"] = getYield(dataHist) 
             for bkgHist in hForLegend:
                 hSumAllBkg.Add(bkgHist)
             for bkgHist in hForLegend:
@@ -250,9 +250,9 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
                 gPad.RedrawAxis();
                 hRatio = dataHist.Clone("hRatio")
                 hRatio.Divide(hSumAllBkg)
-                decoHistRatio(hRatio, xTitle, "Data/Bkgs", 1)
-                sList.append("Data/Bkgs")
-                yDict["Data/Bkgs"] = ["---", round(dataHist.Integral()/hSumAllBkg.Integral(),2), " --- (---)"]
+                decoHistRatio(hRatio, xTitle, "data_obs/Bkgs", 1)
+                sList.append("data_obs/Bkgs")
+                yDict["data_obs/Bkgs"] = ["---", round(dataHist.Integral()/hSumAllBkg.Integral(),2), " --- (---)"]
                 hRatio.Draw()
                 if isUnc:
                     uncGraphRatio  = getUncBand(hSumBkgs, hUncUp, hUncDown, True)
@@ -270,7 +270,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
             tHead = "Process & Entry & Yield & Stat (Syst)\\%\\\\\n" 
             table = createTable(Samples, yDict, sList, 4, tHead, cap.replace("_", "\\_"))
             tableFile = open(pdf.replace(".pdf", ".tex"), "w")
-            print table
+            print(table)
             tableFile.write(table)
         makePlot(hName, region, isSig,  isData, isLog, isRatio, isUnc)
 print(fPath)
