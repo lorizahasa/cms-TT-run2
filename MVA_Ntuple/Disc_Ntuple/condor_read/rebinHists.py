@@ -91,14 +91,15 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
 for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList):
     inDir = "%s/Merged/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
-    if isCheck:
-        print(inFile)
     outDir = inDir.replace("Merged", "Rebin")
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outputFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
     print("==> %s, %s, %s, %s"%(year, decay, channel, r))
     hists = list(GetVarInfo(r, channel).keys())
     hists.append('Disc')
+    if isCheck:
+        print(inFile)
+        hists = ["Disc", "Reco_mass_T"]
     for s, h, sys, in itertools.product(Samples, hists, sysList):
         if "data_obs" in s and "Base" not in sys:
             continue

@@ -110,7 +110,15 @@ class makeNtuple {
     Float_t  _q2weight_Do;
     Float_t  _q2weight_nominal;
     Float_t   _genWeight;
-	
+	//8 separate weights of q2
+    Float_t  _q2weight_NN;//muR = nominal (N), muF = N
+    Float_t  _q2weight_UN;
+    Float_t  _q2weight_DN;
+    Float_t  _q2weight_UU;//muR =Up, muF = Up
+    Float_t  _q2weight_NU;
+    Float_t  _q2weight_ND;
+    Float_t  _q2weight_DD;
+
     Float_t   _pdfWeight;
     Float_t   _pdfweight_Up;
     Float_t	  _pdfweight_Do;
@@ -425,6 +433,13 @@ void makeNtuple::InitBranches(){
 	    outputTree->Branch("Weight_q2Up"       , &_q2weight_Up );
 	    outputTree->Branch("Weight_q2Down"     , &_q2weight_Do );
 	    outputTree->Branch("Weight_pdfUp"      , &_pdfweight_Up );
+        outputTree->Branch("Weight_q2_NN"          , &_q2weight_NN);
+        outputTree->Branch("Weight_q2_UN"          , &_q2weight_UN);
+        outputTree->Branch("Weight_q2_DN"          , &_q2weight_DN);
+        outputTree->Branch("Weight_q2_NU"          , &_q2weight_NU);
+        outputTree->Branch("Weight_q2_ND"          , &_q2weight_ND);
+        outputTree->Branch("Weight_q2_DD"          , &_q2weight_DD);
+        outputTree->Branch("Weight_q2_UU"          , &_q2weight_UU);
 	    outputTree->Branch("Weight_pdfDown"    , &_pdfweight_Do );
 	    outputTree->Branch("Weight_isrUp"      , &_ISRweight_Up );
 	    outputTree->Branch("Weight_isrDown"    , &_ISRweight_Do );
@@ -545,6 +560,13 @@ void makeNtuple::InitVariables()
     _q2weight_nominal = 1.;
     _q2weight_Up = 1.;
     _q2weight_Do = 1.;
+    _q2weight_NN = 1.;
+    _q2weight_UN = 1.;
+    _q2weight_DN = 1.;
+    _q2weight_NU = 1.;
+    _q2weight_ND = 1.;
+    _q2weight_UU = 1.;
+    _q2weight_DD = 1.;
     _genWeight = 0.;
 
     _pdfWeight    = 1.;

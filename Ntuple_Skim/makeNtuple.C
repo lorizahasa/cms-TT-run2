@@ -612,7 +612,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     std::cout<<"---------------------------"<<std::endl;
     double totalTime = 0.0;
     for(Long64_t entry=startEntry; entry<endEntry; entry++){
-        //if(entry>100000) break;;
+        //if(entry>10000) break;;
         //--------------------------
         //print event after each 1%
         //--------------------------
@@ -1166,7 +1166,7 @@ void makeNtuple::FillEvent(std::string year){
     for (int i_jet = 0; i_jet <_nJet; i_jet++){
         int jetInd = selector->Jets.at(i_jet);
         _jetPt.push_back(tree->jetPt_[jetInd]);
-        _jetQGL.push_back(tree->jetQGL_[jetInd]);
+        cout<<tree->jetQGL_[jetInd]<<endl;
         _jetEta.push_back(tree->jetEta_[jetInd]);
         _jetPhi.push_back(tree->jetPhi_[jetInd]);
         _jetMass.push_back(tree->jetMass_[jetInd]);
@@ -1412,6 +1412,13 @@ void makeNtuple::FillEvent(std::string year){
 	        if(i==2||i==6){continue;}
 	        _genScaleSystWeights.push_back(tree->LHEScaleWeight_[i]);
 	    }
+        _q2weight_DD = tree->LHEScaleWeight_[0];
+        _q2weight_DN = tree->LHEScaleWeight_[1];//skip 2
+        _q2weight_ND = tree->LHEScaleWeight_[3];
+        _q2weight_NN = tree->LHEScaleWeight_[4];
+        _q2weight_NU = tree->LHEScaleWeight_[5];//skip 6
+        _q2weight_UN = tree->LHEScaleWeight_[7];
+        _q2weight_UU = tree->LHEScaleWeight_[8];
         double nomWeight=tree->LHEScaleWeight_[4];
         if (nomWeight!=0){
             _q2weight_Up = *max_element(_genScaleSystWeights.begin(), _genScaleSystWeights.end())/nomWeight;

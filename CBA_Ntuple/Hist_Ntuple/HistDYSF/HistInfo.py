@@ -6,6 +6,8 @@
 def GetHistogramInfo():
     hDict = {
              "Reco_mass_dilep"       : ["Reco_mass_dilep", [300,0,300], True],
+             "Muon_pt"              : ["Muon_pt"     , [2000,-50,1950], True],
+             "Electron_pt"          : ["Electron_pt" , [2000,-50,1950], True],
              }
     return hDict
 

@@ -140,11 +140,11 @@ void Selector::filter_electrons(){
 
         bool eleSel = (passEtaEBEEGap && 
                        absEta <= 2.2 &&
-                       pt >= 50.0 &&
+                       pt >= 40.0 &&
                        passTightID);
         bool looseSel = (passEtaEBEEGap && 
                          absEta <= 2.2 &&
-                         pt >= 35.0 &&
+                         pt >= 30.0 &&
                          passVetoID &&
                          !eleSel);
         if(eleSel) Electrons.push_back(eleInd);
@@ -205,9 +205,8 @@ void Selector::filter_jets(){
         double phi = tree->jetPhi_[jetInd];
         //https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVUL
         //https://twiki.cern.ch/twiki/bin/viewauth/CMS/PileupJetIDUL
-        //puID to be applied later on
-        //bool jetID_pass = (tree->jetID_[jetInd]>=2 and (tree->jetPUID_[jetInd]>=1 or pt>=50.0)) ;
-        bool jetID_pass = tree->jetID_[jetInd]>=2; 
+        // Jet tight leptpn veto ID (>=6). Reject jet which fail all PU ID (==0)
+        bool jetID_pass = (tree->jetID_[jetInd]>=6 and (tree->puID_[jetInd]>=1 or pt>=50.0));
         double resolution = 0.;
         double jetSmear = 1.;
         if (!tree->isData_){
@@ -220,12 +219,19 @@ void Selector::filter_jets(){
             if (JERsystLevel==1) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::NOMINAL);
             if (JERsystLevel==0) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::DOWN);
             if (JERsystLevel==2) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::UP);
+            //https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetResolution
             int genIdx = tree->jetGenJetIdx_[jetInd];
-            if ( (genIdx>-1) && (genIdx < tree->nGenJet_)){
-	        double genJetPt = tree->GenJet_pt_[genIdx];
-	        jetSmear = 1. + (jetSF - 1.) * (pt - genJetPt)/pt;
-            }else{
-	        jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
+            bool isMatch = false;
+            if ((genIdx>-1) && (genIdx < tree->nGenJet_)){
+                double delR =  dR(eta, phi, tree->GenJet_eta_[genIdx], tree->GenJet_phi_[genIdx]);
+                if(delR<0.2 && abs(pt - tree->GenJet_pt_[genIdx])<3*resolution*pt){
+                    isMatch = true;
+                }
+            }
+	        if(isMatch){ //scaling method
+                jetSmear = max(0.0, 1. + (jetSF - 1.) * (pt - tree->GenJet_pt_[genIdx])/pt);
+            }else{ // stochastic smearing
+	            jetSmear = max(0.0, 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) ));
             }
             if (tree->event_==printEvent){
             cout<<"------------------------"<<endl;
@@ -263,7 +269,7 @@ void Selector::filter_jets(){
         if (!skipAK4AK8dr){
             //loop over selected fat jets
             for(std::vector<int>::const_iterator fatJetInd = FatJets.begin(); fatJetInd != FatJets.end(); fatJetInd++) {
-                if (dR(eta, phi, tree->fatJetEta_[*fatJetInd], tree->fatJetPhi_[*fatJetInd]) < 0.8) passDR_ak8 = false;
+                if (dR(eta, phi, tree->fatJetEta_[*fatJetInd], tree->fatJetPhi_[*fatJetInd]) < 1.6) passDR_ak8 = false;
             }
         }
 
@@ -345,12 +351,19 @@ void Selector::filter_fatjets(){
             if (JERsystLevel==2) jetSF = jetResolutionScaleFactorAK8->getScaleFactor(jetParamAK8,Variation::UP);
 	    
             double jetSmear = 1;
+            //https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetResolution
             int genIdx = tree->fatJetGenJetAK8Idx_[jetInd];
-            if ( (genIdx>-1) && (genIdx < tree->nGenJetAK8_)){
-	        double genJetPt = tree->GenJetAK8_pt_[genIdx];
-	        jetSmear = 1. + (jetSF - 1.) * (pt - genJetPt)/pt;
-            }else{
-	        jetSmear = 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) );
+            bool isMatch = false;
+            if ((genIdx>-1) && (genIdx < tree->nGenJetAK8_)){
+                double delR =  dR(eta, phi, tree->GenJetAK8_eta_[genIdx], tree->GenJetAK8_phi_[genIdx]);
+                if(delR<0.2 && abs(pt - tree->GenJetAK8_pt_[genIdx])<3*resolution*pt){
+                    isMatch = true;
+                }
+            }
+	        if(isMatch){ //scaling method
+                jetSmear = max(0.0, 1. + (jetSF - 1.) * (pt - tree->GenJetAK8_pt_[genIdx])/pt);
+            }else{ // stochastic smearing
+	            jetSmear = max(0.0, 1 + generator->Gaus(0, resolution) * sqrt( max(jetSF*jetSF - 1, 0.) ));
             }
             if (tree->event_==printEvent){
 	        cout << "  DoJetSmear: " << smearJetPt << endl;

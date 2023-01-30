@@ -65,10 +65,14 @@ SampleData = {
 SampleWeight = ["TTGamma", "TTbar", "SignalSpin12_M800"]
 SampleLumi = SampleBkg
 #SampleLumi.update(SampleSignal)
-SampleSyst = ["TTGamma", "TTbar", "WJets", "DYJets", "WGamma", "ZGamma", "QCD", "Others"] 
+SampleSyst = ["TTGamma", "OtherBkgs"] 
 #SampleSyst = SampleBkg.keys()
 Samples = {}
 Samples.update(SampleSignal)
 Samples.update(SampleBkg)
 Samples.update(SampleData)
+
+myCyan = rt.kCyan
+myRed = rt.kRed
+myBlue = rt.kBlue
 

@@ -144,7 +144,8 @@ if isImpact:
     runCmd("combineTool.py -M Impacts -d %s  -m 125 --doInitialFit --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1  --redefineSignalPOIs %s --setParameterRanges r=0,20:WGammaSF=0,20:ZGammaSF=0,20 "%(pathT2W, params)) 
     runCmd("combineTool.py -M Impacts -d %s  -m 125  --doFits --robustFit 1 --cminDefaultMinimizerStrategy 0 --expectSignal 1  --redefineSignalPOIs %s --setParameterRanges r=0,20:WGammaSF=0,20:ZGammaSF=0,20 --parallel 10"%(pathT2W, params))
     runCmd("combineTool.py -M Impacts -d %s -m 125 -o %s/nuisImpact.json --redefineSignalPOIs %s "%(pathT2W, dirDC, params))
-    runCmd("python3 ./plotImpacts.py --cms-label \"   Internal\" -i %s/nuisImpact.json -o %s/nuisImpact.pdf"%(dirDC, dirDC))
+    for param in paramList:
+        runCmd("python3 ./plotImpacts.py --POI %s --cms-label \"   Internal\" -i %s/nuisImpact.json -o %s/nuisImpact_%s.pdf"%(param, dirDC, dirDC, param))
 
 
 #-----------------------------------------

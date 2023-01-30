@@ -50,6 +50,17 @@ datacardPath    = "%s/Datacard_Alone.txt"%(outFileDir)
 if not os.path.exists(outFileDir):
     os.makedirs(outFileDir)
 
+lumiUncorr = {"2016Pre": ["lumi_2016", 1.01], 
+             "2016Post": ["lumi_2016", 1.01], 
+             "2017": ["lumi_2017", 1.02], 
+             "2018": ["lumi_2018", 1.015], 
+             }
+
+lumiCorr = {"2016Pre": ["lumi_Run2", 1.006], 
+             "2016Post": ["lumi_Run2", 1.006], 
+             "2017": ["lumi_Run2", 1.009], 
+             "2018": ["lumi_Run2", 1.02], 
+             }
 #-----------------------------------
 # Make datacard 
 #-----------------------------------
@@ -71,7 +82,8 @@ cb.AddProcesses(["*"],["TT"],["13TeV"],[channel],AllBkgs,[(-1, hName)], False)
 #------------------
 #Add systematics
 #------------------
-cb.cp().process(allMC).AddSyst(cb, "lumi_$ERA", "lnN",ch.SystMap("era") (["13TeV"], 1.025))
+cb.cp().process(allMC).AddSyst(cb, lumiUncorr[year][0], "lnN",ch.SystMap("era") (["13TeV"], lumiUncorr[year][1]))
+cb.cp().process(allMC).AddSyst(cb, lumiCorr[year][0], "lnN",ch.SystMap("era") (["13TeV"], lumiCorr[year][1]))
 cb.cp().process(["TTGamma"]).AddSyst(cb, "CMS_norm_tty", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
 cb.cp().process(["TTbar"]).AddSyst(cb, "CMS_norm_tt", "lnN",ch.SystMap("era") (["13TeV"], 1.055))
 cb.cp().process(["Others"]).AddSyst(cb, "CMS_norm_o", "lnN",ch.SystMap("era") (["13TeV"], 1.07))
