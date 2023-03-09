@@ -58,6 +58,8 @@ def GetHistogramInfo():
              }
     hDictTemp = {
              "Jet_pt"               : ["Jet_pt"         , [2000,-50,1950], True],
+             "Jet_eta"              : ["Jet_eta"        , [12,-2.88,2.88], True],
+             "Jet_size"             : ["Jet_size"       , [16,-0.5,15.5], True],
              "Reco_st"              : ["Reco_st"        , [9000,-50,8950], True],
              "Reco_mass_lgamma"     : ["Reco_mass_lgamma", [2000,-50,1950], True],
              }

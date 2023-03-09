@@ -23,3 +23,7 @@ HistMain:
 it matches. Similar for Jet_mass. Don't really understand it.
 ## Include TTGamma CPTune up/down in the limit computation
 ## Why TTGamma and Others lumiSF is different for muon and electron channel
+
+#Check the trigger efficiencies when we have 2 muons:
+https://indico.cern.ch/event/1238936/contributions/5209613/attachments/2582621/4454726/230126_HLTtutorial_leptonTnP_wonjun.pdf
+(slide-8)

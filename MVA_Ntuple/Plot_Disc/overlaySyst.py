@@ -20,7 +20,7 @@ print(rList)
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
-setTDRStyle()
+ModTDRStyle()
 xPadRange = [0.0,1.0]
 yPadRange = [0.0,0.30-padGap, 0.30+padGap,1.0]
 
@@ -150,8 +150,8 @@ for decay, region, channel, year, samp, syst in itertools.product(Decays, rList,
             plotLegend = TLegend(0.75,0.40,0.95,0.88); 
             decoLegend(plotLegend, 4, 0.035)
             plotLegend.AddEntry(hBase, "nominal", "PEL")
-            plotLegend.AddEntry(hUp, "up", "PEL")
-            plotLegend.AddEntry(hDown, "down", "PEL")
+            plotLegend.AddEntry(hUp, "%s_up"%syst, "PEL")
+            plotLegend.AddEntry(hDown, "%s_down"%syst, "PEL")
             plotLegend.Draw()
             hBase.SetMaximum(1.3*hBase.GetMaximum())
             hBase.GetXaxis().SetTitle(xTitle)
@@ -177,12 +177,12 @@ for decay, region, channel, year, samp, syst in itertools.product(Decays, rList,
                 gPad.RedrawAxis();
                 hRatioUp = hUp.Clone("hRatioUp")
                 hRatioUp.Divide(hBase)
-                decoHistRatio(hRatioUp, xTitle, "Ratio", myCyan)
+                decoHistRatio(hRatioUp, xTitle, "Ratio", myRed)
                 hRatioUp.GetYaxis().SetRangeUser(0.9, 1.1)
                 hRatioUp.Draw("HIST")
 
-                hRatioDown = hBase.Clone("hRatioDown")
-                hRatioDown.Divide(hDown)
+                hRatioDown = hDown.Clone("hRatioDown")
+                hRatioDown.Divide(hBase)
                 decoHistRatio(hRatioDown, xTitle, "Ratio", myBlue)
                 hRatioDown.Draw("hist same")
 

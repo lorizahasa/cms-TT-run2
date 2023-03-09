@@ -139,11 +139,11 @@ void Selector::filter_electrons(){
         bool passTightID = (eleID==4);
 
         bool eleSel = (passEtaEBEEGap && 
-                       absEta <= 2.2 &&
+                       absEta <= 2.4 &&
                        pt >= 40.0 &&
                        passTightID);
         bool looseSel = (passEtaEBEEGap && 
-                         absEta <= 2.2 &&
+                         absEta <= 2.4 &&
                          pt >= 30.0 &&
                          passVetoID &&
                          !eleSel);

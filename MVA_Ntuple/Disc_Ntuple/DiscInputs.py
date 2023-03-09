@@ -5,10 +5,10 @@ dirMVA    = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/"
 dirClass  = "%s/Disc_Ntuple/DiscMain"%dirMVA
 dirRead   = "%s/Disc_Ntuple/DiscMain"%dirMVA
 #-----------------------------------------------------------------
-#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-Years 	      =	["2016Pre"]
-#Channels 	  =	["Mu", "Ele"]
-Channels 	  =	["Mu"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years 	      =	["2017", "2018"]
+Channels 	  =	["Mu", "Ele"]
+#Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 #Mass          = ["800", "1600"]
 Mass      = ["700", "800", "900", "1100", "1200", "1300", "1500", "2750"]
@@ -19,14 +19,14 @@ Channels_      = ["Mu", "Ele", "Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
 
 S1 = []
-S1.append("SignalSpin12_M700")
-S1.append("SignalSpin12_M800")
-S1.append("SignalSpin12_M900")
-S1.append("SignalSpin12_M1100")
-S1.append("SignalSpin12_M1200")
-S1.append("SignalSpin12_M1300")
-S1.append("SignalSpin12_M1500")
-S1.append("SignalSpin12_M2750")
+S1.append("SignalSpin32_M700")
+S1.append("SignalSpin32_M800")
+S1.append("SignalSpin32_M900")
+S1.append("SignalSpin32_M1100")
+S1.append("SignalSpin32_M1200")
+S1.append("SignalSpin32_M1300")
+S1.append("SignalSpin32_M1500")
+S1.append("SignalSpin32_M2750")
 S1.append("TTGamma")
 S1.append("WJets")
 S1.append("DYJets")

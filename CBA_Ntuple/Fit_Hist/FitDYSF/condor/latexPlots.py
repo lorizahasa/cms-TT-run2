@@ -4,7 +4,6 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor", ""))
 import numpy as np
 from FitInputs import dirFit_, dirTwiki 
-from optparse import OptionParser
 
 
 fName = "FitDYSF_nuisImpact"

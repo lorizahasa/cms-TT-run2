@@ -6,27 +6,8 @@ sys.path.insert(0, os.getcwd().replace("condor", ""))
 sys.path.insert(0, os.getcwd().replace("Fit_Hist/FitMisIDSF/condor", "Hist_Ntuple/HistMisIDSF"))
 from FitInputs import *
 from HistInputs import Regions
-from optparse import OptionParser
 import json
 
-#----------------------------------------
-#INPUT Command Line Arguments 
-#----------------------------------------
-parser = OptionParser()
-parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
-parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
-(options, args) = parser.parse_args()
-isCheck = options.isCheck
-isSep = options.isSep
-
-if isCheck:
-    isSep  = True
-    Year  = [Year[0]]
-    Decay = [Decay[0]]
-    Channel = [Channel[0]]
-if not isCheck and not isSep:
-    print("Add either --isCheck or --isSep in the command line")
-    exit()
 
 hName = "Reco_mass_lgamma"
 #-----------------------------------------
@@ -57,8 +38,8 @@ for c in Channel:
         for y, decay in itertools.product(Year, Decay): 
             print("===> %s, %s, %s"%(c, r, y))
             dirJSON =  "%s/%s/%s/%s/%s/%s"%(dirFit_, y, decay, c, r, hName)
-            pdf = "%s/nuisImpact.pdf"%dirJSON
-            txtFile.write("%s\n"%pdf)
+            for poi in ["r", "WGammaSF", "ZGammaSF"]:
+                txtFile.write("%s/nuisImpact_%s.pdf\n"%(dirJSON, poi))
             with open ("%s/nuisImpact.json"%dirJSON) as jsonFile:
                 jsonData = json.load(jsonFile)
                 sfMisID   = getMisIDSF(jsonData, 0)

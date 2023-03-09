@@ -19,7 +19,7 @@ rList = list(Regions.keys())
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
-setTDRStyle()
+ModTDRStyle()
 xPadRange = [0.0,1.0]
 yPadRange = [0.0,0.30-padGap, 0.30+padGap,1.0]
 
@@ -95,7 +95,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     #Mass = ["700", "1200"]
     Mass  = ["800", '1100', "1200", "1500", "2750"]
     for mass in Mass: 
-        sigDisc = inFile.Get("SignalSpin12_M%s/%s/Base/%s"%(mass, region, hName))
+        sigDisc = inFile.Get("SignalSpin32_M%s/%s/Base/%s"%(mass, region, hName))
         int_ = sigDisc.Integral()
         if int_==0.0:
             continue

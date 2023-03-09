@@ -106,6 +106,7 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
         if isCheck:
             print("%s, %s, %s, %s"%(s, r, sys, h))
         histDir = getHistDir(s, r, sys)
+        #print(histDir, h)
         h4 = inFile.Get("%s/%s"%(histDir, h))
         writeHist(s, r, sys, h4, outputFile)
         if "MisID_" in r and "mass_lgamma" in h:

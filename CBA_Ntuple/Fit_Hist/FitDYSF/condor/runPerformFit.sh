@@ -27,7 +27,7 @@ echo "Number of arguements: "$#
 
 python3 performFit.py -y $1 -d $2 -c $3 -r $4 --isT2W --isImpact
 printf "Done fitting at ";/bin/date
-xrdcp -rf ./output/ root://cmseos.fnal.gov/$5
+xrdcp -rf ./output/Fit_Hist root://cmseos.fnal.gov/$5
 cd ../../
 rm -rf CMSSW*
 printf "Done ";/bin/date

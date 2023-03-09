@@ -180,11 +180,11 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
         writeHist(outFile, hPath, getHistOther(inFile, r, syst, hName))
 
         #Signal
-        hPath = "%s/%s/%s"%("SignalSpin12_M800", r, syst)
+        hPath = "%s/%s/%s"%("SignalSpin32_M800", r, syst)
         writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
-        hPath = "%s/%s/%s"%("SignalSpin12_M1200", r, syst)
+        hPath = "%s/%s/%s"%("SignalSpin32_M1200", r, syst)
         writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
-        hPath = "%s/%s/%s"%("SignalSpin12_M1500", r, syst)
+        hPath = "%s/%s/%s"%("SignalSpin32_M1500", r, syst)
         writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
 
         #data_obs for base

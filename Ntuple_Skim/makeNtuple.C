@@ -613,6 +613,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     double totalTime = 0.0;
     for(Long64_t entry=startEntry; entry<endEntry; entry++){
         //if(entry>10000) break;;
+        //cout<<entry<<endl;
         //--------------------------
         //print event after each 1%
         //--------------------------
@@ -1166,18 +1167,22 @@ void makeNtuple::FillEvent(std::string year){
     for (int i_jet = 0; i_jet <_nJet; i_jet++){
         int jetInd = selector->Jets.at(i_jet);
         _jetPt.push_back(tree->jetPt_[jetInd]);
-        cout<<tree->jetQGL_[jetInd]<<endl;
         _jetEta.push_back(tree->jetEta_[jetInd]);
         _jetPhi.push_back(tree->jetPhi_[jetInd]);
         _jetMass.push_back(tree->jetMass_[jetInd]);
+        _jetQGL.push_back(tree->jetQGL_[jetInd]);
         _jetCSVV2.push_back(tree->jetBtagCSVV2_[jetInd]);
         _jetDeepB.push_back(tree->jetBtagDeepB_[jetInd]);
         _jetGenJetIdx.push_back(tree->jetGenJetIdx_[jetInd]);
         double resolution = selector->jet_resolution.at(i_jet);
         _jetRes.push_back(resolution);
         _jerWeight.push_back(selector->jet_smear.at(i_jet));
-	    if (jecvar012_g != 1)_jesWeight.push_back(tree->jetmuEF_[jetInd]);
-        else _jesWeight.push_back(1.0);
+	    if (jecvar012_g != 1){
+            _jesWeight.push_back(tree->jetmuEF_[jetInd]);
+        }
+        else{
+            _jesWeight.push_back(1.0);
+        }
         jetResolutionVectors.push_back(resolution);
         jetBtagVectors.push_back(tree->jetBtagDeepB_[jetInd]);
         jetVector.SetPtEtaPhiM(tree->jetPt_[jetInd], 
@@ -1251,6 +1256,7 @@ void makeNtuple::FillEvent(std::string year){
             _TopStarLep_mass   = Reco_lepT.M();
             //Combined TT
             _tgtg_mass      = (Reco_hadT + Reco_lepT).M();
+            _tgtg_mass_diff = Reco_hadT.M() -  Reco_lepT.M();
             _TopStar_mass   = (_TopStarHad_mass + _TopStarLep_mass)/2.;
 
             //DeltaR between photon and other particles
@@ -1329,6 +1335,7 @@ void makeNtuple::FillEvent(std::string year){
             _TopStarLep_mass   = Reco_lepT.M();
             //Combined TT
             _tgtg_mass      = (Reco_hadT + Reco_lepT).M();
+            _tgtg_mass_diff = Reco_hadT.M() -  Reco_lepT.M();
             _TopStar_mass   = (_TopStarHad_mass + _TopStarLep_mass)/2.;
             _M_jj  = -9.0; //In the boosted category, we don't reconstruct W_had
             //DeltaR between photon and other particles

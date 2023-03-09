@@ -19,6 +19,7 @@ from PlotFunc import *
 from PlotInputs import *
 from PlotCMSLumi import *
 from PlotTDRStyle import *
+from PlotLabel import getXLabel, getYLabel
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 
 hInfo = GetHistogramInfo()
@@ -27,7 +28,7 @@ rList = list(Regions.keys())
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
-setTDRStyle()
+ModTDRStyle()
 xPadRange = [0.0,1.0]
 yPadRange = [0.0,0.30-padGap, 0.30+padGap,1.0]
 
@@ -139,9 +140,10 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         #Get nominal histograms
         bkgHists = getHists(inFile, SampleBkg, region, "Base", hName)
         #Stack nominal hists
-        xTitle = hName
+        xTitle = getXLabel(hName)
+        yTitle = getYLabel(hName)
         binWidth = (hInfo[hName][1][2] - hInfo[hName][1][1])/hInfo[hName][1][0]
-        yTitle = "Events/%s"%str(binWidth)
+        #yTitle = "Events/%s"%str(binWidth)
         hStack = THStack(hName,hName)
         hForStack = sortHists(bkgHists, False)
         lumi_13TeV = getLumiLabel(year)

@@ -10,29 +10,6 @@ sys.dont_write_bytecode = True
 #IMPORT MODULES FROM OTHER DIR
 sys.path.insert(0, os.getcwd().replace("condor",""))
 from HistInputs import *
-from optparse import OptionParser
-
-#----------------------------------------
-#INPUT Command Line Arguments 
-#----------------------------------------
-parser = OptionParser()
-parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
-parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
-(options, args) = parser.parse_args()
-isCheck = options.isCheck
-isSep = options.isSep
-
-if isSep:
-    isCheck = False
-if isCheck:
-    isSep  = True
-    isComb = False
-    Years  = [Years[0]]
-    Decays = [Decays[0]]
-    Channels = [Channels[0]]
-if not isCheck and not isSep:
-    print("Add either --isCheck or --isSep in the command line")
-    exit()
 
 logDir = "tmpSub/log"
 #logDir = "tmpSub/log_resub"
@@ -63,7 +40,7 @@ Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\
 Log    = %s/log_$(cluster)_$(process).condor\n\n'%(logDirResub, logDirResub, logDirResub)
 jdlFile = open("tmpSub/resubmitJobs.jdl",'w')
-jdlFile.write('Executable =  runMakeNtuple.sh \n')
+jdlFile.write('Executable =  runMakeHists.sh \n')
 jdlFile.write(common_command)
 #use_x509userproxy = true\n\
 
@@ -179,5 +156,9 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
          jdlFile.write(args)
     print(outDir) 
     '''
+
+for r in argList:
+    args = 'Arguments  = %s %s %s %s %s %s \nQueue 1\n\n' %(r[0], r[1], r[2], r[3], r[4], r[5])
+    jdlFile.write(args)
 jdlFile.close() 
 print("Total jobs to be resubmitted for all years = %s"%resubJobs)

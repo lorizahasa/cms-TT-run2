@@ -37,9 +37,9 @@ hName  = "Reco_st"
 region = "tty_Enriched_le4j_a1b_e1y"
 
 sampDict = {
-         "SignalSpin12_M800"    : [rt.kMagenta,  "m_{T} = 800"],
-         "SignalSpin12_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
-         "SignalSpin12_M1500"   : [rt.kPink,     "m_{T} = 1500"],
+         "SignalSpin32_M800"    : [rt.kMagenta,  "m_{T} = 800"],
+         "SignalSpin32_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
+         "SignalSpin32_M1500"   : [rt.kPink,     "m_{T} = 1500"],
          "TTGamma"   : [rt.kGreen, "t#bar{t}#gamma"],
          "TTbar"     : [rt.kRed, "t/t#bar{t}"],
          "WJets"     : [rt.kOrange, "W+jets"],

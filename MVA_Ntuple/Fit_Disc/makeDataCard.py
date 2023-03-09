@@ -72,7 +72,7 @@ lumiCorr = {"2016Pre": ["lumi_Run2", 1.006],
 cb = ch.CombineHarvester()
 #cb.SetVerbosity(4)
 AllBkgs = ["TTGamma", "OtherBkgs"]
-Signal  = ["SignalSpin12_M%s"%mass]
+Signal  = ["SignalSpin32_M%s"%mass]
 allMC   = Signal + AllBkgs
 #------------------
 #Add observed data

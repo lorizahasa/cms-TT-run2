@@ -47,7 +47,7 @@ if isComb:
     widthFor   = 3
 figWidth = round((1-0.05)/widthFor, 2)#5% margin
 nPage = len(allPlotPath)/showPerFig
-for page in np.arange(nPage):
+for page in np.arange(int(nPage)):
     texFile.write("\\begin{figure}\n")
     texFile.write("\centering\n")
     perFigName = []

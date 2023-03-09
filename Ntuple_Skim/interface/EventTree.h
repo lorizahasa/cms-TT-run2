@@ -27,13 +27,13 @@ class EventTree{
     Float_t  genWeight_;
 
     UInt_t nLHEScaleWeight_;
-    Float_t LHEScaleWeight_[200];
+    Float_t LHEScaleWeight_[400];
     
     UInt_t nLHEPdfWeight_;
-    Float_t LHEPdfWeight_[200];
+    Float_t LHEPdfWeight_[400];
     
     UInt_t nPSWeight_;
-    Float_t PSWeight_[200];
+    Float_t PSWeight_[400];
 
     Float_t LHEWeight_originalXWGTUP_;
 
@@ -44,30 +44,30 @@ class EventTree{
     bool isData_;
     // genParticle
     UInt_t    nLHEPart_;
-    Float_t   LHEPart_pt_[200];
-    Int_t     LHEPart_pdgId_[200];
+    Float_t   LHEPart_pt_[400];
+    Int_t     LHEPart_pdgId_[400];
 
     UInt_t    nGenPart_;
-    Float_t   GenPart_pt_[200];
-    Float_t   GenPart_eta_[200];
-    Float_t   GenPart_phi_[200];
-    Float_t   GenPart_mass_[200];
-    Int_t     GenPart_genPartIdxMother_[200];
-    Int_t     GenPart_pdgId_[200];
-    Int_t     GenPart_status_[200];
-    Int_t     GenPart_statusFlags_[200];
+    Float_t   GenPart_pt_[400];
+    Float_t   GenPart_eta_[400];
+    Float_t   GenPart_phi_[400];
+    Float_t   GenPart_mass_[400];
+    Int_t     GenPart_genPartIdxMother_[400];
+    Int_t     GenPart_pdgId_[400];
+    Int_t     GenPart_status_[400];
+    Int_t     GenPart_statusFlags_[400];
     
     UInt_t    nGenJet_;
-    Float_t   GenJet_pt_[200];
-    Float_t   GenJet_eta_[200];
-    Float_t   GenJet_phi_[200];
-    Float_t   GenJet_mass_[200];
+    Float_t   GenJet_pt_[400];
+    Float_t   GenJet_eta_[400];
+    Float_t   GenJet_phi_[400];
+    Float_t   GenJet_mass_[400];
     
     UInt_t    nGenJetAK8_;
-    Float_t   GenJetAK8_pt_[200];
-    Float_t   GenJetAK8_eta_[200];
-    Float_t   GenJetAK8_phi_[200];
-    Float_t   GenJetAK8_mass_[200];
+    Float_t   GenJetAK8_pt_[400];
+    Float_t   GenJetAK8_eta_[400];
+    Float_t   GenJetAK8_phi_[400];
+    Float_t   GenJetAK8_mass_[400];
     
     // PU
     Int_t    nPU_;  

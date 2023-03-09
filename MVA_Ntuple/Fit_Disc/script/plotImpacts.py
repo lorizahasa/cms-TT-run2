@@ -18,6 +18,12 @@ parser.add_argument('--translate', '-t', help='JSON file for remapping of parame
 parser.add_argument('--units', default=None, help='Add units to the best-fit parameter value')
 parser.add_argument('--per-page', type=int, default=60, help='Number of parameters to show per page')
 parser.add_argument('--cms-label', default='Internal', help='Label next to the CMS logo')
+parser.add_argument(
+    '--cms-sub', default='Internal', help="""Text below the CMS logo""")
+parser.add_argument(
+    '--title-right', default='', help="""Right header text above the frame""")
+parser.add_argument(
+    '--title-left', default='', help="""Left header text above the frame""")
 parser.add_argument('--transparent', action='store_true', help='Draw areas as hatched lines instead of solid')
 parser.add_argument('--checkboxes', action='store_true', help='Draw an extra panel with filled checkboxes')
 parser.add_argument('--blind', action='store_true', help='Do not print best fit signal strength')
@@ -25,6 +31,8 @@ parser.add_argument('--color-groups', default=None, help='Comma separated list o
 parser.add_argument("--pullDef",  default=None, help="Choose the definition of the pull, see HiggsAnalysis/CombinedLimit/python/calculate_pulls.py for options")
 parser.add_argument('--POI', default=None, help='Specify a POI to draw')
 args = parser.parse_args()
+
+myTit = "#splitline{%s, %s}{%s}"%(args.title_left, args.title_right, args.cms_sub)
 if args.transparent:
     print('plotImpacts.py: --transparent is now always enabled, the option will be removed in a future update')
 
@@ -356,6 +364,12 @@ for page in range(n):
 
     plot.DrawCMSLogo(pads[0], 'CMS', args.cms_label, 0, 0.25, 0.00, 0.00)
     s_nom, s_hi, s_lo = GetRounded(POI_fit[1], POI_fit[2] - POI_fit[1], POI_fit[1] - POI_fit[0])
+    latex2 = ROOT.TLatex()
+    latex2.SetNDC()
+    latex2.SetTextFont(42)
+    latex2.SetTextSize(0.025)
+    latex2.SetTextAlign(22)
+    latex2.DrawLatex(0.15, 0.96, myTit)
     if not args.blind:
         s_nom_rounded ='%.1E' % Decimal(s_nom)
         s_hi_rounded = '%.1E' % Decimal(s_hi)

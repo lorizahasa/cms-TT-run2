@@ -62,7 +62,7 @@ allPlotName = []
 aucDict = {}
 for r, d, c, y, method in itertools.product(Regions.keys(), Decays, Channels, Year_, methodDict.keys()):
     histList = GetVarInfo(r, c).keys()
-    plotDir  = "/eos/uscms/%s/Classification/%s/%s/%s/CombMass/%s/%s/plots"%(condorOutDir, y, d, c, method, r)
+    plotDir  = "/eos/uscms/%s/Classification/%s/%s/%s/CombMass/%s/%s/plots"%(dirClass, y, d, c, method, r)
     nVarPlots = int(np.ceil(len(histList)/6.0))
     print(nVarPlots, len(histList))
     for i in range(nVarPlots):
@@ -100,7 +100,7 @@ for page in np.arange(nPage):
             showPerPage = remainder
     #Plots
     for n in np.arange(showPerPage):
-        plotPath = allPlotPath[showPerFig*page + n]
+        plotPath = allPlotPath[int(showPerFig*page + n)]
         if showPerPage==2:
             figWidth = 0.45
         if showPerPage==1:

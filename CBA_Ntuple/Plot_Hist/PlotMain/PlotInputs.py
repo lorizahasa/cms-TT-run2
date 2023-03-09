@@ -36,9 +36,9 @@ SystLevels.append("Up")
 SystLevels.append("Down")
 
 SampleSignal = {
-         "SignalSpin12_M800"    : [rt.kMagenta,  "m_{T} = 800"],
-         "SignalSpin12_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
-         #"SignalSpin12_M1600"   : [rt.kPink,     "m_{T} = 1600"],
+         "SignalSpin32_M800"    : [rt.kMagenta,  "m_{T} = 800"],
+         "SignalSpin32_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
+         #"SignalSpin32_M1600"   : [rt.kPink,     "m_{T} = 1600"],
          }
 
 SampleBkg = {
@@ -54,7 +54,7 @@ SampleBkg = {
 SampleData = {
          "data_obs"   : [rt.kBlack, "Data"]
          }
-SampleWeight = ["TTGamma", "TTbar", "SignalSpin12_M800"]
+SampleWeight = ["TTGamma", "TTbar", "SignalSpin32_M800"]
 SampleLumi = SampleBkg
 #SampleLumi.update(SampleSignal)
 SampleSyst = ["TTGamma", "TTbar", "WJets", "DYJets", "WGamma", "ZGamma", "QCD", "Others"] 

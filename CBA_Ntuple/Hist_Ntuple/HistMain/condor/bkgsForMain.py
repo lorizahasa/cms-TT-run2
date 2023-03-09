@@ -24,11 +24,11 @@ isComb = options.isMerge
 #Bkg scale factors: DY, MisID, ZGamma, WGamma
 #----------------------------------------------
 dictSFs = {}
-dictSFs['2016Pre']      = [1.29, 1.75, 1.22, 1.10]
-dictSFs['2016Post']     = [1.40, 2.27, 0.46, 1.64]
-dictSFs['2017']         = [1.24, 1.08, 1.01, 1.03]
-dictSFs['2018']         = [1.16, 1.34, 0.91, 0.97]
-dictSFs['2016Pre__2016Post__2017__2018'] = [1.18, 1.40, 0.90, 1.12]
+dictSFs['2016Pre']      = [1.38, 1.64, 1.34, 1.08]
+dictSFs['2016Post']     = [1.40, 2.32, 0.78, 1.46]
+dictSFs['2017']         = [1.32, 1.03, 1.12, 1.08]
+dictSFs['2018']         = [1.15, 1.26, 0.88, 0.99]
+dictSFs['2016Pre__2016Post__2017__2018'] = [1.28, 1.18, 1.00, 1.09]
 
 rList = list( Regions.keys())
 #hists = GetHistogramInfo().keys()

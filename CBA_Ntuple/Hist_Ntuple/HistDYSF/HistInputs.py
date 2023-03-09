@@ -15,9 +15,9 @@ Channels_      = ["Mu", "Ele", "Mu__Ele"]
 
 Samples = []
 #bkg and data
-Samples.append("SignalSpin12_M800")
-Samples.append("SignalSpin12_M1200")
-Samples.append("SignalSpin12_M1500")
+Samples.append("SignalSpin32_M800")
+Samples.append("SignalSpin32_M1200")
+Samples.append("SignalSpin32_M1500")
 Samples.append("TTbar")
 Samples.append("TTGamma")
 Samples.append("WJets")

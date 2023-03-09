@@ -27,8 +27,8 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 
 discDict = {}
 discDict["Disc"] = methodDict.keys()
-for hist in histList:
-    discDict[hist] = ["BDTA"]
+#for hist in histList:
+#    discDict[hist] = ["BDTA"]
 
 print(discDict)
 #----------------------------------------
@@ -41,7 +41,7 @@ for year, decay, channel in itertools.product(Year, Decay, Channel):
     jdlFile = open('tmpSub/%s'%jdlName,'w')
     jdlFile.write('Executable =  runPerformFit.sh \n')
     jdlFile.write(common_command)
-    for mass, r, h in itertools.product(xss.keys(), regionList, discDict.keys()):
+    for mass, r, h in itertools.product(xss.keys(), list(rDict.keys()), discDict.keys()):
         for method in discDict[h]:
             run_command =  'arguments  = %s %s %s %s %s %s %s %s \nqueue 1\n' %(year, decay, channel, int(float(mass)), method, r, h, condorOutDir)
             jdlFile.write(run_command)

@@ -14,7 +14,9 @@ from ROOT import TFile, TLegend, gPad, TGraph, gROOT, TCanvas, TH1F
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
-setTDRStyle()
+#setTDRStyle()
+ModTDRStyle()
+#ModTDRStyle(600, 300, 0.10, 0.12, 0.16, 0.04);
 xPadRange = [0.0,1.0]
 yPadRange = [0.0,0.30-padGap, 0.30+padGap,1.0]
 

@@ -13,16 +13,16 @@ Channels_      = ["Mu", "Ele", "Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
 
 Samples = []
-#Samples.append("SignalSpin12_M700")
-Samples.append("SignalSpin12_M800")
-#Samples.append("SignalSpin12_M900")
-#Samples.append("SignalSpin12_M1000")
-##Samples.append("SignalSpin12_M1100")
-Samples.append("SignalSpin12_M1200")
-#Samples.append("SignalSpin12_M1300")
-#Samples.append("SignalSpin12_M1400")
-Samples.append("SignalSpin12_M1500")
-#Samples.append("SignalSpin12_M1600")
+#Samples.append("SignalSpin32_M700")
+Samples.append("SignalSpin32_M800")
+#Samples.append("SignalSpin32_M900")
+#Samples.append("SignalSpin32_M1000")
+##Samples.append("SignalSpin32_M1100")
+Samples.append("SignalSpin32_M1200")
+#Samples.append("SignalSpin32_M1300")
+#Samples.append("SignalSpin32_M1400")
+Samples.append("SignalSpin32_M1500")
+#Samples.append("SignalSpin32_M1600")
 
 #bkg and data
 Samples.append("TTbar")

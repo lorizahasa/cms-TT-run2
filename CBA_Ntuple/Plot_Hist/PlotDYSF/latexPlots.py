@@ -17,14 +17,14 @@ isCheck = options.isCheck
 isSep = options.isSep
 isComb = options.isMerge
 
-byWhat = "ForDYSF"
-#byWhat = "AfterDYSF"
+#byWhat = "ForDYSF"
+byWhat = "AfterDYSF"
 outTxt = "SepYears"
 if isComb:
     outTxt = "CombYears"
 
-#fName = "plot%s_%s"%(byWhat, outTxt)
-fName = "syst%s_%s"%(byWhat, outTxt)
+fName = "plot%s_%s"%(byWhat, outTxt)
+#fName = "syst%s_%s"%(byWhat, outTxt)
 txtFile = open("%s/%s.txt"%(dirPlot, fName), "r")
 texFile = open("%s/%s.tex"%(dirPlot, fName), "w")
 os.system("mkdir -p %s"%dirTwiki)
@@ -44,14 +44,14 @@ if isComb:
     showPerFig = 12
     widthFor   = 3
 figWidth = round((1-0.05)/widthFor, 2)#5% margin
-nPage = len(allPlotPath)/showPerFig
+nPage = int(len(allPlotPath)/showPerFig)
 for page in np.arange(nPage):
     texFile.write("\\begin{figure}\n")
     texFile.write("\centering\n")
     perFigName = []
     for n in np.arange(showPerFig):
-        perFigName.append(allPlotName[showPerFig*page + n])
-        plotPath = allPlotPath[showPerFig*page + n]
+        perFigName.append(allPlotName[int(showPerFig*page + n)])
+        plotPath = allPlotPath[int(showPerFig*page + n)]
         texFile.write("\includegraphics[width=%s\linewidth]{%s}\n"%(figWidth, plotPath.strip()))
     figCap = ', '.join(perFigName)
     texFile.write("\caption{Distribution of $%s$}\n"%(figCap.replace("_", "\_")))

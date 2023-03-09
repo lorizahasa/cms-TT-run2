@@ -3,7 +3,7 @@ dirNtuple = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 dirHist   = "/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistMain"
 #-----------------------------------------------------------------
 Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-#Years 	      =	["2017"]
+#Years 	      =	["2018"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
@@ -14,16 +14,16 @@ Channels_      = ["Mu", "Ele", "Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
 
 Samples = []
-#Samples.append("SignalSpin12_M700")
-Samples.append("SignalSpin12_M800")
-#Samples.append("SignalSpin12_M900")
-#Samples.append("SignalSpin12_M1000")
-##Samples.append("SignalSpin12_M1100")
-Samples.append("SignalSpin12_M1200")
-#Samples.append("SignalSpin12_M1300")
-#Samples.append("SignalSpin12_M1400")
-Samples.append("SignalSpin12_M1500")
-#Samples.append("SignalSpin12_M1600")
+#Samples.append("SignalSpin32_M700")
+Samples.append("SignalSpin32_M800")
+#Samples.append("SignalSpin32_M900")
+#Samples.append("SignalSpin32_M1000")
+##Samples.append("SignalSpin32_M1100")
+Samples.append("SignalSpin32_M1200")
+#Samples.append("SignalSpin32_M1300")
+#Samples.append("SignalSpin32_M1400")
+Samples.append("SignalSpin32_M1500")
+#Samples.append("SignalSpin32_M1600")
 #bkg and data
 Samples.append("TTbar")
 Samples.append("TTGamma")

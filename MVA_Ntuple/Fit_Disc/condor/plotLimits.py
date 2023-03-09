@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+from __future__ import absolute_import
+from __future__ import print_function
+import ctypes
 import ROOT
 import CombineHarvester.CombineTools.plotting as plot
 import argparse
@@ -45,7 +48,7 @@ parser.add_argument(
 parser.add_argument(
     '--title-left', default='', help="""Left header text above the frame""")
 parser.add_argument(
-    '--logy', action='store_true', help="""Draw y-axis in log scale""")
+    '--logy', action='store_true', default=True, help="""Draw y-axis in log scale""")
 parser.add_argument(
     '--logx', action='store_true', help="""Draw x-axis in log scale""")
 parser.add_argument(
@@ -59,6 +62,7 @@ parser.add_argument("--isCheck",action="store_true",default=False, help="Check f
 parser.add_argument("--isSep",action="store_true",default=False, help="Merge for separate years and channels")
 args = parser.parse_args()
 
+regionList = list(rDict.keys())
 if args.isCheck:
     Year  = [Year[0]]
     Decay = [Decay[0]]
@@ -112,13 +116,13 @@ for decay, region, channel, year in itertools.product(Decay, regionList, Channel
     with open(jsonRaw) as old_limit:
         new_limit = json.load(old_limit)
         if args.isCheck:
-            print "OLD: ", new_limit
-        for mass in xss.keys():
+            print("OLD: ", new_limit)
+        for mass in list(xss.keys()):
             for limit in new_limit[mass]:
                 new_limit[mass][limit] = xss[mass]*new_limit[mass][limit] 
     with open (jsonScaled, 'w') as newLimitFile:
         if args.isCheck:
-            print "\nNEW: ", new_limit
+            print("\nNEW: ", new_limit)
         json.dump(new_limit, newLimitFile)
 
     ## Boilerplate
@@ -141,8 +145,8 @@ for decay, region, channel, year in itertools.product(Decay, regionList, Channel
         plot.Set(padx, Tickx=1, Ticky=1, Logx=args.logx)
         if args.pad_style is not None:
             settings = {x.split('=')[0]: eval(x.split('=')[1]) for x in args.pad_style.split(',')}
-            print 'Applying style options to the TPad(s):'
-            print settings
+            print('Applying style options to the TPad(s):')
+            print(settings)
             plot.Set(padx, **settings)
 
     graphs = []
@@ -179,7 +183,8 @@ for decay, region, channel, year in itertools.product(Decay, regionList, Channel
         if len(splitsrc) == 1:
             graph_sets.append(plot.StandardLimitsFromJSONFile(file, args.show.split(',')))
             if axis is None:
-                axis = plot.CreateAxisHists(len(pads), graph_sets[-1].values()[0], True)
+                #tmp_ = ctypes.c_double()
+                axis = plot.CreateAxisHists(len(pads), list(graph_sets[-1].values())[0], True)
                 DrawAxisHists(pads, axis, pads[0])
             plot.StyleLimitBand(graph_sets[-1])
             plot.DrawLimitBand(pads[0], graph_sets[-1], legend=legend)
@@ -278,12 +283,12 @@ for decay, region, channel, year in itertools.product(Decay, regionList, Channel
     drawTheory = True
     if drawTheory:
         x, y = array( 'd' ), array( 'd' )
-        for key in xss.keys():
+        for key in list(xss.keys()):
             x.append(float(key))
         for val in xss.values():
             y.append(val)
-        print x
-        print y
+        print(x)
+        print(y)
         gTheory = ROOT.TGraph(len(x), x, y)
         #gTheory.Draw("ALPsame")
         gTheory.SetLineColor(7)
@@ -291,8 +296,6 @@ for decay, region, channel, year in itertools.product(Decay, regionList, Channel
         gTheory.SetMarkerStyle(15);
         gTheory.SetMarkerColor(7);
         gTheory.Draw("Lsame")
-
-    if drawTheory: 
         legend.AddEntry(gTheory, "Theory xss", "LP")
         legend.Draw()
     pdf = "%s/plotLimit.pdf"%(outPath)

@@ -20,7 +20,7 @@ print(rList)
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
-setTDRStyle()
+ModTDRStyle()
 xPadRange = [0.0,1.0]
 yPadRange = [0.0,0.30-padGap, 0.30+padGap,1.0]
 
@@ -43,6 +43,7 @@ if isCheck:
     Years  = [Years[0]]
     Decays = [Decays[0]]
     Channels = [Channels[0]]
+    #rList  = ["ttyg_Enriched_CR_Resolved"]
     rList  = [rList[0]]
 if isSep: 
     isComb = False

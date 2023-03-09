@@ -13,6 +13,7 @@ from PlotFunc import *
 from PlotInputs import *
 from PlotCMSLumi import *
 from PlotTDRStyle import *
+from PlotLabel import getXLabel, getYLabel
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 
 hInfo = GetHistogramInfo()
@@ -21,7 +22,7 @@ rList = list(Regions.keys())
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
-setTDRStyle()
+ModTDRStyle()
 xPadRange = [0.0,1.0]
 yPadRange = [0.0,0.30-padGap, 0.30+padGap,1.0]
 
@@ -62,7 +63,8 @@ if not isCheck and not isSep and not isComb:
 #Path of the I/O histrograms/plots
 #----------------------------------------
 #dir_ = "Merged"
-dir_  = "Rebin"
+#dir_  = "Rebin"
+dir_  = "ForMain"
 os.system("mkdir -p %s"%dirPlot)
 fPath = open("%s/plotByPhoton_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 if 'Main' in dir_:
@@ -138,9 +140,10 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
             catBkgHists.append(addHists(hists, newName))
 
         #Stack nominal hists
-        xTitle = hName
+        xTitle = getXLabel(hName)
+        yTitle = getYLabel(hName)
         binWidth = (hInfo[hName][1][2] - hInfo[hName][1][1])/hInfo[hName][1][0]
-        yTitle = "Events/%s"%str(binWidth)
+        #yTitle = "Events/%s"%str(binWidth)
         hStack = THStack(hName,hName)
         hForStack = sortHists(catBkgHists, False)
         hForTable = sortHists(allBkgHists[hName], True)

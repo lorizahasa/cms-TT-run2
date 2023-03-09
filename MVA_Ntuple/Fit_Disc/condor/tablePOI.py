@@ -3,17 +3,16 @@ import sys
 import itertools
 sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor", ""))
-sys.path.insert(0, os.getcwd().replace("Fit_Hist/FitDYSF/condor", "Hist_Ntuple/HistDYSF"))
+sys.path.insert(0, os.getcwd().replace("Fit_Disc/condor", "Disc_Ntuple"))
 from FitInputs import *
-from HistInputs import Regions
 import json
 
 
-hName = "Reco_mass_dilep"
+hName = "Disc"
 #-----------------------------------------
-# Get dySF from the JSON file
+# Get poi from the JSON file
 #-----------------------------------------
-def getDYSF(jsonData):
+def getDisc(jsonData):
     sfs = jsonData['POIs'][0]['fit']
     down= sfs[1] - sfs[0]
     nom = sfs[1]
@@ -25,28 +24,29 @@ def roundMe(value, place):
     upVal = round(value, place)
     return upStr.format(upVal)
 
-txtFile = open("%s/FitDYSF_nuisImpact.txt"%dirFit_, 'w')
-texFile = open("%s/FitDYSF_tableDYSF.tex"%dirFit_, 'w')
-pyFile  = open("%s/FitDYSF_dictDYSF.py"%dirFit_, 'w')
+txtFile = open("%s/FitDisc_nuisImpact.txt"%dirFit, 'w')
+texFile = open("%s/FitDisc_tableDisc.tex"%dirFit, 'w')
+pyFile  = open("%s/FitDisc_dictDisc.py"%dirFit, 'w')
 sfDict = {}
+regionList = list(rDict.keys())
 #Put SF in reformated dicts
 lepDicts = {}
 for c in Channel:
     lepDict = {}
-    for r in Regions:
+    for r in regionList:
         sfList = []
         for y, decay in itertools.product(Year, Decay): 
             print("===> %s, %s, %s"%(c, r, y))
-            dirJSON =  "%s/%s/%s/%s/%s/%s"%(dirFit_, y, decay, c, r, hName)
-            print(dirJSON)
+            dirJSON =  "%s/%s/%s/%s/800/BDTA/%s/%s"%(dirFit, y, decay, c, r, hName)
+            #print(dirJSON)
             pdf = "%s/nuisImpact.pdf"%dirJSON
             txtFile.write("%s\n"%pdf)
             with open ("%s/nuisImpact.json"%dirJSON) as jsonFile:
                 jsonData = json.load(jsonFile)
-                #dySF   = getDYSF(name,"r")
-                dySF   = getDYSF(jsonData)
-                sfList.append(dySF)
-                sfDict["DYSF_%s_%s_%s_%s"%(y, decay, c, r)] = round(dySF[1], 3)
+                #poi   = getDisc(name,"r")
+                poi   = getDisc(jsonData)
+                sfList.append(poi)
+                sfDict["Disc_%s_%s_%s_%s"%(y, decay, c, r)] = round(poi[1], 3)
             jsonFile.close()
         lepDict[r] = sfList
     lepDicts[c] = lepDict
@@ -54,12 +54,13 @@ for c in Channel:
 
 #make table from reformated dicts
 #---------------------
-#    Regions Year
+#    regionList Year
 #    ----------------
 # mu
 #    ----------------
 #---------------------
-nCol = 2 + len(Year)
+'''
+nCol = 3 + len(Year)
 col = ""
 for i in range(nCol):
     col += "c"
@@ -68,7 +69,7 @@ table += "\\cmsTable{\n"
 table += "\\centering\n"
 table += "\\begin{tabular}{%s}\n"%col
 table += "\\hline\n"
-tHead = "Channel & Regions" 
+tHead = "Channel & Regions & Data " 
 for y in Year:
     tHead += "& %s"%y.replace("_", "+")
 tHead += "\\\\\n"
@@ -78,32 +79,35 @@ row = ""
 #print(Samples.keys())
 #for ch in lepDicts.keys():
 for ch in Channel: 
-    row ="\\multirow{%s}{*}{%s}"%(len(Regions.keys()), ch.replace("__", "+"))
+    row ="\\multirow{%s}{*}{%s}"%(len(regionList), ch.replace("__", "+"))
     chDict = lepDicts[ch]
     for l in chDict.keys():
-        #row += "& %s"%formatCRString(Regions[l]).replace("#", "\\")
-        row += "& %s"%l.replace("_", "\\_")
+        #row += "& %s"%formatCRString(regionList).replace("#", "\\")
+        row += "& %s"%rDict[l]
+        #row += "& %s"%l.replace("_", "\\_")
+        row += "& %s"%getType(l)
         for sf in chDict[l]:
             valNom = roundMe(sf[1], 2) # 0 = down, 1 = up, 2 = down
-            perUp  = roundMe(abs(100*sf[2]/sf[1]),1)
-            perDown  = roundMe(abs(100*sf[0]/sf[1]),1)
+            #perUp  = roundMe(abs(100*sf[2]/sf[1]),1)
+            #perDown  = roundMe(abs(100*sf[0]/sf[1]),1)
             errUp  = roundMe(sf[2],2)
             errDown  = roundMe(abs(sf[0]),2)
-            #row += "& $%s^{+%s}_{-%s}$"%(valNom, errUp, errDown)
-            row += "& $%s^{+%s%s}_{-%s%s}$"%(valNom, perUp, '\\%', perDown, '\\%')
+            row += "& $%s^{+%s}_{-%s}$"%(valNom, errUp, errDown)
+            #row += "& $%s^{+%s%s}_{-%s%s}$"%(valNom, perUp, '\\%', perDown, '\\%')
             #row += "& $%s^{+%s(%s%s)}_{-%s(%s%s)}$"%(valNom, errUp, perUp, "\\%", errDown, perDown, "\\%")
         row += "\\\\\n"
     table += "%s\\hline\n"%row
 table += "\\end{tabular}\n"
 table += "}"
-table += "\\caption{DYJetsSF}"
+table += "\\caption{Signal strength}"
 table += "\\end{table}"
 print(table)
 texFile.write(table)
-pyFile.write("DYSF = %s"%sfDict)
-print(txtFile)
+pyFile.write("Disc = %s"%sfDict)
 print(pyFile)
 print(texFile)
-txtFile.close()
 pyFile.close()
 texFile.close()
+'''
+print(txtFile)
+txtFile.close()

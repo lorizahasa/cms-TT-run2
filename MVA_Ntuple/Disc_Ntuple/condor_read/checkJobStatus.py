@@ -10,29 +10,6 @@ sys.dont_write_bytecode = True
 #IMPORT MODULES FROM OTHER DIR
 sys.path.insert(0, os.getcwd().replace("condor_read",""))
 from DiscInputs import *
-from optparse import OptionParser
-
-#----------------------------------------
-#INPUT Command Line Arguments 
-#----------------------------------------
-parser = OptionParser()
-parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
-parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
-(options, args) = parser.parse_args()
-isCheck = options.isCheck
-isSep = options.isSep
-
-if isSep:
-    isCheck = False
-if isCheck:
-    isSep  = True
-    isComb = False
-    Years  = [Years[0]]
-    Decays = [Decays[0]]
-    Channels = [Channels[0]]
-if not isCheck and not isSep:
-    print("Add either --isCheck or --isSep in the command line")
-    exit()
 
 logDir = "tmpSub/log"
 #logDir = "tmpSub/log_resub"
@@ -69,7 +46,7 @@ jdlFile.write(common_command)
 
 #Search in the log files to see if xrdcp was not able to copy a file
 print("Collecting error logs for all years ...")
-errSearch = ["nan", "ERROR", "error", 'Error', "fatal"]
+errSearch = ["nan", "ERROR", "error", 'Error', "fatal", "FATAL"]
 grepLists = []
 for err in errSearch:
     grepList = subprocess.Popen('grep -rn %s %s'%(err, logDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')

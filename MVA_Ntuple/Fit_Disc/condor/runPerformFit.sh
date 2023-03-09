@@ -25,10 +25,9 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-
-python3 performFit.py -y $1 -d $2 -c $3 --mass $4 --method $5 -r $6 --hist $7 --isT2W --isLimit --isImpact 
+python3 performFit.py -y $1 -d $2 -c $3 --mass $4 --method $5 -r $6 --hist $7 --isT2W --isImpact --isFD --isGOF
 printf "Done fitting at ";/bin/date
-xrdcp -rf ./output/ root://cmseos.fnal.gov/$8
+xrdcp -rf ./output/Fit_Disc/ root://cmseos.fnal.gov/$8
 rm -r ./output
 cd ..
 rm -rf CMSSW*

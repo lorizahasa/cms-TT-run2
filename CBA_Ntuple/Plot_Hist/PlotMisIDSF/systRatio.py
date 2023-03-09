@@ -13,15 +13,16 @@ from PlotTDRStyle import *
 from HistInputs import Regions, SystLevels
 from HistInfo import GetHistogramInfo 
 from PlotInputs import *
+from PlotLabel import getXLabel, getYLabel
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, TF1, TH1F
 
 hInfo = GetHistogramInfo()
-hList = hInfo.keys()
-rList = Regions.keys()
+hList = list(hInfo.keys())
+rList = list(Regions.keys())
 padGap = 0.01
 iPeriod = 4;
 iPosX = 10;
-setTDRStyle()
+ModTDRStyle()
 xPadRange = [0.0,1.0]
 yPadRange = [0.0,0.30-padGap, 0.30+padGap,1.0]
 
@@ -191,7 +192,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         myColor = index
         if myColor >9:
             myColor = 32+index
-        decoHistRatio(hRatioUp, hName, "RatioUp (solid), RatioDown (dashed)", myColor)
+        decoHistRatio(hRatioUp, getXLabel(hName), "RatioUp (solid), RatioDown (dashed)", myColor)
         hRatioUp.SetMarkerStyle(20+index)
         hRatioUp.SetMarkerColor(myColor)
         hRatioUp.GetXaxis().SetTitleSize(0.045)
@@ -207,7 +208,7 @@ for decay, region, hName, channel, year in itertools.product(Decays, rList, hLis
         hRatioDown = hDown.Clone(syst)
         hRatioDown.Divide(hBase)
         #decoHistRatio(hRatioDown, hName, "#frac{Up}{Nom} (solid), #frac{Down}{Nom} (dashed)", myColor)
-        decoHistRatio(hRatioDown, hName, "RatioUp (solid), RatioDown (dashed)", myColor)
+        decoHistRatio(hRatioDown, getXLabel(hName), "RatioUp (solid), RatioDown (dashed)", myColor)
         hRatioDown.SetMarkerStyle(20+index)
         hRatioDown.SetMarkerColor(myColor)
         hRatioDown.SetLineStyle(2)

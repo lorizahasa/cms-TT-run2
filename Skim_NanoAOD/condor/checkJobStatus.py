@@ -115,7 +115,8 @@ for year in Years:
     corruptedList = []
     nEvents = {}
     for finished in finishedList:
-        fROOT = "root://cmsxrootd.fnal.gov/%s/%s"%(outDir, finished)
+        fROOT = "root://cmseos.fnal.gov/%s/%s"%(outDir, finished)
+        #fROOT = "root://cmsxrootd.fnal.gov/%s/%s"%(outDir, finished)
         f = TFile.Open(fROOT, "READ")
         if not f:
             print("Null pointer: %s"%fROOT)

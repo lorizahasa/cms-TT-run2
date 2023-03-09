@@ -17,9 +17,9 @@ Channels_      = ["Mu", "Ele", "Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
 
 SampleSignal = {
-         "SignalSpin12_M800"    : [rt.kMagenta,  "m_{T} = 800"],
-         "SignalSpin12_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
-         "SignalSpin12_M1500"   : [rt.kPink,     "m_{T} = 1500"],
+         "SignalSpin32_M800"    : [rt.kMagenta,  "m_{T} = 800"],
+         "SignalSpin32_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
+         "SignalSpin32_M1500"   : [rt.kPink,     "m_{T} = 1500"],
          }
 SampleData = {
          "data_obs"   : [rt.kBlack, "Data"]

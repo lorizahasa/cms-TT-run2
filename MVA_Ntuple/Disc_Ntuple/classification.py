@@ -123,8 +123,9 @@ if "u" in channel:
     selStr = "Event_pass_presel_mu && %s"%Regions[region]
 else:
     selStr = "Event_pass_presel_ele && %s"%Regions[region]
-print(selStr)
-evtSel = ROOT.TCut(selStr.replace("e.", ""))
+cut = selStr.replace("e.", "")
+evtSel = ROOT.TCut(cut)
+print(cut)
 loader.PrepareTrainingAndTestTree(evtSel,"SplitMode=Random:!V")
 
 #-----------------------------------------
@@ -168,3 +169,9 @@ ROOT.TMVA.mvas(outDir,fName)
 ROOT.TMVA.mvas(outDir,fName, ROOT.TMVA.kCompareType)
 ROOT.TMVA.efficiencies(outDir,fName)
 ROOT.TMVA.correlations(outDir,fName)
+print("-------")
+print(ROOT.TMVA.VariableImportance(loader))
+ROOT.TMVA.VariableImportanceResult().Print()
+#c = ROOT.TMVA.VariableImportanceResult().Draw("a")
+#c.SaveAs("c.pdf")
+

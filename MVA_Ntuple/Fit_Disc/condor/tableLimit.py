@@ -27,7 +27,7 @@ for c in Channel:
     for m in Mass:
         sfList = []
         for y, decay in itertools.product(Year, Decay): 
-            print "%s, %s, %s"%(c, m, y)
+            print("%s, %s, %s"%(c, m, y))
             limits = []
             for h in histList:
                 for r in regionList:
@@ -68,11 +68,11 @@ table += "\\hline\n"
 row = ""
 #print Samples.keys()
 #for ch in lepDicts.keys():
-print lepDicts
+print(lepDicts)
 for ch in Channel: 
     row ="\\multirow{%s}{*}{%s}"%(len(regionList), ch.replace("_", "+"))
     chDict = lepDicts[ch]
-    print ch
+    print(ch)
     #for l in chDict.keys():
     for l in Mass: 
         #row += "& %s"%formatCRString(Regions[l]).replace("#", "\\")
@@ -96,6 +96,6 @@ table += "}"
 cap = "from: %s, using distribution: %s"%(regionList, histList)
 table += "\\caption{95%s CL median limit$\\times$ 100 %s}\n"%("\\%", cap.replace("_", "\\_")) 
 table += "\\end{table}"
-print table
+print(table)
 tableFile = open("tex/tableLimitByVar.tex", "w")
 tableFile.write(table.replace("'",""))

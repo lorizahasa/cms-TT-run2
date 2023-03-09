@@ -39,17 +39,17 @@ def gs(y, d, syst, s_array):
 
 def getSamples(y, d, syst):#commented samples don't exist
     samples = {
-               "SignalSpin12_M700"  : gs(y, d, syst, ["SignalSpin12_M700"]),  
-               "SignalSpin12_M800"  : gs(y, d, syst, ["SignalSpin12_M800"]),  
-               "SignalSpin12_M900"  : gs(y, d, syst, ["SignalSpin12_M900"]),  
-               #"SignalSpin12_M1000" : gs(y, d, syst, ["SignalSpin12_M1000"]),  
-               "SignalSpin12_M1100" : gs(y, d, syst, ["SignalSpin12_M1100"]),  
-               "SignalSpin12_M1200" : gs(y, d, syst, ["SignalSpin12_M1200"]),  
-               "SignalSpin12_M1300" : gs(y, d, syst, ["SignalSpin12_M1300"]),  
-               #"SignalSpin12_M1400" : gs(y, d, syst, ["SignalSpin12_M1400"]),  
-               "SignalSpin12_M1500" : gs(y, d, syst, ["SignalSpin12_M1500"]),  
-               #"SignalSpin12_M1600" : gs(y, d, syst, ["SignalSpin12_M1600"]),  
-               "SignalSpin12_M2750" : gs(y, d, syst, ["SignalSpin12_M2750"]),  
+               "SignalSpin32_M700"  : gs(y, d, syst, ["SignalSpin32_M700"]),  
+               "SignalSpin32_M800"  : gs(y, d, syst, ["SignalSpin32_M800"]),  
+               "SignalSpin32_M900"  : gs(y, d, syst, ["SignalSpin32_M900"]),  
+               #"SignalSpin32_M1000" : gs(y, d, syst, ["SignalSpin32_M1000"]),  
+               "SignalSpin32_M1100" : gs(y, d, syst, ["SignalSpin32_M1100"]),  
+               "SignalSpin32_M1200" : gs(y, d, syst, ["SignalSpin32_M1200"]),  
+               "SignalSpin32_M1300" : gs(y, d, syst, ["SignalSpin32_M1300"]),  
+               #"SignalSpin32_M1400" : gs(y, d, syst, ["SignalSpin32_M1400"]),  
+               "SignalSpin32_M1500" : gs(y, d, syst, ["SignalSpin32_M1500"]),  
+               #"SignalSpin32_M1600" : gs(y, d, syst, ["SignalSpin32_M1600"]),  
+               "SignalSpin32_M2750" : gs(y, d, syst, ["SignalSpin32_M2750"]),  
                "TTbar" : gs(y, d, syst, [
                    "TTbarPowheg_Hadronic" , 
                    "TTbarPowheg_Dilepton" , 

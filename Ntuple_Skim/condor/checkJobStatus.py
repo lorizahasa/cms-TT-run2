@@ -115,7 +115,8 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
     corruptedList = []
     nEvents = {}
     for finished in finishedList:
-        fROOT = "root://cmsxrootd.fnal.gov/%s/%s"%(outDir, finished)
+        fROOT = "root://cmseos.fnal.gov/%s/%s"%(outDir, finished)
+        #fROOT = "root://cmsxrootd.fnal.gov/%s/%s"%(outDir, finished)
         try:
             f = TFile.Open(fROOT, "READ")
         except:

@@ -34,7 +34,7 @@ for page in np.arange(int(nPage)):
     texFile.write("\n")
 twikiFile.write("%s/%s.pdf\n"%(dirPlot, fName))
 print(texFile)
-#print(twikiFile)
+print(twikiFile)
 txtFile.close()
 texFile.close()
 twikiFile.close()

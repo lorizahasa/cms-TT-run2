@@ -227,6 +227,7 @@ class makeNtuple {
     Float_t  _TopStarHad_mass;
     Float_t  _TopStar_mass;
     Float_t  _tgtg_mass;
+    Float_t  _tgtg_mass_diff;
     Float_t  _chi2;
 
     Int_t    _nPho;
@@ -532,6 +533,7 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Reco_mass_lepT"     , &_TopStarLep_mass );
     outputTree->Branch("Reco_mass_T"     , &_TopStar_mass );
     outputTree->Branch("Reco_mass_TT"  , &_tgtg_mass );
+    outputTree->Branch("Reco_mass_TT_diff"  , &_tgtg_mass_diff );
     outputTree->Branch("Reco_angle_pho_lepton"   , &_Reco_angle_pho_lepton ); 
     outputTree->Branch("Reco_angle_lepton_met"   , &_Reco_angle_lepton_met    ); 
     outputTree->Branch("Reco_angle_pho_met"   , &_Reco_angle_pho_met    ); 
@@ -669,6 +671,7 @@ void makeNtuple::InitVariables()
     _TopStarHad_mass     = -9.;
     _TopStar_mass     = -9.;
     _tgtg_mass     = -9.;
+    _tgtg_mass_diff     = -9.;
     _chi2   = -9.;
 
     _nPho		 = -9;
