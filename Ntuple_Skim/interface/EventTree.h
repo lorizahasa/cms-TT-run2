@@ -144,7 +144,6 @@ class EventTree{
     Int_t           puID_[200];
     Float_t         jetArea_[200];
     Float_t         fatJetArea_[200];
-    Float_t         jetBtagCSVV2_[200];
     Float_t         jetBtagDeepB_[200];
     Float_t         jetchEmEF_[200];
     Float_t         jetneEmEF_[200];

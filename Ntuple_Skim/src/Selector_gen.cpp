@@ -21,13 +21,9 @@ Selector_gen::Selector_gen(){
 	veto_lep_pho_dR = 0.4; // remove photons with a lepton closer than this cut level
 	veto_jet_pho_dR = 0.4; // remove photons with a jet closer than this cut level
 
-	useDeepCSVbTag = false;
 	//https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
-	// CSVv2M
+    //DeepJet
 	btag_cut = 0.8484;  
-	// DeepCSV
-	btag_cut_DeepCSV = 0.6324;  
-
 
 	// whether to invert lepton requirements for 
 
@@ -254,11 +250,7 @@ void Selector_gen::filter_jets(){
 
 		if( jetPresel){
 			Jets.push_back(jetInd);
-			if (!useDeepCSVbTag){
-				if(tree->jetCSV2BJetTags_->at(jetInd) > btag_cut) bJets.push_back(jetInd);
-			} else {
-				if( (tree->jetDeepCSVTags_b_->at(jetInd) + tree->jetDeepCSVTags_bb_->at(jetInd) ) > btag_cut_DeepCSV) bJets.push_back(jetInd);
-			}				
+	        if(tree->jetCSV2BJetTags_->at(jetInd) > btag_cut) bJets.push_back(jetInd);
 		}
 
 	}

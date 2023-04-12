@@ -293,7 +293,6 @@ class makeNtuple {
     std::vector<float>   _jerWeight;
     std::vector<float>   _jesWeight;
 
-    std::vector<float>   _jetCSVV2;
     std::vector<float>   _jetDeepB;
     std::vector<Int_t>   _jetGenJetIdx;
 
@@ -731,9 +730,8 @@ void makeNtuple::InitVariables()
     _jetRes.clear();
     _jerWeight.clear();
     _jesWeight.clear();
-    _jetCSVV2.clear();
-    _jetDeepB.clear();
     _jetGenJetIdx.clear();
+    _jetDeepB.clear();
 
     _nFatJet  =-9;  
     _fatJetPt.clear();

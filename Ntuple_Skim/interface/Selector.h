@@ -94,7 +94,6 @@ public:
 	bool scalePho;
 	bool smearPho;
 	bool   looseJetID;
-	bool   useDeepCSVbTag;
 	bool   QCDselect;
     bool isSignal;
     bool isQCD;

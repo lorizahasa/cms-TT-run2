@@ -13,7 +13,6 @@ Selector::Selector(){
     elesmearLevel = 1;
     phoscaleLevel = 1;
     elescaleLevel = 1;
-    useDeepCSVbTag = false;
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
     btag_cut = 0.8484;  
     topTagWP = 0.74;
@@ -305,24 +304,13 @@ void Selector::filter_jets(){
             Jets.push_back(jetInd);
             jet_resolution.push_back(resolution);
             jet_smear.push_back(jetSmear);
-            if (!useDeepCSVbTag){
-                if( tree->jetBtagCSVV2_[jetInd] > 0.8484){
-                    bJets.push_back(jetInd);
-                    jet_isTagged.push_back(true);
-                } 
-                else {
-                    jet_isTagged.push_back(false);
-                }
-            }
+            if( tree->jetBtagDeepB_[jetInd] > btag_cut){
+                bJets.push_back(jetInd);
+                jet_isTagged.push_back(true);
+            } 
             else {
-                if( tree->jetBtagDeepB_[jetInd] > btag_cut){
-                    bJets.push_back(jetInd);
-                    jet_isTagged.push_back(true);
-                } 
-                else {
-                    jet_isTagged.push_back(false);
-                }
-            }				
+                jet_isTagged.push_back(false);
+            }
         }// if jetPresel
         if (tree->event_==printEvent){
             cout << " pt=" << pt << "  eta=" << eta << " phi=" << phi << "  jetID=" << jetID_pass << endl;

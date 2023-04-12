@@ -183,9 +183,6 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Jet_muEF",1);
     chain->SetBranchAddress("Jet_muEF", &jetmuEF_);
 
-    chain->SetBranchStatus("Jet_btagCSVV2",1);
-    chain->SetBranchAddress("Jet_btagCSVV2", &jetBtagCSVV2_);
-
     chain->SetBranchStatus("Jet_btagDeepB",1);
     chain->SetBranchAddress("Jet_btagDeepB", &jetBtagDeepB_);
 

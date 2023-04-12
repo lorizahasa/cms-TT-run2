@@ -291,18 +291,6 @@ makeNtuple::makeNtuple(int ac, char** av)
     //Hard coded the old calibration BTagCalibrationStandalone file and 
     //re-formatted the UL csv file: 
     //https://github.com/indra-ehep/KinFit_Skim/tree/9625ff1697693f4cc71813fe7f6b097643ae5166/CBA_Skim
-    //deepCSV
-    std::map<std::string, string> deepCSVFiles;
-    string comCSV = "weight/BtagSF/wp_deepCSV_106X";
-    deepCSVFiles["2016Pre"]  = comCSV+"UL16preVFP_v2_formatted.csv";
-    deepCSVFiles["2016Post"] = comCSV+"UL16postVFP_v3_formatted.csv";
-    deepCSVFiles["2017"]        = comCSV+"UL17_v3_formatted.csv";
-    deepCSVFiles["2018"]        = comCSV+"UL18_v2_formatted.csv";
-    std::map<std::string, double> deepCSVWPs;//medium WPs
-    deepCSVWPs["2016Pre"]  = 0.6001; 
-    deepCSVWPs["2016Post"] = 0.5847; 
-    deepCSVWPs["2017"]        = 0.4506; 
-    deepCSVWPs["2018"]        = 0.4168; 
     //deepJet
     std::map<std::string, string> deepJetFiles;
     string comJet = "weight/BtagSF/wp_deepJet_106X";
@@ -379,7 +367,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 
     bool applyHemVeto=true; 
     selector->looseJetID = false;
-    selector->useDeepCSVbTag = true;
     if (sampleType.find("Signal") != std::string::npos){
 	selector->isSignal = true;
     }
@@ -397,15 +384,9 @@ makeNtuple::makeNtuple(int ac, char** av)
     	selector->init_JER(jerFiles[year]);
     }
     BTagCalibration calib;
-    if (!selector->useDeepCSVbTag){
-        selector->btag_cut = deepJetWPs[year]; 
-	    calib = BTagCalibration("csvv2", deepJetFiles[year]); 
-    } 
-    else {
-        selector->btag_cut = deepCSVWPs[year]; 
-	    calib = BTagCalibration("csvv2", deepCSVFiles[year]); 
-	    loadBtagEff(sampleType,year);
-    }
+    selector->btag_cut = deepJetWPs[year]; 
+	calib = BTagCalibration("deepjet", deepJetFiles[year]); 
+	loadBtagEff(sampleType,year);
     topEvent.SetBtagThresh(selector->btag_cut);
     BTagCalibrationReader reader(BTagEntry::OP_MEDIUM,  // operating point
 				 "central",             // central sys type
@@ -416,7 +397,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
     reader.load(calib,                // calibration instance
 		BTagEntry::FLAV_B,    // btag flavour
-		"comb");               // measurement type
+		"mujets");               // measurement type
     reader.load(calib,                // calibration instance
 		BTagEntry::FLAV_C,    // btag flavour
 		"comb");               // measurement type
@@ -1171,7 +1152,6 @@ void makeNtuple::FillEvent(std::string year){
         _jetPhi.push_back(tree->jetPhi_[jetInd]);
         _jetMass.push_back(tree->jetMass_[jetInd]);
         _jetQGL.push_back(tree->jetQGL_[jetInd]);
-        _jetCSVV2.push_back(tree->jetBtagCSVV2_[jetInd]);
         _jetDeepB.push_back(tree->jetBtagDeepB_[jetInd]);
         _jetGenJetIdx.push_back(tree->jetGenJetIdx_[jetInd]);
         double resolution = selector->jet_resolution.at(i_jet);
