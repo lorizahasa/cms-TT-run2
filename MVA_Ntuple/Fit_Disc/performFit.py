@@ -89,6 +89,7 @@ myTit = "--title-right \"%s\" --title-left \"%s\" --cms-sub \"%s\""%(lumiLabel, 
 # Text to workspace
 #----------------------------------------
 if isT2W:
+        #runCmd("text2workspace.py %s -o %s --channel-masks"%(pathDC, pathT2W))
         runCmd("text2workspace.py %s -o %s"%(pathDC, pathT2W))
         print(pathT2W)
 
@@ -122,7 +123,7 @@ if isImpact:
 #----------------------------------------
 if isGOF:
     runCmd("combine -d %s -M GoodnessOfFit --algo saturated "%pathT2W)
-    runCmd("combine -d %s -M GoodnessOfFit --algo saturated  -t 500 -s -1"%pathT2W)
+    runCmd("combine -d %s -M GoodnessOfFit --algo saturated  -t 100 -s -1"%pathT2W)
     runCmd("combineTool.py -M CollectGoodnessOfFit --input higgsCombineTest.GoodnessOfFit*.root -o %s/gof.json"%(dirDC))
     runCmd("python3 script/plotGof.py %s/gof.json -o %s/gof --mass 120.0 %s"%(dirDC, dirDC, myTit))
 

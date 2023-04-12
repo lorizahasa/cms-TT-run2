@@ -80,6 +80,13 @@ void Selector::clear_vectors(){
     jet_smear.clear();
     jet_isTagged.clear();
 
+    dR_pho_mu.clear();
+    dR_pho_ele.clear();
+    dR_jet_mu.clear();
+    dR_jet_ele.clear();
+    dR_jet_pho.clear();
+    dR_jet_AK8.clear();
+
 }
 //https://twiki.cern.ch/twiki/bin/view/CMS/MuonUL2016#High_pT_above_120_GeV
 //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SWGuideMuonIdRun2#HighPt_Muon
@@ -97,7 +104,7 @@ void Selector::filter_muons(){
         bool looseMuonID = tree->muIsPFMuon_[m] && 
             (tree->muIsTracker_[m] || tree->muIsGlobal_[m]);
         bool passPromptID = tree->muHighPurity_[m] && (int)tree->muHighPtId_[m]==2;
-        if(isSignal) passPromptID = (int)tree->muHighPtId_[m]==2;//FIXME for UL signals
+        //if(isSignal) passPromptID = (int)tree->muHighPtId_[m]==2;//FIXME for UL signals
         //highPtID has IP cuts too:
         bool passPrompt = (pt >= 55.0 &&
         		  TMath::Abs(eta) <= 2.4 &&
@@ -168,11 +175,15 @@ void Selector::filter_photons(){
         bool passDR_lep_pho = true;
         //loop over selected electrons
         for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
-	    if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < 0.4) passDR_lep_pho = false;
+            double dR_PhoEle = dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]);
+            dR_pho_ele.push_back(dR_PhoEle);
+	        if (dR_PhoEle < 0.4) passDR_lep_pho = false;
         }
         //loop over selected muons
         for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
-	    if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < 0.4) passDR_lep_pho = false;
+            double dR_PhoMu = dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]);
+            dR_pho_mu.push_back(dR_PhoMu);
+	        if (dR_PhoMu < 0.4) passDR_lep_pho = false;
         }
         bool passPhoId      = tree->phoMVAId_WP80_[phoInd];//tight 
         bool hasPixelSeed   = tree->phoPixelSeed_[phoInd];
@@ -249,17 +260,25 @@ void Selector::filter_jets(){
         }
         bool passDR_lep_jet = true;
         //loop over selected electrons
+        dR_jet_pho.clear();
+        //loop over selected electrons
         for(std::vector<int>::const_iterator eleInd = Electrons.begin(); eleInd != Electrons.end(); eleInd++) {
-	    if (dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]) < 0.4) passDR_lep_jet = false;
+            double dR_JetEle = dR(eta, phi, tree->eleEta_[*eleInd], tree->elePhi_[*eleInd]);
+            dR_jet_ele.push_back(dR_JetEle);
+	        if (dR_JetEle < 0.4) passDR_lep_jet = false;
         }
         //loop over selected muons
         for(std::vector<int>::const_iterator muInd = Muons.begin(); muInd != Muons.end(); muInd++) {
-            if (dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]) < 0.4) passDR_lep_jet = false;
+            double dR_JetMu = dR(eta, phi, tree->muEta_[*muInd], tree->muPhi_[*muInd]);
+            dR_jet_mu.push_back(dR_JetMu);
+	        if (dR_JetMu < 0.4) passDR_lep_jet = false;
         }
         bool passDR_pho_jet = true;
         //loop over selected photons
         for(std::vector<int>::const_iterator phoInd = Photons.begin(); phoInd != Photons.end(); phoInd++) {
-            if (dR(eta, phi, tree->phoEta_[*phoInd], tree->phoPhi_[*phoInd]) < 0.4) passDR_pho_jet = false;
+            double dR_JetPho = dR(eta, phi, tree->phoEta_[*phoInd], tree->phoPhi_[*phoInd]);
+            dR_jet_pho.push_back(dR_JetPho);
+	        if (dR_JetPho < 0.4) passDR_pho_jet = false;
             if (tree->event_==printEvent){
 	        cout << "       phoInd=" << *phoInd << "   dR=" << dR(eta, phi, tree->phoEta_[*phoInd], tree->phoPhi_[*phoInd]) << "  phoEta=" << tree->phoEta_[*phoInd] << "  phoPhi=" << tree->phoPhi_[*phoInd] << endl;
             }
@@ -269,7 +288,9 @@ void Selector::filter_jets(){
         if (!skipAK4AK8dr){
             //loop over selected fat jets
             for(std::vector<int>::const_iterator fatJetInd = FatJets.begin(); fatJetInd != FatJets.end(); fatJetInd++) {
-                if (dR(eta, phi, tree->fatJetEta_[*fatJetInd], tree->fatJetPhi_[*fatJetInd]) < 1.6) passDR_ak8 = false;
+                double dR_JetAK8 = dR(eta, phi, tree->fatJetEta_[*fatJetInd], tree->fatJetPhi_[*fatJetInd]);
+                dR_jet_AK8.push_back(dR_JetAK8);
+	            if (dR_JetAK8 < 1.6) passDR_ak8 = false;
             }
         }
 
@@ -333,7 +354,7 @@ void Selector::filter_fatjets(){
         Float_t mSD = tree->fatJetMassSoftDrop_[jetInd];
         //Float_t TvsQCD = tree->fatJetDeepTagT_[jetInd];
         Float_t TvsQCD = tree->fatJetPNET_[jetInd];
-        if(isSignal) TvsQCD = tree->fatJetDeepTagT_[jetInd]; //FIXME for UL signals
+        //if(isSignal) TvsQCD = tree->fatJetDeepTagT_[jetInd]; //FIXME for UL signals
         bool isId  = (id >= 1); 
         double resolution = 0.;
         if (tree->event_==printEvent){
@@ -371,7 +392,7 @@ void Selector::filter_fatjets(){
 	        cout << "  jetSF: "<< jetSF << endl;
 	        cout << "  JetSmear: "<<jetSmear << endl;
             }
-            if(isSignal) jetSmear = 1.0;//FIXME for UL signals
+            //if(isSignal) jetSmear = 1.0;//FIXME for UL signals
             if (smearJetPt){
 	        pt = pt*jetSmear;
 	        tree->fatJetPt_[jetInd] = pt;

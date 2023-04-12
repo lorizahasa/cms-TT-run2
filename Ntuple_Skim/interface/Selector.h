@@ -72,6 +72,13 @@ public:
 	std::vector<double> jet_resolution;
 	std::vector<double> jet_smear;
 	std::vector<bool>   jet_isTagged;
+
+    std::vector<double>dR_pho_mu;
+    std::vector<double>dR_pho_ele;
+    std::vector<double>dR_jet_mu;
+    std::vector<double>dR_jet_ele;
+    std::vector<double>dR_jet_pho;
+    std::vector<double>dR_jet_AK8;
 	
 	double btag_cut;
     double topTagWP;
