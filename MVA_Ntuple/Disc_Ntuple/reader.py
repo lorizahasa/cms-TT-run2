@@ -10,6 +10,7 @@ sys.path.insert(0, "%s/%s"%(os.getcwd(), "sample"))
 from SampleInfo import getSamples
 from DiscInputs import *
 from VarInfo import GetVarInfo
+import multiprocessing
 
 package = "TMVA"
 #-----------------------------------------
@@ -136,9 +137,6 @@ if not syst=="Base":
 #----------------------------------------
 if not os.path.exists(outFileDir):
     os.makedirs(outFileDir)
-outFileFullPath = "%s/%s_%s_%s.root"%(outFileDir, sample, region, syst)
-outputFile = ROOT.TFile(outFileFullPath, "RECREATE")
-print("The histogram directory inside the root file is", histDirInFile) 
 
 #-----------------------------------------
 #Declare histograms
@@ -160,16 +158,6 @@ for var in vars.keys():
         exec("dictHist[\"%s\"] = h%s%s"%(var, var, cut))
 
 #-----------------------------------------
-#Add all trees
-#-----------------------------------------
-print("\nRunning for sample: %s\n"%sample_) 
-tree = ROOT.TChain("AnalysisTree")
-for s in allSamples[sample_]:
-    print("%s/%s/%s"%(inDirNtuple, dirFile, s))
-    tree.Add("%s/%s/%s"%(inDirNtuple, dirFile, s))
-print("%s, Entries = %s "%(sample_, tree.GetEntries()))
-
-#-----------------------------------------
 #Event selection and loop
 #-----------------------------------------
 if "u" in channel: 
@@ -181,67 +169,98 @@ selStr = selStr.replace("||", "or")
 print(selStr)
 
 totalTime = 0
-#Print 1% of events each time
-isPrint = False
-nEnt = tree.GetEntries()
-for ievt, e in enumerate(tree):
-    exec("eventSel = int(%s)"%selStr)
-    #print(ievt, eventSel)
-    if eventSel>0:
-        evtWeights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire,w_pho,w_ttag)
-        if "data" in sample_:
-            evtWeights = "1.0"
-        else: 
-            if "DYJets" in sample:
-                sf = str(dictSFs[year][0])
-                evtWeights = "%s*%s"%(evtWeights, sf)
-            exec("isMisID = e.Photon_misid_ele[0]")
-            if isMisID>0: 
-                sf = str(dictSFs[year][1])
-                evtWeights = "%s*%s"%(evtWeights, sf)
-            else:
-                if "ZGamma" in sample:
-                    sf = str(dictSFs[year][2])
+print("\nRunning for sample: %s\n"%sample_) 
+def evalTree(s):
+    #Print 1% of events each time
+    isPrint = False
+    tree = ROOT.TChain("AnalysisTree")
+    print("%s/%s/%s"%(inDirNtuple, dirFile, s))
+    tree.Add("%s/%s/%s"%(inDirNtuple, dirFile, s))
+    nEnt = tree.GetEntries()
+    print("%s, Entries = %s "%(s, nEnt))
+
+    outFileFullPath = "%s/%s_%s_%s.root"%(outFileDir, s, region, syst)
+    outputFile = ROOT.TFile(outFileFullPath, "RECREATE")
+    print("The histogram directory inside the root file is", histDirInFile) 
+    for ievt, e in enumerate(tree):
+        eventSel = int(eval(selStr))
+        #print(ievt, eventSel)
+        if eventSel>0:
+            evtWeights = "%s*%s*%s*%s*%s*%s*%s*%s*%s*%s*%s*%s"%(w_lumi,w_pu,w_mu,w_ele,w_q2,w_pdf,w_isr,w_fsr,w_btag,w_prefire,w_pho,w_ttag)
+            if "data" in sample_:
+                evtWeights = "1.0"
+            else: 
+                if "DYJets" in sample:
+                    sf = str(dictSFs[year][0])
                     evtWeights = "%s*%s"%(evtWeights, sf)
-                if "WGamma" in sample:
-                    sf = str(dictSFs[year][3])
+                isMisID = eval("e.Photon_misid_ele[0]")
+                if isMisID>0: 
+                    sf = str(dictSFs[year][1])
                     evtWeights = "%s*%s"%(evtWeights, sf)
-        evtWt = evtWeights.replace("Weight", "e.Weight")
-        
-        #Fill the histogram
-        for var in vars.keys():
-            exec("%s[0] = e.%s"%(var, vars[var][0]))
-            exec("dictHist[\"%s\"].Fill(e.%s, %s)"%(var, vars[var][0], evtWt))
-        disc = reader.EvaluateMVA(method)
-        exec("dictHist[\"Disc\"].Fill(%s, %s)"%(disc, evtWt))
-        if isCut and disc>0:
+                else:
+                    if "ZGamma" in sample:
+                        sf = str(dictSFs[year][2])
+                        evtWeights = "%s*%s"%(evtWeights, sf)
+                    if "WGamma" in sample:
+                        sf = str(dictSFs[year][3])
+                        evtWeights = "%s*%s"%(evtWeights, sf)
+            evtWt = evtWeights.replace("Weight", "e.Weight")
+            #Fill the histogram
             for var in vars.keys():
-                #exec("h%s_cut.Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
-                pass
+                eval("dictHist[\"%s\"].Fill(e.%s, %s)"%(var, vars[var][0], evtWt))
+            disc = reader.EvaluateMVA(method)
+            exec("dictHist[\"Disc\"].Fill(%s, %s)"%(disc, evtWt))
+            if isCut and disc>0:
+                for var in vars.keys():
+                    #exec("h%s_cut.Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
+                    pass
 
-    if(nEnt> 100):
-        isPrint = int(ievt%(int(nEnt/100)) == 1)
-    else:
-        isPrint = True
-    if isPrint:
-        totalTime = time.time() - start_time
-        sec_ = (int)(totalTime)%60
-        min_ = int(totalTime/60)
-        print('    %s%s   %sm %ss'%(int(100*ievt/nEnt), "%", min_, sec_))
-        
-#-----------------------------------
-# Write final histograms in the file
-#-----------------------------------
-if not outputFile.GetDirectory(histDirInFile):
-    outputFile.mkdir(histDirInFile)
-outputFile.cd(histDirInFile)
-print("Integral of Histogram =  %s"%dictHist["Disc"].Integral())
-for h in dictHist.values():
+        if(nEnt> 100):
+            isPrint = int(ievt%(int(nEnt/100)) == 1)
+        else:
+            isPrint = True
+        if isPrint:
+            totalTime = time.time() - start_time
+            sec_ = (int)(totalTime)%60
+            min_ = int(totalTime/60)
+            print('    %s%s   %sm %ss'%(int(100*ievt/nEnt), "%", min_, sec_))
+            
+    #-----------------------------------
+    # Write final histograms in the file
+    #-----------------------------------
+    if not outputFile.GetDirectory(histDirInFile):
+        outputFile.mkdir(histDirInFile)
     outputFile.cd(histDirInFile)
-    #ROOT.gDirectory.Delete("%s;*"%(h.GetName()))
-    h.Write()
-print("Path of output root file:\n%s/%s"%(os.getcwd(), outFileFullPath))
-outputFile.Close()
-os.system("rm %s"%weightFile)
+    print("Integral of Histogram =  %s"%dictHist["Disc"].Integral())
+    for h in dictHist.values():
+        outputFile.cd(histDirInFile)
+        #ROOT.gDirectory.Delete("%s;*"%(h.GetName()))
+        h.Write()
+    print("Path of output root file:\n%s/%s"%(os.getcwd(), outFileFullPath))
+    outputFile.Close()
+ 
+# Create a list to store the processes or threads
+processes = []
+for s_ in allSamples[sample_]:
+    process = multiprocessing.Process(target=evalTree, args=(s_,))
+    processes.append(process)
+    process.start()
 
+# Wait for all processes or threads to finish
+for process in processes:
+    process.join()
+print("All processes or threads finished.")
+
+#hadd output files
+haddIn_ = []
+for s_ in allSamples[sample_]:
+    o_ = "%s/%s_%s_%s.root"%(outFileDir, s_, region, syst)
+    haddIn_.append(o_)
+
+haddIn = ' '.join(i_ for i_ in haddIn_)
+haddOut = "%s/%s_%s_%s.root"%(outFileDir, sample, region, syst)
+os.system("hadd -f %s %s"%(haddOut, haddIn))
+os.system("rm %s"%weightFile)
+for i_ in haddIn_:
+    os.system("rm %s"%i_)
 print("--- Total time: %sm %ss ---" %(int((time.time() - start_time)/60), int((time.time() - start_time)%60)))

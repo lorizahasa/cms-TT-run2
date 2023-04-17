@@ -77,20 +77,20 @@ void initCrossSections(){
     //--------------------------
     //ttbar NNLO (http://inspirehep.net/search?p=find+eprint+1112.5675)
     //NLO/NNLO
-    crossSections["TTbarPowheg"]              =  {831.76}; 
-    crossSections["TTbarPowheg_Hadronic"]     =  {380.095};
-    crossSections["TTbarPowheg_Semilept"]     =  {364.352};
+    crossSections["TTbarPowheg"]              =  {833.90}; 
+    crossSections["TTbarPowheg_Hadronic"]     =  {378.93};
+    crossSections["TTbarPowheg_Semilept"]     =  {366.29};
     crossSections["TTbarPowheg_Dilepton"]     =  {87.315};
 
     //--------------------------
     // single t 
     //--------------------------
-    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns#Single_top
+    //https://twiki.cern.ch/twiki/bin/view/LHCPhysics/SingleTopNNLORef#13_TeV
     crossSections["ST_tW_channel"]      ={35.85}; //NNLO
     crossSections["ST_tbarW_channel"]   ={35.85}; //NNLO 
-    crossSections["ST_t_channel"]       ={136.02};//NLO
-    crossSections["ST_tbar_channel"]    ={80.95}; //NLO
-    crossSections["ST_s_channel"]       ={3.36};  //NLO
+    crossSections["ST_t_channel"]       ={134.2};//NLO
+    crossSections["ST_tbar_channel"]    ={80.0}; //NLO
+    crossSections["ST_s_channel"]       ={6.839};  //NLO
     crossSections["TGJets"]             ={0.952};//NLO, 2.967*0.3208
 
     //--------------------------
@@ -107,7 +107,7 @@ void initCrossSections(){
     //--------------------------
     // DY+Jets
     //--------------------------
-    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeV
     crossSections["DYJetsM50"]         =  {6077.22}; 
     crossSections["DYJetsM10to50"]     =  {18610.};  
     
@@ -154,15 +154,17 @@ void initCrossSections(){
     //--------------------------
     // W/Z + y
     //--------------------------
-    crossSections["WGamma"]    = {489.};
-    crossSections["ZGamma"]    = {98.3};//double check 
+    crossSections["WGamma"]    = {600.7505};
+    crossSections["ZGamma"]    = {105.4};
 
     //--------------------------
     // VV 
     //--------------------------
-    crossSections["WW"]                = {75.8 };
-    crossSections["WZ"]                = {27.6 };
-    crossSections["ZZ"]                = {12.14};
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/StandardModelCrossSectionsat13TeV
+    //https://twiki.cern.ch/twiki/bin/viewauth/CMS/SummaryTable1G25ns
+    crossSections["WW"]                = {118.7};
+    crossSections["WZ"]                = {46.74};
+    crossSections["ZZ"]                = {17.72};
 
     //--------------------------
     // ttV 
