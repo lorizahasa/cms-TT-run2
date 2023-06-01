@@ -745,7 +745,6 @@ void makeNtuple::InitVariables()
     _passPresel_Ele  = false;
     _passPresel_Mu   = false;
     dileptonsample   = false;
-    _inHEMVeto       = false;
 
     lepCharge  = -9.;
 

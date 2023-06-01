@@ -35,8 +35,8 @@ Selector::Selector(){
 void Selector::init_JER(std::string inputPrefix){
     jetResolutionAK4 = new JME::JetResolution((inputPrefix+"_MC_PtResolution_AK4PFchs.txt").c_str());
     jetResolutionScaleFactorAK4 = new JME::JetResolutionScaleFactor((inputPrefix+"_MC_SF_AK4PFchs.txt").c_str());
-    jetResolutionAK8 = new JME::JetResolution((inputPrefix+"_MC_PtResolution_AK8PFchs.txt").c_str());
-    jetResolutionScaleFactorAK8 = new JME::JetResolutionScaleFactor((inputPrefix+"_MC_SF_AK8PFchs.txt").c_str());
+    jetResolutionAK8 = new JME::JetResolution((inputPrefix+"_MC_PtResolution_AK8PFPuppi.txt").c_str());
+    jetResolutionScaleFactorAK8 = new JME::JetResolutionScaleFactor((inputPrefix+"_MC_SF_AK8PFPuppi.txt").c_str());
 }
 
 //https://cms-nanoaod-integration.web.cern.ch/integration/cms-swCMSSW_10_6_19/mc102X_doc.html#Muon

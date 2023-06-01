@@ -705,7 +705,7 @@ makeNtuple::makeNtuple(int ac, char** av)
             double pt = tree->elePt_[eleInd];
             double phi = tree->elePhi_[eleInd];
             bool ele_HEM_pt_pass  = pt >= 15 ;
-            bool ele_HEM_eta_pass = eta > -3.0 && eta < -1.4 ;
+            bool ele_HEM_eta_pass = eta > -3.0 && eta < -1.3 ;
             bool ele_HEM_phi_pass = phi > -1.57 && phi < -0.87;
             if ( ele_HEM_pt_pass &&  ele_HEM_eta_pass &&  ele_HEM_phi_pass) nHEM_ele++;
         }
@@ -716,13 +716,23 @@ makeNtuple::makeNtuple(int ac, char** av)
             double et = tree->phoEt_[phoInd];
             double eta = tree->phoEta_[phoInd];
             double phi = tree->phoPhi_[phoInd];
-            bool pho_HEM_eta_pass =  eta > -3.0   && eta < -1.4 ;
+            bool pho_HEM_eta_pass =  eta > -3.0   && eta < -1.3 ;
             bool pho_HEM_et_pass =  et >= 15;
             bool pho_HEM_phi_pass = phi > -1.57  && phi < -0.87 ;
             if (pho_HEM_eta_pass && pho_HEM_phi_pass && pho_HEM_et_pass) {nHEM_pho++ ;}
         }
         HEM_pho_Veto= (nHEM_pho>=1);
-        _inHEMVeto=(applyHemVeto && (HEM_pho_Veto || HEM_ele_Veto) && year=="2018");
+        int nHEM_jet=0;
+        bool HEM_jet_Veto = false;
+        for( int i_jet = 0; i_jet < _nJet; i_jet++){
+            double eta = tree->jetEta_[i_jet];
+            double phi = tree->jetPhi_[i_jet];
+            bool jet_HEM_eta_pass = eta > -3.0 && eta < -1.3;
+            bool jet_HEM_phi_pass = phi > -1.57 && phi < -0.87;
+            if(jet_HEM_eta_pass && jet_HEM_phi_pass) nHEM_jet++;
+        }
+        HEM_jet_Veto = (nHEM_jet >=1);
+        _inHEMVeto=(applyHemVeto && (HEM_pho_Veto || HEM_ele_Veto || HEM_jet_Veto) && year=="2018");
         if(!isMC &&  tree->run_>=319077 && _inHEMVeto){ 
             count_HEM++;
             continue; 
@@ -912,7 +922,9 @@ void makeNtuple::FillEvent(std::string year){
 	    _genWeight       = tree->genWeight_/abs(tree->genWeight_); 
         _evtWeight       = _lumiWeight * _genWeight;
         //std::cout<<_evtWeight<<std::endl;
-        if(_inHEMVeto)_evtWeight = _evtWeight*0.3518;
+        if(_inHEMVeto){
+            _evtWeight = _evtWeight*0.3518;
+        }
     }
     else{
 	    _evtWeight= 1.;
