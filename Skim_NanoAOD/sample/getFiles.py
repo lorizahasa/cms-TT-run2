@@ -40,7 +40,7 @@ if __name__=="__main__":
     f2 = open("JobsNano_cff.py", "w")
 
     allJobs = 0
-    for year in Years: 
+    for year in Years:
     #for year in ['2017']: 
         splitJobs = {}
         print('---------------------------------------')
@@ -74,7 +74,7 @@ if __name__=="__main__":
             splitJobs[sampleName] = [nJob, evtStr, evt, nFiles]
             jobs += nJob
             print("%i\t %i\t %s\t %s"%(nFiles, nJob, evtStr, sampleName))
-        f1.write(str(line.encode('ascii')))
+        f1.write(line)
         f2.write("Samples_%s = %s \n"%(str(year), str(splitJobs)))
         f2.write("AllJobs_%s = %s \n"%(str(year), str(jobs)))
         print('==================')

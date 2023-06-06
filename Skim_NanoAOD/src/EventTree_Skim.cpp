@@ -227,34 +227,76 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2017
     //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2018
     std::cout << "Triggers" << std::endl;
-    if (year.find("2016")!=std::string::npos){
-        //muon
-        chain->SetBranchStatus("HLT_Mu50",1);
-        chain->SetBranchAddress("HLT_Mu50",&HLT_Mu50_);
-        chain->SetBranchStatus("HLT_TkMu50",1);
-        chain->SetBranchAddress("HLT_TkMu50",&HLT_TkMu50_);
-        //electron
-        chain->SetBranchStatus("HLT_Ele27_WPTight_Gsf",1);
-        chain->SetBranchAddress("HLT_Ele27_WPTight_Gsf",&HLT_Ele27_WPTight_Gsf_);
-        chain->SetBranchStatus("HLT_Photon175",1);
-        chain->SetBranchAddress("HLT_Photon175",&HLT_Photon175_);
-    }
+    TString  im24, itm24, im27, m50, tm50, m100, tm100;
+    TString  e27, e32, e35, e45j200, e50j165, p175, p200;
+    im24    = "HLT_IsoMu24"   ;
+    itm24   = "HLT_IsoTkMu24" ;
+    im27    = "HLT_IsoMu27"   ;
+    m50     = "HLT_Mu50"      ;
+    tm50    = "HLT_TkMu50"    ;
+    m100    = "HLT_Mu100"     ;
+    tm100   = "HLT_TkMu100"   ;
     
-    if (year=="2017" || year=="2018"){
-        //muon
-        chain->SetBranchStatus("HLT_Mu50",1);
-        chain->SetBranchAddress("HLT_Mu50",&HLT_Mu50_);
-        chain->SetBranchStatus("HLT_TkMu100",1);
-        chain->SetBranchAddress("HLT_TkMu100",&HLT_TkMu100_);
-        chain->SetBranchStatus("HLT_Mu100",1);
-        chain->SetBranchAddress("HLT_Mu100",&HLT_Mu100_);
-        //electron
-        chain->SetBranchStatus("HLT_Ele35_WPTight_Gsf",1);
-        chain->SetBranchAddress("HLT_Ele35_WPTight_Gsf",&HLT_Ele35_WPTight_Gsf_);
-        chain->SetBranchStatus("HLT_Ele32_WPTight_Gsf",1);
-        chain->SetBranchAddress("HLT_Ele32_WPTight_Gsf",&HLT_Ele32_WPTight_Gsf_);
-        chain->SetBranchStatus("HLT_Photon200",1);
-        chain->SetBranchAddress("HLT_Photon200",&HLT_Photon200_);
+    e27     = "HLT_Ele27_WPTight_Gsf"                         ;
+    e32     = "HLT_Ele32_WPTight_Gsf"                         ;
+    e35     = "HLT_Ele35_WPTight_Gsf"                         ;
+    e45j200 = "HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50" ;
+    e50j165 = "HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165"         ;
+    p175    = "HLT_Photon175"                                 ;
+    p200    = "HLT_Photon200"                                 ;
+    
+    if (year.find("2016")!=std::string::npos){
+        chain->SetBranchStatus(im24 , 1);
+        chain->SetBranchStatus(itm24, 1);
+        chain->SetBranchStatus(m50  , 1);
+        chain->SetBranchStatus(tm50 , 1);
+        chain->SetBranchStatus(e27    , 1);
+        chain->SetBranchStatus(e45j200, 1);
+        chain->SetBranchStatus(e50j165, 1);
+        chain->SetBranchStatus(p175   , 1);
+        
+        chain->SetBranchAddress(im24 , &im24_ );
+        chain->SetBranchAddress(itm24, &itm24_);
+        chain->SetBranchAddress(m50  , &m50_  );
+        chain->SetBranchAddress(tm50 , &tm50_);
+        chain->SetBranchAddress(e27    , &e27_);
+        chain->SetBranchAddress(e45j200, &e45j200_);
+        chain->SetBranchAddress(e50j165, &e50j165_);
+        chain->SetBranchAddress(p175   , &p175_);
+    }
+    if (year.find("2017")!=std::string::npos){
+        chain->SetBranchStatus(im27 , 1);
+        chain->SetBranchStatus(m50  , 1);
+        chain->SetBranchStatus(m100 , 1);
+        chain->SetBranchStatus(tm100, 1);
+        chain->SetBranchStatus(e32    , 1);
+        chain->SetBranchStatus(e50j165, 1);
+        chain->SetBranchStatus(p200   , 1);
+        
+        chain->SetBranchAddress(im27 , &im27_ );
+        chain->SetBranchAddress(m50  , &m50_  );
+        chain->SetBranchAddress(m100 , &m100_);
+        chain->SetBranchAddress(tm100, &tm100_);
+        chain->SetBranchAddress(e32    , &e32_);
+        chain->SetBranchAddress(e50j165, &e50j165_);
+        chain->SetBranchAddress(p200   , &p200_);
+    }
+    if (year.find("2018")!=std::string::npos){
+        chain->SetBranchStatus(im24 , 1);
+        chain->SetBranchStatus(m50  , 1);
+        chain->SetBranchStatus(m100 , 1);
+        chain->SetBranchStatus(tm100, 1);
+        chain->SetBranchStatus(e32    , 1);
+        chain->SetBranchStatus(e50j165, 1);
+        chain->SetBranchStatus(p200   , 1);
+        
+        chain->SetBranchAddress(im24 , &im24_ );
+        chain->SetBranchAddress(m50  , &m50_  );
+        chain->SetBranchAddress(m100 , &m100_);
+        chain->SetBranchAddress(tm100, &tm100_);
+        chain->SetBranchAddress(e32    , &e32_);
+        chain->SetBranchAddress(e50j165, &e50j165_);
+        chain->SetBranchAddress(p200   , &p200_);
     }
 }
 

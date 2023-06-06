@@ -4,6 +4,7 @@
 #include<TFile.h>
 #include<TTree.h>
 #include<TChain.h>
+#include <map>
 
 #include<vector>
 
@@ -34,16 +35,9 @@ class EventTree{
     Int_t   jetID_[200];
     Float_t MET_pt_;
     
-    Bool_t  HLT_Mu50_;
-    Bool_t  HLT_TkMu50_;
-    Bool_t  HLT_TkMu100_;
-    Bool_t  HLT_Mu100_;
-    Bool_t  HLT_Ele27_WPTight_Gsf_;
-    Bool_t  HLT_Ele35_WPTight_Gsf_;
-    Bool_t  HLT_Ele32_WPTight_Gsf_;
-    Bool_t  HLT_Photon175_;
-    Bool_t  HLT_Photon200_;
-    
+    Bool_t  im24_, itm24_, im27_, m50_, tm50_, m100_, tm100_;
+    Bool_t  e27_, e32_, e35_, e45j200_, e50j165_, p175_, p200_;
+
     Bool_t   Flag_goodVertices_ ;
     Bool_t   Flag_globalSuperTightHalo2016Filter_ ;
     Bool_t   Flag_HBHENoiseFilter_ ;
@@ -53,4 +47,5 @@ class EventTree{
     Bool_t   Flag_ecalBadCalibFilter_ ;
     Bool_t   Flag_eeBadScFilter_;
 };
+
 #endif
