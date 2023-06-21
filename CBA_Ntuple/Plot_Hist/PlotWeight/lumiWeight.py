@@ -28,12 +28,12 @@ parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",de
 (options, args) = parser.parse_args()
 isCheck = options.isCheck
 
-Samples = sampDict.keys()
+Samples = sampMC.keys()
 if isCheck:
     Years   = [Years[0]]
     Decays  = [Decays[0]]
     Channels= [Channels[0]]
-    Samples = [sampDict.keys()[0]]
+    Samples = [sampMC.keys()[0]]
 
 
 print("%25s %10s %10s %10s %10s"%("YDC", "Sample", "Integral", "Entry", "Weight"))
@@ -80,11 +80,11 @@ for decay, channel in itertools.product(Decays, Channels):
         graph = TGraph(len(xArray), xArray, yArray)
         graph.GetYaxis().SetTitle("Luminosity weight")
         graph.GetXaxis().SetTitle("Year of data taking")
-        graph.SetLineColor(sampDict[key][0])
-        graph.SetMarkerColor(sampDict[key][0]) 
+        graph.SetLineColor(sampMC[key][0])
+        graph.SetMarkerColor(sampMC[key][0]) 
         graph.SetMarkerStyle(col)
         graph.SetMarkerSize(2)
-        #graph.SetMarkerStyle(sampDict[key][0]) 
+        #graph.SetMarkerStyle(sampMC[key][0]) 
         graph.SetLineWidth(4)
         graph.SetName(key)
         graphs.append(graph)

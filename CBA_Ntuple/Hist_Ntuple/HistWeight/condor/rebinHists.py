@@ -6,7 +6,7 @@ import numpy
 import itertools
 from HistInputs import *
 from optparse import OptionParser
-from HistInfo import GetHistogramInfo
+from HistInfo import GetHistogramInfo, hForEffs
 from ROOT import TFile, TH1F, gDirectory
 
 #----------------------------------------
@@ -43,8 +43,8 @@ dictRebin = {}
 dictRebin["Reco_mass_T"] = numpy.array([0,200,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1800.,2500.,6000.])
 dictRebin["Photon_et"]   = numpy.array([0,100,200,300,400,500,600,700,900,1200,2000.])
 dictRebin["Reco_ht"]     = numpy.array([0,500,700,900,1100,1300,1500,1700,1900,2200,2500,3000,5000,9000.])
+#dictRebin["Reco_st"]     = numpy.array([0.,300,600,900,1200,1500,1800,2100,2400,3000,3300,4200,5100,9000])
 dictRebin["Reco_st"]     = numpy.array([0.,300,600,900,1200,1500,1800,2100,2400,3000,3300,4200,5100,9000])
-#dictRebin["Reco_st"]     = numpy.array([0,500,700,900,1100,1300,1500,1700,1900,2200,2500,3000,5000,9000.])
 
 #-----------------------------------------
 #Functions to read/write histograms
@@ -90,21 +90,45 @@ for syst, level in itertools.product(Systematics, SystLevels):
         continue
     allSysType.append(sysType)
 
+if isCheck:
+    allSysType = [allSysType[0]]
 #-----------------------------------------
 # Do the rebining here
 #----------------------------------------
+
+#effs hist
+hForEff = []
+for h in list(hForEffs.values()):
+    hForEff = hForEff + h
+
 for year, decay, channel in itertools.product(Years, Decays, Channels):
     inDir = "%s/Merged/%s/%s/%s"%(outHistDir, year, decay, channel)
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
     outDir = inDir.replace("Merged", "Rebin")
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
-    outputFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
+    outputFile_ = "/eos/uscms/%s/AllInc.root"%outDir
+    if os.path.exists(outputFile_):
+        os.system("rm %s"%outputFile_)
+    outputFile  = TFile(outputFile_, "update")
     print("==> %s, %s, %s"%(year, decay, channel))
+    for s, r, h in itertools.product(Samples, Regions.keys(), hForEff):
+        if isCheck:
+            print(inFile)
+            print("%s, %s, %s"%(s, r, h))
+        histDir = getHistDir(s, r, "1Base")
+        h4 = inFile.Get("%s/%s"%(histDir, h))
+        writeHist(s, r, "1Base", h4, outputFile)
     for s, r, sys, h in itertools.product(Samples, Regions.keys(), allSysType, hists.keys()):
+        if "data_obs" in s and "Base" not in sys:
+            continue
         if isCheck:
             print("%s, %s, %s, %s"%(s, r, sys, h))
         histDir = getHistDir(s, r, sys)
-        h4 = inFile.Get("%s/%s"%(histDir, h))
-        writeHist(s, r, sys, h4, outputFile)
+        try:
+            h4 = inFile.Get("%s/%s"%(histDir, h))
+            writeHist(s, r, sys, h4, outputFile)
+        except Exception:
+            print("Error: %s, %s, %s, %s"%(s, r, sys, h))
+            sys.exit()
     outputFile.Close()
     print("/eos/uscms/%s/AllInc.root\n"%outDir)

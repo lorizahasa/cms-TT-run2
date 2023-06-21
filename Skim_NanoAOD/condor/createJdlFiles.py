@@ -9,12 +9,13 @@ sys.path.insert(0, os.getcwd().replace("condor","sample"))
 from SkimInputs import *
 from JobsNano_cff import Samples_2016Pre, Samples_2016Post,  Samples_2017, Samples_2018 
 
-if not os.path.exists("tmpSub/log"):
-    os.makedirs("tmpSub/log")
+if os.path.exists("tmpSub"):
+    os.system("rm -r tmpSub")
+    print("Deleted dir: tmpSub")
+os.system("mkdir -p tmpSub/log")
+print("Created dir: tmpSub")
 condorLogDir = "log"
 tarFile = "tmpSub/Skim_NanoAOD.tar.gz"
-if os.path.exists(tarFile):
-	os.system("rm %s"%tarFile)
 os.system("tar -zcvf %s ../../Skim_NanoAOD --exclude condor"%tarFile)
 os.system("cp runMakeSkims.sh tmpSub/")
 common_command = \
@@ -39,7 +40,12 @@ for year in Years:
     jdlFile.write('Executable =  runMakeSkims.sh \n')
     jdlFile.write(common_command)
     outDir="%s/%s"%(outSkimDir, year)
+    if os.path.exists("/eos/uscms/%s"%outDir):
+        print("Deleted out dir: %s"%outDir)
+        os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
+
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
+    print("Created out dir: %s"%outDir)
     jdlFile.write("X=$(step)+1\n")
     
     for sampleName, nJobEvt in samples.items():

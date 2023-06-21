@@ -25,6 +25,15 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 	}
     }
     chain->SetBranchStatus("*",0);
+    
+    // keep some important branches
+    chain->SetBranchStatus("PV_npvsGood",1);
+    chain->SetBranchAddress("PV_npvsGood",&nGoodVtx_);
+    chain->SetBranchStatus("passTrigMu",1);
+    chain->SetBranchAddress("passTrigMu",&passTrigMu_);
+    chain->SetBranchStatus("passTrigEle",1);
+    chain->SetBranchAddress("passTrigEle",&passTrigEle_);
+
     if (!isData_){
 	chain->SetBranchStatus("Pileup_nPU",1);
 	chain->SetBranchAddress("Pileup_nPU", &nPU_);

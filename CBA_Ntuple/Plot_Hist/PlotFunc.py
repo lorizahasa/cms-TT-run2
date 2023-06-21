@@ -356,3 +356,39 @@ def getChLabel(decay, channel):
         name += "%s#color[%i]{%s}"%(nDict[decay], colDict[ch], chDict[ch])
     name += ", p_{T}^{miss} #geq 20 GeV"
     return name
+
+
+def getEff(inFile, samp, region, hs):
+    try:
+        hPass = inFile.Get("%s/%s/1Base/%s"%(samp, region, hs[1]))
+        hAll  = inFile.Get("%s/%s/1Base/%s"%(samp, region, hs[0]))
+    except Exception:
+        print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
+        sys.exit()
+    pEff = rt.TGraphAsymmErrors(hPass, hAll)
+    for i in range(1, hAll.GetNbinsX()):
+        label = hAll.GetXaxis().GetBinLabel(i)
+        #pEff.GetXaxis().SetBinLabel(i, label)
+        #print(i, label)
+    pEff.SetName(samp)
+    return pEff
+
+def decoEff(hist, xTit, yTit, color):
+    hist.GetXaxis().SetTitle(xTit);
+    hist.GetYaxis().SetTitle(yTit);
+    hist.SetFillColor(color);
+    hist.SetLineColor(color);
+    hist.SetMarkerColor(color);
+    hist.GetXaxis().SetTitle(xTit);
+    hist.GetYaxis().SetTitle(yTit)
+    #hist.GetYaxis().CenterTitle()
+    hist.GetXaxis().SetTitleOffset(1.0)
+    hist.GetYaxis().SetTitleOffset(1.2)
+    hist.GetXaxis().SetTitleSize(0.05);
+    hist.GetYaxis().SetTitleSize(0.05);
+    hist.GetXaxis().SetTitleSize(0.05);
+    hist.GetYaxis().SetTitleSize(0.05);
+    hist.GetXaxis().SetTickLength(0.04);
+    hist.GetXaxis().SetMoreLogLabels();
+    hist.GetXaxis().SetNoExponent()
+

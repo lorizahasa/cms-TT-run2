@@ -1,18 +1,19 @@
 #include<iostream>
 #include "../interface/EventTree_Skim.h"
 
-EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileNames, bool isMC){
+EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bool isMC){
     chain = new TChain("Events");
 
     std::cout << "Start EventTree" << std::endl;
     chain->SetCacheSize(100*1024*1024);
     bool isCopy = false;
+    int nFiles = fileNames.size();
     if (xRootDAccess){
         //string dir = "root://cms-xrd-global.cern.ch/";
         string dir = "root://cmsxrootd.fnal.gov/";
         //string dir = "root://xrootd-cms.infn.it/";
         for(int fileI=0; fileI<nFiles; fileI++){
-            string fName = (string) fileNames[fileI];
+            string fName = fileNames[fileI];
             if(isCopy){
                 string singleFile = fName.substr(fName.find_last_of("/")+1,fName.size());
                 string xrdcp_command = "xrdcp " + dir + fName + " " + singleFile ;
@@ -39,7 +40,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     }
     else{
         for(int fileI=0; fileI<nFiles; fileI++){
-            chain->Add(fileNames[fileI]);
+            chain->Add(fileNames[fileI].c_str());
             cout <<fileNames[fileI]<<endl;
         }
     }
@@ -69,12 +70,15 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
 
     // electrons	
     chain->SetBranchStatus("nElectron",1);
-    chain->SetBranchAddress("nElectron",&nEle_);
+    chain->SetBranchAddress("nElectron",&nEle);
     chain->SetBranchStatus("Electron_charge",1);
     chain->SetBranchStatus("Electron_pt",1);
+    chain->SetBranchAddress("Electron_pt",&elePt);
     chain->SetBranchStatus("Electron_deltaEtaSC",1);
     chain->SetBranchStatus("Electron_eta",1);
+    chain->SetBranchAddress("Electron_eta",&eleEta);
     chain->SetBranchStatus("Electron_phi",1);
+    chain->SetBranchAddress("Electron_phi",&elePhi);
     chain->SetBranchStatus("Electron_mass",1);
     chain->SetBranchStatus("Electron_pfRelIso03_chg",1);
     chain->SetBranchStatus("Electron_pfRelIso03_all",1);
@@ -82,6 +86,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("Electron_miniPFRelIso_chg",1);
     chain->SetBranchStatus("Electron_sieie",1);
     chain->SetBranchStatus("Electron_cutBased",1); 
+    chain->SetBranchAddress("Electron_cutBased",&eleID);
     chain->SetBranchStatus("Electron_mvaFall17V2noIso_WP80",1); 
     chain->SetBranchStatus("Electron_mvaFall17V2noIso_WP90",1); 
     chain->SetBranchStatus("Electron_mvaFall17V2noIso_WPL",1);
@@ -90,6 +95,20 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     chain->SetBranchStatus("Electron_mvaFall17V2Iso_WPL",1);
     chain->SetBranchStatus("Electron_vidNestedWPBitmap",1);
     chain->SetBranchStatus("Electron_photonIdx",1);
+
+    //TrigObj
+    chain->SetBranchStatus("nTrigObj",1);
+    chain->SetBranchAddress("nTrigObj", &nTrigObj);
+    chain->SetBranchStatus("TrigObj_pt",1);
+    chain->SetBranchAddress("TrigObj_pt", &TrigObj_pt);
+    chain->SetBranchStatus("TrigObj_eta",1);
+    chain->SetBranchAddress("TrigObj_eta", &TrigObj_eta);
+    chain->SetBranchStatus("TrigObj_phi",1);
+    chain->SetBranchAddress("TrigObj_phi", &TrigObj_phi);
+    chain->SetBranchStatus("TrigObj_id",1);
+    chain->SetBranchAddress("TrigObj_id", &TrigObj_id);
+    chain->SetBranchStatus("TrigObj_filterBits",1);
+    chain->SetBranchAddress("TrigObj_filterBits", &TrigObj_filterBits);
 
     // muons
     chain->SetBranchStatus("nMuon",1);
@@ -228,7 +247,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2018
     std::cout << "Triggers" << std::endl;
     TString  im24, itm24, im27, m50, tm50, m100, tm100;
-    TString  e27, e32, e35, e45j200, e50j165, p175, p200;
+    TString  e27, e32, e32D, e115, e45j200, e50j165, p175, p200;
     im24    = "HLT_IsoMu24"   ;
     itm24   = "HLT_IsoTkMu24" ;
     im27    = "HLT_IsoMu27"   ;
@@ -239,7 +258,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
     
     e27     = "HLT_Ele27_WPTight_Gsf"                         ;
     e32     = "HLT_Ele32_WPTight_Gsf"                         ;
-    e35     = "HLT_Ele35_WPTight_Gsf"                         ;
+    e32D    = "HLT_Ele32_WPTight_Gsf_L1DoubleEG"              ;
+    e115    = "HLT_Ele115_CaloIdVT_GsfTrkIdT"                 ;
     e45j200 = "HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50" ;
     e50j165 = "HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165"         ;
     p175    = "HLT_Photon175"                                 ;
@@ -251,6 +271,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchStatus(m50  , 1);
         chain->SetBranchStatus(tm50 , 1);
         chain->SetBranchStatus(e27    , 1);
+        chain->SetBranchStatus(e115    , 1);
         chain->SetBranchStatus(e45j200, 1);
         chain->SetBranchStatus(e50j165, 1);
         chain->SetBranchStatus(p175   , 1);
@@ -260,6 +281,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchAddress(m50  , &m50_  );
         chain->SetBranchAddress(tm50 , &tm50_);
         chain->SetBranchAddress(e27    , &e27_);
+        chain->SetBranchAddress(e115    , &e115_);
         chain->SetBranchAddress(e45j200, &e45j200_);
         chain->SetBranchAddress(e50j165, &e50j165_);
         chain->SetBranchAddress(p175   , &p175_);
@@ -269,15 +291,17 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchStatus(m50  , 1);
         chain->SetBranchStatus(m100 , 1);
         chain->SetBranchStatus(tm100, 1);
-        chain->SetBranchStatus(e32    , 1);
+        chain->SetBranchStatus(e32D    , 1);
+        chain->SetBranchStatus(e115    , 1);
         chain->SetBranchStatus(e50j165, 1);
-        chain->SetBranchStatus(p200   , 1);
+        chain->SetBranchStatus(p200, 1);
         
         chain->SetBranchAddress(im27 , &im27_ );
         chain->SetBranchAddress(m50  , &m50_  );
         chain->SetBranchAddress(m100 , &m100_);
         chain->SetBranchAddress(tm100, &tm100_);
-        chain->SetBranchAddress(e32    , &e32_);
+        chain->SetBranchAddress(e32D    , &e32_);
+        chain->SetBranchAddress(e115    , &e115_);
         chain->SetBranchAddress(e50j165, &e50j165_);
         chain->SetBranchAddress(p200   , &p200_);
     }
@@ -287,6 +311,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchStatus(m100 , 1);
         chain->SetBranchStatus(tm100, 1);
         chain->SetBranchStatus(e32    , 1);
+        chain->SetBranchStatus(e115    , 1);
         chain->SetBranchStatus(e50j165, 1);
         chain->SetBranchStatus(p200   , 1);
         
@@ -295,6 +320,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, char** fileName
         chain->SetBranchAddress(m100 , &m100_);
         chain->SetBranchAddress(tm100, &tm100_);
         chain->SetBranchAddress(e32    , &e32_);
+        chain->SetBranchAddress(e115    , &e115_);
         chain->SetBranchAddress(e50j165, &e50j165_);
         chain->SetBranchAddress(p200   , &p200_);
     }
@@ -313,4 +339,23 @@ Int_t EventTree::GetEntry(Long64_t entry){
     //chain->GetEntry(entry);
     //return chain->GetEntries();
     return chain->GetEntry(entry);
+}
+std::vector<std::vector<std::string>> EventTree::splitVector(const std::vector<std::string>& strings, int n) {//from ChatGPT
+    int size = strings.size() / n;  // Size of each small vector
+    int remainder = strings.size() % n;  // Remaining elements
+    
+    std::vector<std::vector<std::string>> smallVectors;
+    int index = 0;
+    
+    for (int i = 0; i < n; ++i) {
+        if (i < remainder) {
+            smallVectors.push_back(std::vector<std::string>(strings.begin() + index, strings.begin() + index + size + 1));
+            index += size + 1;
+        } else {
+            smallVectors.push_back(std::vector<std::string>(strings.begin() + index, strings.begin() + index + size));
+            index += size;
+        }
+    }
+    
+    return smallVectors;
 }

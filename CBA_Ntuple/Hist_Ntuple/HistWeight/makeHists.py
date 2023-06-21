@@ -55,7 +55,9 @@ if "jer" in syst and "Up" in level:
     systDir = "JER_up"
 if "jer" in syst and "Down" in level:
     systDir = "JER_down"
-if "Data" in sample:
+isData = False
+if "data_obs" in sample:
+    isData  = True
     systDir = "JetBase"
 samples = getSamples(year, decayMode, systDir)
 analysisNtupleLocation = "%s/%s/%s/%s"%(condorNtupleDir, year, decayMode, systDir) 
@@ -98,9 +100,8 @@ variation = "Base"
 if "Data" in sample:
     histDirInFile = "data_obs/%s/Base"%(region)
 sample_ = sample
-if "Data" in sample or "QCD" in sample:
+if isData or "QCD" in sample:
     sample_ = "%s%s"%(sample, channel)
-
 #-----------------------------------------
 #For Systematics
 #----------------------------------------
@@ -144,6 +145,9 @@ if not sample_ in samples:
     sys.exit()
 tree = TChain("AnalysisTree")
 fileList = samples[sample_]
+
+
+tfs = []
 for fileName in fileList:
     fullPath = "%s/%s"%(analysisNtupleLocation, fileName)
     if "JE" in syst and "Up" in level:
@@ -152,15 +156,32 @@ for fileName in fileList:
         fullPath = "%s/%s_down_%s"%(analysisNtupleLocation, syst, fileName)
     print(fullPath)
     tree.Add("%s/%s"%(analysisNtupleLocation,fileName))
+    tfs.append(TFile.Open(fullPath,"read"))
+
+#Eff hists    
+hForEff = []
+for h in list(hForEffs.values()):
+    hForEff = hForEff + h
+
+hForEff_ = []
+if "Base" in level and "1" in syst:
+    for h in hForEff:
+        for ind, _file in enumerate(tfs):
+            if(ind==0):
+                h_ = _file.Get(h)
+            else:
+                h_.Add(_file.Get(h))
+        hForEff_.append(h_)
+
 print("Number of events:", tree.GetEntries())
 for index, hist in enumerate(histogramsToMake, start=1):
     hInfo = histogramInfo[hist]
-    if ('Data' in sample or isQCD) and not hInfo[2]: continue
+    if isData and not hInfo[2]: continue
     toPrint("Final event weight ", "%s"%(weights))
     toPrint("%s/%s: Filling the histogram"%(index, len(histogramsToMake)), hist)
     toPrint("Extra cuts ", extraCuts)
     histograms.append(TH1F("%s"%(hist),"%s"%(hist),hInfo[1][0],hInfo[1][1],hInfo[1][2]))
-    if "Data" in sample:
+    if isData: 
         tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, "1.0"), "goff")
     else:
         tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, weights), "goff")
@@ -180,6 +201,12 @@ toPrint ("The histogram directory inside the root file is", histDirInFile)
 if not outputFile.GetDirectory(histDirInFile):
     outputFile.mkdir(histDirInFile)
 outputFile.cd(histDirInFile)
+
+if "Base" in level and "1" in syst:
+    for h in hForEff_:
+        toPrint("Trigger Integral %s = "%h.GetName(), h.Integral())
+        h.Write()
+
 for h in histograms:
     toPrint("Integral of Histogram %s = "%h.GetName(), h.Integral())
     outputFile.cd(histDirInFile)

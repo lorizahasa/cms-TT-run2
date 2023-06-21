@@ -545,9 +545,9 @@ makeNtuple::makeNtuple(int ac, char** av)
     double nMC_total = 0.;
     char** fileNames = av+4;
     for(int fileI=0; fileI<ac-4; fileI++){
-    cout << fileNames[fileI] << endl;
+        cout << fileNames[fileI] << endl;
         TFile *_file = TFile::Open(fileNames[fileI],"read");
-        TH1D *hEvents = (TH1D*) _file->Get("hEvents");
+        TH1F *hEvents = (TH1F*) _file->Get("hEvents");
         nMC_total += (hEvents->GetBinContent(2)); 
     }
     if (nMC_total==0){
@@ -555,6 +555,36 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
     _lumiWeight = getEvtWeight(sampleType, lumiValues[year], nMC_total);
     Long64_t nEntr = tree->GetEntries();
+
+    cout<<"---: Histograms from Skim :-----"<<endl;
+	TH1F* hAll    ;
+	TH1F* hAllE   ;
+	TH1F* hPass_  ;
+	TH1F* hPassE_ ;
+	TH1F* hPass   ;
+	TH1F* hPassE  ;
+    for(int fileI=0; fileI<nFiles; fileI++){
+        cout << fileList[fileI] << endl;
+        TFile *_file = TFile::Open(fileList[fileI],"read");
+        if(fileI==0){
+	        hAll           = (TH1F*)_file->Get("hAll_MuTrig");
+	        hAllE          = (TH1F*)_file->Get("hAll_EleTrig");
+	        hPass_         = (TH1F*)_file->Get("hPass_MuTrig");
+	        hPassE_        = (TH1F*)_file->Get("hPass_EleTrig");
+	        hPass          = (TH1F*)_file->Get("hPass_MuTrigFlow");
+	        hPassE         = (TH1F*)_file->Get("hPass_EleTrigFlow");
+        }
+        else{
+	        hAll   ->Add((TH1F*)_file->Get("hAll_MuTrig"));
+	        hAllE  ->Add((TH1F*)_file->Get("hAll_EleTrig"));
+	        hPass_ ->Add((TH1F*)_file->Get("hPass_MuTrig"));
+	        hPassE_->Add((TH1F*)_file->Get("hPass_EleTrig"));
+	        hPass  ->Add((TH1F*)_file->Get("hPass_MuTrigFlow"));
+	        hPassE ->Add((TH1F*)_file->Get("hPass_EleTrigFlow"));
+        }
+    }
+
+
     bool saveAllEntries = false;
     if (sampleType=="Test") {
 	if (nEntr > 20000) nEntr = 20000;
@@ -724,7 +754,7 @@ makeNtuple::makeNtuple(int ac, char** av)
         HEM_pho_Veto= (nHEM_pho>=1);
         int nHEM_jet=0;
         bool HEM_jet_Veto = false;
-        for( int i_jet = 0; i_jet < _nJet; i_jet++){
+        for( int i_jet = 0; i_jet < tree->nJet_; i_jet++){
             double eta = tree->jetEta_[i_jet];
             double phi = tree->jetPhi_[i_jet];
             bool jet_HEM_eta_pass = eta > -3.0 && eta < -1.3;
@@ -898,6 +928,13 @@ makeNtuple::makeNtuple(int ac, char** av)
     outputFile->cd();
     std::cout<<"nEvents_Ntuple = "<<outputTree->GetEntries()<<endl;
     outputTree->Write();
+	hAll    ->Write();
+	hAllE   ->Write();
+	hPass_  ->Write();
+	hPassE_ ->Write();
+	hPass   ->Write();
+	hPassE  ->Write();
+
    /* 
     TNamed gitCommit("Git_Commit", VERSION);
     TNamed gitTime("Git_Commit_Time", COMMITTIME);

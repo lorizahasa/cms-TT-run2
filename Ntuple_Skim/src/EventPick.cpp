@@ -29,7 +29,18 @@ EventPick::~EventPick(){
 void EventPick::process_event(EventTree* tree, Selector* selector){
     passPreselMu  = true;
     passPreselEle = true;
-	selector->process_objects(tree);
+
+    //Trigger and PV cuts
+    if(!(passPreselMu  && tree->passTrigMu_  && tree->nGoodVtx_))  passPreselMu = false;
+    if(!(passPreselEle && tree->passTrigEle_ && tree->nGoodVtx_))  passPreselEle = false;
+	
+    if(passPreselMu || passPreselEle){
+        selector->process_objects(tree);
+    }
+    else {
+        return;
+    }
+
     if (tree->event_==printEvent){
 	cout << "Muons     "<< selector->Muons.size() << endl;
 	cout << "  Loose   "<< selector->MuonsLoose.size() << endl;

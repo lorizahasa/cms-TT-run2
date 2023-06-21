@@ -12,8 +12,8 @@ sys.path.insert(0, os.getcwd().replace("condor","sample"))
 from SkimInputs import *
 from JobsNano_cff import Samples_2016Pre, Samples_2016Post,  Samples_2017, Samples_2018 
 
-#condorLogDir = "tmpSub/log"
-condorLogDir = "tmpSub/log_resub"
+condorLogDir = "tmpSub/log"
+#condorLogDir = "tmpSub/log_resub"
 #-----------------------------------------
 #Function to compare two lists
 #----------------------------------------
@@ -47,18 +47,27 @@ jdlFile.write(common_command)
 localFile = open("tmpSub/localResubmitJobs.sh",'w')
 
 
-#Search in the log files to see if xrdcp was not able to copy a file
-print("Collecting error logs for all years ...")
-grepList = subprocess.Popen('grep -rn permission %s'%(condorLogDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
-grepList.remove("")
-grepList2 = subprocess.Popen('grep -rn truncated %s'%(condorLogDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
-grepList2.remove("")
+#----------------------------------------
+# Search in stdout and stderr files 
+#----------------------------------------
+print(colored("----: Collecting major errors for ALL years :--------", "red"))
+errors = []
+errors.append("TNetXNGFile::Open")
+#errors.append("TNetXNGFile::Close")
+errors.append("permission")
+errors.append("truncated")
+errors.append("zombie")
+errors.append("nan")
+
 errList = []
-for err in grepList+grepList2:
-    errList.append(err.split(":")[0])
+for err in errors: 
+    grepList = subprocess.Popen('grep -l %s %s/*.stderr'%(err, condorLogDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
+    grepList.remove("")
+    errList = errList + grepList
+    print(colored("%s for %s jobs = "%(err, len(grepList)), "red"), grepList)
+
 argList = []
 for err in np.unique(errList):
-    if "std" not in err: continue
     search = "All arguements"
     out = err.replace("stderr", "stdout")
     arg = subprocess.Popen('grep -rn \"%s\" %s'%(search, out),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
@@ -117,7 +126,11 @@ for year in Years:
     for finished in finishedList:
         fROOT = "root://cmseos.fnal.gov/%s/%s"%(outDir, finished)
         #fROOT = "root://cmsxrootd.fnal.gov/%s/%s"%(outDir, finished)
-        f = TFile.Open(fROOT, "READ")
+        try:
+            f = TFile.Open(fROOT, "READ")
+        except Exception:
+            corruptedList.append(finished)
+            continue
         if not f:
             print("Null pointer: %s"%fROOT)
             corruptedList.append(finished)
@@ -135,7 +148,8 @@ for year in Years:
             print("hEvents does not exist: %s"%fROOT)
             corruptedList.append(finished)
             continue
-        nEvents[finished] = h.Integral()
+        nEvents[finished] = h.GetBinContent(2)
+        f.Close()
     print("Finished but corrupted jobs: %s"%len(corruptedList))
     resubJobs += len(corruptedList)
 
@@ -149,20 +163,17 @@ for year in Years:
                 nSkim+=nEvents[fileSkim]
         print("%10s %10s, %10s\t %s"%(nNano-int(nSkim), nNano, int(nSkim), samp))
 
-    print(colored("(4): Checking xrdcp errors ...", "red"))
+    #Print errors for each year
+    print(colored("(4): Checking %s  "%errors, "red"))
     argListYear = []
     for arg in argList:
         if year==arg[0]:
             print(arg[1:-1])
             argListYear.append(arg)
     resubJobs += len(argListYear)
-    print("Total jobs with xrdcp errors = %s"%len(argListYear))
+    print("Total jobs with these errors = %s"%len(argListYear))
 
-    print(colored("(5): Checking Nan or Inf filled in jobs ... ", "red"))
-    grepList3 = subprocess.Popen('grep -rn nan %s'%(condorLogDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
-    grepList3.remove("")
-    print("Nan/Inf is propgrated for the following jobs:", grepList3)
-
+    print(colored("----: Summary :----", "red"))
     #----------------------------------------
     #Create jdl files
     #----------------------------------------

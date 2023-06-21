@@ -30,7 +30,7 @@ isCheck = options.isCheck
 isSep = options.isSep
 isComb = options.isMerge
 
-Samples = list(sampDict.keys())
+Samples = list(sampMC.keys())
 if isCheck:
     isSep  = True
     isComb = False

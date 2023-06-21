@@ -74,6 +74,9 @@ class EventTree{
     Float_t  nPUTrue_;  
     Float_t  MET_pt_;
     Float_t  MET_phi_;
+    Int_t    nGoodVtx_;
+    Int_t   passTrigMu_;
+    Int_t   passTrigEle_;
 
     // Electron
     UInt_t          nEle_;

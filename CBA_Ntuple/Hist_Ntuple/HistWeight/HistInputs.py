@@ -1,28 +1,25 @@
 #-----------------------------------------------------------------
 outHistDir = "/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistWeight"
 #-----------------------------------------------------------------
-Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-#Years 	      =	["2017"]
+#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+Years 	      =	["2017"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 
 #Years and channels to be commbined
-Years_         = ["2016Pre__2016Post__2017__2018"]
-Channels_      = ["Mu", "Ele", "Mu__Ele"]
+#Years_         = ["2016Pre__2016Post__2017__2018"]
+#Channels_      = ["Mu", "Ele", "Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
 
 Samples = []
-#Samples.append("SignalSpin32_M700")
-Samples.append("SignalSpin32_M800")
-#Samples.append("SignalSpin32_M900")
-#Samples.append("SignalSpin32_M1000")
-##Samples.append("SignalSpin32_M1100")
-Samples.append("SignalSpin32_M1200")
-#Samples.append("SignalSpin32_M1300")
-#Samples.append("SignalSpin32_M1400")
+Samples.append("SignalSpin12_M700")
+Samples.append("SignalSpin12_M1500")
+Samples.append("SignalSpin12_M3000")
+
+Samples.append("SignalSpin32_M700")
 Samples.append("SignalSpin32_M1500")
-#Samples.append("SignalSpin32_M1600")
+Samples.append("SignalSpin32_M3000")
 
 #bkg and data
 Samples.append("TTbar")
@@ -33,7 +30,7 @@ Samples.append("WGamma")
 Samples.append("ZGamma")
 Samples.append("Others")
 Samples.append("QCD")
-##Samples.append("Data")
+Samples.append("data_obs")
 
 Systematics   =	[]
 Systematics.append("1")              
