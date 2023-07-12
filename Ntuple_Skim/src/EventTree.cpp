@@ -134,6 +134,9 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Muon_mass",1);
     chain->SetBranchAddress("Muon_mass", &muMass_);
 
+    chain->SetBranchStatus("Muon_mediumId",1);
+    chain->SetBranchAddress("Muon_mediumId", &muMediumId_);
+
     chain->SetBranchStatus("Muon_tightId",1);
     chain->SetBranchAddress("Muon_tightId", &muTightId_);
 
@@ -146,6 +149,9 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Muon_tkIsoId",1);
     chain->SetBranchAddress("Muon_tkIsoId", &muTkIsoId_);
 
+    chain->SetBranchStatus("Muon_pfRelIso04_all",1);
+    chain->SetBranchAddress("Muon_pfRelIso04_all", &muPFRelIso_);
+
     chain->SetBranchStatus("Muon_tkRelIso",1);
     chain->SetBranchAddress("Muon_tkRelIso", &muTkRelIso_);
 
@@ -157,6 +163,12 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
     chain->SetBranchStatus("Muon_isTracker",1);
     chain->SetBranchAddress("Muon_isTracker", &muIsTracker_);
+
+    chain->SetBranchStatus("Muon_dxy",1);
+    chain->SetBranchAddress("Muon_dxy", &muDxy_);
+
+    chain->SetBranchStatus("Muon_dz",1);
+    chain->SetBranchAddress("Muon_dz", &muDz_);
 
     // jets
     chain->SetBranchStatus("nJet",1);
@@ -363,6 +375,48 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
 
     chain->SetBranchStatus("L1PreFiringWeight_Up",1);
     chain->SetBranchAddress("L1PreFiringWeight_Up",&prefireUp_);
+
+    TString  im24, itm24, im27, m50, tm50, m100, tm100;
+    im24    = "HLT_IsoMu24"   ;
+    itm24   = "HLT_IsoTkMu24" ;
+    im27    = "HLT_IsoMu27"   ;
+    m50     = "HLT_Mu50"      ;
+    tm50    = "HLT_TkMu50"    ;
+    m100    = "HLT_Mu100"     ;
+    tm100   = "HLT_TkMu100"   ;
+    if (year.find("2016")!=std::string::npos){
+        chain->SetBranchStatus(im24 , 1);
+        chain->SetBranchStatus(itm24, 1);
+        chain->SetBranchStatus(m50  , 1);
+        chain->SetBranchStatus(tm50 , 1);
+
+        chain->SetBranchAddress(im24 , &im24_ );
+        chain->SetBranchAddress(itm24, &itm24_);
+        chain->SetBranchAddress(m50  , &m50_  );
+        chain->SetBranchAddress(tm50 , &tm50_);
+    }
+    if (year.find("2017")!=std::string::npos){
+        chain->SetBranchStatus(im27 , 1);
+        chain->SetBranchStatus(m50  , 1);
+        chain->SetBranchStatus(m100 , 1);
+        chain->SetBranchStatus(tm100, 1);
+        
+        chain->SetBranchAddress(im27 , &im27_ );
+        chain->SetBranchAddress(m50  , &m50_  );
+        chain->SetBranchAddress(m100 , &m100_);
+        chain->SetBranchAddress(tm100, &tm100_);
+    }
+    if (year.find("2018")!=std::string::npos){
+        chain->SetBranchStatus(im24 , 1);
+        chain->SetBranchStatus(m50  , 1);
+        chain->SetBranchStatus(m100 , 1);
+        chain->SetBranchStatus(tm100, 1);
+        
+        chain->SetBranchAddress(im24 , &im24_ );
+        chain->SetBranchAddress(m50  , &m50_  );
+        chain->SetBranchAddress(m100 , &m100_);
+        chain->SetBranchAddress(tm100, &tm100_);
+    }
 
 }
 

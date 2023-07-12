@@ -43,7 +43,6 @@ for year in Years:
     if os.path.exists("/eos/uscms/%s"%outDir):
         print("Deleted out dir: %s"%outDir)
         os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
-
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
     print("Created out dir: %s"%outDir)
     jdlFile.write("X=$(step)+1\n")

@@ -9,10 +9,13 @@ sys.path.insert(0, os.getcwd().replace("Ntuple_Skim/condor","Skim_NanoAOD/sample
 from NtupleInputs import *
 from JobsNano_cff import Samples_2016Pre, Samples_2016Post,  Samples_2017, Samples_2018 
 
-tmpDir = "tmpSub"
-if not os.path.exists("%s/log"%tmpDir):
-    os.makedirs("%s/log"%tmpDir)
+if os.path.exists("tmpSub"):
+    os.system("rm -r tmpSub")
+    print("Deleted dir: tmpSub")
+os.system("mkdir -p tmpSub/log")
+print("Created dir: tmpSub")
 condorLogDir = "log"
+tmpDir = "tmpSub"
 tarFile = "%s/Ntuple_Skim.tar.gz"%tmpDir
 if os.path.exists(tarFile):
 	os.system("rm %s"%tarFile)
@@ -41,7 +44,11 @@ for year in Years:
     jdlFile.write(common_command)
     for decay, syst in itertools.product(Decays, Systs):
         outDir = "%s/%s/%s/%s"%(outNtupleDir, year, decay, syst)
-        os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
+        if os.path.exists("/eos/uscms/%s"%outDir):
+            print("Deleted out dir: %s"%outDir)
+            os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
+        os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
+        print("Created out dir: %s"%outDir)
         jdlFile.write("X=$(step)+1\n")
         for sampleName, fEvt in sampleList.items():
             if "Data" in sampleName and "_" in syst: continue

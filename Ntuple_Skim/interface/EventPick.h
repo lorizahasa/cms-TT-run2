@@ -18,7 +18,7 @@ public:
 	EventPick(std::string titleIn);
 	~EventPick();
 	
-	void process_event(EventTree* inp_tree, Selector* inp_selector);
+	void process_event(EventTree* tree, Selector* selector);
 	std::string title;
 	std::string year;
 

@@ -1,8 +1,8 @@
 #-----------------------------------------------------------------
 outHistDir = "/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistWeight"
 #-----------------------------------------------------------------
-#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-Years 	      =	["2017"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years 	      =	["2017"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
@@ -15,11 +15,11 @@ Decays 	      =	["Semilep"]
 Samples = []
 Samples.append("SignalSpin12_M700")
 Samples.append("SignalSpin12_M1500")
-Samples.append("SignalSpin12_M3000")
+#Samples.append("SignalSpin12_M3000")
 
 Samples.append("SignalSpin32_M700")
 Samples.append("SignalSpin32_M1500")
-Samples.append("SignalSpin32_M3000")
+#Samples.append("SignalSpin32_M3000")
 
 #bkg and data
 Samples.append("TTbar")
@@ -29,8 +29,8 @@ Samples.append("DYJets")
 Samples.append("WGamma")
 Samples.append("ZGamma")
 Samples.append("Others")
-Samples.append("QCD")
-Samples.append("data_obs")
+#Samples.append("QCD")
+#Samples.append("data_obs")
 
 Systematics   =	[]
 Systematics.append("1")              
@@ -49,8 +49,8 @@ Systematics.append("Weight_ele_trig")
 Systematics.append("Weight_pho_id")            
 Systematics.append("Weight_pho_ps")        
 Systematics.append("Weight_pho_cs")        
-Systematics.append("Weight_jes")
-Systematics.append("Weight_jer")
+#Systematics.append("Weight_jes")
+#Systematics.append("Weight_jer")
 Systematics.append("Weight_q2")                
 Systematics.append("Weight_pdf")               
 Systematics.append("Weight_isr")                

@@ -126,7 +126,9 @@ class EventTree{
     Float_t         muEta_[100];
     Int_t           muCharge_[100];
     Float_t         muMass_[100];
+    Float_t         muPFRelIso_[100];
     Float_t         muTkRelIso_[100];
+    Bool_t          muMediumId_[100];
     Bool_t          muTightId_[100];
     UChar_t         muHighPtId_[100];
     Bool_t          muHighPurity_[100];
@@ -134,6 +136,8 @@ class EventTree{
     Bool_t          muIsPFMuon_[100];
     Bool_t          muIsGlobal_[100];
     Bool_t          muIsTracker_[100];
+    Float_t         muDxy_[100];
+    Float_t         muDz_[100];
 
     // Jet
     UInt_t          nJet_;
@@ -173,6 +177,7 @@ class EventTree{
     Int_t           fatJetGenJetAK8Idx_[200];
     Float_t  rho_;
     
+    Bool_t  im24_, itm24_, im27_, m50_, tm50_, m100_, tm100_;
 
 };
 #endif

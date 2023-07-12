@@ -4,7 +4,8 @@ sys.dont_write_bytecode = True
 import numpy as np
 from PlotInputs import dirPlot, dirTwiki 
 
-fName = "ratioWeight"
+fName = "effPlot"
+#fName = "ratioWeight"
 txtFile = open("%s/%s.txt"%(dirPlot, fName), "r")
 texFile = open("%s/%s.tex"%(dirPlot, fName), "w")
 os.system("mkdir -p %s"%dirTwiki)
@@ -17,7 +18,7 @@ for line in txtFile:
     allPlotPath.append(line)
     allPlotName.append(line.split("/")[-1])
 
-showPerFig = 4
+showPerFig = 2
 figWidth = (1-0.05)/showPerFig#5% margin
 nPage = len(allPlotPath)/showPerFig
 for page in np.arange(int(nPage)):

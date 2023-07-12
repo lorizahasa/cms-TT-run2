@@ -99,27 +99,35 @@ void Selector::filter_muons(){
     for(UInt_t m = 0; m < tree->nMuon_; ++m){
         double eta = tree->muEta_[m];
         double pt = tree->muPt_[m];
-        int tkIsoID = (int)tree->muTkIsoId_[m];//1 for loose, 2 for tight
-        bool looseMuonID = tree->muIsPFMuon_[m] && 
-            (tree->muIsTracker_[m] || tree->muIsGlobal_[m]);
-        bool passPromptID = tree->muHighPurity_[m] && (int)tree->muHighPtId_[m]==2;
-        //if(isSignal) passPromptID = (int)tree->muHighPtId_[m]==2;//FIXME for UL signals
-        //highPtID has IP cuts too:
-        bool passPrompt = (pt >= 55.0 &&
-        		  TMath::Abs(eta) <= 2.4 &&
-        		  passPromptID && 
-                  tkIsoID == 2 
-        		  );
-        bool passLoose = (pt >= 30.0 &&
-                  TMath::Abs(eta) <= 2.4 &&
-                  looseMuonID && 
-                  !passPrompt &&
-                  tkIsoID == 1
-        		  );
+        //Loose muon
+        bool looseMuonID = tree->muIsPFMuon_[m] 
+            && (tree->muIsTracker_[m] || tree->muIsGlobal_[m]);
+        bool passLoose = (pt >= 15 
+                && TMath::Abs(eta) <= 2.4 
+                && looseMuonID 
+                && (int)tree->muTkIsoId_[m] == 1);
+
+        //Prompt muon (Medium ID)
+        //cutbased for pt<=120, highPt for pt >120
+        bool passPrompt     = false; 
+        if(pt > 30){
+            passPrompt = (TMath::Abs(eta) <= 2.4 
+                    && (int)tree->muTkIsoId_[m] == 2 //1 for loose, 2 for tight
+                    &&  tree->muHighPurity_[m] 
+                    && (int)tree->muHighPtId_[m]==2//1 = tracker high pT, 2 = global high pT, which includes tracker high pT 
+                    && tree->muDxy_[m]<0.2
+                    && tree->muDz_[m]<0.5);
+        }
         if(passPrompt) Muons.push_back(m);
         else if (passLoose) MuonsLoose.push_back(m);
         if (tree->event_==printEvent){
-            cout << "-- " << m << " passPrompt="<<passPrompt<< " passLoose="<<passLoose << " pt="<<pt<< " eta="<<eta<< " phi="<<tree->muPhi_[m]<< " tightID="<<passPromptID<< " looseID="<<looseMuonID << " tkRelIsoID="<<tkIsoID << endl;
+            cout << "-- " << m 
+                << " passPrompt="<<passPrompt
+                << " passLoose="<<passLoose 
+                << " pt="<<pt
+                << " eta="<<eta
+                <<" looseID="<<looseMuonID 
+                << endl;
         } 
     }
 }

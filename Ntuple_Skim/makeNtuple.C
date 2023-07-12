@@ -198,28 +198,32 @@ makeNtuple::makeNtuple(int ac, char** av)
     //ID files
     std::map<std::string, string> muIDFiles;
     string comMu = "weight/MuSF/Efficiencies_muon_generalTracks_Z_"; 
-    muIDFiles["2016Pre"]  = comMu+"Run2016_UL_HIPM_ID.root";
-    muIDFiles["2016Post"] = comMu+"Run2016_UL_ID.root";
-    muIDFiles["2017"]        = comMu+"Run2017_UL_ID.root";
-    muIDFiles["2018"]        = comMu+"Run2018_UL_ID.root";
+    muIDFiles["2016Pre"]    = comMu+"Run2016_UL_HIPM_ID.root";
+    muIDFiles["2016Post"]   = comMu+"Run2016_UL_ID.root";
+    muIDFiles["2017"]       = comMu+"Run2017_UL_ID.root";
+    muIDFiles["2018"]       = comMu+"Run2018_UL_ID.root";
     //Iso files
     std::map<std::string, string> muIsoFiles;
-    muIsoFiles["2016Pre"]  = comMu+"Run2016_UL_HIPM_ISO.root";
-    muIsoFiles["2016Post"] = comMu+"Run2016_UL_ISO.root";
-    muIsoFiles["2017"]        = comMu+"Run2017_UL_ISO.root";
-    muIsoFiles["2018"]        = comMu+"Run2018_UL_ISO.root";
+    muIsoFiles["2016Pre"]   = comMu+"Run2016_UL_HIPM_ISO.root";
+    muIsoFiles["2016Post"]  = comMu+"Run2016_UL_ISO.root";
+    muIsoFiles["2017"]      = comMu+"Run2017_UL_ISO.root";
+    muIsoFiles["2018"]      = comMu+"Run2018_UL_ISO.root";
     //Trig file
-    string muTrigFile = "weight/MuSF/OutFile-v20190510-Combined-Run2016BtoH_Run2017BtoF_Run2018AtoD-M120to10000.root";
+    std::map<std::string, string> muTrigFiles;
+    muTrigFiles["2016Pre"]      = comMu+"Run2016_UL_HIPM_SingleMuonTriggers.root";
+    muTrigFiles["2016Post"]     = comMu+"Run2016_UL_SingleMuonTriggers.root";
+    muTrigFiles["2017"]         = comMu+"Run2017_UL_SingleMuonTriggers.root";
+    muTrigFiles["2018"]         = comMu+"Run2018_UL_SingleMuonTriggers.root";
     //Name of the histograms
-    string muIDHist     = "NUM_HighPtID_DEN_TrackerMuons_abseta_pt";
-    string muIsoHist    = "NUM_TightRelTkIso_DEN_HighPtIDandIPCut_abseta_pt";
+    string muIDHist      = "NUM_HighPtID_DEN_TrackerMuons_abseta_pt";
+    string muIsoHist     = "NUM_TightRelTkIso_DEN_HighPtIDandIPCut_abseta_pt";
     std::map<std::string, string> muTrigHists;
-    muTrigHists["2016Pre"]  = "SF_2016";
-    muTrigHists["2016Post"] = "SF_2016";
-    muTrigHists["2017"]        = "SF_2017";
-    muTrigHists["2018"]        = "SF_2018";
+    muTrigHists["2016Pre"]      = "NUM_Mu50_or_TkMu50_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose_abseta_pt";
+    muTrigHists["2016Post"]     = "NUM_Mu50_or_TkMu50_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose_abseta_pt";
+    muTrigHists["2017"]         = "NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose_abseta_pt";
+    muTrigHists["2018"]         = "NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose_abseta_pt";
     //Initiate the muon SF reader
-	muSF = new MuonSF(muIDFiles[year], muIDHist, muIsoFiles[year], muIsoHist, muTrigFile, muTrigHists[year]);
+	muSF = new MuonSF(muIDFiles[year], muIDHist, muIsoFiles[year], muIsoHist,  muTrigFiles[year], muTrigHists[year]);
 
     //--------------------------
     //Electron SFs
@@ -622,7 +626,9 @@ makeNtuple::makeNtuple(int ac, char** av)
     std::cout<<setw(10)<<"Progress"<<setw(10)<<"Time"<<std::endl;
     std::cout<<"---------------------------"<<std::endl;
     double totalTime = 0.0;
+	TH1F* hEvents_ = new TH1F("nSkim", "nSkim", 5, -1.5, 3.5);
     for(Long64_t entry=startEntry; entry<endEntry; entry++){
+        hEvents_->Fill(0);
         //if(entry>10000) break;;
         //cout<<entry<<endl;
         //--------------------------
@@ -820,9 +826,9 @@ makeNtuple::makeNtuple(int ac, char** av)
                     vector<double> muWeights_Do;
                     vector<double> muWeights_Up;    
                     int muInd_ = selector->Muons.at(0);
-                    muWeights    = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],1, tree->event_==eventNum);
-                	muWeights_Do = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],0);
-                	muWeights_Up = muSF->getMuSFs(tree->muPt_[muInd_],tree->muEta_[muInd_],2);
+                    muWeights    = muSF->getMuSFs(tree->muEta_[muInd_],tree->muPt_[muInd_],1, tree->event_==eventNum);
+                	muWeights_Do = muSF->getMuSFs(tree->muEta_[muInd_],tree->muPt_[muInd_],0);
+                	muWeights_Up = muSF->getMuSFs(tree->muEta_[muInd_],tree->muPt_[muInd_],2);
                     _muEffWeight    = muWeights.at(0);
                     _muEffWeight_Up = muWeights_Up.at(0);
                     _muEffWeight_Do = muWeights_Do.at(0);
@@ -928,6 +934,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     outputFile->cd();
     std::cout<<"nEvents_Ntuple = "<<outputTree->GetEntries()<<endl;
     outputTree->Write();
+    hEvents_->Write();
 	hAll    ->Write();
 	hAllE   ->Write();
 	hPass_  ->Write();

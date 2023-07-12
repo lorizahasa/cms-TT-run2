@@ -14,7 +14,7 @@ from ROOT import TFile, TH1F, gDirectory
 #----------------------------------------
 parser = OptionParser()
 parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
-parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
+parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=True, help="Merge for separate years and channels")
 parser.add_option("--isComb","--isComb", dest="isMerge",action="store_true",default=False, help="Merge for combined years and channels")
 (options, args) = parser.parse_args()
 isCheck = options.isCheck
@@ -22,7 +22,7 @@ isSep = options.isSep
 isComb = options.isMerge
 
 if isCheck:
-    isSep  = True
+    isSep  = False
     isComb = False
     Years  = [Years[0]]
     Decays = [Decays[0]]
@@ -71,8 +71,8 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
     #print(gDirectory.ls())
     outputFile.cd(outHistDir)
     hName = hist_.GetName()
-    gDirectory.Delete("%s;*"%(hName))
     #print("%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, CR, sysType, hist_.GetName()))
+    gDirectory.Delete("%s;*"%(hName))
     if hName in dictRebin.keys():
         hNew = hist_.Rebin(len(dictRebin[hName])-1, hist_.GetName(), dictRebin[hName]) 
         hNew.Write()
@@ -116,19 +116,23 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
             print(inFile)
             print("%s, %s, %s"%(s, r, h))
         histDir = getHistDir(s, r, "1Base")
-        h4 = inFile.Get("%s/%s"%(histDir, h))
-        writeHist(s, r, "1Base", h4, outputFile)
-    for s, r, sys, h in itertools.product(Samples, Regions.keys(), allSysType, hists.keys()):
-        if "data_obs" in s and "Base" not in sys:
-            continue
-        if isCheck:
-            print("%s, %s, %s, %s"%(s, r, sys, h))
-        histDir = getHistDir(s, r, sys)
         try:
             h4 = inFile.Get("%s/%s"%(histDir, h))
-            writeHist(s, r, sys, h4, outputFile)
+            writeHist(s, r, "1Base", h4, outputFile)
         except Exception:
-            print("Error: %s, %s, %s, %s"%(s, r, sys, h))
+            print("Error: %s, %s, %s, %s"%(inFile, s, r, h))
+            sys.exit()
+    for s, r, syst, h in itertools.product(Samples, Regions.keys(), allSysType, hists.keys()):
+        if "data_obs" in s and "Base" not in syst:
+            continue
+        if isCheck:
+            print("%s, %s, %s, %s"%(s, r, syst, h))
+        histDir = getHistDir(s, r, syst)
+        try:
+            h4 = inFile.Get("%s/%s"%(histDir, h))
+            writeHist(s, r, syst, h4, outputFile)
+        except Exception:
+            print("Error: %s, %s, %s, %s, %s"%(inFile, s, r, syst, h))
             sys.exit()
     outputFile.Close()
     print("/eos/uscms/%s/AllInc.root\n"%outDir)

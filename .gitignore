@@ -4,6 +4,7 @@ NanoAOD_Gen/SpinStudy
 NanoAOD_Gen/xss/
 Skim_NanoAOD/*.root
 Ntuple_Skim/*.root
+Ntuple_Skim/tmp_120
 
 Skim_NanoAOD/makeSkim
 Skim_NanoAOD/sample/tmp/

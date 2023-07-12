@@ -26,7 +26,7 @@ yPadRange = [0.0,0.30-padGap, 0.30+padGap,1.0]
 #----------------------------------------
 parser = OptionParser()
 parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
-parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
+parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=True, help="Merge for separate years and channels")
 parser.add_option("--isComb","--isComb", dest="isMerge",action="store_true",default=False, help="Merge for combined years and channels")
 (options, args) = parser.parse_args()
 isCheck = options.isCheck
@@ -34,7 +34,7 @@ isSep = options.isSep
 isComb = options.isMerge
 
 if isCheck:
-    isSep  = True
+    isSep  = False
     isComb = False
     Years  = [Years[0]]
     Decays = [Decays[0]]
@@ -50,6 +50,7 @@ if not isCheck and not isSep and not isComb:
     exit()
 
 os.system("mkdir -p %s"%dirPlot)
+fPath = open("%s/effPlot.txt"%dirPlot, 'w')
 gROOT.SetBatch(True)
 
 for year, decay, channel in itertools.product(Years, Decays, Channels):
@@ -82,11 +83,11 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
         #get effs 
         effs = []
         for samp in overlayEff:
-            eff   = getEff(rootFile, samp, region, hs)
+            eff, labels   = getEff(rootFile, samp, region, hs)
             effs.append(eff)
         #plot effs
         leg = TLegend(0.65,0.75,0.95,0.92); 
-        decoLegend(leg, 4, 0.027)
+        decoLegend(leg, 4, 0.03)
         for index, eff in enumerate(effs): 
             xTitle = var
             yTitle = "Acceptance"
@@ -100,16 +101,20 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
                 eff.SetMinimum(0.0001)
             #eff.GetXaxis().SetRangeUser(10, 400)
             if index==0:
-                eff.Draw("AP")
+                eff.Draw("ALP")
+                #eff.GetXaxis().SetBinLabel(4, "ss")
             else:
-                eff.Draw("Psame")
+                eff.Draw("LPsame")
             leg.AddEntry(eff, "%s"%(sampAll[name][1]), "APL")
         
         #Draw CMS, Lumi, channel
         extraText  = "Preliminary"
         lumi_13TeV = getLumiLabel(year)
         chName = getChLabel(decay, channel)
-        extraText   = "#splitline{Preliminary}{#splitline{%s}{%s}}"%(chName, region)
+        #extraText   = "#splitline{Preliminary}{#splitline{%s}{%s}}"%(chName, region)
+        extraText = "Preliminary"
+        for b in labels.keys():
+            extraText = "#splitline{%s}{%s = %s}"%(extraText, b, labels[b])
         CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
         leg.Draw()
         
@@ -117,3 +122,6 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
         png = pdf.replace("pdf", "png")
         canvas.SaveAs(pdf)
         canvas.SaveAs(png)
+        fPath.write("%s\n"%pdf)
+
+print(fPath)

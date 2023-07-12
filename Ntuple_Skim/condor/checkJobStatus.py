@@ -134,26 +134,27 @@ for year, decay, syst in itertools.product(Years, Decays, Systs):
             print("Empty file: %s"%fROOT)
             corruptedList.append(finished)
             continue
-        #h = f.Get("hEvents")
-        #nEvents[finished] = h.Integral()
+        h = f.Get("hAll_MuTrig")
         tree = f.Get("AnalysisTree")
         if not tree:
             print("No tree in: %s"%fROOT)
             corruptedList.append(finished)
             continue
-        nEvents[finished] = tree.GetEntries() 
+        nEvents[finished] = [h.GetBinContent(1), tree.GetEntries()]
     print("Finished but corrupted jobs: %s"%len(corruptedList))
     resubJobs += len(corruptedList)
 
     print(colored("(3): Checking same nEvents from NanoAOD and Skim ...", "red"))
-    print(" \tnSkim\t nNtuple\t %nSkim \tSample")
+    print("nDAS_Skim\t nDAS_Ntuple\t nNtuple\t %nDAS \tSample")
     for samp in sampleDict.keys():
         nSkim = sampleDict[samp][2]
         nNtuple = 0
+        nSkim2  = 0
         for fileSkim in nEvents.keys():
             if samp == fileSkim.split("_Ntuple")[0]:
-                nNtuple+=nEvents[fileSkim]
-        print("%10s %10s, %10s%s\t %s"%(nSkim, int(nNtuple), int(100*(nNtuple/nSkim)), '%', samp))
+                nSkim2+=nEvents[fileSkim][0]
+                nNtuple+=nEvents[fileSkim][1]
+        print("%10s %15s, %10s, %10s%s\t %s"%(nSkim, nSkim2, int(nNtuple), int(100*(nNtuple/nSkim)), '%', samp))
 
     print(colored("(4): Checking xrdcp errors ...", "red"))
     argListYear = []

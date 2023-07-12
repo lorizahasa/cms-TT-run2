@@ -366,12 +366,17 @@ def getEff(inFile, samp, region, hs):
         print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath))
         sys.exit()
     pEff = rt.TGraphAsymmErrors(hPass, hAll)
-    for i in range(1, hAll.GetNbinsX()):
+    labels = {}
+    for i in range(0, hAll.GetNbinsX()):
         label = hAll.GetXaxis().GetBinLabel(i)
+        if(label==""): 
+            continue
+        #pEff.GetXaxis().SetBinLabel(i, "a")
         #pEff.GetXaxis().SetBinLabel(i, label)
-        #print(i, label)
+        #pEff.GetXaxis().LabelsOption("u")
+        labels["%s"%i] = label
     pEff.SetName(samp)
-    return pEff
+    return pEff, labels
 
 def decoEff(hist, xTit, yTit, color):
     hist.GetXaxis().SetTitle(xTit);

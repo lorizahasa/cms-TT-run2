@@ -200,9 +200,6 @@ int main(int ac, char** av){
 		    tree->Flag_BadPFMuonFilter_ &&
 		    tree->Flag_eeBadScFilter_ );
         if (year=="2017" || year=="2018") filters = filters && tree->Flag_ecalBadCalibFilter_ ;
-        if(!filters) continue;
-        hEvents_->Fill(1);
-
 
         //--------------------------------
         // TrigObj matching for 2017 
@@ -326,6 +323,9 @@ int main(int ac, char** av){
         //--------------------------------
         //fill tree
         //--------------------------------
+        if(!filters) continue;
+            hEvents_->Fill(1);
+
 		if(isTrig || isTrigE){
 			newTree->Fill();
             hEvents_->Fill(2);

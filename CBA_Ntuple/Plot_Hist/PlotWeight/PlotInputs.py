@@ -5,8 +5,8 @@ dirHist = "%s/Hist_Ntuple/HistWeight/Rebin"%dirCBA
 dirPlot = "%s/Plot_Hist/PlotWeight/Rebin"%dirCBA
 dirTwiki= "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
-#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-Years 	      =	["2017"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years 	      =	["2017"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
@@ -37,10 +37,10 @@ hName  = "Reco_st"
 region = "tty_Enriched_le4j_a1b_e1y"
 
 sampMC = {
-         "SignalSpin32_M700"    : [rt.kMagenta,  "m_{T} = 700"],
-         "SignalSpin32_M1200"   : [rt.kPink,     "m_{T} = 1200"],
-         "SignalSpin32_M1500"   : [rt.kCyan,     "m_{T} = 1500"],
-         "TTGamma"   : [rt.kGreen, "t#bar{t}#gamma"],
+         "SignalSpin32_M700"    : [rt.kGreen,  "m_{t*} = 700"],
+         "SignalSpin32_M1500"   : [rt.kGreen+2,     "m_{t*} = 1500"],
+         "SignalSpin32_M3000"   : [rt.kCyan,     "m_{t*} = 3000"],
+         "TTGamma"   : [rt.kRed+2, "t#bar{t}#gamma"],
          "TTbar"     : [rt.kRed, "t/t#bar{t}"],
          "WJets"     : [rt.kOrange, "W+jets"],
          "DYJets"    : [rt.kYellow, "DY+jets"],
@@ -59,9 +59,10 @@ sampAll = {**sampMC, **sampData}
 # Plotting 
 #---------------
 overlayEff = []
-overlayEff.append("data_obs")
-overlayEff.append("TTGamma")
+#overlayEff.append("data_obs")
 overlayEff.append("TTbar")
+overlayEff.append("TTGamma")
 overlayEff.append("SignalSpin32_M700")
 overlayEff.append("SignalSpin32_M1500")
+#overlayEff.append("SignalSpin32_M3000")
 

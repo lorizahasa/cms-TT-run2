@@ -7,7 +7,9 @@ from HistInputs import *
 
 if os.path.exists("tmpSub"):
     os.system("rm -r tmpSub")
+    print("Deleted dir: tmpSub")
 os.system("mkdir -p tmpSub/log")
+print("Created dir: tmpSub")
 logDir = "log"
 tarFile = "tmpSub/Hist_Ntuple.tar.gz"
 if os.path.exists("../hists"):
@@ -33,8 +35,11 @@ subFile = open('tmpSub/condorSubmit.sh','w')
 for year, decay, channel in itertools.product(Years, Decays, Channels):
     outDir = "%s/Raw/%s/%s/%s"%(outHistDir, year, decay, channel)
     if os.path.exists("/eos/uscms/%s"%outDir):
-        os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir)
-    os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
+        print("Deleted out dir: %s"%outDir)
+        os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
+
+    os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
+    print("Created out dir: %s"%outDir)
     jdlName = 'submitJobs_%s%s%s.jdl'%(year, decay, channel)
     jdlFile = open('tmpSub/%s'%jdlName,'w')
     jdlFile.write('Executable =  runMakeHists.sh \n')

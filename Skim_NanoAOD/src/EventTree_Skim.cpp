@@ -130,6 +130,7 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
     chain->SetBranchStatus("Muon_highPurity",1);
     chain->SetBranchStatus("Muon_tkIsoId",1);
     chain->SetBranchStatus("Muon_tkRelIso",1);
+    chain->SetBranchStatus("Muon_d*",1);
 
     // jets
     chain->SetBranchStatus("nJet",1);
