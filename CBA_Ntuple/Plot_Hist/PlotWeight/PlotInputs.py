@@ -22,7 +22,7 @@ systDict["Weight_ele"]  = ["Weight_ele_id", "Weight_ele_reco", "Weight_ele_trig"
 systDict["Weight_btag"] = ["Weight_btag_b", "Weight_btag_l"]
 systDict["Weight_ttag"] = ["Weight_ttag"]
 systDict["Weight_pho"]  = ["Weight_pho_id", "Weight_pho_ps", "Weight_pho_cs"]
-systDict["Weight_jet"]  = ["Weight_jes", "Weight_jer"]
+#systDict["Weight_jet"]  = ["Weight_jes", "Weight_jer"]
 systDict["Weight_pu"]   = ["Weight_pu"]
 systDict["Weight_prefire"]  = ["Weight_prefire"]
 systDict["Weight_q2_pdf"]   = ["Weight_q2", "Weight_pdf"]
@@ -39,15 +39,15 @@ region = "tty_Enriched_le4j_a1b_e1y"
 sampMC = {
          "SignalSpin32_M700"    : [rt.kGreen,  "m_{t*} = 700"],
          "SignalSpin32_M1500"   : [rt.kGreen+2,     "m_{t*} = 1500"],
-         "SignalSpin32_M3000"   : [rt.kCyan,     "m_{t*} = 3000"],
+         #"SignalSpin32_M3000"   : [rt.kCyan,     "m_{t*} = 3000"],
          "TTGamma"   : [rt.kRed+2, "t#bar{t}#gamma"],
          "TTbar"     : [rt.kRed, "t/t#bar{t}"],
-         "WJets"     : [rt.kOrange, "W+jets"],
-         "DYJets"    : [rt.kYellow, "DY+jets"],
-         "WGamma"    : [rt.kGray, "W+#gamma"],
-         "ZGamma"    : [rt.kMagenta, "Z+#gamma"],
-         "QCD"       : [rt.kCyan, "QCD"],
-         "Others"    : [rt.kBlue, "Others"]
+         #"WJets"     : [rt.kOrange, "W+jets"],
+         #"DYJets"    : [rt.kYellow, "DY+jets"],
+         #"WGamma"    : [rt.kGray, "W+#gamma"],
+         #"ZGamma"    : [rt.kMagenta, "Z+#gamma"],
+         #"QCD"       : [rt.kCyan, "QCD"],
+         #"Others"    : [rt.kBlue, "Others"]
          }
 sampData = {
          "data_obs"   : [rt.kBlack, "Data"]
@@ -66,3 +66,7 @@ overlayEff.append("SignalSpin32_M700")
 overlayEff.append("SignalSpin32_M1500")
 #overlayEff.append("SignalSpin32_M3000")
 
+colNoSF  = rt.kBlack
+colBase = rt.kGreen
+colUp   = rt.kRed 
+colDown = rt.kOrange

@@ -177,7 +177,8 @@ for sample, decay, channel, year in itertools.product(Samples, Decays, Channels,
         systDict_[key] = systList
 
     nSyst = len(systDict_.keys())
-    canvas = TCanvas("sfRatio", "sfRatio", 280, 100*nSyst)
+    nY    = len(Years)
+    canvas = TCanvas("sfRatio", "sfRatio", 280*nY, 100*nSyst)
     #canvas = TCanvas()
     canvas.Divide(1, nSyst) 
     gPad.SetRightMargin(0.03);

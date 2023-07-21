@@ -88,9 +88,19 @@ def decoHist(hist, xTit, yTit, color):
     hist.GetXaxis().SetTitle(xTit);
     hist.GetYaxis().SetTitle(yTit);
     hist.SetFillColor(color);
-    hist.GetXaxis().SetTitle(xTit);
-    hist.GetYaxis().SetTitle(yTit)
     hist.GetYaxis().CenterTitle()
+    hist.GetXaxis().SetTitleOffset(1.0)
+    hist.GetYaxis().SetTitleOffset(1.0)
+    hist.GetXaxis().SetTitleSize(0.05);
+    hist.GetYaxis().SetTitleSize(0.05);
+    hist.GetXaxis().SetTitleSize(0.05);
+    hist.GetYaxis().SetTitleSize(0.05);
+
+def decoHistSyst(hist, xTit, yTit, color):
+    hist.GetXaxis().SetTitle(xTit);
+    hist.GetYaxis().SetTitle(yTit);
+    hist.SetLineColor(color);
+    hist.SetLineWidth(3);
     hist.GetXaxis().SetTitleOffset(1.0)
     hist.GetYaxis().SetTitleOffset(1.0)
     hist.GetXaxis().SetTitleSize(0.05);
@@ -384,8 +394,6 @@ def decoEff(hist, xTit, yTit, color):
     hist.SetFillColor(color);
     hist.SetLineColor(color);
     hist.SetMarkerColor(color);
-    hist.GetXaxis().SetTitle(xTit);
-    hist.GetYaxis().SetTitle(yTit)
     #hist.GetYaxis().CenterTitle()
     hist.GetXaxis().SetTitleOffset(1.0)
     hist.GetYaxis().SetTitleOffset(1.2)

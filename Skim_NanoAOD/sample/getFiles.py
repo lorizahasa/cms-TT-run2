@@ -10,7 +10,7 @@ from SkimInputs import *
 #Function to fetch the name of all files in one string
 def getFileList(sample, isDAS=True):
     if isDAS:
-        std_output, std_error = subprocess.Popen("dasgoclient --query='file dataset=%s status=*'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
+        std_output, std_error = subprocess.Popen("dasgoclient --query='file dataset=%s status=valid'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
     else:
         std_output, std_error = subprocess.Popen("xrdfs root://cmseos.fnal.gov/ ls -u %s | grep '.root'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
     names = std_output.decode("ascii").replace('\n',' ')
