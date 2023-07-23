@@ -1,4 +1,5 @@
 #include "interface/makeNtuple.h"
+#include "correction.h"
 #define makeNtuple_cxx
 
 
@@ -329,6 +330,18 @@ makeNtuple::makeNtuple(int ac, char** av)
     jesFiles["2017"]        = comJES+"Summer19UL17_V5";
     jesFiles["2018"]        = comJES+"Summer19UL18_V5";
     
+    auto json2018 = correction::CorrectionSet::from_file("/cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/JME/2018_UL/jet_jerc.json.gz");
+    auto jecsflabel2018 = "Summer19UL18_V5_MC_Total_AK4PFchs";
+    auto jecsfjson2018  = json2018->at(jecsflabel2018);
+
+    std::vector<correction::Variable::Type>  values;
+    //values.emplace_back(Jet_eta.at(0)); 
+    //values.emplace_back(Jet_pt.at(0));
+    values.emplace_back(1.3);
+    values.emplace_back(30.0);
+    auto unc=jecsfjson2018->evaluate(values);
+    cout<<unc<<endl;
+
     //--------------------------
     //Luminosity
     //--------------------------

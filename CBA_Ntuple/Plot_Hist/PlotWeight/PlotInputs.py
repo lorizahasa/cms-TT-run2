@@ -38,7 +38,7 @@ region = "tty_Enriched_le4j_a1b_e1y"
 
 sampMC = {
          "SignalSpin32_M700"    : [rt.kGreen,  "m_{t*} = 700"],
-         "SignalSpin32_M1500"   : [rt.kGreen+2,     "m_{t*} = 1500"],
+         #"SignalSpin32_M1500"   : [rt.kGreen+2,     "m_{t*} = 1500"],
          #"SignalSpin32_M3000"   : [rt.kCyan,     "m_{t*} = 3000"],
          "TTGamma"   : [rt.kRed+2, "t#bar{t}#gamma"],
          "TTbar"     : [rt.kRed, "t/t#bar{t}"],
