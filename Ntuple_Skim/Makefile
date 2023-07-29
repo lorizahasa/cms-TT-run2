@@ -1,41 +1,28 @@
-all: src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/JECvariation.o src/JetResolutionObject.o src/JetResolution.o src/Selector.o src/EventTree.o src/EventPick.o makeNtuple #makeCutflows 
 
-src/FactorizedJetCorrector.o: src/FactorizedJetCorrector.cpp interface/FactorizedJetCorrector.h interface/JetCorrectorParameters.h interface/SimpleJetCorrector.h src/Utilities.cc
-	g++ -o src/FactorizedJetCorrector.o -c `root-config --libs` -I`root-config --incdir` -std=c++17 src/FactorizedJetCorrector.cpp
+ROOT_I=-I`root-config --incdir`
+ROOT_L=`root-config --libs`
+CORR_A=`correction config --cflags --ldflags --rpath`
+GCC=g++ -std=c++17
 
-src/JetCorrectorParameters.o: src/JetCorrectorParameters.cpp interface/JetCorrectorParameters.h 
-	g++ -o src/JetCorrectorParameters.o -c `root-config --libs` -I`root-config --incdir` -std=c++17 src/JetCorrectorParameters.cpp
+all:  src/JECvariation.o src/EventTree.o src/Selector.o src/EventPick.o makeNtuple
 
-src/SimpleJetCorrector.o: src/JetCorrectorParameters.cpp interface/JetCorrectorParameters.h interface/SimpleJetCorrector.h
-	g++ -o src/SimpleJetCorrector.o -c `root-config --libs` -I`root-config --incdir` -std=c++17 src/SimpleJetCorrector.cpp 
-
-src/JetCorrectionUncertainty.o: src/JetCorrectionUncertainty.cpp interface/JetCorrectionUncertainty.h src/SimpleJetCorrectionUncertainty.cpp interface/SimpleJetCorrectionUncertainty.h
-	g++ -o src/JetCorrectionUncertainty.o -c `root-config --libs` -I`root-config --incdir` -std=c++17 src/JetCorrectionUncertainty.cpp 
-	g++ -o src/SimpleJetCorrectionUncertainty.o -c `root-config --libs` -I`root-config --incdir` -std=c++17 src/SimpleJetCorrectionUncertainty.cpp 
-
-src/JECvariation.o: src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/JECvariation.cpp
-	g++ -o src/JECvariation.o -c `root-config --libs` -I`root-config --incdir` -std=c++17 src/JECvariation.cpp
-
-src/JetResolutionObject.o: src/JetResolutionObject.cc interface/JetResolutionObject.h
-	g++ -o src/JetResolutionObject.o -c `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/JetResolutionObject.cc 
-
-src/JetResolution.o: interface/JetResolution.h src/JetResolution.cc
-	g++ -o src/JetResolution.o -c `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE src/JetResolution.cc 
+src/JECvariation.o: src/JECvariation.cpp interface/JECvariation.h
+	${GCC} -o src/JECvariation.o -c ${CORR_A} ${ROOT_L} ${ROOT_I}  src/JECvariation.cpp
 
 src/EventTree.o: src/EventTree.cpp interface/EventTree.h
-	g++ -o src/EventTree.o -c -I`root-config --incdir` -std=c++17 -D STANDALONE src/EventTree.cpp
+	${GCC} -o src/EventTree.o -c ${ROOT_I} -D STANDALONE src/EventTree.cpp
 
 src/BTagCalibrationStandalone.o: src/BTagCalibrationStandalone.cpp interface/BTagCalibrationStandalone.h
-	g++ -o src/BTagCalibrationStandalone.o -c -I`root-config --incdir` -std=c++17 -D STANDALONE src/BTagCalibrationStandalone.cpp
+	${GCC} -o src/BTagCalibrationStandalone.o -c  ${ROOT_I} -D STANDALONE src/BTagCalibrationStandalone.cpp
 
 src/Selector.o: src/EventTree.o src/Selector.cpp interface/Selector.h
-	g++ -o src/Selector.o -c -I `root-config --incdir` -std=c++17 -D STANDALONE src/Selector.cpp
-#	g++ -o src/Selector.o -c -I `root-config --incdir` -std=c++17 -D STANDALONE src/ParsePhotonID.cpp src/Utils.cc src/JetResolution.cc src/JetResolutionObject.cc  src/Selector.cpp
+	${GCC} -o src/Selector.o -c ${CORR_A} ${ROOT_L} ${ROOT_I} -D STANDALONE src/Selector.cpp
 
 src/EventPick.o: src/Selector.o src/EventPick.cpp interface/EventPick.h
-	g++ -o src/EventPick.o -c -I `root-config --incdir` -std=c++17 -D STANDALONE src/EventPick.cpp 
+	${GCC} -o src/EventPick.o -c ${CORR_A} ${ROOT_I}  -D STANDALONE src/EventPick.cpp 
 
+#/cvmfs/cms.cern.ch/slc7_amd64_gcc10/external/py3-correctionlib/2.1.0-bc1f1a24613552be911056d8eb959866/lib/python3.9/site-packages/correctionlib/
 makeNtuple: src/Selector.o src/EventPick.o src/EventTree.o makeNtuple.C src/OverlapRemove.cpp interface/makeNtuple.h interface/ReaderPileupSF.h src/BTagCalibrationStandalone.o interface/ReaderLumiSF.h src/JECvariation.o src/TopEventCombinatorics.cpp interface/ReaderMuSF.h interface/ReaderEleSF.h interface/ReaderPhoSF.h interface/ReaderTopSF.h interface/ReaderLumiMask.h 
-	g++ -o makeNtuple `correction config --cflags --ldflags --rpath` `root-config --libs` -I`root-config --incdir` -std=c++17 -D STANDALONE makeNtuple.C src/EventTree.o src/EventPick.o src/ParsePhotonID.cpp src/Selector.o src/OverlapRemove.cpp src/BTagCalibrationStandalone.o src/Utils.cc src/FactorizedJetCorrector.o src/JetCorrectorParameters.o src/SimpleJetCorrector.o src/JetCorrectionUncertainty.o src/SimpleJetCorrectionUncertainty.o src/JECvariation.o src/JetResolution.cc src/JetResolutionObject.cc src/METzCalculator.cpp src/TopEventCombinatorics.cpp 
+	${GCC} -o makeNtuple ${CORR_A} ${ROOT_L} ${ROOT_I} -D STANDALONE makeNtuple.C src/EventTree.o src/EventPick.o src/ParsePhotonID.cpp src/Selector.o src/OverlapRemove.cpp src/BTagCalibrationStandalone.o src/Utils.cc src/JECvariation.o src/METzCalculator.cpp src/TopEventCombinatorics.cpp 
 clean:
 	rm makeNtuple src/*.o 

@@ -37,20 +37,21 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
     if os.path.exists("/eos/uscms/%s"%outDir):
         print("Deleted out dir: %s"%outDir)
         os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
-
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
     print("Created out dir: %s"%outDir)
     jdlName = 'submitJobs_%s%s%s.jdl'%(year, decay, channel)
     jdlFile = open('tmpSub/%s'%jdlName,'w')
     jdlFile.write('Executable =  runMakeHists.sh \n')
     jdlFile.write(common_command)
-    for syst, level in itertools.product(Systematics, SystLevels):
-        run_command =  \
-		'Arguments  = %s %s %s %s %s %s \n\
-Queue 1\n\n' %(year, decay, channel, syst, level, outDir)
-        if syst in ["Weight_lumi", "1"] and level in ["Up", "Down"]:
-            continue
-        jdlFile.write(run_command)
+    for corr in Corrs.keys():
+        for c in Corrs[corr]:
+            if "Ele" in channel and "mu" in c: continue
+            if "Mu" in channel and "ele" in c: continue
+            if "Uncorr" in c and "Uncorr" not in corr: continue
+            run_command =  \
+		    'Arguments  = %s %s %s %s %s \n\
+Queue 1\n\n' %(year, decay, channel, c, outDir)
+            jdlFile.write(run_command)
 	#print "condor_submit jdl/%s"%jdlFile
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 

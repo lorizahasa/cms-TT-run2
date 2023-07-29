@@ -49,6 +49,8 @@ If the jobs are failing multiple times, run them locally
 * source sample/FilesSkim_cff.sh
 * ./makeNtuple Semilep 2017 DYjetsM50__JetBase 1of10 . $DYjetsM50_FileList_2017
 
+POG json: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG
+
 ### To produce multiple Ntuple from Skim files
 * cd condor 
 * voms-proxy-init -voms cms

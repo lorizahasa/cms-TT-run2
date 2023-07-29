@@ -7,12 +7,7 @@ Selector::Selector(){
     printEvent = -1;
 
     looseJetID = false;
-    JERsystLevel  = 1;
-    JECsystLevel  = 1;
-    phosmearLevel = 1;
-    elesmearLevel = 1;
-    phoscaleLevel = 1;
-    elescaleLevel = 1;
+    systVariation == "nom"; 
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/BtagRecommendation80XReReco
     btag_cut = 0.8484;  
     topTagWP = 0.74;
@@ -32,11 +27,11 @@ Selector::Selector(){
 
 }
 
-void Selector::init_JER(std::string inputPrefix){
-    jetResolutionAK4 = new JME::JetResolution((inputPrefix+"_MC_PtResolution_AK4PFchs.txt").c_str());
-    jetResolutionScaleFactorAK4 = new JME::JetResolutionScaleFactor((inputPrefix+"_MC_SF_AK4PFchs.txt").c_str());
-    jetResolutionAK8 = new JME::JetResolution((inputPrefix+"_MC_PtResolution_AK8PFPuppi.txt").c_str());
-    jetResolutionScaleFactorAK8 = new JME::JetResolutionScaleFactor((inputPrefix+"_MC_SF_AK8PFPuppi.txt").c_str());
+void Selector::init_JER(cRef jerRefSF, cRef jerRefSF8, cRef jerRefReso, cRef jerRefReso8){
+    jerRefSF_   = jerRefSF;
+    jerRefSF8_  = jerRefSF8;
+    jerRefReso_ = jerRefReso;
+    jerRefReso8_= jerRefReso8;
 }
 
 //https://cms-nanoaod-integration.web.cern.ch/integration/cms-swCMSSW_10_6_19/mc102X_doc.html#Muon
@@ -225,15 +220,9 @@ void Selector::filter_jets(){
         double resolution = 0.;
         double jetSmear = 1.;
         if (!tree->isData_){
-            jetParamAK4.setJetEta(tree->jetEta_[jetInd]);
-            jetParamAK4.setJetPt(tree->jetPt_[jetInd]);
-            jetParamAK4.setJetArea(tree->jetArea_[jetInd]);
-            jetParamAK4.setRho(tree->rho_);
-            resolution = jetResolutionAK4->getResolution(jetParamAK4);
+            resolution = jerRefReso_->evaluate({tree->jetEta_[jetInd], tree->jetPt_[jetInd], tree->rho_});
             double jetSF = 1.0;
-            if (JERsystLevel==1) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::NOMINAL);
-            if (JERsystLevel==0) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::DOWN);
-            if (JERsystLevel==2) jetSF = jetResolutionScaleFactorAK4->getScaleFactor(jetParamAK4,Variation::UP);
+            jetSF = jerRefSF_->evaluate({tree->jetEta_[jetInd], systVariation});
             //https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetResolution
             int genIdx = tree->jetGenJetIdx_[jetInd];
             bool isMatch = false;
@@ -354,15 +343,9 @@ void Selector::filter_fatjets(){
             cout << "------FatJet "<<jetInd<< "------" << endl;
         }
         if (!tree->isData_){
-            jetParamAK8.setJetEta(tree->fatJetEta_[jetInd]);
-            jetParamAK8.setJetPt(tree->fatJetPt_[jetInd]);
-            jetParamAK8.setJetArea(tree->fatJetArea_[jetInd]);
-            jetParamAK8.setRho(tree->rho_);
             double jetSF = 1.0;
-            resolution = jetResolutionAK8->getResolution(jetParamAK8);
-            if (JERsystLevel==1) jetSF = jetResolutionScaleFactorAK8->getScaleFactor(jetParamAK8,Variation::NOMINAL);
-            if (JERsystLevel==0) jetSF = jetResolutionScaleFactorAK8->getScaleFactor(jetParamAK8,Variation::DOWN);
-            if (JERsystLevel==2) jetSF = jetResolutionScaleFactorAK8->getScaleFactor(jetParamAK8,Variation::UP);
+            resolution = jerRefReso_->evaluate({tree->fatJetEta_[jetInd], tree->fatJetPt_[jetInd], tree->rho_});
+            jetSF = jerRefSF_->evaluate({tree->fatJetEta_[jetInd], systVariation});
 	    
             double jetSmear = 1;
             //https://twiki.cern.ch/twiki/bin/viewauth/CMS/JetResolution

@@ -84,11 +84,10 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
 # Collect all syst 
 #----------------------------------------
 allSysType = []
-for syst, level in itertools.product(Systematics, SystLevels):
-    sysType = "%s%s"%(syst, level)
-    if syst in ["Weight_lumi", "1"] and level in ["Up", "Down"]:
-        continue
-    allSysType.append(sysType)
+for corr in Corrs.keys():
+    for c in Corrs[corr]:
+        if "Uncorr" in c and "Uncorr" not in corr: continue
+        allSysType.append(c)
 
 if isCheck:
     allSysType = [allSysType[0]]
@@ -115,16 +114,17 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
         if isCheck:
             print(inFile)
             print("%s, %s, %s"%(s, r, h))
-        histDir = getHistDir(s, r, "1Base")
+        histDir = getHistDir(s, r, "Uncorr")
         try:
             h4 = inFile.Get("%s/%s"%(histDir, h))
-            writeHist(s, r, "1Base", h4, outputFile)
+            writeHist(s, r, "Uncorr", h4, outputFile)
         except Exception:
             print("Error: %s, %s, %s, %s"%(inFile, s, r, h))
             sys.exit()
     for s, r, syst, h in itertools.product(Samples, Regions.keys(), allSysType, hists.keys()):
-        if "data_obs" in s and "Base" not in syst:
-            continue
+        if "data_obs" in s and "Uncorr" not in syst: continue
+        if "Ele" in channel and "mu" in syst: continue
+        if "Mu" in channel and "ele" in syst: continue
         if isCheck:
             print("%s, %s, %s, %s"%(s, r, syst, h))
         histDir = getHistDir(s, r, syst)

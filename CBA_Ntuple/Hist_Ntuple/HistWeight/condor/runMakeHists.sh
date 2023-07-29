@@ -25,14 +25,14 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-python3 runMakeHists.py -y $1 -d $2 -c $3 --syst $4 --level $5
+python3 runMakeHists.py -y $1 -d $2 -c $3 --syst $4 
 printf "Done Histogramming at ";/bin/date
 
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
 printf "Copying output files ..."
-xrdcp -f hists/$1/$2/$3/*.root root://cmseos.fnal.gov/$6
+xrdcp -f hists/$1/$2/$3/*.root root://cmseos.fnal.gov/$5
 cd ..
 rm -rf CMSSW*
 rm -rf hists

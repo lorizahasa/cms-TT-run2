@@ -6,6 +6,11 @@ Skim_NanoAOD/*.root
 Ntuple_Skim/*.root
 Ntuple_Skim/tmp_120
 
+Ntuple_Skim/BTV
+Ntuple_Skim/EGM
+Ntuple_Skim/LUM
+Ntuple_Skim/MUO
+
 Skim_NanoAOD/makeSkim
 Skim_NanoAOD/sample/tmp/
 Skim_NanoAOD/sample/FilesNano_cff.sh

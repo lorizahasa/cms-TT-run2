@@ -23,8 +23,6 @@ parser.add_option("-s", "--sample", dest="sample", default="Signal_M800",type='s
                      help="Specify which sample to run on" )
 parser.add_option("-r", "--region", dest="region", default="tty_Enriched_le4j_a1b_e1y",type='str', 
                      help="which control selection and region"), 
-parser.add_option("--level", "--level", dest="level", default="Base",type='str',
-                     help="Specify up/down of systematic")
 parser.add_option("--syst", "--systematic", dest="systematic", default="Weight_lumi",type='str',
                      help="Specify which systematic to run on")
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_st",type='str', 
@@ -38,7 +36,6 @@ channel = options.channel
 sample = options.sample
 region = options.region
 syst = options.systematic
-level =options.level
 makeAllHists = options.makeAllHists
 print(parser.parse_args())
 
@@ -46,21 +43,22 @@ print(parser.parse_args())
 #INPUT AnalysisNtuples Directory
 #----------------------------------------
 condorNtupleDir = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
+
+weights = "Weight_lumi"
 systDir = "JetBase"
-if "jes" in syst and "Up" in level:
-    systDir = "JECTotal_up"
-if "jes" in syst and "Down" in level:
-    systDir = "JECTotal_down"
-if "jer" in syst and "Up" in level:
-    systDir = "JER_up"
-if "jer" in syst and "Down" in level:
-    systDir = "JER_down"
+if "Uncorr" not in syst: 
+    weights = "%s*%s"%("Weight_lumi", syst)
+    if "JE" in syst:
+        systDir = syst
+        weights = "Weight_lumi"
+
 isData = False
 if "data_obs" in sample:
     isData  = True
-    systDir = "JetBase"
+    weights = "1.0"
 samples = getSamples(year, decayMode, systDir)
 analysisNtupleLocation = "%s/%s/%s/%s"%(condorNtupleDir, year, decayMode, systDir) 
+
 
 #----------------------------------------------------------
 #NICE WAY TO PRINT STRINGS
@@ -83,20 +81,7 @@ outFileMainDir = "./hists"
 gROOT.SetBatch(True)
 isQCD = False
 
-if "Base" in level:
-    weights = syst
-    if syst in ["Weight_q2", "Weight_pdf", "Weight_isr", "Weight_fsr"]:
-        weights = "1.0"
-    if syst in ["Weight_btag_b", "Weight_btag_l"]:
-        weights = "Weight_btag"
-else:
-    weights = "%s%s"%(syst, level)
-
-if syst in ["Weight_jes", "Weight_jer"]:
-    weights = "%s[0]"%syst
-
 histDirInFile = "%s/%s/Base"%(sample, region)
-variation = "Base"
 if "Data" in sample:
     histDirInFile = "data_obs/%s/Base"%(region)
 sample_ = sample
@@ -105,9 +90,8 @@ if isData or "QCD" in sample:
 #-----------------------------------------
 #For Systematics
 #----------------------------------------
-histDirInFile = "%s/%s/%s%s"%(sample, region, syst,level) 
-variation = "%s%s"%(syst,level) 
-toPrint("Running for systematics", "%s%s"%(syst, level))
+histDirInFile = "%s/%s/%s"%(sample, region, syst) 
+toPrint("Running for systematics", "%s"%(syst))
 
 #-----------------------------------------
 #Select channels
@@ -150,12 +134,8 @@ fileList = samples[sample_]
 tfs = []
 for fileName in fileList:
     fullPath = "%s/%s"%(analysisNtupleLocation, fileName)
-    if "JE" in syst and "Up" in level:
-        fullPath = "%s/%s_up_%s"%(analysisNtupleLocation, syst, fileName)
-    if "JE" in syst and "Down" in level: 
-        fullPath = "%s/%s_down_%s"%(analysisNtupleLocation, syst, fileName)
     print(fullPath)
-    tree.Add("%s/%s"%(analysisNtupleLocation,fileName))
+    tree.Add(fullPath)
     tfs.append(TFile.Open(fullPath,"read"))
 
 #Eff hists    
@@ -164,7 +144,7 @@ for h in list(hForEffs.values()):
     hForEff = hForEff + h
 
 hForEff_ = []
-if "Base" in level and "1" in syst:
+if "Uncorr" in syst:
     for h in hForEff:
         for ind, _file in enumerate(tfs):
             if(ind==0):
@@ -181,17 +161,14 @@ for index, hist in enumerate(histogramsToMake, start=1):
     toPrint("%s/%s: Filling the histogram"%(index, len(histogramsToMake)), hist)
     toPrint("Extra cuts ", extraCuts)
     histograms.append(TH1F("%s"%(hist),"%s"%(hist),hInfo[1][0],hInfo[1][1],hInfo[1][2]))
-    if isData: 
-        tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, "1.0"), "goff")
-    else:
-        tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, weights), "goff")
+    tree.Draw("%s>>%s"%(hist,hist), "%s%s"%(extraCuts, weights), "goff")
 
 #-----------------------------------------
 #Final output Linux and ROOT directories
 #----------------------------------------
 if not os.path.exists(outFileFullDir):
     os.makedirs(outFileFullDir)
-outFileFullPath = "%s/%s_%s_%s.root"%(outFileFullDir, sample, region, variation)
+outFileFullPath = "%s/%s_%s_%s.root"%(outFileFullDir, sample, region, syst)
 outputFile = TFile(outFileFullPath,"update")
 toPrint ("The histogram directory inside the root file is", histDirInFile) 
 
@@ -202,7 +179,7 @@ if not outputFile.GetDirectory(histDirInFile):
     outputFile.mkdir(histDirInFile)
 outputFile.cd(histDirInFile)
 
-if "Base" in level and "1" in syst:
+if "Uncorr" in syst:
     for h in hForEff_:
         toPrint("Trigger Integral %s = "%h.GetName(), h.Integral())
         h.Write()

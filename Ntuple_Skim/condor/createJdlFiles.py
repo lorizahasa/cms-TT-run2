@@ -42,22 +42,25 @@ for year in Years:
     jdlFile = open('%s/%s'%(tmpDir, jdlName),'w')
     jdlFile.write('Executable =  runMakeNtuple.sh \n')
     jdlFile.write(common_command)
-    for decay, syst in itertools.product(Decays, Systs):
-        outDir = "%s/%s/%s/%s"%(outNtupleDir, year, decay, syst)
-        if os.path.exists("/eos/uscms/%s"%outDir):
-            print("Deleted out dir: %s"%outDir)
-            os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
-        os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
-        print("Created out dir: %s"%outDir)
-        jdlFile.write("X=$(step)+1\n")
-        for sampleName, fEvt in sampleList.items():
-            if "Data" in sampleName and "_" in syst: continue
-            nJob = reducedJob(fEvt[0], sampleName)
-            args =  'Arguments  = %s %s %s %s $INT(X) %i %s\n' %(year, decay, syst, sampleName, nJob, outDir)
-            args += "Queue %i\n\n"%nJob
-            nJobYear += nJob
-            nJobAll  += nJob
-            jdlFile.write(args)
+    for decay in Decays:
+        for syst in SystJME[decay]:
+            outDir = "%s/%s/%s/%s"%(outNtupleDir, year, decay, syst)
+            if os.path.exists("/eos/uscms/%s"%outDir):
+                print("Deleted out dir: %s"%outDir)
+                os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
+            os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
+            print("Created out dir: %s"%outDir)
+            jdlFile.write("X=$(step)+1\n")
+            for sampleName, fEvt in sampleList.items():
+                if "Data" in sampleName and "_" in syst: continue
+                #if "Spin32_M700" not in sampleName: continue
+                if "Dilep" in decay and "Signal" in sampleName and "700" not in sampleName: continue
+                nJob = reducedJob(fEvt[0], sampleName)
+                args =  'Arguments  = %s %s %s %s $INT(X) %i %s\n' %(year, decay, syst, sampleName, nJob, outDir)
+                args += "Queue %i\n\n"%nJob
+                nJobYear += nJob
+                nJobAll  += nJob
+                jdlFile.write(args)
     #print "condor_submit jdl/%s"%jdlFile
     subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 

@@ -3,7 +3,9 @@ import sys
 import json
 sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("PlotWeight", "")) 
+sys.path.insert(0, os.getcwd().replace("Plot_Hist/PlotWeight", "Hist_Ntuple/HistWeight")) 
 import itertools
+from HistInputs import Corrs
 from PlotFunc import *
 from PlotInputs import *
 from PlotCMSLumi import *
@@ -31,11 +33,8 @@ isSep = options.isSep
 isComb = options.isComb
 
 outTxt = ""
-Samples = list(sampMC.keys())
-systList = []
-for key in systDict.keys():
-    for syst in systDict[key]:
-        systList.append(syst)
+Samples  = list(sampMC.keys())
+systKeys = list(Corrs.keys()) 
 if isCheck:
     isSep  = True
     isComb = False
@@ -43,7 +42,7 @@ if isCheck:
     Decays = [Decays[0]]
     Channels = [Channels[0]]
     Samples = [Samples[0]]
-    systList = [systList[0]]
+    systKeys = [systKeys[1]]
 if isSep: 
     isComb = False
     outTxt = "SepYears"
@@ -62,7 +61,10 @@ if not isCheck and not isSep and not isComb:
 os.system("mkdir -p %s"%dirPlot)
 fPath = open("%s/overlayWeight.txt"%dirPlot, 'w')
 
-for channel, decay, samp, syst, year in itertools.product(Channels, Decays, Samples, systList, Years):
+for channel, decay, samp, systKey, year in itertools.product(Channels, Decays, Samples, systKeys, Years):
+    systs  = Corrs[systKey]
+    if len(systs) < 2 : continue
+    print(systs)
     hList = ["Reco_st"]
     for hName in hList:
         #-----------------------------------------
@@ -71,13 +73,13 @@ for channel, decay, samp, syst, year in itertools.product(Channels, Decays, Samp
         isData   = True
         isRatio  = True
         print("----------------------------------------------")
-        print("%s, %s, %s, %s, %s, %s, %s"%(year, decay, channel, samp, region, syst, hName))
+        print("%s, %s, %s, %s, %s, %s, %s"%(year, decay, channel, samp, region, systs, hName))
         print("----------------------------------------------")
         if "tt_" in region and ("gamma" in hName or "Pho" in hName): 
             continue 
-        if ("ele" in syst and "Mu" in channel):
+        if ("ele" in systKey and "Mu" in channel):
             continue
-        if ("mu" in hName and "Ele" in channel):
+        if ("mu" in systKey and "Ele" in channel):
             continue
         if "CR" in region: 
             continue
@@ -96,7 +98,7 @@ for channel, decay, samp, syst, year in itertools.product(Channels, Decays, Samp
         #-----------------------------------------
         #Make a plot for one histogram
         #----------------------------------------
-        def makePlot(hName, region, sample, syst):
+        def makePlot(hName, region, sample, systs):
             '''
             We first draw stacked histograms then data then unc band.
             The ratio of data and background is drawn next in a separate
@@ -115,53 +117,52 @@ for channel, decay, samp, syst, year in itertools.product(Channels, Decays, Samp
             else:
                 canvas.cd()
             #Get nominal histograms
-            hPathNoSF   = "%s/%s/1Base/%s"%(sample, region, hName)
-            hPathBase   = "%s/%s/%sBase/%s"%(sample, region, syst, hName)
-            hPathUp     = "%s/%s/%sUp/%s"%(sample, region, syst, hName)
-            hPathDown   = "%s/%s/%sDown/%s"%(sample, region, syst, hName)
-            #print(hPathBase)
+            hPathUncorr = "%s/%s/%s/%s"%(sample, region, systs[0], hName)
+            hPathCorr   = "%s/%s/%s/%s"%(sample, region, systs[1], hName)
+            hPathUp     = "%s/%s/%s/%s"%(sample, region, systs[2], hName)
+            hPathDown   = "%s/%s/%s/%s"%(sample, region, systs[3], hName)
+            #print(hPathCorr)
             #print(hPathUp)
             if isCheck:
-                print(hPathBase)
-            hNoSF = inFile.Get(hPathNoSF).Clone("NoSF_")
-            hBase = inFile.Get(hPathBase).Clone("Base_")
-            hUp   = inFile.Get(hPathUp).Clone("%sUp_"%syst) 
-            hDown = inFile.Get(hPathDown).Clone("%sDown_"%syst) 
+                print(hPathCorr)
+            hUncorr = inFile.Get(hPathUncorr).Clone("Uncorr")
+            hCorr = inFile.Get(hPathCorr).Clone("Corr")
+            hUp   = inFile.Get(hPathUp).Clone("CorrUp") 
+            hDown = inFile.Get(hPathDown).Clone("CorrDown")
 
-            evtNoSF = hNoSF.Integral()
-            evtBase = hBase.Integral()
+            evtUncorr = hUncorr.Integral()
+            evtCorr = hCorr.Integral()
             evtUp   = hUp.Integral()
             evtDown = hDown.Integral()
-            rBase   = round(evtBase/evtNoSF, 3)
-            rUp     = round(evtUp/evtNoSF , 3)
-            rDown   = round(evtDown/evtNoSF, 3)
-            rMax = min(rBase, rUp, rDown)
-            print("evtNoSF = %s, rBase = %s, rUp = %s, rDown = %s"%(evtNoSF, rBase, rUp, rDown))
+            rCorr   = round(evtCorr/evtUncorr, 3)
+            rUp     = round(evtUp/evtUncorr , 3)
+            rDown   = round(evtDown/evtUncorr, 3)
+            rMax = min(rCorr, rUp, rDown)
+            print("evtUncorr = %s, rCorr = %s, rUp = %s, rDown = %s"%(evtUncorr, rCorr, rUp, rDown))
 
             xTitle = hName
             yTitle = "Events"
-            decoHistSyst(hNoSF, xTitle, yTitle, colNoSF) 
-            decoHistSyst(hBase, xTitle, yTitle, colBase) 
+            decoHistSyst(hUncorr, xTitle, yTitle, colUncorr) 
+            decoHistSyst(hCorr, xTitle, yTitle, colCorr) 
             decoHistSyst(hUp, xTitle, yTitle, colUp) 
             decoHistSyst(hDown, xTitle, yTitle, colDown) 
 
-            hNoSF.Draw("HIST")
-            hBase.Draw("hist same")
+            hUncorr.Draw("HIST")
+            hCorr.Draw("hist same")
             hUp.Draw("hist same")
             hDown.Draw("hist same")
             lumi_13TeV = getLumiLabel(year)
 
             plotLegend = TLegend(0.57,0.60,0.95,0.88); 
             decoLegend(plotLegend, 1, 0.04)
-            plotLegend.AddEntry(hNoSF, "Uncorrected", "L")
-            sLabel = syst.replace("Weight", "Corr")
-            plotLegend.AddEntry(hUp, "%s_up (%s)"%(sLabel, rUp), "L")
-            plotLegend.AddEntry(hBase, "%s (%s)"%(sLabel, rBase), "L")
-            plotLegend.AddEntry(hDown, "%s_down (%s)"%(sLabel, rDown), "L")
+            plotLegend.AddEntry(hUncorr, "%s"%systs[0], "L")
+            plotLegend.AddEntry(hUp,    "%s(%s)"%(systs[1], rUp), "L")
+            plotLegend.AddEntry(hCorr,  "%s(%s)"%(systs[2], rCorr), "L")
+            plotLegend.AddEntry(hDown,  "%s(%s)"%(systs[3], rDown), "L")
             plotLegend.Draw()
-            hNoSF.SetMaximum(1.5*hUp.GetMaximum())
-            hNoSF.GetXaxis().SetTitle(xTitle)
-            hNoSF.GetYaxis().SetTitle(yTitle)
+            hUncorr.SetMaximum(1.6*hUp.GetMaximum())
+            hUncorr.GetXaxis().SetTitle(xTitle)
+            hUncorr.GetYaxis().SetTitle(yTitle)
         
             #Draw CMS, Lumi, channel
             chName = getChLabel(decay, channel)
@@ -181,16 +182,16 @@ for channel, decay, samp, syst, year in itertools.product(Channels, Decays, Samp
                 #gPad.SetTickx(0);
                 gPad.SetPad(xPadRange[0],yPadRange[0],xPadRange[1],yPadRange[2]);
                 gPad.RedrawAxis();
-                hRatio = hBase.Clone("hRatio")
-                hRatio.Divide(hNoSF)
-                decoHistRatio(hRatio, xTitle, "Corr./Uncorr.", colBase)
+                hRatio = hCorr.Clone("hRatio")
+                hRatio.Divide(hUncorr)
+                decoHistRatio(hRatio, xTitle, "Corr./Uncorr.", colCorr)
 
                 hRatioUp = hUp.Clone("hRatioUp")
-                hRatioUp.Divide(hNoSF)
+                hRatioUp.Divide(hUncorr)
                 decoHistRatio(hRatioUp, xTitle, "Corr./Uncorr.", colUp)
 
                 hRatioDown = hDown.Clone("hRatioDown")
-                hRatioDown.Divide(hNoSF)
+                hRatioDown.Divide(hUncorr)
                 decoHistRatio(hRatioDown, xTitle, "Corr./Uncorr.", colDown)
 
                 rRange = 1.2*abs(rMax -1)
@@ -202,10 +203,10 @@ for channel, decay, samp, syst, year in itertools.product(Channels, Decays, Samp
                 hRatioDown.Draw("hist same")
 
                 baseLine = TF1("baseLine","1", -100, 10000);
-                baseLine.SetLineColor(colNoSF);
+                baseLine.SetLineColor(colUncorr);
                 baseLine.Draw("SAME");
-            pdf = "%s/overlaySyst_%s_%s_%s_%s.pdf"%(outPlotDir, hName, region, sample, syst)
+            pdf = "%s/overlaySyst_%s_%s_%s.pdf"%(outPlotDir, hName, sample, systKey)
             canvas.SaveAs(pdf)
             fPath.write("%s\n"%pdf)
-        makePlot(hName, region, samp, syst)
+        makePlot(hName, region, samp, systs)
 print(fPath)

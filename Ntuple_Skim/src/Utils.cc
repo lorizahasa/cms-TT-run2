@@ -7,3 +7,23 @@ double dR(double eta1, double phi1, double eta2, double phi2){
     dphi = TMath::Abs( TMath::Abs(dphi) - pi ) - pi;
     return TMath::Sqrt( dphi*dphi + deta*deta );
 }
+
+bool checkStr(std::string sentence, std::string wordToFind){
+    size_t pos = sentence.find(wordToFind);
+    if (pos != std::string::npos) return true;
+    else return false;
+}
+std::string getElementByIndex(const std::string& inputString, int index) {
+    std::istringstream iss(inputString);
+    std::string element;
+    int elementCount = 0;
+
+    while (std::getline(iss, element, '_')) {
+        elementCount++;
+        if (elementCount == index) {
+            return element;
+        }
+    }
+    // Return an empty string if the index is out of range
+    return "";
+}

@@ -14,10 +14,8 @@
 #include"TRandom3.h"
 #include<bitset>
 
-#include"JetResolution.h"
-#include"JetResolution.h"
-#include"JetResolutionObject.h"
-
+#include "correction.h"
+typedef correction::Correction::Ref cRef; 
 #include <random>
 
 
@@ -82,12 +80,7 @@ public:
 	
 	double btag_cut;
     double topTagWP;
-	int JERsystLevel; //0= syst down, 1 = central, 2 = syst up
-	int JECsystLevel;//0= syst down, 1 = central, 2 = syst up
-	int phosmearLevel;
-	int elesmearLevel;
-	int phoscaleLevel;
-	int elescaleLevel;
+	string systVariation; 
 	bool   smearJetPt;
 	bool scaleEle;
 	bool smearEle;
@@ -102,7 +95,7 @@ public:
 	std::string year;
 	int printEvent;
 	void clear_vectors();
-	void init_JER(std::string inputPrefix);
+	void init_JER(cRef jerRefSF, cRef jerRefSF8, cRef jerRefReso, cRef jerRefReso8);
 
 private:
 	EventTree* tree;
@@ -120,12 +113,11 @@ private:
 	int egammaRegion(double absEta);
 
 	bool passPhoMediumID(int phoInd, bool cutHoverE, bool cutSIEIE, bool cutIso);
-	JME::JetResolution *jetResolutionAK4;
-	JME::JetResolutionScaleFactor *jetResolutionScaleFactorAK4;
-	JME::JetResolution *jetResolutionAK8;
-	JME::JetResolutionScaleFactor *jetResolutionScaleFactorAK8;
-	JME::JetParameters jetParamAK4;
-	JME::JetParameters jetParamAK8;
+
+    cRef jerRefSF_;
+    cRef jerRefSF8_;
+    cRef jerRefReso_;
+    cRef jerRefReso8_;
 
 };
 #endif

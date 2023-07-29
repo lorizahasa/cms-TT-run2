@@ -2,14 +2,8 @@
 #include "correction.h"
 #define makeNtuple_cxx
 
-
-int jecvar012_g = 1; // 0:down, 1:norm, 2:up
-int jervar012_g = 1; // 0:down, 1:norm, 2:up
-int phosmear012_g = 1; // 0:down, 1:norm, 2:up
-int musmear012_g = 1; // 0:down, 1:norm, 2: up
-int elesmear012_g = 1; // 0:down, 1:norm, 2: up
-int phoscale012_g = 1;
-int elescale012_g = 1;
+bool runSystJES = false;
+bool runSystJER = false;
 bool dilepSel;
 bool semilepSel;
 bool semileptonsample;
@@ -146,14 +140,12 @@ makeNtuple::makeNtuple(int ac, char** av)
 
     std::string year(av[1]);
     tree = new EventTree(nFiles, false, year, !isMC, fileList);
-    isSystematicRun = false;
     pos = sampleType.find("__");
     if (pos != std::string::npos){
 	systematicType = sampleType.substr(pos+2,sampleType.length());
 	sampleType = sampleType.substr(0,pos);
     }
     
-    cout << sampleType << "  " << systematicType << endl;
     initCrossSections();
     if (isMC && crossSections.find(sampleType) == crossSections.end()) {
 	if (sampleType.find("Test") == std::string::npos){
@@ -312,35 +304,73 @@ makeNtuple::makeNtuple(int ac, char** av)
     //--------------------------
     //JES and JER SFs
     //--------------------------
+    std::string jmeU = "Total"; 
+    std::string systVar    = "nom";
+    if (checkStr(systematicType, "up")){
+        systVar    = "up";
+        if(checkStr(systematicType, "JER")) runSystJER = true;
+        else{
+            runSystJES = true;
+            jmeU = getElementByIndex(systematicType, 2);
+        }
+
+    }
+    if (checkStr(systematicType, "down")){
+        systVar    = "down";
+        if(checkStr(systematicType, "JER")) runSystJER = true;
+        else{ 
+            runSystJES = true;
+            jmeU = getElementByIndex(systematicType, 2);
+        }
+    }
+    cout <<"HERE-2 "<< sampleType << "  " << systematicType << " "<< jmeU << endl;
+
     //https://twiki.cern.ch/twiki/bin/view/CMS/JECDataMC
-    //https://github.com/cms-jet/JRDatabase/tree/master/textFiles
-    //Partial file name here, full name in init_JER function
-    std::map<std::string, string> jerFiles;
-    string comJER = "weight/JetSF/JER/";
-    jerFiles["2016Pre"]  = comJER+"Summer20UL16APV_JRV3";
-    jerFiles["2016Post"] = comJER+"Summer20UL16_JRV3";
-    jerFiles["2017"]        = comJER+"Summer19UL17_JRV3";
-    jerFiles["2018"]        = comJER+"Summer19UL18_JRV2";
+    //https://gitlab.cern.ch/cms-nanoAOD/jsonpog-integration/-/tree/master/POG/JME
+    //https://gitlab.cern.ch/cms-nanoAOD/jsonpog-integration/-/blob/master/examples/jercExample.py
+    // Both JES and JER are read from the same JSON file
+    // JES = Jet Energy Scale, JER = Jet Energy Resolution
+    std::map<std::string, string> jmeJ;
+    jmeJ["2016Pre"]     = "weight/JME/2016preVFP_UL";
+    jmeJ["2016Post"]    = "weight/JME/2016postVFP_UL";
+    jmeJ["2017"]        = "weight/JME/2017_UL";
+    jmeJ["2018"]        = "weight/JME/2018_UL";
+    auto jmeFF  = correction::CorrectionSet::from_file(jmeJ[year]+"/jet_jerc.json");
+    auto jmeFF8 = correction::CorrectionSet::from_file(jmeJ[year]+"/fatJet_jerc.json");
 
-    //https://github.com/cms-jet/JECDatabase/tree/master/textFiles
-    std::map<std::string, string> jesFiles;
-    string comJES = "weight/JetSF/JEC/"+year+"/";
-    jesFiles["2016Pre"]  = comJES+"Summer19UL16APV_V7";
-    jesFiles["2016Post"] = comJES+"Summer19UL16_V7";
-    jesFiles["2017"]        = comJES+"Summer19UL17_V5";
-    jesFiles["2018"]        = comJES+"Summer19UL18_V5";
-    
-    auto json2018 = correction::CorrectionSet::from_file("/cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG/JME/2018_UL/jet_jerc.json.gz");
-    auto jecsflabel2018 = "Summer19UL18_V5_MC_Total_AK4PFchs";
-    auto jecsfjson2018  = json2018->at(jecsflabel2018);
+    //for jes SF 
+    std::map<std::string, string> jmeUL;
+    jmeUL["2016Pre"]     = "Summer19UL16APV_V7_MC";
+    jmeUL["2016Post"]    = "Summer19UL16_V7_MC";
+    jmeUL["2017"]        = "Summer19UL17_V5_MC";
+    jmeUL["2018"]        = "Summer19UL18_V5_MC";
+    correction::CompoundCorrection::Ref jesRefSF;
+    jesRefSF = jmeFF->compound().at(jmeUL[year]+"_L1L2L3Res_"+"AK4PFchs");
 
-    std::vector<correction::Variable::Type>  values;
-    //values.emplace_back(Jet_eta.at(0)); 
-    //values.emplace_back(Jet_pt.at(0));
-    values.emplace_back(1.3);
-    values.emplace_back(30.0);
-    auto unc=jecsfjson2018->evaluate(values);
-    cout<<unc<<endl;
+    //for jes Unc
+    correction::Correction::Ref jesRefUnc;
+    jesRefUnc   = jmeFF->at(jmeUL[year]+"_"+jmeU+"_"+"AK4PFchs");
+
+    //for jer SF 
+    std::map<std::string, string> jerUL;
+    jerUL["2016Pre"]     = "Summer20UL16APV_JRV3_MC";
+    jerUL["2016Post"]    = "Summer20UL16_JRV3_MC";
+    jerUL["2017"]        = "Summer19UL17_JRV3_MC";
+    jerUL["2018"]        = "Summer19UL18_JRV2_MC";
+    correction::Correction::Ref jerRefSF, jerRefSF8;
+    jerRefSF  = jmeFF->at(jerUL[year]+"_ScaleFactor_"+"AK4PFchs");
+    jerRefSF8 = jmeFF8->at(jerUL[year]+"_ScaleFactor_"+"AK8PFPuppi");
+    //for jer pT resolution
+    correction::Correction::Ref jerRefReso, jerRefReso8;
+    jerRefReso  = jmeFF->at(jerUL[year]+"_PtResolution_"+"AK4PFchs");
+    jerRefReso8 = jmeFF8->at(jerUL[year]+"_PtResolution_"+"AK8PFPuppi");
+
+    //std::unique_ptr<correction::CorrectionSet> cseta = 0x0, csetb = 0x0, cset = 0x0;
+    //cset = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%d_UL/UL%d_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
+    //double out_nom = cset->at("PUJetID_eff")->evaluate({2.0,20.,"nom","L"});
+    //double out_up = cset->at("PUJetID_eff")->evaluate({2.0,20.,"up","L"});
+    //double out_down = cset->at("PUJetID_eff")->evaluate({2.0,20.,"down","L"});
+    //printf("Output (down, nom, up) : (%lf,%lf,%lf)\n", out_down, out_nom, out_up); 
 
     //--------------------------
     //Luminosity
@@ -398,8 +428,9 @@ makeNtuple::makeNtuple(int ac, char** av)
 
     selector->topTagWP = topTagWPs[year];
     if (isMC){
-    	selector->init_JER(jerFiles[year]);
+    	selector->init_JER(jerRefSF, jerRefSF8, jerRefReso, jerRefReso8);
     }
+    selector->systVariation = systVar;
     BTagCalibration calib;
     selector->btag_cut = deepJetWPs[year]; 
 	calib = BTagCalibration("deepjet", deepJetFiles[year]); 
@@ -485,54 +516,19 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
     
 
-    string JECsystLevel = "";
-    if( systematicType.substr(0,3)=="JEC" ){
-	int pos = systematicType.find("_");
-	JECsystLevel = systematicType.substr(3,pos-3);
-	if (std::end(allowedJECUncertainties) == std::find(std::begin(allowedJECUncertainties), std::end(allowedJECUncertainties), JECsystLevel)){
-	    cout << "The JEC systematic source, " << JECsystLevel << ", is not in the list of allowed sources (found in JEC/UncertaintySourcesList.h" << endl;
-	    cout << "Exiting" << endl;
-	    return;
-	}
-	if (systematicType.substr(pos+1,2)=="up"){ jecvar012_g = 2; }
-	if (systematicType.substr(pos+1,2)=="do"){ jecvar012_g = 0; }
-	isSystematicRun = true;
-    }
-    
     bool isTTGamma = false;
     size_t ttgamma_pos = sampleType.find("TTGamma");
     if (ttgamma_pos != std::string::npos){
 	isTTGamma = true;
     }
-    if( systematicType=="JER_up")       {jervar012_g = 2; selector->JERsystLevel=2; isSystematicRun = true;}
-    if( systematicType=="JER_down")     {jervar012_g = 0; selector->JERsystLevel=0; isSystematicRun = true;}
-    if(systematicType=="phosmear_down") {phosmear012_g=0;selector->phosmearLevel=0; isSystematicRun = true;}
-    if(systematicType=="phosmear_up")   {phosmear012_g=2;selector->phosmearLevel=2; isSystematicRun = true;}
-    if(systematicType=="elesmear_down") {elesmear012_g=0;selector->elesmearLevel=0; isSystematicRun = true;}
-    if(systematicType=="elesmear_up")   {elesmear012_g=2;selector->elesmearLevel=2; isSystematicRun = true;}
-    if(systematicType=="phoscale_down") {phoscale012_g=0;selector->phoscaleLevel=0; isSystematicRun = true;} 
-    if(systematicType=="phoscale_up")   {phoscale012_g=2;selector->phoscaleLevel=2; isSystematicRun = true;}
-    if(systematicType=="elescale_down") {elescale012_g=0;selector->elescaleLevel=0; isSystematicRun = true;}
-    if(systematicType=="elescale_up")   {elescale012_g=2;  selector->elescaleLevel=2; isSystematicRun = true;}
-
-    // if( systematicType=="pho_up")       {phosmear012_g = 2;}
-    // if( systematicType=="pho_down")     {phosmear012_g = 0;}
-    if( systematicType=="musmear_up") {musmear012_g = 2; isSystematicRun = true;}
-    if( systematicType=="musmear_do") {musmear012_g = 0; isSystematicRun = true;}
-    //	if( systematicType=="elesmear_up")  {elesmear012_g = 2;}
-    //	if( systematicType=="elesmear_down"){elesmear012_g = 0;}
-
     if(dilepSel)     {evtPick->Nmu_eq=2; evtPick->Nele_eq=2;}
-    //    if( systematicType=="QCDcr")       {selector->QCDselect = true; evtPick->ZeroBExclusive=true; evtPick->QCDselect = true;}
     std::cout << "Dilepton Sample :" << dilepSel << std::endl;
-    std::cout << "JEC: " << jecvar012_g << "  JER: " << jervar012_g << " eleScale "<< elescale012_g << " phoScale" << phoscale012_g << "   ";
-    std::cout << "  PhoSmear: " << phosmear012_g << "  muSmear: " << musmear012_g << "  eleSmear: " << elesmear012_g << std::endl;
     if (dilepSel){
 	evtPick->Njet_ge = 2;
 	evtPick->NBjet_ge = 0;
     }
 
-    if (isSystematicRun){
+    if (runSystJES || runSystJER){
 	std::cout << "  Systematic Run : Dropping genMC variables from tree" << endl;
     }
 
@@ -554,9 +550,9 @@ makeNtuple::makeNtuple(int ac, char** av)
 
     InitBranches();
     JECvariation* jecvar;
-    if (isMC && jecvar012_g!=1) {
-	cout << "Applying JEC uncertainty variations : " << JECsystLevel << endl;
-	jecvar = new JECvariation(jesFiles[year], isMC, JECsystLevel);
+    if (isMC && runSystJES) {
+	    cout << "Applying JEC uncertainty variations : " << systVar << endl;
+	    jecvar = new JECvariation();
     }
 
     double nMC_total = 0.;
@@ -801,10 +797,8 @@ makeNtuple::makeNtuple(int ac, char** av)
         //--------------------------
         //Process events
         //--------------------------
-        if( isMC ){
-            if (jecvar012_g != 1){
-        	jecvar->applyJEC(tree, jecvar012_g); // 0:down, 1:norm, 2:up
-            }
+        if( isMC && runSystJES ){
+        	jecvar->applyJEC(tree, jesRefSF, jesRefUnc, systVar); 
         }
         selector->clear_vectors();
         evtPick->process_event(tree, selector);
@@ -1226,7 +1220,7 @@ void makeNtuple::FillEvent(std::string year){
         double resolution = selector->jet_resolution.at(i_jet);
         _jetRes.push_back(resolution);
         _jerWeight.push_back(selector->jet_smear.at(i_jet));
-	    if (jecvar012_g != 1){
+	    if (runSystJES){
             _jesWeight.push_back(tree->jetmuEF_[jetInd]);
         }
         else{

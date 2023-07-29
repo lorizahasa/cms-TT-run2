@@ -49,7 +49,6 @@
 #include "ReaderPhoSF.h"
 #include "ReaderLumiMask.h"
 
-#include "UncertaintySourcesList.h"
 #include "OverlapRemove.h"
 
 class makeNtuple {

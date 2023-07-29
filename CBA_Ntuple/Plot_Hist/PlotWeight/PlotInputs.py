@@ -5,10 +5,10 @@ dirHist = "%s/Hist_Ntuple/HistWeight/Rebin"%dirCBA
 dirPlot = "%s/Plot_Hist/PlotWeight/Rebin"%dirCBA
 dirTwiki= "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
-Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-#Years 	      =	["2017"]
-Channels 	  =	["Mu", "Ele"]
-#Channels 	  =	["Mu"]
+#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+Years 	      =	["2018"]
+#Channels 	  =	["Mu", "Ele"]
+Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 
 #Years and channels to be commbined
@@ -22,7 +22,7 @@ systDict["Weight_ele"]  = ["Weight_ele_id", "Weight_ele_reco", "Weight_ele_trig"
 systDict["Weight_btag"] = ["Weight_btag_b", "Weight_btag_l"]
 systDict["Weight_ttag"] = ["Weight_ttag"]
 systDict["Weight_pho"]  = ["Weight_pho_id", "Weight_pho_ps", "Weight_pho_cs"]
-#systDict["Weight_jet"]  = ["Weight_jes", "Weight_jer"]
+systDict["Weight_jet"]  = ["Weight_jes", "Weight_jer"]
 systDict["Weight_pu"]   = ["Weight_pu"]
 systDict["Weight_prefire"]  = ["Weight_prefire"]
 systDict["Weight_q2_pdf"]   = ["Weight_q2", "Weight_pdf"]
@@ -41,7 +41,7 @@ sampMC = {
          #"SignalSpin32_M1500"   : [rt.kGreen+2,     "m_{t*} = 1500"],
          #"SignalSpin32_M3000"   : [rt.kCyan,     "m_{t*} = 3000"],
          "TTGamma"   : [rt.kRed+2, "t#bar{t}#gamma"],
-         "TTbar"     : [rt.kRed, "t/t#bar{t}"],
+         #"TTbar"     : [rt.kRed, "t/t#bar{t}"],
          #"WJets"     : [rt.kOrange, "W+jets"],
          #"DYJets"    : [rt.kYellow, "DY+jets"],
          #"WGamma"    : [rt.kGray, "W+#gamma"],
@@ -66,7 +66,7 @@ overlayEff.append("SignalSpin32_M700")
 overlayEff.append("SignalSpin32_M1500")
 #overlayEff.append("SignalSpin32_M3000")
 
-colNoSF  = rt.kBlack
-colBase = rt.kGreen
+colUncorr  = rt.kBlack
+colCorr = rt.kGreen
 colUp   = rt.kRed 
 colDown = rt.kOrange
