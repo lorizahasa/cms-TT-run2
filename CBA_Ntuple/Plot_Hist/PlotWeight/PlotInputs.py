@@ -36,24 +36,27 @@ SystLevels.append("down")
 hName  = "Reco_st"
 region = "tty_Enriched_le4j_a1b_e1y"
 
-sampMC = {
+sampSig = {
          "SignalSpin32_M700"    : [rt.kGreen,  "m_{t*} = 700"],
          #"SignalSpin32_M1500"   : [rt.kGreen+2,     "m_{t*} = 1500"],
          #"SignalSpin32_M3000"   : [rt.kCyan,     "m_{t*} = 3000"],
+         }
+sampBkg = {
          "TTGamma"   : [rt.kRed+2, "t#bar{t}#gamma"],
-         #"TTbar"     : [rt.kRed, "t/t#bar{t}"],
-         #"WJets"     : [rt.kOrange, "W+jets"],
-         #"DYJets"    : [rt.kYellow, "DY+jets"],
-         #"WGamma"    : [rt.kGray, "W+#gamma"],
-         #"ZGamma"    : [rt.kMagenta, "Z+#gamma"],
-         #"QCD"       : [rt.kCyan, "QCD"],
-         #"Others"    : [rt.kBlue, "Others"]
+         "TTbar"     : [rt.kRed, "t/t#bar{t}"],
+         "WJets"     : [rt.kOrange, "W+jets"],
+         "DYJets"    : [rt.kYellow, "DY+jets"],
+         "WGamma"    : [rt.kGray, "W+#gamma"],
+         "ZGamma"    : [rt.kMagenta, "Z+#gamma"],
+         "QCD"       : [rt.kCyan, "QCD"],
+         "Others"    : [rt.kBlue, "Others"]
          }
 sampData = {
          "data_obs"   : [rt.kBlack, "Data"]
          }
 
-sampAll = {**sampMC, **sampData}
+sampAll = {**sampSig, **sampBkg, **sampData}
+
 
 #---------------
 # Plotting 
@@ -66,7 +69,8 @@ overlayEff.append("SignalSpin32_M700")
 overlayEff.append("SignalSpin32_M1500")
 #overlayEff.append("SignalSpin32_M3000")
 
-colUncorr  = rt.kBlack
-colCorr = rt.kGreen
-colUp   = rt.kRed 
-colDown = rt.kOrange
+colData     = rt.kBlack
+colUncorr  = rt.kCyan +1
+colUp   = rt.kRed+1
+colCorr = rt.kGreen+1
+colDown = rt.kBlue +1

@@ -48,14 +48,6 @@ if not isCheck and not isSep and not isComb:
     print("Add either --isCheck or --isSep or --isComb in the command line")
     exit()
 
-def checkNanInBins(hist):
-    checkNan = False
-    for b in range(hist.GetNbinsX()):
-        if math.isnan(hist.GetBinContent(b)):
-            print("%s: bin %s is nan"%(hist.GetName(), b))
-            checkNan = True
-    return checkNan
-
 gROOT.SetBatch(True)
 
 os.system("mkdir -p %s"%dirPlot)
@@ -96,57 +88,14 @@ for sample, decay, channel, year in itertools.product(Samples, Decays, Channels,
             hNoSF   = rootFile.Get(hPathNoSF).Clone("%sNoSF_"%syst) 
             hUp   = rootFile.Get(hPathUp).Clone("%sUp_"%syst) 
             hDown = rootFile.Get(hPathDown).Clone("%sDown_"%syst) 
-            evtBase = hBase.Integral()
             evtNoSF = hNoSF.Integral()
+
+            evtBase = hBase.Integral()
             evtUp   = hUp.Integral()
             evtDown = hDown.Integral()
-            #check if intergal is 0
-            #if evtUp ==0.0 or evtBase ==0.0 or evtDown ==0.0:
-            #i = integral, u = undeflow, o = overflow
-            iEvtBase = round(hBase.Integral(),0)
-            iEvtNoSF = round(hNoSF.Integral(),0)
-            iEvtUp   = round(hUp.Integral(),0)
-            iEvtDown = round(hDown.Integral(),0)
-            uEvtBase = round(hBase.GetBinContent(0),0)
-            uEvtNoSF = round(hNoSF.GetBinContent(0),0)
-            uEvtUp   = round(hUp.GetBinContent(0),0)
-            uEvtDown = round(hDown.GetBinContent(0),0)
-            oEvtBase = round(hBase.GetBinContent(hBase.GetNbinsX()+1),0)
-            oEvtNoSF = round(hNoSF.GetBinContent(hNoSF.GetNbinsX()+1),0)
-            oEvtUp   = round(hUp.GetBinContent(hUp.GetNbinsX()+1),0)
-            oEvtDown = round(hDown.GetBinContent(hDown.GetNbinsX()+1),0)
-            errFrom  = "%s, %s, %s"%(ydc, sample, syst)
-            if uEvtBase >1000 or oEvtBase >1000:
-                print("WE: %s: Base:  Overflow or Undeflow is more than 1000"%errFrom)
-            if uEvtNoSF >1000 or oEvtNoSF >1000:
-                print("WE: %s: NoSF:  Overflow or Undeflow is more than 1000"%errFrom)
-            if uEvtUp >1000 or oEvtUp >1000:
-                print("WE: %s: Up:  Overflow or Undeflow is more than 1000"%errFrom)
-            if uEvtDown >1000 or oEvtDown >1000:
-                print("WE: %s: Down:  Overflow or Undeflow is more than 1000"%errFrom)
-            if evtBase ==0.0:
-                print("WE: %s evtBase is zero"%errFrom)
-                continue
-            #check if intergal is NaN
-            if math.isnan(evtUp) or math.isnan(evtDown):
-                print("WE: %s: Inegral is nan"%errFrom)
-                continue
-            #check if bins are nan
-            if checkNanInBins(hUp) or checkNanInBins(hBase) or checkNanInBins(hDown):
-                print("WE: %s: Some of the bins are nan"%errFrom)
-                continue
-            allSystPercentage[syst] = 100*max(abs(evtUp -evtBase),abs(evtBase-evtDown))/evtBase
-            print("%18s" 
-                   "|%6.0f %8.0f %8.0f"
-                   "|%6.0f %8.0f %8.0f"
-                   "|%6.0f %8.0f %8.0f"
-                   "|%5.1f%%"%(syst, 
-                 uEvtDown, iEvtDown, oEvtDown, 
-                 uEvtBase, iEvtBase, oEvtBase, 
-                 uEvtUp, iEvtUp, oEvtUp,
-                allSystPercentage[syst]))
-            if allSystPercentage[syst] > 100.0:
-                print("WE: Large uncertainty for %s: %10.2f"%(errFrom, allSystPercentage[syst]))
+
+            systUnc = getSystUnc(hUp, hBase, hDown)
+            allSystPercentage[syst] = systUnc 
             #Ratio Up
             hRatioUp = hUp.Clone("%s_up"%syst)
             hRatioNoSF = hNoSF.Clone("%s_base"%syst)

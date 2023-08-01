@@ -2,6 +2,7 @@ import ROOT as rt
 import numpy as np
 import sys
 import ctypes
+import math
 
 #-----------------------------------------
 #Get, add, substract histograms 
@@ -266,6 +267,7 @@ def formatCRString(region):
     name = name.replace("Photon_et", "p_{T}^{#gamma}")
     name = name.replace(" &&", ",")
     name = name.replace(">=", "#geq ")
+    name = name.replace("<=", "#leq ")
     name = name.replace("==", "=")
     return name 
 
@@ -405,3 +407,64 @@ def decoEff(hist, xTit, yTit, color):
     hist.GetXaxis().SetMoreLogLabels();
     hist.GetXaxis().SetNoExponent()
 
+def checkNanInBins(hist):
+    checkNan = False
+    for b in range(hist.GetNbinsX()):
+        if math.isnan(hist.GetBinContent(b)):
+            print("%s: bin %s is nan"%(hist.GetName(), b))
+            checkNan = True
+    return checkNan
+
+def getSystUnc(hUp, hBase, hDown, samp, isPrint=False):
+    if isPrint:
+        print("Sample, %10s %14s %22s %22s %10s"%("SystUnc(%)", "Down", "Base", "Up", "Unc"))
+        print("%20s %6s %8s %8s %6s %8s %8s %6s %8s %8s %5s"%("", 
+            "UnderF", "Integral", "OverF", 
+            "UnderF", "Integral", "OverF", 
+            "UnderF", "Integral", "OverF", ""))
+    evtBase = hBase.Integral()
+    evtUp   = hUp.Integral()
+    evtDown = hDown.Integral()
+    #check if intergal is 0
+    #if evtUp ==0.0 or evtBase ==0.0 or evtDown ==0.0:
+    #i = integral, u = undeflow, o = overflow
+    iEvtBase = round(hBase.Integral(),0)
+    iEvtUp   = round(hUp.Integral(),0)
+    iEvtDown = round(hDown.Integral(),0)
+    uEvtBase = round(hBase.GetBinContent(0),0)
+    uEvtUp   = round(hUp.GetBinContent(0),0)
+    uEvtDown = round(hDown.GetBinContent(0),0)
+    oEvtBase = round(hBase.GetBinContent(hBase.GetNbinsX()+1),0)
+    oEvtUp   = round(hUp.GetBinContent(hUp.GetNbinsX()+1),0)
+    oEvtDown = round(hDown.GetBinContent(hDown.GetNbinsX()+1),0)
+    if uEvtBase >1000 or oEvtBase >1000:
+        print("Warning: Base:  Overflow or Undeflow is more than 1000")
+    if uEvtUp >1000 or oEvtUp >1000:
+        print("Warning: Up:  Overflow or Undeflow is more than 1000")
+    if uEvtDown >1000 or oEvtDown >1000:
+        print("Warning: Down:  Overflow or Undeflow is more than 1000")
+    if evtBase ==0.0:
+        print("Warning: evtBase is zero")
+    #check if intergal is NaN
+    if math.isnan(evtUp) or math.isnan(evtDown):
+        print("Warning: Inegral is nan")
+    #check if bins are nan
+    if checkNanInBins(hUp) or checkNanInBins(hBase) or checkNanInBins(hDown):
+        print("Warning: Some of the bins are nan")
+    syst = round(100*max(abs(evtUp -evtBase),abs(evtBase-evtDown))/evtBase, 2)
+    print("%10s, %10s" 
+           "|%6.0f %8.0f %8.0f"
+           "|%6.0f %8.0f %8.0f"
+           "|%6.0f %8.0f %8.0f"%(samp, syst, 
+         uEvtDown, iEvtDown, oEvtDown, 
+         uEvtBase, iEvtBase, oEvtBase, 
+         uEvtUp, iEvtUp, oEvtUp))
+    if syst > 100.0:
+        print("Warning: Large uncertainty: %10.2f"%(syst)) 
+    return syst
+
+def getContent(hist):
+    con = []
+    for i in range(1, hist.GetNbinsX()):
+        con.append(hist.GetBinContent(i))
+    return con 

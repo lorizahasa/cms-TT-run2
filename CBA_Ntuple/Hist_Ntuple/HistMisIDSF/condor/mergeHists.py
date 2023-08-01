@@ -53,7 +53,7 @@ if isSep:
         #Merge for each sample
         for s in Samples:
             haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(mergeDir, s)
-            haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'%s.*root\'`"%(histDir,s)
+            haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'/%s.*root\'`"%(histDir,s)
             runCmd("hadd -f -v 0  %s %s"%(haddOut, haddIn))
         #Merge for all sample
         haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(mergeDir)

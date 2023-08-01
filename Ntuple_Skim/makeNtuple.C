@@ -128,7 +128,6 @@ makeNtuple::makeNtuple(int ac, char** av)
                                                                                 
     }                                                                           
     char** fileList(av+4+startFile);                                            
-    cout << "HERE" << endl;          
 
     sampleType = av[2];
     systematicType = "";
@@ -139,6 +138,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
 
     std::string year(av[1]);
+    cout << "HERE: "<<year<< endl;          
     tree = new EventTree(nFiles, false, year, !isMC, fileList);
     pos = sampleType.find("__");
     if (pos != std::string::npos){
@@ -335,8 +335,10 @@ makeNtuple::makeNtuple(int ac, char** av)
     jmeJ["2016Post"]    = "weight/JME/2016postVFP_UL";
     jmeJ["2017"]        = "weight/JME/2017_UL";
     jmeJ["2018"]        = "weight/JME/2018_UL";
+    // The treatment of JEC is the same for AK4 and AK8 (the txt files for AK8 are clones of the ak4 ones).
+    // https://cms-talk.web.cern.ch/t/question-on-run-2-reduced-set-of-uncertainty-sources-for-ak8-jet/21641
+    // https://cms-talk.web.cern.ch/t/ak8-jets-jec-for-summer19ul17-mc/23154/11
     auto jmeFF  = correction::CorrectionSet::from_file(jmeJ[year]+"/jet_jerc.json");
-    auto jmeFF8 = correction::CorrectionSet::from_file(jmeJ[year]+"/fatJet_jerc.json");
 
     //for jes SF 
     std::map<std::string, string> jmeUL;
@@ -355,15 +357,19 @@ makeNtuple::makeNtuple(int ac, char** av)
     std::map<std::string, string> jerUL;
     jerUL["2016Pre"]     = "Summer20UL16APV_JRV3_MC";
     jerUL["2016Post"]    = "Summer20UL16_JRV3_MC";
-    jerUL["2017"]        = "Summer19UL17_JRV3_MC";
+    jerUL["2017"]        = "Summer19UL17_JRV2_MC";
     jerUL["2018"]        = "Summer19UL18_JRV2_MC";
     correction::Correction::Ref jerRefSF, jerRefSF8;
+    //The AK4 files are exactly the same for AK8
+    //https://github.com/ravindkv/cms-TT-run2/tree/5e5d735814abb6563e704bc932c68704cfd7384a/Ntuple_Skim/weight/JetSF/JER
+    //PtResolution_AK4PFchs.txt = PtResolution_AK8PFPuppi.txt
+    //SF_AK4PFchs.txt           = SF_AK8PFPuppi.txt
     jerRefSF  = jmeFF->at(jerUL[year]+"_ScaleFactor_"+"AK4PFchs");
-    jerRefSF8 = jmeFF8->at(jerUL[year]+"_ScaleFactor_"+"AK8PFPuppi");
+    jerRefSF8 = jmeFF->at(jerUL[year]+"_ScaleFactor_"+"AK4PFchs");
     //for jer pT resolution
     correction::Correction::Ref jerRefReso, jerRefReso8;
     jerRefReso  = jmeFF->at(jerUL[year]+"_PtResolution_"+"AK4PFchs");
-    jerRefReso8 = jmeFF8->at(jerUL[year]+"_PtResolution_"+"AK8PFPuppi");
+    jerRefReso8 = jmeFF->at(jerUL[year]+"_PtResolution_"+"AK4PFchs");
 
     //std::unique_ptr<correction::CorrectionSet> cseta = 0x0, csetb = 0x0, cset = 0x0;
     //cset = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%d_UL/UL%d_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
@@ -798,7 +804,7 @@ makeNtuple::makeNtuple(int ac, char** av)
         //Process events
         //--------------------------
         if( isMC && runSystJES ){
-        	jecvar->applyJEC(tree, jesRefSF, jesRefUnc, systVar); 
+        	//jecvar->applyJEC(tree, jesRefSF, jesRefUnc, systVar); 
         }
         selector->clear_vectors();
         evtPick->process_event(tree, selector);

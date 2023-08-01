@@ -43,8 +43,9 @@ dictRebin["FatJet_msoftdrop"] = np.array(mly)
 
 if __name__=='__main__':
     from ROOT import TFile
-    inFile = TFile.Open("root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Disc_Ntuple/DiscMain/Merged/2016Pre/Semilep/Mu/CombMass/BDTA/AllInc.root")
-    hist = inFile.Get("TTGamma/ttyg_Enriched_CR_Resolved/Base/Disc")
+    inFile = TFile.Open("root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistWeight/Merged/2018/Semilep/Mu/AllInc.root")
+    #hist = inFile.Get("TTGamma/ttyg_Enriched_CR_Resolved/Base/Disc")
+    hist = inFile.Get("TTGamma/tty_Enriched_le4j_a1b_e1y/Uncorr/Reco_st")
     #hist = inFile.Get("TTGamma/ttyg_Enriched_CR_Resolved/Base/Reco_mass_T")
 
     def getRebins(hist, uncThresh):
@@ -73,7 +74,7 @@ if __name__=='__main__':
         print("Bin Index  = \n",indexBins)
         print("Bin unc(%) = \n", uncBins)
         return reBins
-    getRebins(hist, 30)
+    getRebins(hist, 10)
      
 
 

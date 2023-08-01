@@ -26,14 +26,14 @@ Samples.append("SignalSpin32_M700")
 #Samples.append("SignalSpin32_M1700")
 
 #bkg and data
-#Samples.append("TTbar")
+Samples.append("TTbar")
 Samples.append("TTGamma")
-#Samples.append("WJets")
-#Samples.append("DYJets")
-#Samples.append("WGamma")
-#Samples.append("ZGamma")
-#Samples.append("Others")
-#Samples.append("QCD")
+Samples.append("WJets")
+Samples.append("DYJets")
+Samples.append("WGamma")
+Samples.append("ZGamma")
+Samples.append("Others")
+Samples.append("QCD")
 Samples.append("data_obs")
 
 CorrAndSyst   =	[]
@@ -90,4 +90,4 @@ Corrs["Weight_lumi"] = [uc, "Weight_lumi", uc, uc]
 
 Regions = {}
 #Regions['tt_Enriched_a3j_a1b_e0y']   = "Jet_size>=3 && Jet_b_size>=1 && Photon_size==0"
-Regions['tty_Enriched_le4j_a1b_e1y'] = "Jet_size<=4 && Jet_b_size>=1 && Photon_size==1 && FatJet_size==0"
+Regions['tty_Enriched_le4j_a1b_e1y'] = "Jet_size<=4 && Jet_b_size>=1 && Photon_size==1" 
