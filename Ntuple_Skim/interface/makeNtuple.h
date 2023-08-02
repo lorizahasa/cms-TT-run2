@@ -37,7 +37,6 @@
 #include "METzCalculator.h"
 #include "TopEventCombinatorics.h"
 
-#include "ReaderPileupSF.h"
 #include "ReaderTopSF.h"
 #include "ReaderLumiSF.h"
 #include "ReaderMuSF.h"
@@ -77,7 +76,6 @@ class makeNtuple {
     bool applypdfweight;
     bool applyqsquare;
 
-    PileupSF* puSF;
     TopSF* topSF;
     MuonSF* muSF;
     ElectronSF* eleSF;

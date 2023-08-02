@@ -164,23 +164,20 @@ makeNtuple::makeNtuple(int ac, char** av)
     //--------------------------
     //Pileup SFs
     //--------------------------
+    //https://gitlab.cern.ch/cms-nanoAOD/jsonpog-integration/-/tree/master/POG/LUM
     //https://github.com/cms-nanoAOD/nanoAOD-tools/tree/master/python/postprocessing/data/pileup
-    //PV data files
-    std::map<std::string, string> puDataFiles;
-    string comPuData = "weight/PileupSF/PileupHistogram-";
-    puDataFiles["2016Pre"]  = comPuData+"UL2016-100bins_withVar.root"; 
-    puDataFiles["2016Post"] = comPuData+"UL2016-100bins_withVar.root";
-    puDataFiles["2017"]        = comPuData+"UL2017-100bins_withVar.root";
-    puDataFiles["2018"]        = comPuData+"UL2018-100bins_withVar.root";
-    //PV MC files
-    std::map<std::string, string> puMCFiles;
-    string comPuMC = "weight/PileupSF/mcPileup";
-    puMCFiles["2016Pre"]  = comPuMC+"UL2016.root";
-    puMCFiles["2016Post"] = comPuMC+"UL2016.root";
-    puMCFiles["2017"]        = comPuMC+"UL2017.root";
-    puMCFiles["2018"]        = comPuMC+"UL2018.root";
-    //Initiate the pileup SF reader
-	puSF = new PileupSF(puDataFiles[year], puMCFiles[year]);
+    std::map<std::string, string> puJ;
+    puJ["2016Pre"]     = "weight/LUM/2016preVFP_UL";
+    puJ["2016Post"]    = "weight/LUM/2016postVFP_UL";
+    puJ["2017"]        = "weight/LUM/2017_UL";
+    puJ["2018"]        = "weight/LUM/2018_UL";
+    auto puFF  = correction::CorrectionSet::from_file(puJ[year]+"/puWeights.json");
+    std::map<std::string, string> puN;
+    puN["2016Pre"]     = "Collisions16_UltraLegacy_goldenJSON";
+    puN["2016Post"]    = "Collisions16_UltraLegacy_goldenJSON"; 
+    puN["2017"]        = "Collisions17_UltraLegacy_goldenJSON"; 
+    puN["2018"]        = "Collisions18_UltraLegacy_goldenJSON";
+    auto puRef         = puFF->at(puN[year]);
 
     //--------------------------
     //Muon SFs
@@ -280,7 +277,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 	phoSF = new PhotonSF(phoIDFiles[year], phoPSFiles[year], phoCSFiles[year]);
 
     //--------------------------
-    //BTag SFs
+    //BTag SF in loadBtagEff() and getBtagSF_1a()
     //--------------------------
     //https://twiki.cern.ch/twiki/bin/view/CMS/BtagRecommendation
     //https://gitlab.cern.ch/vanderli/btv-json-sf/-/tree/master/data
@@ -797,11 +794,9 @@ makeNtuple::makeNtuple(int ac, char** av)
             //Apply MC weight
             //--------------------------
             if(isMC) {
-                vector<double> puWeights; 
-                puWeights = puSF->getPuSFs(tree->nPUTrue_, tree->event_==eventNum);
-                _PUweight_Do = puWeights.at(0); 
-                _PUweight    = puWeights.at(1); 
-                _PUweight_Up = puWeights.at(2);
+                _PUweight_Do    = puRef->evaluate({tree->nPUTrue_, "down"}); 
+                _PUweight       = puRef->evaluate({tree->nPUTrue_, "nominal"}); 
+                _PUweight_Up    = puRef->evaluate({tree->nPUTrue_, "up"}); 
         
                 _btagWeight_1a      = getBtagSF_1a("central", tree->event_==eventNum);
                 _btagWeight_1a_b_Up = getBtagSF_1a("b_up"   );

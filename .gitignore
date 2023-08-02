@@ -7,7 +7,6 @@ Ntuple_Skim/*.root
 Ntuple_Skim/tmp_120
 
 Ntuple_Skim/EGM
-Ntuple_Skim/LUM
 Ntuple_Skim/MUO
 
 Skim_NanoAOD/makeSkim
