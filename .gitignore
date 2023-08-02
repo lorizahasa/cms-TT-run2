@@ -6,8 +6,8 @@ Skim_NanoAOD/*.root
 Ntuple_Skim/*.root
 Ntuple_Skim/tmp_120
 
-Ntuple_Skim/EGM
-Ntuple_Skim/MUO
+Ntuple_Skim/weight/EGM/
+Ntuple_Skim/weight/MUO/
 
 Skim_NanoAOD/makeSkim
 Skim_NanoAOD/sample/tmp/
@@ -56,11 +56,13 @@ MVA_Ntuple/*/*/*/*discs
 */*/*/*.log
 */*/*/*/*.log
 
-*.json
-*/*.json
-*/*/*.json
-*/*/*/*.json
-*/*/*/*/*.json
+CBA_Ntuple/*/*.json
+CBA_Ntuple/*/*/*.json
+CBA_Ntuple/*/*/*/*.json
+
+MVA_Ntuple/*/*.json
+MVA_Ntuple/*/*/*.json
+MVA_Ntuple/*/*/*/*.json
 
 *.o
 */*.o
