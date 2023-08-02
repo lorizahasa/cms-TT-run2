@@ -1,5 +1,4 @@
 #include "interface/makeNtuple.h"
-#include "correction.h"
 #define makeNtuple_cxx
 
 bool runSystJES = false;
@@ -285,25 +284,15 @@ makeNtuple::makeNtuple(int ac, char** av)
     //--------------------------
     //https://twiki.cern.ch/twiki/bin/view/CMS/BtagRecommendation
     //https://gitlab.cern.ch/vanderli/btv-json-sf/-/tree/master/data
-    //Hard coded the old calibration BTagCalibrationStandalone file and 
-    //re-formatted the UL csv file: 
-    //https://github.com/indra-ehep/KinFit_Skim/tree/9625ff1697693f4cc71813fe7f6b097643ae5166/CBA_Skim
-    //deepJet
-    std::map<std::string, string> deepJetFiles;
-    string comJet = "weight/BtagSF/wp_deepJet_106X";
-    deepJetFiles["2016Pre"]  = comJet+"UL16preVFP_v2_formatted.csv";
-    deepJetFiles["2016Post"] = comJet+"UL16postVFP_v3_formatted.csv";
-    deepJetFiles["2017"]        = comJet+"UL17_v3_formatted.csv";
-    deepJetFiles["2018"]        = comJet+"UL18_v2_formatted.csv";
     std::map<std::string, double> deepJetWPs;//medium WPs
     deepJetWPs["2016Pre"]  = 0.2598; 
     deepJetWPs["2016Post"] = 0.2489; 
     deepJetWPs["2017"]        = 0.3040; 
     deepJetWPs["2018"]        = 0.2783; 
     
-    //--------------------------
+    //-----------------------------------------------------------
     //JES and JER SFs
-    //--------------------------
+    //-----------------------------------------------------------
     std::string jmeU = "Total"; 
     std::string systVar    = "nom";
     if (checkStr(systematicType, "up")){
@@ -437,28 +426,13 @@ makeNtuple::makeNtuple(int ac, char** av)
     	selector->init_JER(jerRefSF, jerRefSF8, jerRefReso, jerRefReso8);
     }
     selector->systVariation = systVar;
-    BTagCalibration calib;
     selector->btag_cut = deepJetWPs[year]; 
-	calib = BTagCalibration("deepjet", deepJetFiles[year]); 
+    cout<<"HERE-3"<<endl;
 	loadBtagEff(sampleType,year);
     topEvent.SetBtagThresh(selector->btag_cut);
-    BTagCalibrationReader reader(BTagEntry::OP_MEDIUM,  // operating point
-				 "central",             // central sys type
-				 {"up", "down"});      // other sys types
-    
     if (tree == 0) {
 	std::cout <<"Tree not recognized" << endl;
     }
-    reader.load(calib,                // calibration instance
-		BTagEntry::FLAV_B,    // btag flavour
-		"mujets");               // measurement type
-    reader.load(calib,                // calibration instance
-		BTagEntry::FLAV_C,    // btag flavour
-		"comb");               // measurement type
-    reader.load(calib,                // calibration instance
-		BTagEntry::FLAV_UDSG,    // btag flavour
-		"incl");               // measurement type
-
     bool doOverlapInvert_TTG = false;
     bool doOverlapRemoval_TT = false;
     bool doOverlapInvert_WG = false;	
@@ -829,11 +803,11 @@ makeNtuple::makeNtuple(int ac, char** av)
                 _PUweight    = puWeights.at(1); 
                 _PUweight_Up = puWeights.at(2);
         
-                _btagWeight_1a      = getBtagSF_1a("central", reader, tree->event_==eventNum);
-                _btagWeight_1a_b_Up = getBtagSF_1a("b_up",    reader);
-                _btagWeight_1a_b_Do = getBtagSF_1a("b_down",  reader);
-                _btagWeight_1a_l_Up = getBtagSF_1a("l_up",    reader);
-                _btagWeight_1a_l_Do = getBtagSF_1a("l_down",  reader);
+                _btagWeight_1a      = getBtagSF_1a("central", tree->event_==eventNum);
+                _btagWeight_1a_b_Up = getBtagSF_1a("b_up"   );
+                _btagWeight_1a_b_Do = getBtagSF_1a("b_down" );
+                _btagWeight_1a_l_Up = getBtagSF_1a("l_up"   );
+                _btagWeight_1a_l_Do = getBtagSF_1a("l_down" );
                 if (evtPick->passPreselMu) {
                     vector<double> muWeights;
                     vector<double> muWeights_Do;
@@ -1548,12 +1522,19 @@ double makeNtuple::topPtWeight(){
     
 }
 
+//--------------------------
+//btag SF and efficiency files
+//--------------------------
 void makeNtuple::loadBtagEff(string sampleName, string year){
-    //--------------------------
-    //btag efficiency files
-    //--------------------------
+    std::map<std::string, string> btvJ;
+    btvJ["2016Pre"]     = "weight/BTV/2016preVFP_UL";
+    btvJ["2016Post"]    = "weight/BTV/2016postVFP_UL";
+    btvJ["2017"]        = "weight/BTV/2017_UL";
+    btvJ["2018"]        = "weight/BTV/2018_UL";
+    btvFF = correction::CorrectionSet::from_file(btvJ[year]+"/btagging.json");
+
     std::map<std::string, string> btagFiles;
-    string comBtag = "weight/BtagSF/btag_efficiencies_"; 
+    string comBtag = "weight/BTV/btag_efficiencies_"; 
     btagFiles["2016Pre"]  = comBtag+"2016.root";
     btagFiles["2016Post"] = comBtag+"2016.root";
     btagFiles["2017"]        = comBtag+"2017.root";
@@ -1577,13 +1558,14 @@ void makeNtuple::loadBtagEff(string sampleName, string year){
     b_eff = (TH2D*) inputFile->Get(beffName.c_str());
 }				   
 
-float makeNtuple::getBtagSF_1a(string sysType, BTagCalibrationReader reader, bool verbose){
+float makeNtuple::getBtagSF_1a(string sysType, bool verbose){
     double weight = 1.0;
     double jetPt;
     double jetEta;
     double jetBtag;
     int jetFlavor;
     double SFb;
+    double SFb2;
     double Eff;
     double pMC=1;
     double pData=1;
@@ -1611,24 +1593,23 @@ float makeNtuple::getBtagSF_1a(string sysType, BTagCalibrationReader reader, boo
 	jetBtag = tree->jetBtagDeepB_[*jetInd];
 
 	if (jetFlavor == 5){
-	    SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_B, jetEta, jetPt); 
+        SFb = btvFF->at("deepJet_mujets")->evaluate({b_sysType, "M", jetFlavor, jetEta, jetPt});
 	    int xbin = b_eff->GetXaxis()->FindBin(min(jetPt,799.));
 	    int ybin = b_eff->GetYaxis()->FindBin(abs(jetEta));
 	    Eff = b_eff->GetBinContent(xbin,ybin);
 	}
 	else if(jetFlavor == 4){
-	    SFb = reader.eval_auto_bounds(b_sysType, BTagEntry::FLAV_C, jetEta, jetPt); 
+        SFb = btvFF->at("deepJet_mujets")->evaluate({b_sysType, "M", jetFlavor, jetEta, jetPt});
 	    int xbin = c_eff->GetXaxis()->FindBin(min(jetPt,799.));
 	    int ybin = c_eff->GetYaxis()->FindBin(abs(jetEta));
 	    Eff = c_eff->GetBinContent(xbin,ybin);
 	}
 	else {
-	    SFb = reader.eval_auto_bounds(l_sysType, BTagEntry::FLAV_UDSG, jetEta, jetPt); 
+        SFb = btvFF->at("deepJet_incl")->evaluate({l_sysType, "M", jetFlavor, jetEta, jetPt});
 	    int xbin = l_eff->GetXaxis()->FindBin(min(jetPt,799.));
 	    int ybin = l_eff->GetYaxis()->FindBin(abs(jetEta));
 	    Eff = l_eff->GetBinContent(xbin,ybin);
 	}
-
 	if (jetBtag>selector->btag_cut){
 	    pMC *= Eff;
 	    pData *= Eff*SFb;

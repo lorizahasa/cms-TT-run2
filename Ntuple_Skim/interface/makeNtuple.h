@@ -31,10 +31,6 @@
 
 //#include <boost/program_options.hpp>
 
-// Standalone Btag scale factor tool from 
-// https://twiki.cern.ch/twiki/bin/view/CMS/BTagCalibration
-#include "BTagCalibrationStandalone.h"
-
 // Header file for the classes stored in the TTree if any.
 #include "vector"
 
@@ -51,6 +47,7 @@
 
 #include "OverlapRemove.h"
 
+#include "correction.h"
 class makeNtuple {
  public :
 
@@ -90,6 +87,7 @@ class makeNtuple {
     TH2D* l_eff;
     TH2D* c_eff;
     TH2D* b_eff;
+    std::unique_ptr<correction::CorrectionSet> btvFF;
 
     // Declaration of leaf types
     Int_t    _run;
@@ -348,8 +346,7 @@ class makeNtuple {
     double SFtop(double pt);
     double topPtWeight();
     void loadBtagEff(string sampleType, string year);
-    float getBtagSF_1a(string sysType, BTagCalibrationReader reader, bool verbose=false);
-    vector<float> getBtagSF_1c(string sysType, BTagCalibrationReader reader, vector<float> &btagSF);
+    float getBtagSF_1a(string sysType, bool verbose=false);
     void findPhotonCategory(int phoInd, EventTree* tree, bool* genuine, bool *misIDele, bool *hadronicphoton, bool* hadronicfake, bool* puPhoton, bool verbose=false);
     /* int findPhotonParentage(int phoInd, EventTree* tree); */
     int findPhotonGenMatch(int phoInd, EventTree* tree);
