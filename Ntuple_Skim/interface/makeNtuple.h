@@ -37,7 +37,6 @@
 #include "METzCalculator.h"
 #include "TopEventCombinatorics.h"
 
-#include "ReaderTopSF.h"
 #include "ReaderLumiSF.h"
 #include "ReaderMuSF.h"
 #include "ReaderEleSF.h"
@@ -76,7 +75,7 @@ class makeNtuple {
     bool applypdfweight;
     bool applyqsquare;
 
-    TopSF* topSF;
+    correction::Correction::Ref tTagRef; 
     MuonSF* muSF;
     ElectronSF* eleSF;
     LumiMask* lumiMask;

@@ -50,6 +50,7 @@ If the jobs are failing multiple times, run them locally
 * ./makeNtuple Semilep 2017 DYjetsM50__JetBase 1of10 . $DYjetsM50_FileList_2017
 
 POG json: /cvmfs/cms.cern.ch/rsync/cms-nanoAOD/jsonpog-integration/POG
+* correction summary weight/JME/2018_UL/jmar.json
 
 ### To produce multiple Ntuple from Skim files
 * cd condor 

@@ -387,14 +387,15 @@ makeNtuple::makeNtuple(int ac, char** av)
     // t-tagging WPs
     //--------------------------
     //https://indico.cern.ch/event/1152827/contributions/4840404/attachments/2428856/4162159/ParticleNet_SFs_ULNanoV9_JMAR_25April2022_PK.pdf
-    //For mis-tag rate of 0.5%
+    //For mis-tag rate of 0.5% = 0p5
     std::map<std::string, double> topTagWPs;
-    topTagWPs["2016Pre"]  = 0.74; 
-    topTagWPs["2016Post"] = 0.73; 
+    topTagWPs["2016Pre"]     = 0.74; 
+    topTagWPs["2016Post"]    = 0.73; 
     topTagWPs["2017"]        = 0.80; 
     topTagWPs["2018"]        = 0.80; 
-	topSF = new TopSF();
-    
+    auto tTagFF  = correction::CorrectionSet::from_file(jmeJ[year]+"/jmar.json");
+    tTagRef = tTagFF->at("ParticleNet_Top_Nominal");
+
     selector = new Selector();
     evtPick = new EventPick("");
     selector->year = year;
@@ -1164,23 +1165,30 @@ void makeNtuple::FillEvent(std::string year){
     for (int i_fatJet = 0; i_fatJet <_nFatJet; i_fatJet++){
         int fatJetInd = selector->FatJets.at(i_fatJet);
         int topSFInd = selector->FatJets.at(0);
+        auto tPt  = tree->fatJetPt_[fatJetInd];
+        auto tEta = tree->fatJetEta_[fatJetInd];
         //std::cout<<tree->fatJetPt_[fatJetInd]<<std::endl;
-        _fatJetPt.push_back(          tree->fatJetPt_[fatJetInd]);
-        _fatJetEta.push_back(         tree->fatJetEta_[fatJetInd]);
-        _fatJetPhi.push_back(         tree->fatJetPhi_[fatJetInd]);
-        _fatJetMass.push_back(        tree->fatJetMass_[fatJetInd]);
+        _fatJetPt.push_back(tPt);
+        _fatJetEta.push_back(tEta);
+        _fatJetPhi.push_back(tree->fatJetPhi_[fatJetInd]);
+        _fatJetMass.push_back(tree->fatJetMass_[fatJetInd]);
         _fatJetMassSoftDrop.push_back(tree->fatJetMassSoftDrop_[fatJetInd]);
-        fatJetVector.SetPtEtaPhiM(tree->fatJetPt_[fatJetInd], 
-                tree->fatJetEta_[fatJetInd], 
+        fatJetVector.SetPtEtaPhiM(tPt, 
+                tEta, 
                 tree->fatJetPhi_[fatJetInd], 
                 tree->fatJetMass_[fatJetInd]);
         fatJetVectors.push_back(fatJetVector);
 	    if(isMC) {
-            vector<double> TopWeights; 
-            TopWeights = topSF->getTopSFs(year,tree->fatJetPt_[topSFInd], tree->event_==eventNum);
-            _TopWeight_Do = TopWeights.at(0); 
-            _TopWeight    = TopWeights.at(1); 
-            _TopWeight_Up = TopWeights.at(2);
+            if(tPt<1200.){
+                _TopWeight_Do = tTagRef->evaluate({tEta, tPt, "down", "0p5"}); 
+                _TopWeight    = tTagRef->evaluate({tEta, tPt, "nom",  "0p5"});            
+                _TopWeight_Up = tTagRef->evaluate({tEta, tPt, "up",   "0p5"}); 
+            }
+            else{
+                _TopWeight_Do = 1.0; 
+                _TopWeight    = 1.0;
+                _TopWeight_Up = 1.0;
+            }
         }
     }
     for (int i_jet = 0; i_jet <_nJet; i_jet++){
