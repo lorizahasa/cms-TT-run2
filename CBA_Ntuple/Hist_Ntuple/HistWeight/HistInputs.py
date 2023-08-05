@@ -3,14 +3,16 @@ import sys
 import subprocess
 import itertools
 sys.dont_write_bytecode = True
-
+#-----------------------------------------------------------------
+condorNtupleDir = "root://cmseos.fnal.gov//store/user/lpctop/Output/cms-TT-run2/Ntuple_Skim"
+#condorNtupleDir = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 #-----------------------------------------------------------------
 outHistDir = "/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistWeight"
 #-----------------------------------------------------------------
-#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-Years 	      =	["2018"]
-#Channels 	  =	["Mu", "Ele"]
-Channels 	  =	["Mu"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years 	      =	["2018"]
+Channels 	  =	["Mu", "Ele"]
+#Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 
 #Years and channels to be commbined
@@ -33,7 +35,7 @@ Samples.append("DYJets")
 Samples.append("WGamma")
 Samples.append("ZGamma")
 Samples.append("Others")
-Samples.append("QCD")
+#Samples.append("QCD")
 Samples.append("data_obs")
 
 CorrAndSyst   =	[]

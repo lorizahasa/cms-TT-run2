@@ -12,8 +12,8 @@ sys.path.insert(0, os.getcwd().replace("condor","sample"))
 from SkimInputs import *
 from JobsNano_cff import Samples_2016Pre, Samples_2016Post,  Samples_2017, Samples_2018 
 
-condorLogDir = "tmpSub/log"
-#condorLogDir = "tmpSub/log_resub"
+#condorLogDir = "tmpSub/log"
+condorLogDir = "tmpSub/log_resub"
 #-----------------------------------------
 #Function to compare two lists
 #----------------------------------------
@@ -75,8 +75,8 @@ for err in np.unique(errList):
     argList.append(args)
 #print(argList)
 
-resubJobs = 0
 forLocal = []
+resubJobs = 0
 for year in Years:
     print("\n++++++++++++++++++++++++++++")
     print(colored("Running for: %s"%year, 'green'))
@@ -115,7 +115,6 @@ for year in Years:
     print("Unfinished jobs: %s"%(unFinJobs))
     unFinishedList = returnNotMatches(finishedList, submittedDict.keys())   
     print(unFinishedList)
-    resubJobs +=unFinJobs
 
     #----------------------------------------
     #Get finished but corrupted jobs
@@ -151,7 +150,6 @@ for year in Years:
         nEvents[finished] = h.GetBinContent(2)
         f.Close()
     print("Finished but corrupted jobs: %s"%len(corruptedList))
-    resubJobs += len(corruptedList)
 
     print(colored("(3): Checking same nEvents from NanoAOD and Skim ...", "red"))
     print("\tnDiff\t nNano\t nSkim\t Sample")
@@ -168,31 +166,26 @@ for year in Years:
     argListYear = []
     for arg in argList:
         if year==arg[0]:
-            print(arg[1:-1])
-            argListYear.append(arg)
-    resubJobs += len(argListYear)
+            fName = "%s_Skim_%sof%s.root"%(arg[1], arg[2], arg[3])
+            print(fName)
+            argListYear.append(fName)
     print("Total jobs with these errors = %s"%len(argListYear))
 
     print(colored("----: Summary :----", "red"))
+    totResubJobs = np.unique(unFinishedList[1]+corruptedList+argListYear)
+    resubJobs =+ len(totResubJobs)
     #----------------------------------------
     #Create jdl files
     #----------------------------------------
     if len(unFinishedList) ==0 and len(corruptedList)==0 and len(argListYear)==0:
         print("Noting to be resubmitted")
     else:
-        for f in unFinishedList[1]+corruptedList:
+        for f in totResubJobs :
             samp = submittedDict[f]
             nJobs = getJobs(f)
             n0 = nJobs[0]
             n1 = nJobs[1]
             args = 'Arguments  = %s %s %s %s %s \nQueue 1\n\n' %(year, samp, n0, n1, outDir)
-            jdlFile.write(args)
-            forLocal.append([year, n0, n1, samp, outDir])
-        for arg in argListYear:
-            samp = arg[1]
-            n0 = arg[2]
-            n1 = arg[3]
-            args = 'Arguments  = %s %s %s %s %s \nQueue 1\n\n' %(arg[0], samp, n0, n1, arg[4])
             jdlFile.write(args)
             forLocal.append([year, n0, n1, samp, outDir])
     print(outDir)

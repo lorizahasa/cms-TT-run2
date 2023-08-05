@@ -3,7 +3,7 @@ import sys
 import numpy
 sys.dont_write_bytecode = True
 from HistInfo import *
-from HistInputs import Regions
+from HistInputs import Regions, condorNtupleDir
 from optparse import OptionParser
 from ROOT import TH1F, TFile, TChain, TCanvas, gDirectory, gROOT 
 
@@ -38,11 +38,6 @@ region = options.region
 syst = options.systematic
 makeAllHists = options.makeAllHists
 print(parser.parse_args())
-
-#-----------------------------------------
-#INPUT AnalysisNtuples Directory
-#----------------------------------------
-condorNtupleDir = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 
 weights = "Weight_lumi"
 systDir = "JetBase"

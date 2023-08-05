@@ -1179,16 +1179,10 @@ void makeNtuple::FillEvent(std::string year){
                 tree->fatJetMass_[fatJetInd]);
         fatJetVectors.push_back(fatJetVector);
 	    if(isMC) {
-            if(tPt<1200.){
-                _TopWeight_Do = tTagRef->evaluate({tEta, tPt, "down", "0p5"}); 
-                _TopWeight    = tTagRef->evaluate({tEta, tPt, "nom",  "0p5"});            
-                _TopWeight_Up = tTagRef->evaluate({tEta, tPt, "up",   "0p5"}); 
-            }
-            else{
-                _TopWeight_Do = 1.0; 
-                _TopWeight    = 1.0;
-                _TopWeight_Up = 1.0;
-            }
+            if(tPt>1200.) tPt = 1199.;
+            _TopWeight_Do = tTagRef->evaluate({tEta, tPt, "down", "0p5"}); 
+            _TopWeight    = tTagRef->evaluate({tEta, tPt, "nom",  "0p5"});            
+            _TopWeight_Up = tTagRef->evaluate({tEta, tPt, "up",   "0p5"}); 
         }
     }
     for (int i_jet = 0; i_jet <_nJet; i_jet++){

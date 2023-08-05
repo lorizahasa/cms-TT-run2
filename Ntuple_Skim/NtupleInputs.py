@@ -1,10 +1,11 @@
 #-----------------------------------------------------------------
-outNtupleDir = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
+#outNtupleDir = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
+outNtupleDir = "/store/user/lpctop/Output/cms-TT-run2/Ntuple_Skim"
 #-----------------------------------------------------------------
-#Years   =  ['2016Pre', '2016Post', '2017', '2018']
-Years 	      =	["2018"]
-Decays 	      =	["Semilep", "Dilep"]
-#Decays 	      =	["Semilep"]
+Years   =  ['2016Pre', '2016Post', '2017', '2018']
+#Years 	      =	["2018"]
+#Decays 	      =	["Semilep", "Dilep"]
+Decays 	      =	["Semilep"]
 
 #https://twiki.cern.ch/twiki/bin/viewauth/CMS/JECUncertaintySources#Main_uncertainties_2018_Autumn18
 JME     = ["JEC_Total", "JER"]

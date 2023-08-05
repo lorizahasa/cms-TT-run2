@@ -20,6 +20,6 @@ src/EventPick.o: src/Selector.o src/EventPick.cpp interface/EventPick.h
 
 #/cvmfs/cms.cern.ch/slc7_amd64_gcc10/external/py3-correctionlib/2.1.0-bc1f1a24613552be911056d8eb959866/lib/python3.9/site-packages/correctionlib/
 makeNtuple: src/Selector.o src/EventPick.o src/EventTree.o makeNtuple.C src/OverlapRemove.cpp interface/makeNtuple.h interface/ReaderLumiSF.h src/JECvariation.o src/TopEventCombinatorics.cpp interface/ReaderMuSF.h interface/ReaderEleSF.h interface/ReaderPhoSF.h
-	${GCC} -o makeNtuple ${CORR_A} ${ROOT_L} ${ROOT_I} -D STANDALONE makeNtuple.C src/EventTree.o src/EventPick.o src/ParsePhotonID.cpp src/Selector.o src/OverlapRemove.cpp src/Utils.cc src/JECvariation.o src/METzCalculator.cpp src/TopEventCombinatorics.cpp 
+	${GCC} -o makeNtuple ${CORR_A} ${ROOT_L} ${ROOT_I} -D STANDALONE makeNtuple.C src/EventTree.o src/EventPick.o src/Selector.o src/OverlapRemove.cpp src/Utils.cc src/JECvariation.o src/METzCalculator.cpp src/TopEventCombinatorics.cpp 
 clean:
 	rm makeNtuple src/*.o 

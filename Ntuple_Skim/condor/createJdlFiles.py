@@ -53,7 +53,6 @@ for year in Years:
             jdlFile.write("X=$(step)+1\n")
             for sampleName, fEvt in sampleList.items():
                 if "Data" in sampleName and "_" in syst: continue
-                #if "Spin32_M700" not in sampleName: continue
                 if "Dilep" in decay and "Signal" in sampleName and "700" not in sampleName: continue
                 nJob = reducedJob(fEvt[0], sampleName)
                 args =  'Arguments  = %s %s %s %s $INT(X) %i %s\n' %(year, decay, syst, sampleName, nJob, outDir)

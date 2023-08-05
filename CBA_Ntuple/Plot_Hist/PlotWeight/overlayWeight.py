@@ -172,13 +172,13 @@ for channel, decay, systKey, year in itertools.product(Channels, Decays, systKey
             hData.Draw("EPsame")
             lumi_13TeV = getLumiLabel(year)
 
-            plotLegend = TLegend(0.45,0.60,0.90,0.88); 
+            plotLegend = TLegend(0.45,0.60,0.80,0.88); 
             decoLegend(plotLegend, 1, 0.045)
             plotLegend.AddEntry(hData, "Data", "PEL")
             plotLegend.AddEntry(hUncorr,"Bkgs_Uncorr", "L")
-            plotLegend.AddEntry(hUp,    "Bkgs_%s(%s)"%(systs[2], rUp), "L")
-            plotLegend.AddEntry(hCorr,  "Bkgs_%s(%s)"%(systs[1], rCorr), "L")
-            plotLegend.AddEntry(hDown,  "Bkgs_%s(%s)"%(systs[3], rDown), "L")
+            plotLegend.AddEntry(hUp,    "Bkgs_#color[2]{%s}(%s)"%(systs[2], rUp), "L")
+            plotLegend.AddEntry(hCorr,  "Bkgs_#color[2]{%s}(%s)"%(systs[1], rCorr), "L")
+            plotLegend.AddEntry(hDown,  "Bkgs_#color[2]{%s}(%s)"%(systs[3], rDown), "L")
             plotLegend.Draw()
             hUncorr.SetMaximum(1.6*hData.GetMaximum())
             if isLog:
@@ -224,6 +224,10 @@ for channel, decay, systKey, year in itertools.product(Channels, Decays, systKey
                 hRatioDown.Divide(hDown)
                 decoHistRatio(hRatioDown, xTitle, rLabel, colDown)
 
+                binCons = getContent(hRatioUncorr) + getContent(hRatioCorr) + getContent(hRatioUp) + getContent(hRatioDown) 
+                yMin = min(binCons)
+                yMax = max(binCons)
+                hRatioUncorr.GetYaxis().SetRangeUser(yMin*(1-1/100),yMax*(1+1/100))# -+1%
                 hRatioUncorr.Draw("HIST")
                 hRatioCorr.Draw("hist same")
                 hRatioUp.Draw("hist same")
@@ -253,7 +257,7 @@ for channel, decay, systKey, year in itertools.product(Channels, Decays, systKey
                 binCons = getContent(hRatioCorr2) + getContent(hRatioUp2) + getContent(hRatioDown2) 
                 yMin = min(binCons)
                 yMax = max(binCons)
-                hRatioCorr2.GetYaxis().SetRangeUser(yMin*(1-1/100),yMax*(1+1/100))# -+2%
+                hRatioCorr2.GetYaxis().SetRangeUser(yMin*(1-1/100),yMax*(1+1/100))# -+1%
                 hRatioCorr2.Draw("HIST")
                 hRatioUp2.Draw("hist same")
                 hRatioDown2.Draw("hist same")
