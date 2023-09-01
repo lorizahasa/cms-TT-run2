@@ -5,16 +5,17 @@ dirHist = "%s/Hist_Ntuple/HistWeight/Rebin"%dirCBA
 dirPlot = "%s/Plot_Hist/PlotWeight/Rebin"%dirCBA
 dirTwiki= "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
-#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-Years 	      =	["2018"]
-#Channels 	  =	["Mu", "Ele"]
-Channels 	  =	["Mu"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years 	      =	["2018"]
+Channels 	  =	["Mu", "Ele"]
+#Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 
 #Years and channels to be commbined
 Years_         = ["2016Pre__2016Post__2017__2018"]
-Channels_      = ["Mu", "Ele", "Mu__Ele"]
+#Channels_      = ["Mu", "Ele", "Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
+Channels_      = ["Mu", "Ele"]
 
 systDict = {}
 systDict["Weight_mu"]   = ["Weight_mu_id", "Weight_mu_iso", "Weight_mu_trig"]

@@ -175,8 +175,10 @@ int main(int ac, char** av){
     std::cout<<"---------------------------"<<std::endl;
     double totalTime = 0.0;
 	auto startClock = std::chrono::high_resolution_clock::now();
+    int count_bad = 0;
 	for(Long64_t entry= startEntry; entry < endEntry; entry++){
         //if(entry>4235) break; 
+        //cout<<entry<<endl;
         //if(entry<4228) continue; 
 		if(entry%(eventsPerJob/100) == 0){// print after every 1% of events
             totalTime+= std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count();
@@ -188,6 +190,10 @@ int main(int ac, char** av){
 		tree->GetEntry(entry);
         //tree->Show(entry);
 		hEvents_->Fill(0.);
+        if (tree->nTrigObj > 50 || tree->nMu > 50 || tree->nEle > 50 || tree->nJet > 50 || tree->nPho > 50){
+            count_bad++;
+            continue;
+        }
         //--------------------------------
         // MET filters
         //--------------------------------
@@ -206,7 +212,6 @@ int main(int ac, char** av){
         //--------------------------------
         bool is32D = false;
         for(int j=0;j<tree->nTrigObj;j++){
-            if (tree->nTrigObj > 100) continue; //initial size
             if (!(tree->TrigObj_pt[j]>31)) continue;
             if (!(abs(tree->TrigObj_id[j])==11)) continue;
             if (!(tree->TrigObj_filterBits[j] & 1024)) continue;
@@ -332,6 +337,7 @@ int main(int ac, char** av){
 		}
 	}
     std::cout<<"nEvents_Skim = "<<newTree->GetEntries()<<endl;
+    std::cout<<"Bad Events   = "<< count_bad <<endl;
     newTree->Write();
 	hEvents_->Write();
     hAll->Write();

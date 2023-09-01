@@ -44,7 +44,7 @@ jdlFile = open("tmpSub/resubmitJobs.jdl",'w')
 jdlFile.write('Executable =  runMakeSkims.sh \n')
 jdlFile.write(common_command)
 #use_x509userproxy = true\n\
-localFile = open("tmpSub/localResubmitJobs.sh",'w')
+localFile = open("tmpSub/localResubmitJobs.txt",'w')
 
 
 #----------------------------------------
@@ -173,7 +173,7 @@ for year in Years:
 
     print(colored("----: Summary :----", "red"))
     totResubJobs = np.unique(unFinishedList[1]+corruptedList+argListYear)
-    resubJobs =+ len(totResubJobs)
+    resubJobs = resubJobs + len(totResubJobs)
     #----------------------------------------
     #Create jdl files
     #----------------------------------------
@@ -201,11 +201,7 @@ for i, loc in enumerate(forLocal):
     cmd1 = "./makeSkim %s %sof%s %s_Skim_%s.root $%s_FileList_%s"%(year, n0, n1, samp, year, samp, year)
     cmd2 = "xrdcp -f  %s root://cmseos.fnal.gov/%s/%s"%(outFile_, outDir, outFile)
     cmd3 = "rm %s"%outFile_
-    if (i+1)%4==0:
-        localFile.write("%s && %s && %s\n\n"%(cmd1, cmd2, cmd3))
-    else:
-        #localFile.write("%s && %s && %s &\n"%(cmd1, cmd2, cmd3))
-        localFile.write("%s && %s && %s \n"%(cmd1, cmd2, cmd3))
+    localFile.write("%s && %s && %s \n"%(cmd1, cmd2, cmd3))
 jdlFile.close() 
 localFile.close()
 print("Total jobs to be resubmitted for all years = %s"%resubJobs)

@@ -14,7 +14,7 @@
 * python getFiles.py
 * cd ..
 * source sample/FilesNano_cff.sh
-* ./runSkim.sh -y 2017 -f 1of22 -o "out.root" -i "$Signal_M800_FileList_2017" 
+* ./makeNtuple Semilep 2017 SignalSpin12_M800__JEC_SubTotalRelative_up 1of1 . $SignalSpin12_M800_FileList_2017
 
 ### to produce many skim files using the condor setup
 * cd condor

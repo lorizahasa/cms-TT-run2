@@ -12,7 +12,7 @@ tarFile = "%s/Disc_Ntuple.tar.gz"%tmpDir
 exDir = '../../Disc_Ntuple'
 ex = '--exclude=%s/discs --exclude=%s/condor_read --exclude=%s/condor_class'%(exDir, exDir, exDir)
 os.system("tar %s -zcvf %s ../../Disc_Ntuple "%(ex, tarFile))
-os.system("cp runReader.sh %s"%tmpDir)
+os.system("cp runReader*.sh %s"%tmpDir)
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -20,13 +20,16 @@ when_to_transfer_output = ON_EXIT\n\
 Transfer_Input_Files = Disc_Ntuple.tar.gz, runReader.sh\n\
 use_x509userproxy = true\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
-Error  = %s/log_$(cluster)_$(process).stderr\n\
-Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
+Error  = %s/log_$(cluster)_$(process).stderr\n\n'%(condorLogDir, condorLogDir)
 
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-os.system("eos root://cmseos.fnal.gov mkdir -p %s"%dirRead)
+dirRead_ = "%s/Reader"%dirRead
+print("Deleting %s"%dirRead_)
+os.system("eos root://cmseos.fnal.gov rm -r %s"%dirRead_)
+os.system("eos root://cmseos.fnal.gov mkdir -p %s"%dirRead_)
+print("Created  %s"%dirRead_)
 subFile = open('%s/condorSubmit.sh'%tmpDir,'w')
 
 for year, decay, channel in itertools.product(Years, Decays, Channels):
@@ -40,10 +43,10 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
         args =  'Arguments  = %s %s %s %s %s %s Base %s\n' %(year, decay, channel, samp, method, r, dirRead)
         args += 'Queue 1\n\n'
         jdlFile.write(args)
-        for syst, level in itertools.product(Systematics, SystLevels):
+        for sv in systVar: 
             if "data_obs" in SampDict[samp]:
                 continue
-            args =  'Arguments  = %s %s %s %s %s %s %s%s %s\n' %(year, decay, channel, samp, method, r, syst, level, dirRead)
+            args =  'Arguments  = %s %s %s %s %s %s %s %s\n' %(year, decay, channel, samp, method, r, sv, dirRead)
             args += 'Queue 1\n\n'
             jdlFile.write(args)
     subFile.write("condor_submit %s\n"%jdlName)

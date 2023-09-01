@@ -1,12 +1,16 @@
 import ROOT
+import itertools
 #-----------------------------------------------------------------
-dirNtuple = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
+#dirNtuple = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
+dirNtuple = "/store/user/lpctop/Output/cms-TT-run2/Ntuple_Skim"
 dirMVA    = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/"
 dirClass  = "%s/Disc_Ntuple/DiscMain"%dirMVA
 dirRead   = "%s/Disc_Ntuple/DiscMain"%dirMVA
+nMulti    = 5
 #-----------------------------------------------------------------
-Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-#Years 	      =	["2017", "2018"]
+#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+Years 	      =	["2016Pre", "2016Post", "2017"]
+#Years 	      =	["2018"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
@@ -19,14 +23,14 @@ Channels_      = ["Mu", "Ele", "Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
 
 S1 = []
-S1.append("SignalSpin32_M700")
+#S1.append("SignalSpin32_M700")
 S1.append("SignalSpin32_M800")
-S1.append("SignalSpin32_M900")
-S1.append("SignalSpin32_M1100")
-S1.append("SignalSpin32_M1200")
-S1.append("SignalSpin32_M1300")
-S1.append("SignalSpin32_M1500")
-S1.append("SignalSpin32_M2750")
+#S1.append("SignalSpin32_M900")
+#S1.append("SignalSpin32_M1100")
+#S1.append("SignalSpin32_M1200")
+#S1.append("SignalSpin32_M1300")
+#S1.append("SignalSpin32_M1500")
+#S1.append("SignalSpin32_M2750")
 S1.append("TTGamma")
 S1.append("WJets")
 S1.append("DYJets")
@@ -60,9 +64,16 @@ Systematics.append("Weight_q2")
 Systematics.append("Weight_pdf")
 Systematics.append("Weight_isr")
 Systematics.append("Weight_fsr")
-Systematics.append("Weight_jes")
-Systematics.append("Weight_jer")
-#Systematics   =	[]
+
+systVar = []
+levels  = ["Up", "Down"]
+for s, l in itertools.product(Systematics, levels):
+    systVar.append("%s%s"%(s, l))
+
+JMEs    = ["JEC_Total", "JEC_SubTotalPileUp", "JEC_SubTotalRelative", "JEC_SubTotalAbsolute", "JEC_FlavorQCD", "JEC_TimePtEta", "JER"]
+levels_  = ["_up", "_down"]
+for s, l in itertools.product(JMEs, levels_):
+    systVar.append("%s%s"%(s, l))
 
 SystLevels = []
 SystLevels.append("Up")
@@ -92,11 +103,11 @@ dictSFs['2016Pre__2016Post__2017__2018'] = [1.38, 1.40, 0.96, 1.22]
 #--------------------------------
 Regions = {}
 Regions['ttyg_Enriched_SR_Resolved'] = "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]>100 && e.FatJet_size ==0"
-Regions['ttyg_Enriched_CR_Resolved'] = "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size ==0"
+##Regions['ttyg_Enriched_CR_Resolved'] = "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size ==0"
 #Regions['ttyg_Enriched_CRb_Resolved']= "e.Jet_size >=5 && e.Jet_b_size <1  && e.Photon_size==1 && e.Photon_et[0]>0   && e.FatJet_size ==0"
 
 Regions['ttyg_Enriched_SR_Boosted']  = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]>100 && e.FatJet_size >=1"
-Regions['ttyg_Enriched_CR_Boosted']  = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size >=1"
+##Regions['ttyg_Enriched_CR_Boosted']  = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size >=1"
 #Regions['ttyg_Enriched_CRb_Boosted'] = "e.Jet_size >=2 && e.Jet_b_size <1  && e.Photon_size==1 && e.Photon_et[0]>0   && e.FatJet_size >=1"
 
 #https://github.com/ViniciusMikuni/ttbb-analysis/blob/5d48e5e03bdd0ca162d3dd058f4ee02ef33a8460/python/MVA_cfg.py
@@ -131,4 +142,18 @@ methodDict = {#"BDTG":[ROOT.TMVA.Types.kBDT,":".join(["!H","!V","NTrees=850","Ma
               #"PyAda": [ROOT.TMVA.Types.kPyAdaBoost,"!V:NEstimators=1000"],
               #"PyForest": [ROOT.TMVA.Types.kPyRandomForest, "!V:VarTransform=None:NEstimators=850:Criterion=gini:MaxFeatures=auto:MaxDepth=4:MinSamplesLeaf=1:MinWeightFractionLeaf=0:Bootstrap=kTRUE"]
               }
-
+def split_list(lst, n):
+    print("sample list (len = %s): %s"%(len(lst), lst))
+    if n > len(lst):
+        n = len(lst)
+    print("nMulti jobs: %s"%n)
+    sublist_size = len(lst) // n
+    remainder = len(lst) % n
+    sublists = []
+    start = 0
+    for i in range(n):
+        sublist_length = sublist_size + (1 if i < remainder else 0)
+        sublists.append(lst[start:start+sublist_length])
+        start += sublist_length
+    print("splitted list = %s"%sublists)
+    return sublists

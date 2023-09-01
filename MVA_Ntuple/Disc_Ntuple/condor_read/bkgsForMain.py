@@ -27,11 +27,8 @@ rList = list(Regions.keys())
 #-----------------------------------------
 # Collect all syst 
 #----------------------------------------
-sysList = []
+sysList = systVar
 sysList.append("Base")
-for syst, level in itertools.product(Systematics, SystLevels): 
-    sysList.append("%s%s"%(syst, level))
-
 if isCheck:
     isSep  = True
     isComb = False
@@ -110,6 +107,9 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
         print(inFile)
         hList = ['Disc']
     for syst, hName in itertools.product(sysList, hList):
+        if "JE" in syst:
+            syst = syst.replace("_up", "Up")
+            syst = syst.replace("_down", "Down")
         #Signal and TTGamma
         for sample in Samples:
             if "Signal" in sample or 'TTGamma' in sample:

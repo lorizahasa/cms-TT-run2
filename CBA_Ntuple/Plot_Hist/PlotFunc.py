@@ -136,7 +136,7 @@ def decoHistRatio(hist, xTit, yTit, color):
     hist.SetMarkerColor(color)
     #hist.SetMarkerSize(1.2);
     hist.GetYaxis().SetTitleSize(0.11);
-    hist.GetYaxis().SetLabelSize(0.10);
+    hist.GetYaxis().SetLabelSize(0.09);
     hist.GetYaxis().SetLabelFont(42);
     #hist.GetYaxis().SetAxisColor(1);
     hist.GetYaxis().SetNdivisions(6,5,0);

@@ -17,3 +17,4 @@ allHistList = GetHistogramInfo().keys()
 hForEffs = {} 
 hForEffs["forMuEff"]       = ["hAll_MuTrig", "hPass_MuTrig", "hPass_MuTrigFlow"]
 hForEffs["forEleEff"]      = ["hAll_EleTrig", "hPass_EleTrig", "hPass_EleTrigFlow"]
+hForEffs["forVeto"]        = ["hCount"]

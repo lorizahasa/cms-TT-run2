@@ -4,6 +4,7 @@ import json
 sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("PlotWeight", "")) 
 sys.path.insert(0, os.getcwd().replace("Plot_Hist/PlotWeight", "Hist_Ntuple/HistWeight")) 
+sys.path.insert(0, os.getcwd().replace("Plot_Hist/PlotWeight", "Plot_Hist")) 
 import itertools
 from HistInputs import Corrs, Regions
 from PlotFunc import *
@@ -11,6 +12,7 @@ from PlotInputs import *
 from PlotCMSLumi import *
 from PlotTDRStyle import *
 from optparse import OptionParser
+from PlotLabel import labelDict
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
 
 padGap = 0.0#0.01
@@ -35,21 +37,21 @@ isCheck = options.isCheck
 isSep = options.isSep
 isComb = options.isComb
 
+tuneSyst = {}
+tuneSyst["Tune"] = ['Uncorr', 'Weight_tune', 'Weight_tuneUp', 'Weight_tuneDown']
+
+allCorrs = {**tuneSyst, **Corrs}
+systKeys = list(allCorrs.keys())
 outTxt = ""
-systKeys = list(Corrs.keys()) 
 if isCheck:
-    isSep  = True
-    isComb = False
     Years  = [Years[0]]
     Decays = [Decays[0]]
     Channels = [Channels[0]]
     #systKeys = ["JEC_FlavorQCD"]
-    systKeys = [systKeys[1]]
+    systKeys = [systKeys[0]]
 if isSep: 
-    isComb = False
     outTxt = "SepYears"
 if isComb:
-    isSep  = False
     outTxt = "CombYears"
     Years = Years_
     Channels = Channels_
@@ -64,9 +66,9 @@ os.system("mkdir -p %s"%dirPlot)
 fPath = open("%s/overlayWeight.txt"%dirPlot, 'w')
 
 for channel, decay, systKey, year in itertools.product(Channels, Decays, systKeys, Years):
-    systs  = Corrs[systKey]
-    if len(systs) < 2 : continue
+    systs  = allCorrs[systKey]
     print(systs)
+    if len(systs) < 2 : continue
     hList = ["Reco_st"]
     for hName in hList:
         #-----------------------------------------
@@ -98,10 +100,22 @@ for channel, decay, systKey, year in itertools.product(Channels, Decays, systKey
         gROOT.SetBatch(True)
         
         for i, samp in enumerate(sampBkg.keys()):
-            hPathUncorr = "%s/%s/%s/%s"%(samp, region, systs[0], hName)
-            hPathCorr   = "%s/%s/%s/%s"%(samp, region, systs[1], hName)
-            hPathUp     = "%s/%s/%s/%s"%(samp, region, systs[2], hName)
-            hPathDown   = "%s/%s/%s/%s"%(samp, region, systs[3], hName)
+            if "Tune" in systKey:
+                if "TTGamma" in samp:
+                    hPathUncorr = "%s/%s/%s/%s"%("TTGamma", region, systs[0], hName)
+                    hPathCorr   = "%s/%s/%s/%s"%("TTGamma", region, systs[0], hName)
+                    hPathUp     = "%s/%s/%s/%s"%("TTGamma_TuneUp", region, systs[0], hName)
+                    hPathDown   = "%s/%s/%s/%s"%("TTGamma_TuneDown", region, systs[0], hName)
+                else:
+                    hPathUncorr = "%s/%s/%s/%s"%(samp, region, systs[0], hName)
+                    hPathCorr   = "%s/%s/%s/%s"%(samp, region, systs[0], hName)
+                    hPathUp     = "%s/%s/%s/%s"%(samp, region, systs[0], hName)
+                    hPathDown   = "%s/%s/%s/%s"%(samp, region, systs[0], hName)
+            else:
+                hPathUncorr = "%s/%s/%s/%s"%(samp, region, systs[0], hName)
+                hPathCorr   = "%s/%s/%s/%s"%(samp, region, systs[1], hName)
+                hPathUp     = "%s/%s/%s/%s"%(samp, region, systs[2], hName)
+                hPathDown   = "%s/%s/%s/%s"%(samp, region, systs[3], hName)
             hUncorr_  = inFile.Get(hPathUncorr)
             hCorr_    = inFile.Get(hPathCorr)
             hUp_      = inFile.Get(hPathUp)
@@ -154,10 +168,11 @@ for channel, decay, systKey, year in itertools.product(Channels, Decays, systKey
             rCorr   = round(evtCorr/evtUncorr, 3)
             rUp     = round(evtUp/evtUncorr , 3)
             rDown   = round(evtDown/evtUncorr, 3)
+            print(evtUp)
             print("evtUncorr = %s, rCorr = %s, rUp = %s, rDown = %s"%(evtUncorr, rCorr, rUp, rDown))
 
-            xTitle = hName
-            yTitle = "Events"
+            xTitle = labelDict[hName]
+            yTitle = "Events / bin"
             decoHistSyst(hData, xTitle, yTitle, colData) 
             hData.SetMarkerStyle(20)
             decoHistSyst(hUncorr, xTitle, yTitle, colUncorr) 
@@ -175,10 +190,10 @@ for channel, decay, systKey, year in itertools.product(Channels, Decays, systKey
             plotLegend = TLegend(0.45,0.60,0.80,0.88); 
             decoLegend(plotLegend, 1, 0.045)
             plotLegend.AddEntry(hData, "Data", "PEL")
-            plotLegend.AddEntry(hUncorr,"Bkgs_Uncorr", "L")
-            plotLegend.AddEntry(hUp,    "Bkgs_#color[2]{%s}(%s)"%(systs[2], rUp), "L")
-            plotLegend.AddEntry(hCorr,  "Bkgs_#color[2]{%s}(%s)"%(systs[1], rCorr), "L")
-            plotLegend.AddEntry(hDown,  "Bkgs_#color[2]{%s}(%s)"%(systs[3], rDown), "L")
+            plotLegend.AddEntry(hUncorr,"Bkgs_Uncorrected", "L")
+            plotLegend.AddEntry(hUp,    "Bkgs_#color[2]{%s}(%s)"%(systs[2].replace("Weight_", ""), rUp), "L")
+            plotLegend.AddEntry(hCorr,  "Bkgs_#color[2]{%s}(%s)"%(systs[1].replace("Weight_", ""), rCorr), "L")
+            plotLegend.AddEntry(hDown,  "Bkgs_#color[2]{%s}(%s)"%(systs[3].replace("Weight_", ""), rDown), "L")
             plotLegend.Draw()
             hUncorr.SetMaximum(1.6*hData.GetMaximum())
             if isLog:
@@ -234,7 +249,7 @@ for channel, decay, systKey, year in itertools.product(Channels, Decays, systKey
                 hRatioDown.Draw("hist same")
 
                 #The ratio of Bkgs Corr/Uncorr
-                rLabel = "#frac{Bkgs Corr.}{Bkgs Uncorr.}"
+                rLabel = "#frac{Bkgs Corrected}{Bkgs Uncorrected}"
                 canvas.cd(3)
                 gPad.SetTopMargin(padGap); 
                 gPad.SetBottomMargin(0.25); 

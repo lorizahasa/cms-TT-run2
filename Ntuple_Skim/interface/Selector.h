@@ -89,6 +89,7 @@ public:
 	bool   QCDselect;
     bool isSignal;
     bool isQCD;
+    bool sampForTopPt;
     bool skipAK4AK8dr;
 
 	std::string year;

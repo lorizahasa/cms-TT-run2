@@ -14,8 +14,8 @@ sys.path.insert(0, os.getcwd().replace("Ntuple_Skim/condor","Skim_NanoAOD/sample
 from NtupleInputs import *
 from JobsNano_cff import Samples_2016Pre, Samples_2016Post,  Samples_2017, Samples_2018 
 
-condorLogDir = "tmpSub/log"
-#condorLogDir = "tmpSub/log_resub"
+#condorLogDir = "tmpSub/log"
+condorLogDir = "tmpSub/log_resub"
 #-----------------------------------------
 #Function to compare two lists
 #----------------------------------------
@@ -164,6 +164,7 @@ for year, decay in itertools.product(Years, Decays):
         print(colored("(3): Checking same nEvents from NanoAOD and Skim ...", "red"))
         print("nDAS_Skim\t nDAS_Ntuple\t nNtuple\t %nDAS \tSample")
         for samp in sampleDict.keys():
+            if "Data" in samp and "_" in syst: continue
             nSkim = sampleDict[samp][2]
             nNtuple = 0
             nSkim2  = 0

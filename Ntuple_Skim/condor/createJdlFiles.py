@@ -28,8 +28,7 @@ when_to_transfer_output = ON_EXIT\n\
 Transfer_Input_Files = Ntuple_Skim.tar.gz, runMakeNtuple.sh\n\
 use_x509userproxy = true\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
-Error  = %s/log_$(cluster)_$(process).stderr\n\
-Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
+Error  = %s/log_$(cluster)_$(process).stderr\n\n'%(condorLogDir, condorLogDir)
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
@@ -47,7 +46,7 @@ for year in Years:
             outDir = "%s/%s/%s/%s"%(outNtupleDir, year, decay, syst)
             if os.path.exists("/eos/uscms/%s"%outDir):
                 print("Deleted out dir: %s"%outDir)
-                os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
+                #os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
             os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
             print("Created out dir: %s"%outDir)
             jdlFile.write("X=$(step)+1\n")

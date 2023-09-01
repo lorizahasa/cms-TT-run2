@@ -25,12 +25,8 @@ rList = list(Regions.keys())
 #-----------------------------------------
 # Collect all syst 
 #----------------------------------------
-sysList = []
+sysList = systVar
 sysList.append("Base")
-for syst, level in itertools.product(Systematics, SystLevels):
-    sysType = "%s%s"%(syst, level)
-    sysList.append(sysType)
-
 if isCheck:
     isSep  = True
     isComb = False
@@ -100,21 +96,24 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
     if isCheck:
         print(inFile)
         hists = ["Disc", "Reco_mass_T"]
-    for s, h, sys, in itertools.product(Samples, hists, sysList):
-        if "data_obs" in s and "Base" not in sys:
+    for s, h, syst, in itertools.product(Samples, hists, sysList):
+        if "data_obs" in s and "Base" not in syst:
             continue
+        if "JE" in syst:
+            syst = syst.replace("_up", "Up")
+            syst = syst.replace("_down", "Down")
         if isCheck:
-            print("%s, %s, %s, %s"%(s, r, sys, h))
-        histDir = getHistDir(s, r, sys)
+            print("%s, %s, %s, %s"%(s, r, syst, h))
+        histDir = getHistDir(s, r, syst)
         #print(histDir, h)
         h4 = inFile.Get("%s/%s"%(histDir, h))
-        writeHist(s, r, sys, h4, outputFile)
+        writeHist(s, r, syst, h4, outputFile)
         if "MisID_" in r and "mass_lgamma" in h:
             if "data_obs" in s:
                 continue
             for cat in phoCat.keys():
                 newName = "%s_%s"%(h, cat)
                 hNew = inFile.Get("%s/%s"%(histDir, newName))
-                writeHist(s, r, sys, hNew, outputFile)
+                writeHist(s, r, syst, hNew, outputFile)
     outputFile.Close()
     print("/eos/uscms/%s/AllInc.root\n"%outDir)

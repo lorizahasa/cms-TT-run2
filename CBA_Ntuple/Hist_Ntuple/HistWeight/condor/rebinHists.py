@@ -14,7 +14,7 @@ from ROOT import TFile, TH1F, gDirectory
 #----------------------------------------
 parser = OptionParser()
 parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
-parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=True, help="Merge for separate years and channels")
+parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
 parser.add_option("--isComb","--isComb", dest="isMerge",action="store_true",default=False, help="Merge for combined years and channels")
 (options, args) = parser.parse_args()
 isCheck = options.isCheck
@@ -22,16 +22,11 @@ isSep = options.isSep
 isComb = options.isMerge
 
 if isCheck:
-    isSep  = False
-    isComb = False
     Years  = [Years[0]]
     Decays = [Decays[0]]
     Channels = [Channels[0]]
     Samples = [Samples[0]]
-if isSep: 
-    isComb = False
 if isComb:
-    isSep = False
     Years = Years_
     Channels = Channels_
 if not isCheck and not isSep and not isComb:

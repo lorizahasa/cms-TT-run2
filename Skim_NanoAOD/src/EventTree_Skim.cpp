@@ -7,6 +7,7 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
     std::cout << "Start EventTree" << std::endl;
     chain->SetCacheSize(100*1024*1024);
     bool isCopy = false;
+    //fileNames = {"/store/data/Run2016G/SingleElectron/NANOAOD/UL2016_MiniAODv2_NanoAODv9-v1/270000/19B10F2C-40CC-C245-A1C8-9A722EA672B6.root"};
     int nFiles = fileNames.size();
     if (xRootDAccess){
         //string dir = "root://cms-xrd-global.cern.ch/";
@@ -49,13 +50,10 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
 	
     // keep some important branches
     chain->SetBranchStatus("PV_npvsGood",1);
-    chain->SetBranchAddress("PV_npvsGood",&nGoodVtx_);
 
     if (isMC){
 	chain->SetBranchStatus("Pileup_nPU",1);
-	chain->SetBranchAddress("Pileup_nPU", &nPU_);
 	chain->SetBranchStatus("Pileup_nTrueInt",1);
-	chain->SetBranchAddress("Pileup_nTrueInt", &nPUTrue_);
     }
 	
     // event
@@ -65,7 +63,6 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
 
     // MET
     chain->SetBranchStatus("MET_pt",1);
-    chain->SetBranchAddress("MET_pt",&MET_pt_);
     chain->SetBranchStatus("MET_phi",1);
 
     // electrons	
@@ -112,7 +109,7 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
 
     // muons
     chain->SetBranchStatus("nMuon",1);
-    chain->SetBranchAddress("nMuon",&nMu_);
+    chain->SetBranchAddress("nMuon",&nMu);
     chain->SetBranchStatus("Muon_charge",1);
     chain->SetBranchStatus("Muon_pt",1);
     chain->SetBranchStatus("Muon_eta",1);
@@ -134,7 +131,7 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
 
     // jets
     chain->SetBranchStatus("nJet",1);
-    chain->SetBranchAddress("nJet",&nJet_);
+    chain->SetBranchAddress("nJet",&nJet);
     chain->SetBranchStatus("Jet_pt",1);
     chain->SetBranchStatus("Jet_rawFactor",1);
     chain->SetBranchStatus("Jet_eta",1);
@@ -172,6 +169,7 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
 
     //photons
     chain->SetBranchStatus("nPhoton",1);
+    chain->SetBranchAddress("nPhoton",&nPho);
     chain->SetBranchStatus("Photon_pt",1);
     chain->SetBranchStatus("Photon_eta",1);
     chain->SetBranchStatus("Photon_phi",1);
@@ -206,7 +204,6 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
         chain->SetBranchStatus("GenJetAK8_*",1);
         // weight
         chain->SetBranchStatus("Generator_weight",1);
-        chain->SetBranchAddress("Generator_weight",&genWeight_);
         chain->SetBranchStatus("nLHEScaleWeight",1);
         chain->SetBranchStatus("LHEScaleWeight",1);
         chain->SetBranchStatus("nLHEPdfWeight",1);
@@ -341,7 +338,7 @@ Int_t EventTree::GetEntry(Long64_t entry){
     //return chain->GetEntries();
     return chain->GetEntry(entry);
 }
-std::vector<std::vector<std::string>> EventTree::splitVector(const std::vector<std::string>& strings, int n) {//from ChatGPT
+std::vector<std::vector<std::string>> EventTree::splitVector(const std::vector<std::string>& strings, int n) {
     int size = strings.size() / n;  // Size of each small vector
     int remainder = strings.size() % n;  // Remaining elements
     

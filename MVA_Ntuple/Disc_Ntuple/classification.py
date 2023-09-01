@@ -48,7 +48,7 @@ print(parser.parse_args())
 #INPUT AnalysisNtuples Directory
 #----------------------------------------
 package = "TMVA"
-dirNtuple = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
+dirNtuple = "root://cmseos.fnal.gov/%s"%dirNtuple
 dirFile = "%s/%s/%s"%(year, decayMode, syst) 
 allSamples = getSamples(year, decayMode, syst)
 

@@ -25,8 +25,7 @@ when_to_transfer_output = ON_EXIT\n\
 Transfer_Input_Files = Skim_NanoAOD.tar.gz, runMakeSkims.sh\n\
 x509userproxy        = /uscms/home/rverma/x509up_u56634\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
-Error  = %s/log_$(cluster)_$(process).stderr\n\
-Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
+Error  = %s/log_$(cluster)_$(process).stderr\n\n'%(condorLogDir, condorLogDir)
 #use_x509userproxy = true\n\
 
 #----------------------------------------
@@ -42,7 +41,7 @@ for year in Years:
     outDir="%s/%s"%(outSkimDir, year)
     if os.path.exists("/eos/uscms/%s"%outDir):
         print("Deleted out dir: %s"%outDir)
-        os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
+        #os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
     print("Created out dir: %s"%outDir)
     jdlFile.write("X=$(step)+1\n")

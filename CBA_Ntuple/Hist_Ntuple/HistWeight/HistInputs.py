@@ -10,15 +10,16 @@ condorNtupleDir = "root://cmseos.fnal.gov//store/user/lpctop/Output/cms-TT-run2/
 outHistDir = "/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistWeight"
 #-----------------------------------------------------------------
 Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-#Years 	      =	["2018"]
+#Years 	      =	["2016Pre"]
 Channels 	  =	["Mu", "Ele"]
 #Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 
 #Years and channels to be commbined
-#Years_         = ["2016Pre__2016Post__2017__2018"]
-#Channels_      = ["Mu", "Ele", "Mu__Ele"]
+Years_         = ["2016Pre__2016Post__2017__2018"]
 #Channels_      = ["Mu__Ele"]
+Channels_      = ["Mu", "Ele"]
+#Channels_      = ["Mu", "Ele", "Mu__Ele"]
 
 Samples = []
 #Samples.append("SignalSpin12_M700")
@@ -30,12 +31,14 @@ Samples.append("SignalSpin32_M700")
 #bkg and data
 Samples.append("TTbar")
 Samples.append("TTGamma")
+Samples.append("TTGamma_TuneUp")
+Samples.append("TTGamma_TuneDown")
 Samples.append("WJets")
 Samples.append("DYJets")
 Samples.append("WGamma")
 Samples.append("ZGamma")
 Samples.append("Others")
-#Samples.append("QCD")
+Samples.append("QCD")
 Samples.append("data_obs")
 
 CorrAndSyst   =	[]
@@ -57,6 +60,7 @@ CorrAndSyst.append("Weight_pho_cs")
 
 CorrOnlySyst = []
 CorrOnlySyst.append("Weight_q2")                
+CorrOnlySyst.append("Weight_tpt")                
 CorrOnlySyst.append("Weight_pdf")               
 CorrOnlySyst.append("Weight_isr")                
 CorrOnlySyst.append("Weight_fsr")                
@@ -77,6 +81,9 @@ for c in CorrAndSyst:
 #OnlySyst
 for c in CorrOnlySyst:
     Corrs[c] = [uc, uc, "%sUp"%c, "%sDown"%c]
+Corrs["Weight_q2_UN_DN"] = [uc, uc, "Weight_q2_UN", "Weight_q2_DN"]
+Corrs["Weight_q2_NU_ND"] = [uc, uc, "Weight_q2_NU", "Weight_q2_ND"]
+Corrs["Weight_q2_DD_UU"] = [uc, uc, "Weight_q2_DD", "Weight_q2_UU"]
 
 #BTag
 for c in SepSyst:

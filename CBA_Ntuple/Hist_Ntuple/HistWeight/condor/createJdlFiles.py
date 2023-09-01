@@ -17,7 +17,7 @@ if os.path.exists("../hists"):
 tarDir ='../../../Hist_Ntuple'
 exDir = '--exclude=%s/HistDYSF --exclude=%s/HistMisIDSF --exclude=%s/HistMain --exclude=%s/HistWeight/condor'%(tarDir, tarDir, tarDir, tarDir)
 os.system("tar %s -zcvf %s %s"%(exDir, tarFile, tarDir))
-os.system("cp runMakeHists.sh tmpSub/")
+os.system("cp runMakeHists*.sh tmpSub/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
@@ -25,8 +25,7 @@ when_to_transfer_output = ON_EXIT\n\
 Transfer_Input_Files = Hist_Ntuple.tar.gz, runMakeHists.sh\n\
 use_x509userproxy = true\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
-Error  = %s/log_$(cluster)_$(process).stderr\n\
-Log    = %s/log_$(cluster)_$(process).condor\n\n'%(logDir, logDir, logDir)
+Error  = %s/log_$(cluster)_$(process).stderr\n\n'%(logDir, logDir)
 
 #----------------------------------------
 #Create jdl files

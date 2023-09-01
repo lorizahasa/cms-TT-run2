@@ -425,6 +425,10 @@ makeNtuple::makeNtuple(int ac, char** av)
     }
     selector->systVariation = systVar;
     selector->btag_cut = deepJetWPs[year]; 
+    //top pt Reweighting is applied only for ttgamma, ttbar and signal samples
+    selector->sampForTopPt = checkStr(sampleType, "TTGamma") || 
+        checkStr(sampleType, "TTbar") ||
+        checkStr(sampleType, "Signal");
     cout<<"HERE-3"<<endl;
 	loadBtagEff(sampleType,year);
     topEvent.SetBtagThresh(selector->btag_cut);
@@ -455,9 +459,6 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (sampleType.find("TTbarPowheg")!= std::string::npos) {
 	doOverlapRemoval_TT = true;
     }
-    if (sampleType.find("TTGamma")!= std::string::npos) {
-	doOverlapInvert_TTG = true;
-    }    
     if( sampleType == "W1Jets" || sampleType == "W2Jets" ||  sampleType == "W3Jets" || sampleType == "W4Jets"){
 	doOverlapRemoval_W = true;
     }
@@ -607,6 +608,13 @@ makeNtuple::makeNtuple(int ac, char** av)
     //--------------------------
     //Event for loop
     //--------------------------
+    TH1F* hCount = new TH1F("hCount", "Cutflow", 5, 0.5, 5.5);
+    hCount->GetXaxis()->SetBinLabel(1, "nSkim");
+    hCount->GetXaxis()->SetBinLabel(2, "nOverlapRemoved");
+    hCount->GetXaxis()->SetBinLabel(3, "nHemVetoed");
+    hCount->GetXaxis()->SetBinLabel(4, "nLumiMasked");
+    hCount->GetXaxis()->SetBinLabel(5, "highPtRemoved");
+
     cout << "Processing events "<<startEntry<< " to " << endEntry << endl;
     std::cout<<"nEvents_Skim = "<<endEntry<<endl;
     std::cout<<"---------------------------"<<std::endl;
@@ -615,6 +623,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     double totalTime = 0.0;
 	TH1F* hEvents_ = new TH1F("nSkim", "nSkim", 5, -1.5, 3.5);
     for(Long64_t entry=startEntry; entry<endEntry; entry++){
+        hCount->Fill(1);
         hEvents_->Fill(0);
         //if(entry>10000) break;;
         //cout<<entry<<endl;
@@ -639,81 +648,77 @@ makeNtuple::makeNtuple(int ac, char** av)
         //--------------------------
         //Apply overlap removal
         //--------------------------
+        bool isOverlapRemove = false;
         if( isMC && doOverlapInvert_TTG){
             if (!overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){
-        	    count_overlap++;			
-        	    continue;
-            }
-            // remove events with LHEPart photon with pt>100 
-            //GeV to avoid double counting with high pt samples
-            if (lowPtTTGamma){
-                for (int lheind = 0; lheind < tree->nLHEPart_; lheind++){
-                    if (tree->LHEPart_pdgId_[lheind]==22 && tree->LHEPart_pt_[lheind]>100.){
-                        continue;
-                    }
-                }
+                isOverlapRemove = true;
             }
         }
         if( isMC && doOverlapRemoval_TT){
             if (!invertOverlap){
                 if (overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){
-                    count_overlap++;			
-                    continue;
+                    isOverlapRemove = true;
                 }
             } else {
                 if (!overlapRemoval(tree, 10., 5., 0.1, tree->event_==eventNum)){
-                    count_overlap++;			
-                    continue;
+                    isOverlapRemove = true;
                 }
             }
         }
 
         if( isMC && doOverlapRemoval_W){
             if (overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
-                count_overlap++;
-                continue;
+                isOverlapRemove = true;
             }
         }
         if( isMC && doOverlapInvert_WG){
             if (!overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
-        	    count_overlap++;			
-        	    continue;
+                isOverlapRemove = true;
             }
         }
         if( isMC && doOverlapRemoval_Z){
             if (overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
-                count_overlap++;
-                continue;
+                isOverlapRemove = true;
             }
         }
         if( isMC && doOverlapInvert_ZG){
             if (!overlapRemoval(tree, 15., 2.6, 0.05, tree->event_==eventNum)){
-        	    count_overlap++;
-        	    continue;
+                isOverlapRemove = true;
             }
         }
         if( isMC && doOverlapRemoval_Tchannel){
             if (overlapRemoval_2To3(tree, 10., 2.6, 0.05, tree->event_==eventNum)){
-        	    count_overlap++;
-        	    continue;
+                isOverlapRemove = true;
             }
         }
         if( isMC && doOverlapInvert_TG){
             if (!overlapRemoval_2To3(tree, 10., 2.6, 0.05, tree->event_==eventNum)){
-        	    count_overlap++;
-        	    continue;
+                isOverlapRemove = true;
             }
         }
         if( isMC && doOverlapInvert_GJ){
             if (!overlapRemoval(tree, 25., 2.5, 0.4, tree->event_==eventNum)){
-        	    count_overlap++;
-        	    continue;
+                isOverlapRemove = true;
             }
         }
         if( isMC && doOverlapRemoval_QCD){
             if (overlapRemoval(tree, 25., 2.5, 0.4, tree->event_==eventNum)){
-        	    count_overlap++;
-        	    continue;
+                isOverlapRemove = true;
+            }
+        }
+        if(isOverlapRemove){
+            count_overlap++;
+            hCount->Fill(2);
+        	continue;
+        }
+        if( isMC && doOverlapInvert_TTG && lowPtTTGamma){
+            // remove events with LHEPart photon with pt>100 
+            //GeV to avoid double counting with high pt samples
+            for (int lheind = 0; lheind < tree->nLHEPart_; lheind++){
+                if (tree->LHEPart_pdgId_[lheind]==22 && tree->LHEPart_pt_[lheind]>100.){
+                    hCount->Fill(5);
+                    continue;
+                }
             }
         }
 
@@ -757,6 +762,7 @@ makeNtuple::makeNtuple(int ac, char** av)
         HEM_jet_Veto = (nHEM_jet >=1);
         _inHEMVeto=(applyHemVeto && (HEM_pho_Veto || HEM_ele_Veto || HEM_jet_Veto) && year=="2018");
         if(!isMC &&  tree->run_>=319077 && _inHEMVeto){ 
+            hCount->Fill(3);
             count_HEM++;
             continue; 
         }
@@ -768,6 +774,7 @@ makeNtuple::makeNtuple(int ac, char** av)
             bool valLumi = lumiMask->isValidLumi(tree->run_, tree->lumis_);
             if(!valLumi){
                 count_BadLumi++;
+                hCount->Fill(4);
                 continue;
             }
         }
@@ -924,6 +931,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 	hPassE_ ->Write();
 	hPass   ->Write();
 	hPassE  ->Write();
+    hCount->Write();
 
    /* 
     TNamed gitCommit("Git_Commit", VERSION);
@@ -1162,6 +1170,9 @@ void makeNtuple::FillEvent(std::string year){
     fatJetVectors.clear();
     jetResolutionVectors.clear();
     jetBtagVectors.clear();
+    double ttagW_down = 1.0;
+    double ttagW = 1.0;
+    double ttagW_up = 1.0;
     for (int i_fatJet = 0; i_fatJet <_nFatJet; i_fatJet++){
         int fatJetInd = selector->FatJets.at(i_fatJet);
         int topSFInd = selector->FatJets.at(0);
@@ -1180,11 +1191,14 @@ void makeNtuple::FillEvent(std::string year){
         fatJetVectors.push_back(fatJetVector);
 	    if(isMC) {
             if(tPt>1200.) tPt = 1199.;
-            _TopWeight_Do = tTagRef->evaluate({tEta, tPt, "down", "0p5"}); 
-            _TopWeight    = tTagRef->evaluate({tEta, tPt, "nom",  "0p5"});            
-            _TopWeight_Up = tTagRef->evaluate({tEta, tPt, "up",   "0p5"}); 
+            ttagW_down  = ttagW_down * tTagRef->evaluate({tEta, tPt, "down", "0p5"}); 
+            ttagW       = ttagW * tTagRef->evaluate({tEta, tPt, "nom",  "0p5"});            
+            ttagW_up    = ttagW_up * tTagRef->evaluate({tEta, tPt, "up",   "0p5"}); 
         }
     }
+    _TopWeight_Do = ttagW_down; 
+    _TopWeight    = ttagW;
+    _TopWeight_Up = ttagW_up;
     for (int i_jet = 0; i_jet <_nJet; i_jet++){
         int jetInd = selector->Jets.at(i_jet);
         _jetPt.push_back(tree->jetPt_[jetInd]);
@@ -1418,6 +1432,15 @@ void makeNtuple::FillEvent(std::string year){
     ljetResVectors.clear();
     bjetResVectors.clear();
     
+    //-----------------------------------------
+    //https://twiki.cern.ch/twiki/bin/view/CMS/TopPtReweighting
+    //-----------------------------------------
+    if (isMC && selector->sampForTopPt){
+        _TopPtWeight_Do = 1.0; 
+        _TopPtWeight    = 1.0;
+        _TopPtWeight_Up = topPtWeight()*topPtWeight();
+    }
+
     //https://twiki.cern.ch/twiki/bin/viewauth/CMS/HowToPDF
     //https://hypernews.cern.ch/HyperNews/CMS/get/generators/5234.html 
     //if (isMC){ 
@@ -1439,10 +1462,10 @@ void makeNtuple::FillEvent(std::string year){
 	        if(i==2||i==6){continue;}
 	        _genScaleSystWeights.push_back(tree->LHEScaleWeight_[i]);
 	    }
+        _q2weight_NN = tree->LHEScaleWeight_[4];//nominal weight
         _q2weight_DD = tree->LHEScaleWeight_[0];
         _q2weight_DN = tree->LHEScaleWeight_[1];//skip 2
         _q2weight_ND = tree->LHEScaleWeight_[3];
-        _q2weight_NN = tree->LHEScaleWeight_[4];
         _q2weight_NU = tree->LHEScaleWeight_[5];//skip 6
         _q2weight_UN = tree->LHEScaleWeight_[7];
         _q2weight_UU = tree->LHEScaleWeight_[8];
@@ -1514,7 +1537,6 @@ double makeNtuple::topPtWeight(){
     if(toppt > 0.001 && antitoppt > 0.001)
 	weight = sqrt( SFtop(toppt) * SFtop(antitoppt) );
     
-    //This has been changed, the new prescription is to not use the top pt reweighting, and the syst is using it
     return weight;
     
 }

@@ -98,6 +98,14 @@ def getSamples(y, d, syst):#commented samples don't exist
                    'TTGamma_Hadronic_Pt200', 
                    'TTGamma_SingleLept_Pt200'
                    ]),
+               "TTGamma_TuneUp": gs(y, d, syst, [
+                   'TTGamma_Dilepton_TuneUp', 
+                   'TTGamma_SingleLept_TuneUp',
+                   ]),
+               "TTGamma_TuneDown": gs(y, d, syst, [
+                   'TTGamma_Dilepton_TuneDown', 
+                   'TTGamma_SingleLept_TuneDown',
+                   ]),
                "WJets": gs(y, d, syst, [
                    'W1Jets', 
                    'W2Jets', 

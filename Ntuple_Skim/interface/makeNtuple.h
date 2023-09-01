@@ -97,6 +97,10 @@ class makeNtuple {
     Float_t  _TopWeight;
     Float_t  _TopWeight_Up;
     Float_t  _TopWeight_Do;
+    
+    Float_t  _TopPtWeight;
+    Float_t  _TopPtWeight_Up;
+    Float_t  _TopPtWeight_Do;
 	
     Float_t  _q2weight_Up;
     Float_t  _q2weight_Do;
@@ -364,6 +368,7 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Weight_lumi"    , &_evtWeight );      
     outputTree->Branch("Weight_pu"      , &_PUweight );
     outputTree->Branch("Weight_ttag"      , &_TopWeight );
+    outputTree->Branch("Weight_tpt"      , &_TopPtWeight );
     outputTree->Branch("Weight_prefire" , &_prefireSF );
     outputTree->Branch("Weight_btag" , &_btagWeight_1a );
     outputTree->Branch("Weight_mu"      , &_muEffWeight );
@@ -391,6 +396,8 @@ void makeNtuple::InitBranches(){
 	    outputTree->Branch("Weight_puDown"     , &_PUweight_Do );
 	    outputTree->Branch("Weight_ttagUp"     , &_TopWeight_Up );
 	    outputTree->Branch("Weight_ttagDown"   , &_TopWeight_Do );
+	    outputTree->Branch("Weight_tptUp"      , &_TopPtWeight_Up );
+	    outputTree->Branch("Weight_tptDown"    , &_TopPtWeight_Do );
 	    outputTree->Branch("Weight_prefireUp"  , &_prefireSF_Up );
 	    outputTree->Branch("Weight_prefireDown", &_prefireSF_Do );
 	    outputTree->Branch("Weight_btag_bUp"   , &_btagWeight_1a_b_Up );
@@ -538,16 +545,20 @@ void makeNtuple::InitVariables()
 
     _run      = -9;
     _event    = -9;
-    _lumis		     = -9;
-    _isData		     = false;
+    _lumis	  = -9;
+    _isData	   = false;
     
     _PUweight = 1.;
     _PUweight_Up = 1.;
     _PUweight_Do = 1.;
 
-    _TopWeight = 1.;
-    _TopWeight_Up = 1.;
-    _TopWeight_Do = 1.;
+    _TopWeight      = 1.;
+    _TopWeight_Up   = 1.;
+    _TopWeight_Do   = 1.;
+
+    _TopPtWeight    = 1.;
+    _TopPtWeight_Up = 1.;
+    _TopPtWeight_Do = 1.;
 
     _q2weight_nominal = 1.;
     _q2weight_Up = 1.;

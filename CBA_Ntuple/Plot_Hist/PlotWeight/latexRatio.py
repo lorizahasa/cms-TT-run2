@@ -19,8 +19,8 @@ for line in txtFile:
     allPlotPath.append(line)
     allPlotName.append(line.split("/")[-1])
 
-showPerFig = 9
-widthFor   = 3
+showPerFig = 16
+widthFor   = 4
 #figWidth = (1-0.05)/showPerFig#5% margin
 isComb =False
 if isComb:

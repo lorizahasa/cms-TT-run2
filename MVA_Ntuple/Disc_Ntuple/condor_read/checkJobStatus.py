@@ -1,29 +1,25 @@
 import os
 import sys
 import subprocess
-import itertools
 import numpy as np
 from ROOT import TFile
 from termcolor import colored
+import itertools
 sys.dont_write_bytecode = True
 
 #IMPORT MODULES FROM OTHER DIR
 sys.path.insert(0, os.getcwd().replace("condor_read",""))
 from DiscInputs import *
 
-logDir = "tmpSub/log"
-#logDir = "tmpSub/log_resub"
+checkFile = False
+
+condorLogDir = "tmpSub/log"
+#condorLogDir = "tmpSub/log_resub"
 #-----------------------------------------
 #Function to compare two lists
 #----------------------------------------
 def returnNotMatches(a, b):
     return [[x for x in a if x not in b], [x for x in b if x not in a]]
-
-def getJobs(skim):
-    a = skim.split("Ntuple_")
-    b = a[-1].split(".root")
-    c = b[0].split("of")
-    return c
 
 #----------------------------------------
 #Create jdl file to be resubmitted
@@ -34,31 +30,39 @@ common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
-Transfer_Input_Files = Disc_Ntuple.tar.gz, runReader.sh\n\
-use_x509userproxy = true\n\
+Transfer_Input_Files = Disc_Ntuple.tar.gz, runReader2.sh\n\
+x509userproxy        = /uscms/home/rverma/x509up_u56634\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
-Error  = %s/log_$(cluster)_$(process).stderr\n\
-Log    = %s/log_$(cluster)_$(process).condor\n\n'%(logDirResub, logDirResub, logDirResub)
+Error  = %s/log_$(cluster)_$(process).stderr\n\n'%(logDirResub, logDirResub)
 jdlFile = open("tmpSub/resubmitJobs.jdl",'w')
-jdlFile.write('Executable =  runReader.sh \n')
+jdlFile.write('Executable =  runReader2.sh \n')
 jdlFile.write(common_command)
 #use_x509userproxy = true\n\
 
-#Search in the log files to see if xrdcp was not able to copy a file
-print("Collecting error logs for all years ...")
-errSearch = ["nan", "ERROR", "error", 'Error', "fatal", "FATAL"]
-grepLists = []
-for err in errSearch:
-    grepList = subprocess.Popen('grep -rn %s %s'%(err, logDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
-    grepList.remove("")
-    grepLists += grepList
+#----------------------------------------
+# Search in stdout and stderr files 
+#----------------------------------------
+print(colored("----: Collecting major errors for ALL years :--------", "red"))
+errors = []
+errors.append("TNetXNGFile::Open")
+#errors.append("TNetXNGFile::Close")
+errors.append("permission")
+errors.append("ERROR")
+errors.append("truncated")
+errors.append("zombie")
+errors.append("nan")
+errors.append("Error")
+errors.append("FATAL")
+
 errList = []
-for err in grepLists:
-    errList.append(err.split(":")[0])
-print(np.unique(errList))
+for err in errors: 
+    grepList = subprocess.Popen('grep -l %s %s/*.stderr'%(err, condorLogDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
+    grepList.remove("")
+    errList = errList + grepList
+    print(colored("%s for %s jobs = "%(err, len(grepList)), "red"), grepList)
+
 argList = []
 for err in np.unique(errList):
-    if "std" not in err: continue
     search = "All arguements"
     out = err.replace("stderr", "stdout")
     arg = subprocess.Popen('grep -rn \"%s\" %s'%(search, out),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
@@ -66,6 +70,7 @@ for err in np.unique(errList):
     argList.append(args)
 #print(argList)
 
+localFile = open("tmpSub/localResubmitJobs.txt",'w')
 resubJobs = 0
 for year, decay, ch in itertools.product(Years, Decays, Channels):
     print("\n+++++++++++++++++++++++++++++++++++++++++++")
@@ -80,13 +85,22 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
     #Get all submitted jobs
     #----------------------------------------
     submittedDict = {}
+    submittedDict2 = {}
+    #Create for Base, Signal region
     for s, r in itertools.product(Samples, Regions.keys()):
         rootFile = "%s_%s_Base.root"%(s, r)
+        rootFile2 = "%s__%s__Base.root"%(s, r)
         submittedDict[rootFile] = s
-        for syst, level in itertools.product(Systematics, SystLevels): 
+        submittedDict2[rootFile] = rootFile2
+        for sv in systVar: 
+            if "JE" in sv:
+                sv = sv.replace("_up", "Up")
+                sv = sv.replace("_down", "Down")
             if "data_obs" not in s:
-                rootFile = "%s_%s_%s%s.root"%(s, r, syst, level)
+                rootFile  = "%s_%s_%s.root"%(s, r, sv)
+                rootFile2 = "%s__%s__%s.root"%(s, r, sv)
                 submittedDict[rootFile] = s
+                submittedDict2[rootFile] = rootFile2
     print(colored("(1): Checking unfinished jobs ...", 'red'))
     print("Total submitted jobs: %s"%len(submittedDict.keys()))
 
@@ -95,7 +109,6 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
     #----------------------------------------
     finishedList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s'%(outDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
     finishedList.remove("")
-    #finishedList.remove("weights")
     print("Total finished jobs: %s"%len(finishedList))
 
     #----------------------------------------
@@ -105,60 +118,54 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
     print("Unfinished jobs: %s"%(unFinJobs))
     unFinishedList = returnNotMatches(finishedList, submittedDict.keys())   
     print(unFinishedList)
-    resubJobs +=unFinJobs
 
     #----------------------------------------
     #Get finished but corrupted jobs
     #----------------------------------------
-    print(colored("(2): Checking corrupted files ... ", "red")) 
     corruptedList = []
-    '''
-    for finished in finishedList:
-        fROOT = "root://cmsxrootd.fnal.gov/%s/%s"%(outDir, finished)
-        f = TFile.Open(fROOT, "READ")
-        if not f:
-            print("Null pointer: %s"%fROOT)
-            corruptedList.append(finished)
-            continue
-        if f.IsZombie():
-            print("Zombie: %s"%fROOT)
-            corruptedList.append(finished)
-            continue
-        if f.GetSize() < 3000:
-            print("Empty file: %s"%fROOT)
-            corruptedList.append(finished)
-            continue
-    print("Finished but corrupted jobs: %s"%len(corruptedList))
-    '''
-    resubJobs += len(corruptedList)
+    if checkFile:
+        print(colored("(2): Checking corrupted files ... ", "red")) 
+        for finished in finishedList:
+            fROOT = "root://cmseos.fnal.gov/%s/%s"%(outDir, finished)
+            #fROOT = "root://cmsxrootd.fnal.gov/%s/%s"%(outDir, finished)
+            try:
+                f = TFile.Open(fROOT, "READ")
+            except Exception:
+                corruptedList.append(finished)
+                continue
+            if not f:
+                print("Null pointer: %s"%fROOT)
+                corruptedList.append(finished)
+                continue
+            if f.IsZombie():
+                print("Zombie: %s"%fROOT)
+                corruptedList.append(finished)
+                continue
+            if f.GetSize() < 3000:
+                print("Empty file: %s"%fROOT)
+                corruptedList.append(finished)
+                continue
+            f.Close()
+        print("Finished but corrupted jobs: %s"%len(corruptedList))
 
-    print(colored("(3): Checking %s"%errSearch, "red"))
-    argListYear = []
-    for arg in argList:
-        if year==arg[0]:
-            print(arg[1:-1])
-            argListYear.append(arg)
-    resubJobs += len(argListYear)
-    print("Total jobs with either of: %s = %s"%(errSearch, len(argListYear)))
-
+    print(colored("----: Summary :----", "red"))
+    totResubJobs = np.unique(unFinishedList[1]+corruptedList)
+    resubJobs = resubJobs +  len(totResubJobs)
     #----------------------------------------
     #Create jdl files
     #----------------------------------------
-    '''
-    allResub = []
-    if len(unFinishedList) ==0 and len(corruptedList)==0 and len(argListYear)==0:
+    if len(unFinishedList) ==0 and len(corruptedList)==0:
         print("Noting to be resubmitted")
     else:
-        for f in unFinishedList[1]+corruptedList:
-            allResub.append("%s__%s__%s__%s__%s__%s__%s"%(year, decay, ch, samp, nJobs[0], nJobs[1], outDir))
-        for arg in argListYear:
-            allResub.append("%s__%s__%s__%s__%s__%s__%s"%(arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6]))
-
-    for resub in np.unique(allResub):
-         r = resub.split("__")
-         args = 'Arguments  = %s %s %s %s %s %s %s \nQueue 1\n\n' %(r[0], r[1], r[2], r[3], r[4], r[5], r[6])
-         jdlFile.write(args)
+        for f in totResubJobs :
+            fName = submittedDict2[f]
+            fName_ = fName.split("__")
+            samp = fName_[0]
+            reg  = fName_[1]
+            syst = fName_[2].replace(".root", "")
+            jdlFile.write('Arguments  = %s %s %s %s %s %s %s \nQueue 1\n\n' %(year, decay, ch, reg, samp, syst, outDir))
+            localFile.write('python reader.py -y %s -d %s -c %s -r %s -s %s --syst %s \n' %(year, decay, ch, reg, samp, syst))
     print(outDir)
-    '''
 jdlFile.close() 
+localFile.close()
 print("Total jobs to be resubmitted for all years = %s"%resubJobs)

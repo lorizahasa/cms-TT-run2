@@ -48,18 +48,15 @@ print(parser.parse_args())
 #I/O Ntuples/Disc Directory
 #----------------------------------------
 systDir = "JetBase"
-if "jesUp" in syst:
-    systDir = "JECTotal_up"
-if "jesDown" in syst:
-    systDir = "JECTotal_down"
-if "jerUp" in syst:
-    systDir = "JER_up"
-if "jerDown" in syst:
-    systDir = "JER_down"
+if "JE" in syst:
+    systDir = syst
+    syst = syst.replace("_up", "Up")
+    syst = syst.replace("_down", "Down")
 if "data" in sample:
     systDir = "JetBase"
 inDirNtuple = "root://cmseos.fnal.gov/%s"%dirNtuple
 dirFile = "%s/%s/%s"%(year, decay, systDir) 
+print(dirFile)
 allSamples = getSamples(year, decay, systDir)
 
 #----------------------------------------
@@ -73,7 +70,6 @@ print(inFileDir)
 print(outFileDir)
 method = options.method
 os.system("xrdcp -rf root://cmseos.fnal.gov/%s/%s %s"%(inFileDir, inFileName, outFileDir))
-#weightFile = "%s/%s"%(outFileDir, inFileName)
 weightFile = "%s/%s"%(outFileDir, inFileName)
 
 #-----------------------------------------
@@ -170,16 +166,17 @@ print(selStr)
 
 totalTime = 0
 print("\nRunning for sample: %s\n"%sample_) 
-def evalTree(s):
+def evalTree(sList, i):
     #Print 1% of events each time
     isPrint = False
     tree = ROOT.TChain("AnalysisTree")
-    print("%s/%s/%s"%(inDirNtuple, dirFile, s))
-    tree.Add("%s/%s/%s"%(inDirNtuple, dirFile, s))
+    for s in sList:
+        tree.Add("%s/%s/%s"%(inDirNtuple, dirFile, s))
+        print("%s/%s: %s"%(dirFile, s, tree.GetEntries()))
     nEnt = tree.GetEntries()
-    print("%s, Entries = %s "%(s, nEnt))
+    print("%s, Entries = %s "%(sList, nEnt))
 
-    outFileFullPath = "%s/%s_%s_%s.root"%(outFileDir, s, region, syst)
+    outFileFullPath = "%s/%s_%s_job_%s.root"%(outFileDir, region, syst, i)
     outputFile = ROOT.TFile(outFileFullPath, "RECREATE")
     print("The histogram directory inside the root file is", histDirInFile) 
     for ievt, e in enumerate(tree):
@@ -241,21 +238,19 @@ def evalTree(s):
  
 # Create a list to store the processes or threads
 processes = []
-for s_ in allSamples[sample_]:
-    process = multiprocessing.Process(target=evalTree, args=(s_,))
+fMulti = split_list(allSamples[sample_], nMulti)
+haddIn_ = []
+for i, s_ in enumerate(fMulti):
+    process = multiprocessing.Process(target=evalTree, args=(s_,i,))
     processes.append(process)
     process.start()
+    o_ = "%s/%s_%s_job_%s.root"%(outFileDir, region, syst, i)
+    haddIn_.append(o_)
 
 # Wait for all processes or threads to finish
 for process in processes:
     process.join()
 print("All processes or threads finished.")
-
-#hadd output files
-haddIn_ = []
-for s_ in allSamples[sample_]:
-    o_ = "%s/%s_%s_%s.root"%(outFileDir, s_, region, syst)
-    haddIn_.append(o_)
 
 haddIn = ' '.join(i_ for i_ in haddIn_)
 haddOut = "%s/%s_%s_%s.root"%(outFileDir, sample, region, syst)

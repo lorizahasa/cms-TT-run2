@@ -12,6 +12,7 @@ from JobsNano_cff import Samples_2016Pre, Samples_2016Post,  Samples_2017, Sampl
 
 ntupleFile = open('FilesNtuple_cff.py','w')
 #for year in [2016]:
+allJobs = 0
 for year, decay, in itertools.product(Years, Decays): 
     for syst in SystJME[decay]:
         ntupleFile.write("\n#----------------------------------------------------\n")
@@ -21,7 +22,6 @@ for year, decay, in itertools.product(Years, Decays):
         print("Sub\t  Done\t Diff\t Sample")
         missingJobs = {}
         sampleList = eval("Samples_%s"%year)
-        allJobs = 0
         for sampleName, fEvt in sampleList.items():
             if "Data" in sampleName and "_" in syst: continue
             nJob = reducedJob(fEvt[0], sampleName)
@@ -35,7 +35,7 @@ for year, decay, in itertools.product(Years, Decays):
                 missingJobs[sampleName] = nJob -nFiles
             lineLeft= '%s_%s__%s_FileList_%s'%(decay, syst, sampleName,year)
             ntupleFile.write("\n\n%s = %s"%(lineLeft, fileList))
-    print("All jobs: ", allJobs)
     print("Missing jobs:", missingJobs)
+print("All jobs: ", allJobs)
 ntupleFile.close()
 
