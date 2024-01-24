@@ -7,12 +7,12 @@ sys.dont_write_bytecode = True
 condorNtupleDir = "root://cmseos.fnal.gov//store/user/lpctop/Output/cms-TT-run2/Ntuple_Skim"
 #condorNtupleDir = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 #-----------------------------------------------------------------
-outHistDir = "/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistWeight"
+outHistDir = "/store/user/lhasa/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistWeight"
 #-----------------------------------------------------------------
 Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
 #Years 	      =	["2016Pre"]
-Channels 	  =	["Mu", "Ele"]
-#Channels 	  =	["Mu"]
+#Channels 	  =	["Mu", "Ele"]
+Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 
 #Years and channels to be commbined
@@ -83,7 +83,7 @@ for c in CorrOnlySyst:
     Corrs[c] = [uc, uc, "%sUp"%c, "%sDown"%c]
 Corrs["Weight_q2_UN_DN"] = [uc, uc, "Weight_q2_UN", "Weight_q2_DN"]
 Corrs["Weight_q2_NU_ND"] = [uc, uc, "Weight_q2_NU", "Weight_q2_ND"]
-Corrs["Weight_q2_DD_UU"] = [uc, uc, "Weight_q2_DD", "Weight_q2_UU"]
+Corrs["Weight_q2_UU_DD"] = [uc, uc, "Weight_q2_UU", "Weight_q2_DD"]
 
 #BTag
 for c in SepSyst:

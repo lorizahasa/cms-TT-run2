@@ -1463,12 +1463,19 @@ void makeNtuple::FillEvent(std::string year){
 	        _genScaleSystWeights.push_back(tree->LHEScaleWeight_[i]);
 	    }
         _q2weight_NN = tree->LHEScaleWeight_[4];//nominal weight
+        cout << "NN : " << _q2weight_NN << endl;
         _q2weight_DD = tree->LHEScaleWeight_[0];
+        cout << "DD : " << _q2weight_DD << endl;
         _q2weight_DN = tree->LHEScaleWeight_[1];//skip 2
+         cout << "DN : " << _q2weight_DN << endl;
         _q2weight_ND = tree->LHEScaleWeight_[3];
+         cout << "ND : " << _q2weight_ND << endl;
         _q2weight_NU = tree->LHEScaleWeight_[5];//skip 6
+         cout << "NU : " << _q2weight_NU << endl;
         _q2weight_UN = tree->LHEScaleWeight_[7];
+         cout << "UN : " << _q2weight_UN << endl;
         _q2weight_UU = tree->LHEScaleWeight_[8];
+         cout << "UU : " << _q2weight_UU << endl;
         double nomWeight=tree->LHEScaleWeight_[4];
         if (nomWeight!=0){
             _q2weight_Up = *max_element(_genScaleSystWeights.begin(), _genScaleSystWeights.end())/nomWeight;
