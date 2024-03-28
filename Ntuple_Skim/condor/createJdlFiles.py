@@ -47,12 +47,17 @@ for year in Years:
             if os.path.exists("/eos/uscms/%s"%outDir):
                 print("Deleted out dir: %s"%outDir)
                 #os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
-            os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
+            #os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
+            os.system("eos root://eoscms.cern.ch mkdir -p %s"%outDir)
             print("Created out dir: %s"%outDir)
             jdlFile.write("X=$(step)+1\n")
             for sampleName, fEvt in sampleList.items():
                 if "Data" in sampleName and "_" in syst: continue
+               # if "Data" in sampleName: continue
                 if "Dilep" in decay and "Signal" in sampleName and "700" not in sampleName: continue
+                #if not "800" in sampleName: continue
+               # if "Spin32" in sampleName: continue
+               # if "Spin12" in sampleName and "M800" not in sampleName: continue
                 nJob = reducedJob(fEvt[0], sampleName)
                 args =  'Arguments  = %s %s %s %s $INT(X) %i %s\n' %(year, decay, syst, sampleName, nJob, outDir)
                 args += "Queue %i\n\n"%nJob

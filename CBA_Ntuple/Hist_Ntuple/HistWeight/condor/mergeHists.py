@@ -17,6 +17,9 @@ parser.add_option("--isComb","--isComb", dest="isComb",action="store_true",defau
 isCheck = options.isCheck
 isSep = options.isSep
 isComb = options.isComb
+print(Years)
+print(Decays)
+print(Channels)
 
 if isCheck:
     Years  = [Years[0]]
@@ -37,7 +40,7 @@ def runCmd(cmd):
 #-----------------------------------------
 #Merge separate years and channels
 #-----------------------------------------
-if isSep:
+if isSep or isCheck:
     for y, d, c in itertools.product(Years, Decays, Channels):
         histDir  = "%s/Raw/%s/%s/%s"%(outHistDir, y, d, c)
         mergeDir = histDir.replace("Raw", "Merged")
@@ -48,6 +51,7 @@ if isSep:
         for s in Samples:
             haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(mergeDir, s)
             haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'/%s.*root\'`"%(histDir,s)
+            #haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'/TTGamma_ttyEnri*.root\'`"%(histDir,s) 
             runCmd("hadd -f -v 0  %s %s"%(haddOut, haddIn))
         #Merge for all sample
         haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(mergeDir)

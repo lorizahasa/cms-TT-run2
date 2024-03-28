@@ -18,7 +18,7 @@ package = "TMVA"
 #----------------------------------------
 from optparse import OptionParser
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016Pre",type='str',
+parser.add_option("-y", "--year", dest="year", default="2017",type='str',
                      help="Specifyi the year of the data taking" )
 parser.add_option("-d", "--decay", dest="decay", default="Semilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
@@ -28,7 +28,7 @@ parser.add_option("-s", "--sample", dest="sample", default="SignalSpin32_M800",t
                      help="Specify which sample to run on" )
 parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
                      help="which control selection and region"), 
-parser.add_option("--syst", "--systematic", dest="systematic", default="Base",type='str',
+parser.add_option("--syst", "--systematic", dest="systematic", default="JetBase",type='str',
                      help="Specify which systematic to run on")
 parser.add_option("--method", "--method", dest="method", default="BDTA",type='str', 
                      help="Which MVA method to be used")
@@ -54,7 +54,7 @@ if "JE" in syst:
     syst = syst.replace("_down", "Down")
 if "data" in sample:
     systDir = "JetBase"
-inDirNtuple = "root://cmseos.fnal.gov/%s"%dirNtuple
+inDirNtuple = "root://eoscms.cern.ch/%s"%dirNtuple
 dirFile = "%s/%s/%s"%(year, decay, systDir) 
 print(dirFile)
 allSamples = getSamples(year, decay, systDir)
@@ -203,10 +203,11 @@ def evalTree(sList, i):
                         evtWeights = "%s*%s"%(evtWeights, sf)
             evtWt = evtWeights.replace("Weight", "e.Weight")
             #Fill the histogram
-            for var in vars.keys():
-                eval("dictHist[\"%s\"].Fill(e.%s, %s)"%(var, vars[var][0], evtWt))
+            #for var in vars.keys():
+               # eval("dictHist[\"%s\"].Fill(e.%s, %s)"%(var, vars[var][0], evtWt))
             disc = reader.EvaluateMVA(method)
             exec("dictHist[\"Disc\"].Fill(%s, %s)"%(disc, evtWt))
+            exec("dictHist[\"Reco_mass_T\"].Fill(e.Reco_mass_T, %s)"%(evtWt))
             if isCut and disc>0:
                 for var in vars.keys():
                     #exec("h%s_cut.Fill(e.%s, e.Weight_lumi)"%(var, vars[var][0]))
@@ -230,9 +231,10 @@ def evalTree(sList, i):
     outputFile.cd(histDirInFile)
     print("Integral of Histogram =  %s"%dictHist["Disc"].Integral())
     for h in dictHist.values():
-        outputFile.cd(histDirInFile)
-        #ROOT.gDirectory.Delete("%s;*"%(h.GetName()))
-        h.Write()
+        if h.GetName()=="Disc" or h.GetName()=="Reco_mass_T":
+            outputFile.cd(histDirInFile)
+            #ROOT.gDirectory.Delete("%s;*"%(h.GetName()))
+            h.Write()
     print("Path of output root file:\n%s/%s"%(os.getcwd(), outFileFullPath))
     outputFile.Close()
  

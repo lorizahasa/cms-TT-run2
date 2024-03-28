@@ -71,8 +71,11 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
         outputFile.mkdir(outHistDir)
     #print(gDirectory.ls())
     outputFile.cd(outHistDir)
-    hName = hist_.GetName()
-    gDirectory.Delete("%s;*"%(hName))
+    hName = hist_.GetName() if hist_ is not None else None
+    if hName is not None:
+        gDirectory.Delete("%s;*"%(hName))
+    else:
+        print("Error: hist_ is null. Skipping deletion")
     #print("%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, CR, sysType, hist_.GetName()))
     if hName in dictRebin.keys():
         hNew = hist_.Rebin(len(dictRebin[hName])-1, hist_.GetName(), dictRebin[hName]) 
@@ -96,6 +99,7 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
     if isCheck:
         print(inFile)
         hists = ["Disc", "Reco_mass_T"]
+    hists = ["Reco_mass_T"]
     for s, h, syst, in itertools.product(Samples, hists, sysList):
         if "data_obs" in s and "Base" not in syst:
             continue
@@ -105,7 +109,7 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
         if isCheck:
             print("%s, %s, %s, %s"%(s, r, syst, h))
         histDir = getHistDir(s, r, syst)
-        #print(histDir, h)
+        print(histDir, h)
         h4 = inFile.Get("%s/%s"%(histDir, h))
         writeHist(s, r, syst, h4, outputFile)
         if "MisID_" in r and "mass_lgamma" in h:

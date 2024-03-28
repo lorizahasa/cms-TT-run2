@@ -36,7 +36,7 @@ if isCheck:
     Decays = [Decays[0]]
     Channels = [Channels[0]]
     rList   = [rList[0]]
-    sysList = [sysList[0], 'Weight_pdfUp', 'Weight_jesUp']
+    sysList = [sysList[0], 'Weight_pdfUp', 'JERUp']
 if isSep: 
     isComb = False
 if isComb:
@@ -96,8 +96,11 @@ def writeHist(outFile, hPath, hist):
 #----------------------------------------
 for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList):
     inDir = "%s/Rebin/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
+    #inDir = "%s/Merged/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
+
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
     outDir = inDir.replace("Rebin", "ForMain")
+   # outDir = inDir.replace("Merged", "ForMain")
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
     print("==> %s, %s, %s, %s"%(year, decay, channel, r))

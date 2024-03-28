@@ -1,14 +1,15 @@
 import ROOT as rt
 #-----------------------------------------------------------------
-dirCBA  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple"
+dirCBA  = "/eos/uscms/store/user/lhasa/Output/cms-TT-run2/CBA_Ntuple"
+dirCBA_rverma  = "/eos/uscms/store/user/rverma/Output/cms-TT-run2/CBA_Ntuple"
 dirHist = "%s/Hist_Ntuple/HistWeight/Rebin"%dirCBA
 dirPlot = "%s/Plot_Hist/PlotWeight/Rebin"%dirCBA
-dirTwiki= "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Twiki"
+dirTwiki= "/eos/uscms/store/user/lhasa/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
 Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-#Years 	      =	["2018"]
-Channels 	  =	["Mu", "Ele"]
-#Channels 	  =	["Mu"]
+#Years 	      =	["2016Pre"]
+#Channels 	  =	["Mu", "Ele"]
+Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 
 #Years and channels to be commbined

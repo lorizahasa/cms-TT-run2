@@ -22,6 +22,8 @@ MVA_Ntuple/*.root
 MVA_Ntuple/*/*.root
 MVA_Ntuple/*/*/*.root
 MVA_Ntuple/*/*/*/*.root
+MVA_Ntuple/Disc_Ntuple/src/*.o
+MVA_Ntuple/Disc_Ntuple/runReadNtuple
 
 MVA_Ntuple/*.txt
 MVA_Ntuple/*/*.txt

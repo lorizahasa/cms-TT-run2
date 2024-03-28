@@ -24,14 +24,16 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-python3 runReader.py -y $1 -d $2 -c $3 -s $4 --method $5 -r $6 --syst $7
+#python3 runReader.py -y $1 -d $2 -c $3 -s $4 --method $5 -r $6 --syst $7
+python3 runReader.py -y $1 -d $2 -c $3 -s $4 -m $5 -r $6 -z $7
 printf "Done Histogramming at ";/bin/date
 
 #---------------------------------------------
 #Copy the ouput root files
 #---------------------------------------------
 printf "Copying output files ..."
-xrdcp -rf discs/Reader root://cmseos.fnal.gov/$8
+xrdcp -rf output/Reader root://cmseos.fnal.gov/$8
+#xrdcp -rf discs/Reader root://eoscms.cern.ch/$8
 rm -r discs
 rm -r CMSSW*
 printf "Done ";/bin/date

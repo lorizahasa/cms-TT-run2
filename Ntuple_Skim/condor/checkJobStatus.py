@@ -112,8 +112,10 @@ for year, decay in itertools.product(Years, Decays):
         #----------------------------------------
         #Get all finished jobs
         #----------------------------------------
-        finishedList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s'%(outDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
+        #finishedList = subprocess.Popen('eos root://cmseos.fnal.gov/ ls %s'%(outDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
+        finishedList = subprocess.Popen('eos root://eoscms.cern.ch/ ls %s'%(outDir),shell=True,stdout=subprocess.PIPE).communicate()[0].decode('utf8').split('\n')
         finishedList.remove("")
+
         print("Total finished jobs: %s"%len(finishedList))
         
         #----------------------------------------
@@ -132,7 +134,8 @@ for year, decay in itertools.product(Years, Decays):
         corruptedList = []
         nEvents = {}
         for finished in finishedList:
-            fROOT = "root://cmseos.fnal.gov/%s/%s"%(outDir, finished)
+            #fROOT = "root://cmseos.fnal.gov/%s/%s"%(outDir, finished)
+            fROOT = "root://eoscms.cern.ch/%s/%s"%(outDir, finished) 
             #fROOT = "root://cmsxrootd.fnal.gov/%s/%s"%(outDir, finished)
             try:
                 f = TFile.Open(fROOT, "READ")

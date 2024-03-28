@@ -298,6 +298,10 @@ makeNtuple::makeNtuple(int ac, char** av)
         else{
             runSystJES = true;
             jmeU = getElementByIndex(systematicType, 2);
+            if(checkStr(systematicType, "201")){                                                                                                                
+                jmeU = getElementByIndex(systematicType, 2) + "_" + getElementByIndex(systematicType, 3);
+                     }
+
         }
 
     }
@@ -307,6 +311,9 @@ makeNtuple::makeNtuple(int ac, char** av)
         else{ 
             runSystJES = true;
             jmeU = getElementByIndex(systematicType, 2);
+            if(checkStr(systematicType, "201")){
+                jmeU = getElementByIndex(systematicType, 2) + "_" + getElementByIndex(systematicType, 3);
+            }
         }
     }
     cout <<"HERE-2 "<< sampleType << "  " << systematicType << " "<< jmeU << endl;
@@ -333,12 +340,27 @@ makeNtuple::makeNtuple(int ac, char** av)
     jmeUL["2017"]        = "Summer19UL17_V5_MC";
     jmeUL["2018"]        = "Summer19UL18_V5_MC";
     correction::CompoundCorrection::Ref jesRefSF;
-    jesRefSF = jmeFF->compound().at(jmeUL[year]+"_L1L2L3Res_"+"AK4PFchs");
+   //jesRefSF = jmeFF->compound().at(jmeUL[year]+"_L1L2L3Res_"+"AK4PFchs");
+    
+ try{ 
+                     jesRefSF = jmeFF->compound().at(jmeUL[year]+"_L1L2L3Res_"+"AK4PFchs");
+    
+            } catch (const std::exception& e) {
+                cout<<"\nEXCEPTION: in l2l3Ref: "<<e.what()<<endl;
+                std::abort();
+            }
 
     //for jes Unc
     correction::Correction::Ref jesRefUnc;
-    jesRefUnc   = jmeFF->at(jmeUL[year]+"_"+jmeU+"_"+"AK4PFchs");
-
+//jesRefUnc   = jmeFF->at(jmeUL[year]+"_"+jmeU+"_"+"AK4PFchs");
+ try{ cout << "Here jes un" <<  jmeUL[year]+"_Regrouped_"+jmeU+"_"+"AK4PFchs"<< endl; 
+    jesRefUnc = jmeFF->at(jmeUL[year]+"_Regrouped_"+jmeU+"_"+"AK4PFchs");
+    
+            } catch (const std::exception& e) {
+                cout<<"\nEXCEPTION: in jesRefUnc: "<<e.what()<<endl;
+                std::abort();
+            }
+  //  cout << "Here jes un" <<  jmeUL[year]+"_"+jmeU+"_"+"AK4PFchs"<< endl;
     //for jer SF 
     std::map<std::string, string> jerUL;
     jerUL["2016Pre"]     = "Summer20UL16APV_JRV3_MC";
@@ -783,7 +805,7 @@ makeNtuple::makeNtuple(int ac, char** av)
         //Process events
         //--------------------------
         if( isMC && runSystJES ){
-        	//jecvar->applyJEC(tree, jesRefSF, jesRefUnc, systVar); 
+        	jecvar->applyJEC(tree, jesRefSF, jesRefUnc, systVar); 
         }
         selector->clear_vectors();
         evtPick->process_event(tree, selector);
@@ -1463,12 +1485,19 @@ void makeNtuple::FillEvent(std::string year){
 	        _genScaleSystWeights.push_back(tree->LHEScaleWeight_[i]);
 	    }
         _q2weight_NN = tree->LHEScaleWeight_[4];//nominal weight
+//    cout << "NN : " << _q2weight_NN << endl;
         _q2weight_DD = tree->LHEScaleWeight_[0];
+  //      cout << "DD : " << _q2weight_DD << endl;
         _q2weight_DN = tree->LHEScaleWeight_[1];//skip 2
+    //     cout << "DN : " << _q2weight_DN << endl;
         _q2weight_ND = tree->LHEScaleWeight_[3];
+    //     cout << "ND : " << _q2weight_ND << endl;
         _q2weight_NU = tree->LHEScaleWeight_[5];//skip 6
+   //      cout << "NU : " << _q2weight_NU << endl;
         _q2weight_UN = tree->LHEScaleWeight_[7];
+  //       cout << "UN : " << _q2weight_UN << endl;
         _q2weight_UU = tree->LHEScaleWeight_[8];
+  //       cout << "UU : " << _q2weight_UU << endl;
         double nomWeight=tree->LHEScaleWeight_[4];
         if (nomWeight!=0){
             _q2weight_Up = *max_element(_genScaleSystWeights.begin(), _genScaleSystWeights.end())/nomWeight;

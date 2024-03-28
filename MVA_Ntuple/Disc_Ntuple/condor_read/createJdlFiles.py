@@ -28,7 +28,9 @@ Error  = %s/log_$(cluster)_$(process).stderr\n\n'%(condorLogDir, condorLogDir)
 dirRead_ = "%s/Reader"%dirRead
 print("Deleting %s"%dirRead_)
 os.system("eos root://cmseos.fnal.gov rm -r %s"%dirRead_)
+#os.system("eos root://eoscms.cern.ch/ rm -r %s"%dirRead_)
 os.system("eos root://cmseos.fnal.gov mkdir -p %s"%dirRead_)
+#os.system("eos root://eoscms.cern.ch/ mkdir -p %s"%dirRead_)
 print("Created  %s"%dirRead_)
 subFile = open('%s/condorSubmit.sh'%tmpDir,'w')
 
@@ -40,7 +42,7 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
     jdlFile.write(common_command)
     #Create for Base
     for method, r, samp in itertools.product(methodDict.keys(), Regions.keys(), SampDict.keys()):
-        args =  'Arguments  = %s %s %s %s %s %s Base %s\n' %(year, decay, channel, samp, method, r, dirRead)
+        args =  'Arguments  = %s %s %s %s %s %s JetBase %s\n' %(year, decay, channel, samp, method, r, dirRead)
         args += 'Queue 1\n\n'
         jdlFile.write(args)
         for sv in systVar: 

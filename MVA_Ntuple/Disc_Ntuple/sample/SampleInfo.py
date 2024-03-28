@@ -33,8 +33,10 @@ def gs(y, d, syst, s_array):
     for s in s_array:
         if "Data" in s and not "Base" in syst:
             sample += eval("%s_%s__%s_FileList_%s"%(d, "JetBase", s, y))
+            print(sample)
         else:
             sample += eval("%s_%s__%s_FileList_%s"%(d, syst, s, y))
+            #print("%s_%s__%s_FileList_%s"%(d, syst, s, y))
     return sample
 
 def getSamples(y, d, syst):#commented samples don't exist
