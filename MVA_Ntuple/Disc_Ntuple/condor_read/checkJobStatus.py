@@ -11,7 +11,7 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor_read",""))
 from DiscInputs import *
 
-checkFile = False
+checkFile = True
 
 condorLogDir = "tmpSub/log"
 #condorLogDir = "tmpSub/log_resub"
@@ -143,6 +143,16 @@ for year, decay, ch in itertools.product(Years, Decays, Channels):
                 continue
             if f.GetSize() < 3000:
                 print("Empty file: %s"%fROOT)
+                corruptedList.append(finished)
+                continue
+            fName = submittedDict2[finished]
+            fName_ = fName.split("__")
+            samp = fName_[0]
+            reg  = fName_[1]
+            syst = fName_[2].replace(".root", "")
+            h = f.Get("%s/%s/%s/Disc"%(samp,reg,syst))
+            if h.Integral() == 0:
+                print("Empty events: %s"%fROOT)
                 corruptedList.append(finished)
                 continue
             f.Close()

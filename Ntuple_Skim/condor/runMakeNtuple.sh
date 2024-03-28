@@ -46,7 +46,8 @@ printf "Done Histogramming at ";/bin/date
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then
     echo "Running Interactively" ;
 else
-    xrdcp -f ${sample}*.root root://cmseos.fnal.gov/${outDir}
+    #xrdcp -f ${sample}*.root root://cmseos.fnal.gov/${outDir}
+    xrdcp -f ${sample}*.root root://eoscms.cern.ch/${outDir}
     echo "Cleanup"
     rm -rf CMSSW_12_6_0
     rm *.root

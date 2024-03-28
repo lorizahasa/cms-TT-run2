@@ -1,7 +1,7 @@
 import ROOT as rt
 from collections import OrderedDict
 #-----------------------------------------------------------------
-condorOutDir  = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple" 
+condorOutDir  = "/store/user/lhasa/Output/cms-TT-run2/MVA_Ntuple" 
 dirFit = "/eos/uscms%s/Fit_Disc/FitMain"%condorOutDir
 dirTwiki= "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
