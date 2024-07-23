@@ -14,6 +14,7 @@ from PlotInputs import *
 from PlotCMSLumi import *
 from PlotTDRStyle import *
 from ROOT import TFile, TLegend, gPad, gROOT, TCanvas, THStack, TF1, TH1F, TGraphAsymmErrors
+import numpy as np
 
 rList = list(Regions.keys())
 print(rList)
@@ -48,6 +49,7 @@ if isCheck:
     SampleSyst = [SampleSyst[0]]
 if isSep: 
     isComb = False
+   # rList = [rList[0]]
     outTxt = "SepYears"
 if isComb:
     isSep  = False
@@ -64,12 +66,13 @@ if not isCheck and not isSep and not isComb:
 #dir_ = "Merged"
 #dir_ = "Rebin"
 dir_ = "ForMain"
+#dir_ = "AlphaForMain"
 os.system("mkdir -p %s"%dirPlot)
 fPath = open("%s/overlaySyst_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
-for decay, region, channel, year, samp, syst in itertools.product(Decays, rList, Channels, Years, SampleSyst, Systematics):
+for decay, region, channel, year, samp in itertools.product(Decays, rList, Channels, Years, SampleSyst):
     hInfo = GetVarInfo(region, channel)
-    hList = list(hInfo.keys()) + ['Disc']
+    #hList = list(hInfo.keys()) + ['Disc']
     hList = ["Disc"]
     if isCheck:
         hList = ["Disc"]
@@ -97,6 +100,7 @@ for decay, region, channel, year, samp, syst in itertools.product(Decays, rList,
         outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydc)
         os.system("mkdir -p %s"%outPlotDir)
         inFile = TFile("%s/AllInc.root"%(inHistDir), "read")
+        #inFile = TFile("%s/Alpha.root"%(inHistDir), "read")
         if isCheck:
             print(inFile)
         
@@ -123,14 +127,16 @@ for decay, region, channel, year, samp, syst in itertools.product(Decays, rList,
             else:
                 canvas.cd()
             #Get nominal histograms
-            hPathBase   = "%s/%s/Base/%s"%(sample, region, hName)
+            #hPathBase   = "%s/%s/Base/%s"%(sample, region, hName)
+            hPathBase   = "%s/%s/JetBase/%s"%(sample, region, hName)
             hPathUp     = "%s/%s/%sUp/%s"%(sample, region, syst, hName)
             hPathDown   = "%s/%s/%sDown/%s"%(sample, region, syst, hName)
             #print(hPathBase)
             #print(hPathUp)
             if isCheck:
                 print(hPathBase)
-            hBase = inFile.Get(hPathBase).Clone("Base_")
+            #hBase = inFile.Get(hPathBase).Clone("Base_")
+            hBase = inFile.Get(hPathBase).Clone("JetBase_")
             hUp   = inFile.Get(hPathUp).Clone("%sUp_"%syst) 
             hDown = inFile.Get(hPathDown).Clone("%sDown_"%syst) 
             xTitle = hName
@@ -153,7 +159,7 @@ for decay, region, channel, year, samp, syst in itertools.product(Decays, rList,
             plotLegend.AddEntry(hUp, "%s_up"%syst, "PEL")
             plotLegend.AddEntry(hDown, "%s_down"%syst, "PEL")
             plotLegend.Draw()
-            hBase.SetMaximum(1.3*hBase.GetMaximum())
+            hBase.SetMaximum(1.7*hBase.GetMaximum())
             hBase.GetXaxis().SetTitle(xTitle)
             hBase.GetYaxis().SetTitle(yTitle)
         
@@ -162,7 +168,7 @@ for decay, region, channel, year, samp, syst in itertools.product(Decays, rList,
             chName = "%s, #bf{%s}"%(chName, region)
             crName = formatCRString(Regions[region])
             chCRName = "#splitline{#font[42]{%s}}{#font[42]{(%s)}}"%(chName, crName)
-            extraText   = "#splitline{Preliminary}{%s}"%chCRName
+            extraText   = "#splitline{Preliminary,%s}{%s}"%(sample, chCRName)
             CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
         
             #Draw the ratio of data and all background
@@ -192,5 +198,14 @@ for decay, region, channel, year, samp, syst in itertools.product(Decays, rList,
             pdf = "%s/overlaySyst_%s_%s_%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region, sample, syst)
             canvas.SaveAs(pdf)
             fPath.write("%s\n"%pdf)
-        makePlot(hName, region, samp, syst)
+        if isSep:
+            Systematics = SystList_by_year[year]
+        if isComb:
+            split_year = year.split("__")
+            syst_Comb = []
+            for y in split_year:
+                syst_Comb.append(SystList_by_year[y])    
+            Systematics = list(np.unique(syst_Comb))            
+        for syst in Systematics:    
+            makePlot(hName, region, samp, syst)
 print(fPath)

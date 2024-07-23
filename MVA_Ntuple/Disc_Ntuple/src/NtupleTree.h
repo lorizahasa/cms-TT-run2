@@ -18,11 +18,13 @@ class NtupleTree{
     NtupleTree(string dir, vector<string> fileNames);
     ~NtupleTree();
     Long64_t GetEntries();
+    virtual Long64_t LoadTree(Long64_t entry);
     Int_t GetEntry(Long64_t entry);
     TChain* fChain;
 
     // Declaration of leaf types
     Int_t           Event_run;
+    Int_t           fCurrent; //!current Tree number in a TChain
     Long64_t        Event_number;
     Int_t           Event_lumi;
     Bool_t          Event_is_data;

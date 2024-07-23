@@ -6,6 +6,7 @@ myArray=( "$@" )
 
 printf "Start Running Histogramming at ";/bin/date
 printf "Worker node hostname ";/bin/hostname
+lsb_release -a
 
 if [ -z ${_CONDOR_SCRATCH_DIR} ] ; then 
     echo "Running Interactively" ; 
@@ -13,9 +14,9 @@ else
     echo "Running In Batch"
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
-    export SCRAM_ARCH=slc7_amd64_gcc700
-    scramv1 project CMSSW CMSSW_12_6_0
-    cd CMSSW_12_6_0/src
+#    export SCRAM_ARCH=slc7_amd64_gcc700
+    scramv1 project CMSSW CMSSW_14_0_0
+    cd CMSSW_14_0_0/src
     eval `scramv1 runtime -sh`
 	cd ../..
 	tar --strip-components=1 -xvf Disc_Ntuple.tar.gz
@@ -34,6 +35,7 @@ printf "Done Histogramming at ";/bin/date
 printf "Copying output files ..."
 xrdcp -rf output/Reader root://cmseos.fnal.gov/$8
 #xrdcp -rf discs/Reader root://eoscms.cern.ch/$8
-rm -r discs
+#rm -r discs
+rm -r output
 rm -r CMSSW*
 printf "Done ";/bin/date

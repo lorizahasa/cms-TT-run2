@@ -19,6 +19,7 @@ isCR = options.isCR
 #dir_ = "AfterDYSF"
 #dir_ = "Rebin"
 dir_ = "ForMain"
+#dir_ = "AlphaForMain"
 extra = "SR"
 if isCR:
     extra = 'CR'
@@ -47,8 +48,8 @@ for line in txtFile:
     allPlotName.append(line.split("/")[-1])
 
 print(len(allPlotName))
-showPerFig = 16
-widthFor   = 4
+showPerFig = 9
+widthFor   = 3
 #figWidth = (1-0.05)/showPerFig#5% margin
 if isComb:
     showPerFig = 12

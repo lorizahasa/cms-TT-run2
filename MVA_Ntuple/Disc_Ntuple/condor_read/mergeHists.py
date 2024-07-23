@@ -5,6 +5,7 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, os.getcwd().replace("condor_read", ""))
 from optparse import OptionParser
 from DiscInputs import *
+import subprocess
 
 #----------------------------------------
 #INPUT Command Line Arguments 
@@ -40,8 +41,43 @@ def runCmd(cmd):
     os.system(cmd)
 
 print("In case of segmentation violation, cmsenv CMSSW_10_2_14")
-#-----------------------------------------
 #Merge separate years and channels
+
+def list_root_files(directory):
+    root_files = []
+    for filename in os.listdir(directory):
+        if filename.endswith(".root"):
+            root_files.append(os.path.join(directory, filename))
+    return root_files
+
+def hadd_files(input_files, output_file):
+    # Chunk size for hadd
+    chunk_size = 109  # Adjust as needed
+
+    # Split input files into chunks
+    file_chunks = [input_files[i:i+chunk_size] for i in range(0, len(input_files), chunk_size)]
+
+    # List to store the names of merged files
+    merged_files = []
+
+    # Loop through chunks and merge
+    for i, chunk in enumerate(file_chunks):
+        merged_file_name = f"merged_{i}.root"
+        merged_files.append(merged_file_name)
+        
+        # Perform hadd on the current chunk
+        hadd_command = "hadd -f -v 0 %s %s"%(merged_file_name," ".join(chunk)) 
+        #print(hadd_command)
+        #subprocess.run(hadd_command, check=True)
+        runCmd(hadd_command)
+    # Finally, merge all the chunked merged files into a single output file
+    #subprocess.run(["hadd -f ", output_file] + merged_files, check=True)
+    runCmd("hadd -f -v 0 %s %s"%(output_file, " ".join(merged_files)))
+
+    # Clean up: delete the chunked merged files
+    for file in merged_files:
+        runCmd("rm %s"%file)
+        
 #-----------------------------------------
 if isSep:
     for y, d, c in itertools.product(Years, Decays, Channels):
@@ -50,15 +86,13 @@ if isSep:
         #if os.path.exists("/eos/uscms/%s"%mergeDir):
         runCmd("eos root://cmseos.fnal.gov rm -r %s"%mergeDir)
         runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%mergeDir)
-        #Merge for each sample
-        for s in Samples:
-            haddOut = "root://cmseos.fnal.gov/%s/%s.root"%(mergeDir, s)
-            haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'/%s.*root\'`"%(histDir,s)
-            runCmd("hadd -f -v 0 %s %s"%(haddOut, haddIn))
         #Merge for all sample
         haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(mergeDir)
-        haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'.*root\'`"%(mergeDir)
-        runCmd("hadd -f -v 0 %s %s"%(haddOut, haddIn))
+       # haddIn  = "`xrdfs root://cmseos.fnal.gov ls -u %s | grep \'.*root\'`"%(histDir)
+        haddIn_List = list_root_files("/eos/uscms/%s"%histDir)
+        #print(haddIn_List)
+        hadd_files(haddIn_List, haddOut)
+       # runCmd("hadd -f -k %s %s"%(haddOut, haddIn))
         print(runCmd(("eos root://cmseos.fnal.gov find --size %s")%mergeDir))
 
 #-----------------------------------------

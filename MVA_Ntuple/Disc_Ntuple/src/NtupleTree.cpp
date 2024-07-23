@@ -18,17 +18,18 @@ NtupleTree::NtupleTree(string dir, vector<string>fileNames){
             string xrdcp_command = "xrdcp " + dir + fName + " " + singleFile ;
             cout << xrdcp_command.c_str() << endl;
             system(xrdcp_command.c_str());
-            fChain->Add( singleFile.c_str());
+            fChain->Add(singleFile.c_str());
             cout << singleFile << "  " << fChain->GetEntries() << endl;
         }
         else{
-            fChain->Add( (dir + fName).c_str());
+            fChain->Add((dir + fName).c_str());
             cout << dir+fName << "  " << fChain->GetEntries() << endl;
-        }
+        }   
     }
     //----------------------------
     // Initialize vectors
     //----------------------------
+    fCurrent = -1;
     Weight_pho = 0;
     Weight_pho_id = 0;
     Weight_pho_ps = 0;
@@ -260,6 +261,18 @@ Long64_t NtupleTree::GetEntries(){
 
 Int_t NtupleTree::GetEntry(Long64_t entry){
     return fChain->GetEntry(entry);
+}
+
+Long64_t NtupleTree::LoadTree(Long64_t entry)                                  
+{                                                                              
+// Set the environment to read one entry                                                  
+   if (!fChain) return -5;                                                     
+   Long64_t centry = fChain->LoadTree(entry);                                  
+   if (centry < 0) return centry;                                              
+   if (fChain->GetTreeNumber() != fCurrent) {                                  
+      fCurrent = fChain->GetTreeNumber();                                      
+   }                                                                           
+   return centry;                                                              
 }
 
 std::vector<std::vector<std::string>> NtupleTree::splitVector(const std::vector<std::string>& strings, int n) {

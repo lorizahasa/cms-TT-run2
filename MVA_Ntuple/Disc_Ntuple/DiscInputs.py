@@ -5,33 +5,33 @@ import itertools
 dirNtuple = "/store/group/phys_b2g/lhasa/Output/cms-TT-run2/Ntuple_Skim"
 dirMVA    = "/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/"
 dirMVA2    = "/store/user/lhasa/Output/cms-TT-run2/MVA_Ntuple/C/"
-dirClass  = "%s/Disc_Ntuple/DiscMain"%dirMVA
+dirClass  = "%s/Disc_Ntuple/DiscMain"%dirMVA2
 dirRead   = "%s/Disc_Ntuple/DiscMain"%dirMVA2
-nMulti    = 5
+nMulti    = 1
 #-----------------------------------------------------------------
-#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-#Years 	      =	["2016Pre", "2016Post", "2017"]
-Years 	      =	["2017"]
-#Channels 	  =	["Mu", "Ele"]
-Channels 	  =	["Mu"]
-Decays 	      =	["Semilep"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years 	      =	["2016Pre", "2016Post", "2018"]
+#Years         =	["2017"]
+Channels 	  =	["Mu", "Ele"]
+#Channels      =	["Mu"]
+Decays        =	["Semilep"]
 #Mass          = ["800", "1600"]
 Mass      = ["700", "800", "900", "1100", "1200", "1300", "1500", "2750"]
 
 #Years and channels to be combined
 Years_         = ["2016Pre__2016Post__2017__2018"]
-Channels_      = ["Mu", "Ele", "Mu__Ele"]
-#Channels_      = ["Mu__Ele"]
+#Channels_      = ["Mu", "Ele", "Mu__Ele"]
+Channels_      = ["Mu__Ele"]
 
 S1 = []
-#S1.append("SignalSpin32_M700")
+S1.append("SignalSpin32_M700")
 S1.append("SignalSpin32_M800")
-#S1.append("SignalSpin32_M900")
-#S1.append("SignalSpin32_M1100")
-#S1.append("SignalSpin32_M1200")
-#S1.append("SignalSpin32_M1300")
-#S1.append("SignalSpin32_M1500")
-#S1.append("SignalSpin32_M2750")
+S1.append("SignalSpin32_M900")
+S1.append("SignalSpin32_M1100")
+S1.append("SignalSpin32_M1200")
+S1.append("SignalSpin32_M1300")
+S1.append("SignalSpin32_M1500")
+S1.append("SignalSpin32_M2750")
 S1.append("TTGamma")
 S1.append("WJets")
 S1.append("DYJets")
@@ -71,12 +71,33 @@ levels  = ["Up", "Down"]
 for s, l in itertools.product(Systematics, levels):
     systVar.append("%s%s"%(s, l))
 
-#JMEs    = ["JEC_Total", "JEC_SubTotalPileUp", "JEC_SubTotalRelative", "JEC_SubTotalAbsolute", "JEC_FlavorQCD", "JEC_TimePtEta", "JER"]
-JMEs    = ["JEC_Absolute", "JEC_Absolute_2017", "JEC_BBEC1", "JEC_BBEC1_2017", "JEC_EC2", "JEC_EC2_2017", "JEC_HF", "JEC_HF_2017", "JEC_RelativeSample_2017", "JEC_RelativeBal",  "JEC_FlavorQCD", "JER"]
+#JMEs    = ["JEC_Absolute", "JEC_Absolute_2017", "JEC_BBEC1", "JEC_BBEC1_2017", "JEC_EC2", "JEC_EC2_2017", "JEC_HF", "JEC_HF_2017", "JEC_RelativeSample_2017", "JEC_RelativeBal",  "JEC_FlavorQCD", "JER"]
+
+JME_dic = {}
+JME_dic["2016Pre"] = ["JEC_Total", "JEC_Absolute","JEC_Absolute_2016","JEC_BBEC1", "JEC_BBEC1_2016","JEC_EC2","JEC_EC2_2016","JEC_HF","JEC_HF_2016","JEC_RelativeSample_2016","JEC_RelativeBal","JEC_FlavorQCD","JER"]
+JME_dic["2016Post"] = JME_dic["2016Pre"]
+JME_dic["2017"] =  ["JEC_Total", "JEC_Absolute","JEC_Absolute_2017","JEC_BBEC1", "JEC_BBEC1_2017","JEC_EC2","JEC_EC2_2017","JEC_HF","JEC_HF_2017","JEC_RelativeSample_2017","JEC_RelativeBal","JEC_FlavorQCD","JER"]
+JME_dic["2018"]= ["JEC_Total", "JEC_Absolute","JEC_Absolute_2018","JEC_BBEC1", "JEC_BBEC1_2018","JEC_EC2","JEC_EC2_2018","JEC_HF","JEC_HF_2018","JEC_RelativeSample_2018","JEC_RelativeBal","JEC_FlavorQCD","JER"]
+
 levels_  = ["_up", "_down"]
-for s, l in itertools.product(JMEs, levels_):
-    systVar.append("%s%s"%(s, l))
-#print(systVar)
+def get_JMEs(year, systVar):
+    JMEs =[]
+    for level in levels_:
+        for  jme in JME_dic[year]:
+            JMEs.append("%s%s"%(jme, level))
+    systVar.extend(JMEs)
+    return systVar
+
+systVar_by_year = {year: [] for year in Years}
+
+for year in Years:
+    var_temp =[]
+    systVar_ =get_JMEs(year, var_temp)
+    systVar_by_year[year] = systVar + var_temp
+
+#for s, l in itertools.product(JMEs, levels_):
+#    systVar.append("%s%s"%(s, l))
+#print(systVar_by_year)
 SystLevels = []
 SystLevels.append("Up")
 SystLevels.append("Down")
@@ -108,7 +129,7 @@ Regions['ttyg_Enriched_SR_Resolved'] = "e.Jet_size >=5 && e.Jet_b_size >=1 && e.
 ##Regions['ttyg_Enriched_CR_Resolved'] = "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size ==0"
 #Regions['ttyg_Enriched_CRb_Resolved']= "e.Jet_size >=5 && e.Jet_b_size <1  && e.Photon_size==1 && e.Photon_et[0]>0   && e.FatJet_size ==0"
 
-#Regions['ttyg_Enriched_SR_Boosted']  = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]>100 && e.FatJet_size >=1"
+Regions['ttyg_Enriched_SR_Boosted']  = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]>100 && e.FatJet_size >=1"
 ##Regions['ttyg_Enriched_CR_Boosted']  = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size >=1"
 #Regions['ttyg_Enriched_CRb_Boosted'] = "e.Jet_size >=2 && e.Jet_b_size <1  && e.Photon_size==1 && e.Photon_et[0]>0   && e.FatJet_size >=1"
 

@@ -8,13 +8,14 @@ from HistRebins import dictRebin
 from optparse import OptionParser
 from VarInfo import GetVarInfo
 from ROOT import TFile, TH1F, gDirectory
+import numpy as np
 
 #----------------------------------------
 #INPUT Command Line Arguments 
 #----------------------------------------
 parser = OptionParser()
 parser.add_option("--isCheck","--isCheck", dest="isCheck",action="store_true",default=False, help="Merge for combined years and channels")
-parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=False, help="Merge for separate years and channels")
+parser.add_option("--isSep","--isSep", dest="isSep",action="store_true",default=True, help="Merge for separate years and channels")
 parser.add_option("--isComb","--isComb", dest="isMerge",action="store_true",default=False, help="Merge for combined years and channels")
 (options, args) = parser.parse_args()
 isCheck = options.isCheck
@@ -26,9 +27,9 @@ rList = list(Regions.keys())
 # Collect all syst 
 #----------------------------------------
 sysList = systVar
-sysList.append("Base")
+sysList.append("JetBase")
 if isCheck:
-    isSep  = True
+    isSep  = False
     isComb = False
     Years  = [Years[0]]
     Decays = [Decays[0]]
@@ -37,12 +38,12 @@ if isCheck:
     Samples = ["TTGamma"]
     rList   = [rList[0]]
     sysList = [sysList[0]]
-if isSep: 
-    isComb = False
 if isComb:
     isSep = False
     Years = Years_
     Channels = Channels_
+if isSep: 
+    isComb = False
 if not isCheck and not isSep and not isComb:
     print("Add either --isCheck or --isSep or --isComb in the command line")
     exit()
@@ -80,6 +81,8 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
     if hName in dictRebin.keys():
         hNew = hist_.Rebin(len(dictRebin[hName])-1, hist_.GetName(), dictRebin[hName]) 
         hNew.Write()
+        #print(hName)
+        #print(dictRebin[hName])
     else:
         hist_.Write()
     outputFile.cd()
@@ -87,37 +90,57 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
 #-----------------------------------------
 # Do the rebining here
 #----------------------------------------
-for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList):
+for year, decay, channel  in itertools.product(Years, Decays, Channels):
     inDir = "%s/Merged/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
     outDir = inDir.replace("Merged", "Rebin")
-    os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
+    print(outDir)
+    #os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir)
+    #os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
+    os.system("rm -r /eos/uscms/%s"%outDir)
+    os.system("mkdir -p /eos/uscms/%s"%outDir)
     outputFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
-    print("==> %s, %s, %s, %s"%(year, decay, channel, r))
-    hists = list(GetVarInfo(r, channel).keys())
-    hists.append('Disc')
-    if isCheck:
-        print(inFile)
-        hists = ["Disc", "Reco_mass_T"]
-    hists = ["Reco_mass_T"]
-    for s, h, syst, in itertools.product(Samples, hists, sysList):
-        if "data_obs" in s and "Base" not in syst:
-            continue
-        if "JE" in syst:
-            syst = syst.replace("_up", "Up")
-            syst = syst.replace("_down", "Down")
+    for r in rList:
+        print("==> %s, %s, %s, %s"%(year, decay, channel, r))
+        hists = list(GetVarInfo(r, channel).keys())
+        hists.append('Disc')
         if isCheck:
-            print("%s, %s, %s, %s"%(s, r, syst, h))
-        histDir = getHistDir(s, r, syst)
-        print(histDir, h)
-        h4 = inFile.Get("%s/%s"%(histDir, h))
-        writeHist(s, r, syst, h4, outputFile)
-        if "MisID_" in r and "mass_lgamma" in h:
-            if "data_obs" in s:
+            print(inFile)
+        hists = ["Disc", "Reco_mass_T"]
+        if isComb:
+            split_year = year.split("__")
+            syst_Comb = []
+            for y in split_year:
+                syst_Comb.append(systVar_by_year[y])    
+            sysList = list(np.unique(syst_Comb))            
+        else:    
+            sysList = systVar_by_year[year]
+        sysList.append("JetBase")
+        for s, h, syst, in itertools.product(Samples, hists, sysList):
+            if "data_obs" in s and "Base" not in syst:
                 continue
-            for cat in phoCat.keys():
-                newName = "%s_%s"%(h, cat)
-                hNew = inFile.Get("%s/%s"%(histDir, newName))
-                writeHist(s, r, syst, hNew, outputFile)
+            if "JE" in syst:
+                syst = syst.replace("_up", "Up")
+                syst = syst.replace("_down", "Down")
+            if isCheck:
+                print("%s, %s, %s, %s"%(s, r, syst, h))
+            histDir = getHistDir(s, r, syst)
+            print(histDir, h)
+            h4 = inFile.Get("%s/%s"%(histDir, h))
+
+            if "2016" in syst:
+                syst = syst.replace("2016", "%s"%year)
+            if "JER" in syst:
+                syst = syst.replace("JER", "JER_%s"%year)    
+
+            writeHist(s, r, syst, h4, outputFile)
+            if "MisID_" in r and "mass_lgamma" in h:
+                if "data_obs" in s:
+                    continue
+                for cat in phoCat.keys():
+                    newName = "%s_%s"%(h, cat)
+                    hNew = inFile.Get("%s/%s"%(histDir, newName))
+                    writeHist(s, r, syst, hNew, outputFile)
+    #print(outputFile.ls())
     outputFile.Close()
     print("/eos/uscms/%s/AllInc.root\n"%outDir)

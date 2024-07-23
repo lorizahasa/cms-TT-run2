@@ -95,7 +95,8 @@ def DrawAxisHists(pads, axis_hists, def_pad=None):
 #Path of the I/O histrograms/plots
 #----------------------------------------
 fPath = open("%s/plotLimit.txt"%dirFit, 'w')
-hName = 'Disc'
+#hName = 'Disc'
+hName = 'Reco_mass_T'
 for decay, region, channel, year in itertools.product(Decay, regionList, Channel, Year):
     limits = "tex/allLimits.json"
     gDict = {}

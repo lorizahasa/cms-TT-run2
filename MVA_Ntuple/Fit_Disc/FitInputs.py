@@ -1,9 +1,9 @@
 import ROOT as rt
 from collections import OrderedDict
 #-----------------------------------------------------------------
-condorOutDir  = "/store/user/lhasa/Output/cms-TT-run2/MVA_Ntuple" 
+condorOutDir  = "/store/user/lhasa/Output/cms-TT-run2/MVA_Ntuple/C" 
 dirFit = "/eos/uscms%s/Fit_Disc/FitMain"%condorOutDir
-dirTwiki= "/eos/uscms/store/user/rverma/Output/cms-TT-run2/Twiki"
+dirTwiki= "/eos/uscms/store/user/lhasa/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
 Year = []
 Year.append("2016Pre")
@@ -25,17 +25,17 @@ histList.append("Reco_mass_T")
 histList.append("Reco_st")
 
 xss = {}
-xss["700.0"]   = 0.03*0.97*2*4.92
-xss["800.0"]   = 0.03*0.97*2*1.68
-xss["900.0"]   = 0.03*0.97*2*0.636
+xss["700.0"]   = 0.03*0.97*2*4.686
+xss["800.0"]   = 0.03*0.97*2*1.624
+xss["900.0"]   = 0.03*0.97*2*0.619
 #xss["1000.0"]  = 0.03*0.97*2*0.262
-xss["1100.0"]  = 0.03*0.97*2*0.116
-xss["1200.0"]  = 0.03*0.97*2*0.0537
+xss["1100.0"]  = 0.03*0.97*2*0.113
+xss["1200.0"]  = 0.03*0.97*2*0.0525
 #xss["1300.0"]  = 0.03*0.97*2*0.0261
 #xss["1400.0"]  = 0.03*0.97*2*0.0131
-xss["1500.0"]  = 0.03*0.97*2*0.00677
+xss["1500.0"]  = 0.03*0.97*2*0.0065
 #xss["1600.0"]  = 0.03*0.97*2*0.00359
-xss["2750.0"]  = 0.03*0.97*2*0.0003746
+xss["2750.0"]  = 0.03*0.97*2*0.000006
 xss = OrderedDict(sorted(xss.items(), key=lambda t: t[1]))
 
 rDict = {}
@@ -43,15 +43,23 @@ rDict = {}
 rDict["ttyg_Enriched_SR_Boosted"] = "SR, Boosted"
 rDict["ttyg_Enriched_SR_Resolved"]= "SR, Resolved"
 rDict["ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved"]="SR, Boosted+Resolved"
-rDict["ttyg_Enriched_CR_Boosted"] = "CR, Boosted"
-rDict["ttyg_Enriched_CR_Resolved"]= "CR, Resolved"
-rDict["ttyg_Enriched_CR_Boosted__ttyg_Enriched_CR_Resolved"]="CR, Boosted+Resolved"
+#rDict["ttyg_Enriched_CR_Boosted"] = "CR, Boosted"
+#rDict["ttyg_Enriched_CR_Resolved"]= "CR, Resolved"
+#rDict["ttyg_Enriched_CR_Boosted__ttyg_Enriched_CR_Resolved"]="CR, Boosted+Resolved"
 
 dataType = {"SR": "Asimoy", "CR": "Real"}
 toInject = {}
 toInject["SR"] = " -t -1"
 toInject["CR"] = " --expectSignal 0"
 
+JME_dic = {}
+JME_dic["2016Pre"] = ["JEC_Absolute","JEC_Absolute_2016Pre","JEC_BBEC1", "JEC_BBEC1_2016Pre","JEC_EC2","JEC_EC2_2016Pre","JEC_HF","JEC_HF_2016Pre","JEC_RelativeSample_2016Pre","JEC_RelativeBal","JEC_FlavorQCD"]
+JME_dic["2016Post"] = ["JEC_Absolute","JEC_Absolute_2016Post","JEC_BBEC1", "JEC_BBEC1_2016Post","JEC_EC2","JEC_EC2_2016Post","JEC_HF","JEC_HF_2016Post","JEC_RelativeSample_2016Post","JEC_RelativeBal","JEC_FlavorQCD"]
+#JME_dic["2016Post"] = JME_dic["2016Pre"]
+JME_dic["2017"] =  ["JEC_Absolute","JEC_Absolute_2017","JEC_BBEC1", "JEC_BBEC1_2017","JEC_EC2","JEC_EC2_2017","JEC_HF","JEC_HF_2017","JEC_RelativeSample_2017","JEC_RelativeBal","JEC_FlavorQCD"]
+#JME_dic["2017"] =  ["JEC_RelativeBal","JEC_HF", "JEC_EC2", "JEC_BBEC1", "JEC_Absolute", "JEC_FlavorQCD"]
+
+JME_dic["2018"]= ["JEC_Absolute","JEC_Absolute_2018","JEC_BBEC1", "JEC_BBEC1_2018","JEC_EC2","JEC_EC2_2018","JEC_HF","JEC_HF_2018","JEC_RelativeSample_2018","JEC_RelativeBal","JEC_FlavorQCD"]
 
 def getRegion(region):
     regShort = "SR"

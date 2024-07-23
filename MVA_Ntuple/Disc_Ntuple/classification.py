@@ -48,9 +48,10 @@ print(parser.parse_args())
 #INPUT AnalysisNtuples Directory
 #----------------------------------------
 package = "TMVA"
-dirNtuple = "root://cmseos.fnal.gov/%s"%dirNtuple
+dirNtuple = "root://eoscms.cern.ch/%s"%dirNtuple
 dirFile = "%s/%s/%s"%(year, decayMode, syst) 
 allSamples = getSamples(year, decayMode, syst)
+#print(allSamples)
 
 if isSep:
     outDir = "discs/Class/Classification/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method,region)
@@ -63,6 +64,7 @@ sigList = []
 bkgList = []
 for s in allSamples.keys():
     if 'Signal' in s:
+    #if 'Signal' and 'M%s'%mass in s:
         sigs = allSamples[s]
         for sigF in sigs:
             sigList.append(sigF)
@@ -75,7 +77,7 @@ for s in allSamples.keys():
                 bkgList.append(bkgF)
 if isCheck:
     bkgList = ["TTGamma_SingleLept_Ntuple_1of1.root"]
-
+    sigList = ["SignalSpin32_M800_Ntuple_1of1.root"]
 #-----------------------------------------
 #Add trees in the TChain
 #----------------------------------------

@@ -61,6 +61,7 @@ if not isCheck and not isSep and not isComb:
 #dir_ = "Merged"
 #dir_ = "Rebin"
 dir_ = "ForMain"
+#dir_ = "AlphaForMain"
 os.system("mkdir -p %s"%dirPlot)
 fPath = open("%s/overlayDisc_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
@@ -74,6 +75,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydc)
     os.system("mkdir -p %s"%outPlotDir)
     inFile = TFile("%s/AllInc.root"%(inHistDir), "read")
+    #inFile = TFile("%s/Alpha.root"%(inHistDir), "read")
     if isCheck:
         print(inFile)
     gROOT.SetBatch(True)
@@ -82,7 +84,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     pDict = {}
     #pDict["data_obs"] = inFile.Get("data_obs/%s/Base/%s"%(region, hName))
     for i, s in enumerate(SampleBkg.keys()):
-        dPath   = "%s/%s/Base/%s"%(s, region, hName)
+        dPath   = "%s/%s/JetBase/%s"%(s, region, hName)
         if i==0:
             bkgDisc = inFile.Get(dPath)
         else:
@@ -92,10 +94,10 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     pDict[name] = bkgDisc
     legend.AddEntry(bkgDisc, name,  "L")
     
-    #Mass = ["700", "1200"]
+    #Mass = ["800"]
     Mass  = ["800", '1100', "1200", "1500", "2750"]
     for mass in Mass: 
-        sigDisc = inFile.Get("SignalSpin32_M%s/%s/Base/%s"%(mass, region, hName))
+        sigDisc = inFile.Get("SignalSpin32_M%s/%s/JetBase/%s"%(mass, region, hName))
         int_ = sigDisc.Integral()
         if int_==0.0:
             continue

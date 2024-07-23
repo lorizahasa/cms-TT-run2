@@ -42,7 +42,7 @@ for year in Years:
     jdlFile.write('Executable =  runMakeNtuple.sh \n')
     jdlFile.write(common_command)
     for decay in Decays:
-        for syst in SystJME[decay]:
+        for syst in get_syst_List(year, decay):
             outDir = "%s/%s/%s/%s"%(outNtupleDir, year, decay, syst)
             if os.path.exists("/eos/uscms/%s"%outDir):
                 print("Deleted out dir: %s"%outDir)
@@ -55,7 +55,7 @@ for year in Years:
                 if "Data" in sampleName and "_" in syst: continue
                # if "Data" in sampleName: continue
                 if "Dilep" in decay and "Signal" in sampleName and "700" not in sampleName: continue
-                #if not "800" in sampleName: continue
+                if not "Total" in syst: continue
                # if "Spin32" in sampleName: continue
                # if "Spin12" in sampleName and "M800" not in sampleName: continue
                 nJob = reducedJob(fEvt[0], sampleName)

@@ -10,7 +10,7 @@ condorLogDir = "log"
 os.system("mkdir -p %s/%s"%(tmpDir, condorLogDir))
 tarFile = "%s/Disc_Ntuple.tar.gz"%tmpDir
 exDir = '../../Disc_Ntuple'
-ex = '--exclude=%s/discs --exclude=%s/condor_read --exclude=%s/condor_class'%(exDir, exDir, exDir)
+ex = '--exclude=%s/discs --exclude=%s/condor_read --exclude=%s/condor_class --exclude=%s/output'%(exDir, exDir, exDir, exDir)
 os.system("tar %s -zcvf %s ../../Disc_Ntuple "%(ex, tarFile))
 os.system("cp runReader*.sh %s"%tmpDir)
 common_command = \
@@ -18,24 +18,25 @@ common_command = \
 should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
 Transfer_Input_Files = Disc_Ntuple.tar.gz, runReader.sh\n\
-use_x509userproxy = true\n\
+x509userproxy = /uscms/home/lhasa/x509up_u54210\n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\n'%(condorLogDir, condorLogDir)
+
 
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-dirRead_ = "%s/Reader"%dirRead
-print("Deleting %s"%dirRead_)
-os.system("eos root://cmseos.fnal.gov rm -r %s"%dirRead_)
-#os.system("eos root://eoscms.cern.ch/ rm -r %s"%dirRead_)
-os.system("eos root://cmseos.fnal.gov mkdir -p %s"%dirRead_)
-#os.system("eos root://eoscms.cern.ch/ mkdir -p %s"%dirRead_)
-print("Created  %s"%dirRead_)
 subFile = open('%s/condorSubmit.sh'%tmpDir,'w')
 
 for year, decay, channel in itertools.product(Years, Decays, Channels):
     outDir  = "%s/"
+    dirRead_ = "%s/Reader/%s/%s/%s"%(dirRead, year, decay, channel)
+    print("Deleting %s"%dirRead_)
+    os.system("eos root://cmseos.fnal.gov rm -r %s"%dirRead_)
+    #os.system("eos root://eoscms.cern.ch/ rm -r %s"%dirRead_)
+    os.system("eos root://cmseos.fnal.gov mkdir -p %s"%dirRead_)
+    #os.system("eos root://eoscms.cern.ch/ mkdir -p %s"%dirRead_)
+    print("Created  %s"%dirRead_)
     jdlName = 'submitJobs_%s%s%s.jdl'%(year, decay, channel)
     jdlFile = open('%s/%s'%(tmpDir, jdlName),'w')
     jdlFile.write('Executable =  runReader.sh \n')
@@ -45,12 +46,12 @@ for year, decay, channel in itertools.product(Years, Decays, Channels):
         args =  'Arguments  = %s %s %s %s %s %s JetBase %s\n' %(year, decay, channel, samp, method, r, dirRead)
         args += 'Queue 1\n\n'
         jdlFile.write(args)
-        for sv in systVar: 
+        for sv in systVar_by_year[year]: 
             if "data_obs" in SampDict[samp]:
                 continue
             args =  'Arguments  = %s %s %s %s %s %s %s %s\n' %(year, decay, channel, samp, method, r, sv, dirRead)
             args += 'Queue 1\n\n'
             jdlFile.write(args)
-    subFile.write("condor_submit %s\n"%jdlName)
+            subFile.write("condor_submit %s\n"%jdlName)
     jdlFile.close() 
 subFile.close()

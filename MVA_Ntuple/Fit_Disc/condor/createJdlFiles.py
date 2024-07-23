@@ -26,7 +26,8 @@ Error  = %s/log_$(cluster)_$(process).stderr\n\
 Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
 
 discDict = {}
-discDict["Disc"] = methodDict.keys()
+#discDict["Disc"] = methodDict.keys()
+discDict["Reco_mass_T"] = methodDict.keys()
 #for hist in histList:
 #    discDict[hist] = ["BDTA"]
 

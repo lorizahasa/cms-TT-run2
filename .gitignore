@@ -24,6 +24,9 @@ MVA_Ntuple/*/*/*.root
 MVA_Ntuple/*/*/*/*.root
 MVA_Ntuple/Disc_Ntuple/src/*.o
 MVA_Ntuple/Disc_Ntuple/runReadNtuple
+MVA_Ntuple/Disc_Ntuple/Class.C
+MVA_Ntuple/Disc_Ntuple/read_xml.py
+MVA_Ntuple/Disc_Ntuple/condor_read/alphaForMain.py
 
 MVA_Ntuple/*.txt
 MVA_Ntuple/*/*.txt
@@ -39,6 +42,12 @@ MVA_Ntuple/*discs
 MVA_Ntuple/*/*discs
 MVA_Ntuple/*/*/*discs
 MVA_Ntuple/*/*/*/*discs
+
+MVA_Ntuple/Fit_Disc/*checks
+MVA_Ntuple/Fit_Disc/checks.tar.gz
+MVA_Ntuple/Fit_Disc/output_old
+MVA_Ntuple/Fit_Disc/Impact.tex
+MVA_Ntuple/Fit_Disc/split_year.sh
 
 *.pyc
 */*.pyc

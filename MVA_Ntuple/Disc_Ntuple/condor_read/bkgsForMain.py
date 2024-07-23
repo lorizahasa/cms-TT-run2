@@ -8,6 +8,7 @@ from DiscInputs import *
 from optparse import OptionParser
 from VarInfo import GetVarInfo
 from ROOT import TFile, TH1F, gDirectory
+import numpy as np
 
 #----------------------------------------
 #INPUT Command Line Arguments 
@@ -28,7 +29,7 @@ rList = list(Regions.keys())
 # Collect all syst 
 #----------------------------------------
 sysList = systVar
-sysList.append("Base")
+sysList.append("JetBase")
 if isCheck:
     isSep  = True
     isComb = False
@@ -77,6 +78,8 @@ def getHistOther(inFile, year, reg, syst, hName):
     for s in Samples:
         if ("Signal" in s) or ("data_obs" in s) or ("TTGamma" in s): 
             continue
+        #if "QCD" in s or "data" in s:
+           # s = f"{s}{channel}"
         hPath = "%s/%s/%s"%(s, reg, syst)
         hList.append(getHist(inFile, hPath, hName))
     return addHist(hList, hName)
@@ -104,22 +107,41 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
     print("==> %s, %s, %s, %s"%(year, decay, channel, r))
-    hList = list(GetVarInfo(r, channel).keys())
+   # hList = list(GetVarInfo(r, channel).keys())
+    hList = []
     hList.append('Disc')
+    hList.append('Reco_mass_T')
     if isCheck:
         print(inFile)
         hList = ['Disc']
+    if isComb:
+        split_year = year.split("__")
+        syst_Comb = []
+        for y in split_year:
+            syst_Comb.append(systVar_by_year[y]) 
+        sysList = list(np.unique(syst_Comb))            
+    else:    
+        sysList = systVar_by_year[year]
+    sysList.append("JetBase")
     for syst, hName in itertools.product(sysList, hList):
+        print(syst, hName)
         if "JE" in syst:
             syst = syst.replace("_up", "Up")
             syst = syst.replace("_down", "Down")
+            if "2016" in syst:
+                syst = syst.replace("2016", "%s"%year)
+        if "JER" in syst:
+            syst = syst.replace("JER", "JER_%s"%year)
+            #if isComb: FIX
         #Signal and TTGamma
         for sample in Samples:
+            #if "QCD" in sample or "data" in sample:
+               # sample =f"{sample}{channel}"
             if "Signal" in sample or 'TTGamma' in sample:
                 hPath = "%s/%s/%s"%(sample, r, syst)
                 if syst in systToNorm:
                     h = getHist(inFile, hPath, hName)
-                    hPath_ = "%s/%s/%s"%(sample, r, "Base")
+                    hPath_ = "%s/%s/%s"%(sample, r, "JetBase")
                     h_ = getHist(inFile, hPath_, hName)
                     sysInt  = h.Integral()
                     if sysInt ==0 or math.isnan(sysInt):
@@ -134,9 +156,11 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
         #OtherBkgs
         hPath = "%s/%s/%s"%("OtherBkgs", r, syst)
         if syst in systToNorm:
+            #h = getHistOther(inFile, year, channel, r, syst, hName)
             h = getHistOther(inFile, year, r, syst, hName)
-            hPath_ = "%s/%s/%s"%("OtherBkgs", r, "Base")
-            h_ = getHistOther(inFile, year, r, "Base", hName)
+            hPath_ = "%s/%s/%s"%("OtherBkgs", r, "JetBase")
+            #h_ = getHistOther(inFile, year, channel, r, "JetBase", hName)
+            h_ = getHistOther(inFile, year, r, "JetBase", hName)
             sysInt  = h.Integral()
             if sysInt ==0 or math.isnan(sysInt):
                 print(year, channel, sample, r, syst, sysInt)
@@ -144,11 +168,13 @@ for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList)
                 h.Scale(h_.Integral()/sysInt)
             writeHist(outFile,  hPath, h)
         else:
+            #h = getHistOther(inFile, year, channel, r, syst, hName)
             h = getHistOther(inFile, year, r, syst, hName)
             writeHist(outFile,  hPath, h)
         #writeHist(outFile, hPath, getHistOther(inFile, r, syst, hName))
         #data_obs for base
         if "Base" in syst:
+            #hPath = "%s%s/%s/%s"%("data_obs",channel, r, syst)
             hPath = "%s/%s/%s"%("data_obs", r, syst)
             writeHist(outFile,  hPath, getHist(inFile, hPath, hName))
     outFile.Close()

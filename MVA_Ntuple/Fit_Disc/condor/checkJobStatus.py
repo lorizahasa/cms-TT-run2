@@ -35,7 +35,7 @@ condorLogDir = "tmpSub/log"
 submittedDict = {}
 #Create for Base
 for sample, r in itertools.product(Samples, Regions.keys()):
-    rootFile = "%s_%s_Base.root"%(sample, r)
+    rootFile = "%s_%s_JetBase.root"%(sample, r)
     arguments = "%s %s %s %s %s"%(year, decay, channel, sample, r)
     submittedDict[rootFile] = arguments
 
@@ -46,7 +46,7 @@ for sample, syst, level, r in itertools.product(Samples, Systematics, SystLevels
     if not sample in ["Data", "QCD_DD"]:
         submittedDict[rootFile] = arguments
 
-print "Total submitted jobs: %s"%len(submittedDict.keys())
+print("Total submitted jobs: %s"%len(submittedDict.keys()))
 for key, value in submittedDict.items():
     pass
     #print key
@@ -57,15 +57,15 @@ def returnNotMatches(a, b):
 #Get all finished jobs
 #----------------------------------------
 finishedList = os.listdir(inHistFullDir)
-print "Total finished jobs: %s"%len(finishedList)
+print("Total finished jobs: %s"%len(finishedList))
 
 #----------------------------------------
 #Get all un-finished jobs
 #----------------------------------------
-print "Unfinished jobs: %s\n"%(len(submittedDict.keys()) - len(finishedList))
-unFinishedList = returnNotMatches(finishedList, submittedDict.keys())   
+print("Unfinished jobs: %s\n"%(len(submittedDict.keys()) - len(finishedList)))
+unFinishedList = returnNotMatches(finishedList, submittedDict.keys())
 for unFinished in unFinishedList[1]:
-    print submittedDict[unFinished]
+    print(submittedDict[unFinished])
 
 #----------------------------------------
 #Get finished but corrupted jobs
@@ -77,15 +77,15 @@ for finished in finishedList:
     if sizeInBytes < 3000:
         corruptedList.append(finished)
 
-print "\nFinished but corrupted jobs: %s"%len(corruptedList)
+print("\nFinished but corrupted jobs: %s"%len(corruptedList))
 for corrupted in corruptedList:
-    print corrupted
+    print(corrupted)
 
 #----------------------------------------
 # Check log fils as well
 #----------------------------------------
 grepName = "grep -rn nan %s -A 6 -B 2 "%condorLogDir
-print "\n Nan/Inf is propgrated for the following jobs\n"
+print("\n Nan/Inf is propgrated for the following jobs\n")
 #os.system(grepName)
 
 #----------------------------------------
@@ -106,11 +106,11 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
-print len(unFinishedList)
-print unFinishedList
-print len(corruptedList)
+print(len(unFinishedList))
+print(unFinishedList)
+print(len(corruptedList))
 if len(unFinishedList) ==0 and len(corruptedList)==0:
-    print "Noting to be resubmitted"
+    print("Noting to be resubmitted")
 else:
     jdlFileName = 'tmpSub/resubmitJobs_%s%s%s.jdl'%(year, decay, channel)
     jdlFile = open(jdlFileName,'w')
@@ -120,12 +120,12 @@ else:
         run_command =  \
 		'arguments  = %s \n\
 queue 1\n\n' %(submittedDict[unFinished])
-    	jdlFile.write(run_command)
+        jdlFile.write(run_command)
     for corrupted in corruptedList:
         run_command =  \
 		'arguments  = %s \n\
 queue 1\n\n' %(submittedDict[corrupted])
-    	jdlFile.write(run_command)
-    print "condor_submit %s"%jdlFileName
-    jdlFile.close() 
-print inHistFullDir
+        jdlFile.write(run_command)
+    print("condor_submit %s"%jdlFileName)
+    jdlFile.close()
+print(inHistFullDir)

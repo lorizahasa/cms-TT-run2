@@ -355,7 +355,6 @@ makeNtuple::makeNtuple(int ac, char** av)
 //jesRefUnc   = jmeFF->at(jmeUL[year]+"_"+jmeU+"_"+"AK4PFchs");
  try{ cout << "Here jes un" <<  jmeUL[year]+"_Regrouped_"+jmeU+"_"+"AK4PFchs"<< endl; 
     jesRefUnc = jmeFF->at(jmeUL[year]+"_Regrouped_"+jmeU+"_"+"AK4PFchs");
-    
             } catch (const std::exception& e) {
                 cout<<"\nEXCEPTION: in jesRefUnc: "<<e.what()<<endl;
                 std::abort();

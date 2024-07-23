@@ -3,7 +3,7 @@ import sys
 import os
 
 sys.path.insert(0, os.getcwd().replace("sample",""))
-from DiscInputs import Years, JMEs
+from DiscInputs import Years, JME_dic
 from SampleInfo import dataAllMu, dataAllEle
 
 fileName = js.load(open("FilesNtuple_cff.json", "r"))
@@ -88,7 +88,16 @@ groupDic = {
     "GJets_HT200To400",
     "GJets_HT400To600",
     "GJets_HT600ToInf"
-              ]}
+              ],
+ "Others" : [
+     'TTZtoQQ',
+     'TTWtoQQ',
+     "TTWtoLNu",
+     'TTZtoLL',
+     'WW',
+     'WZ',
+     'ZZ'
+     ]}
 
 def getDataSamp(year):
     dicData={}
@@ -97,7 +106,7 @@ def getDataSamp(year):
     return dicData
 
 fileList ={}
-Years = ["2017"]
+Years = ["2016Pre", "2016Post", "2017", "2018"]
 JETS = ["JetBase", "JER_up"]
 
 def groupSample(y,j):
@@ -124,7 +133,7 @@ def groupSample(y,j):
 for year in Years:
     print(year)
     groupSample(year, "JetBase")
-    for jets in JMEs:
+    for jets in JME_dic[year]:
         for l in ["_up", "_down"]:
             groupSample(year,"%s%s"%(jets,l))
 fileNtuple = open("FilesNtuple_Grouped_cff.json","w")

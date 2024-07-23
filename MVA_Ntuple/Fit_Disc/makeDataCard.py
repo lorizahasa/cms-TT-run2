@@ -48,7 +48,7 @@ os.system("mkdir -p %s"%outFileDir)
 inFileName = "%s/%s"%(outFileDir, inFile)
 print(inFileDir)
 os.system("xrdcp -f root://cmseos.fnal.gov/%s/%s %s"%(inFileDir, inFile, outFileDir))
-inHistDirBase   = "$PROCESS/%s/Base/$BIN"%region
+inHistDirBase   = "$PROCESS/%s/JetBase/$BIN"%region
 inHistDirSys    = "$PROCESS/%s/$SYSTEMATIC/$BIN"%region
 
 outFilePath     = "%s/Shapes.root"%(outFileDir)
@@ -71,9 +71,11 @@ lumiCorr = {"2016Pre": ["lumi_Run2", 1.006],
 #-----------------------------------
 cb = ch.CombineHarvester()
 #cb.SetVerbosity(4)
+#AllBkgs = ["TTGamma"]
 AllBkgs = ["TTGamma", "OtherBkgs"]
 Signal  = ["SignalSpin32_M%s"%mass]
 allMC   = Signal + AllBkgs
+No_Other = Signal + ["TTGamma"]
 #------------------
 #Add observed data
 #------------------
@@ -101,19 +103,13 @@ cb.cp().process(allMC).AddSyst(cb, "Weight_mu",     "shape",ch.SystMap("era") ([
 cb.cp().process(allMC).AddSyst(cb, "Weight_pho",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_btag_b", "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_q2",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JEC_Absolute",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JEC_Absolute_2017",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JEC_BBEC1",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JEC_BBEC1_2017",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JEC_EC2",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JEC_EC2_2017",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JEC_HF",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JEC_HF_2017",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JEC_RelativeSample_2017",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JEC_RelativeBal",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JEC_FlavorQCD",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-#cb.cp().process(allMC).AddSyst(cb, "JEC_TimePtEta",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
-cb.cp().process(allMC).AddSyst(cb, "JER",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#for jme in JME_dic[year]:
+    #if not "JEC_HF" in jme:
+     #   continue
+#    cb.cp().process(allMC).AddSyst(cb, "%s"%jme,    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#    print(jme)
+cb.cp().process(allMC).AddSyst(cb, "JEC_Total",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+cb.cp().process(allMC).AddSyst(cb, "JER_%s"%year,    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_pdf",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_ttag",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 #------------------

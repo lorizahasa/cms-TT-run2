@@ -6,7 +6,7 @@ from DiscInputs import Regions
 #INPUT Command Line Arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016",type='str',
+parser.add_option("-y", "--year", dest="year", default="2017",type='str',
                      help="Specifyi the year of the data taking" )
 parser.add_option("-d", "--decay", dest="decay", default="Semilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
@@ -18,7 +18,7 @@ parser.add_option("--method", "--method", dest="method", default="BDTP",type='st
                      help="Which MVA method to be used")
 parser.add_option("--level", "--level", dest="level", default="",type='str',
                      help="Specify up/down of systematic")
-parser.add_option("--syst", "--systematic", dest="systematic", default="Base",type='str',
+parser.add_option("--syst", "--systematic", dest="systematic", default="JetBase",type='str',
                      help="Specify which systematic to run on")
 (options, args) = parser.parse_args()
 year = options.year

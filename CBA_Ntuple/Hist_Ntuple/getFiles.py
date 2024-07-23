@@ -17,7 +17,7 @@ fileJSON = open('FilesNtuple_cff.json','w')
 allJobs = 0
 dicJson = {}
 for year, decay, in itertools.product(Years, Decays): 
-    for syst in SystJME[decay]:
+    for syst in get_syst_List(year,decay):
         ntupleFile.write("\n#----------------------------------------------------\n")
         ntupleFile.write("#Year, Decay, Syst: %s, %s, %s\n"%(year, decay, syst))
         ntupleFile.write("#----------------------------------------------------\n")

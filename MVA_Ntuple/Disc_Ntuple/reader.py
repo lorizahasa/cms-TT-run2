@@ -56,7 +56,7 @@ if "data" in sample:
     systDir = "JetBase"
 inDirNtuple = "root://eoscms.cern.ch/%s"%dirNtuple
 dirFile = "%s/%s/%s"%(year, decay, systDir) 
-print(dirFile)
+print(inDirNtuple,dirFile)
 allSamples = getSamples(year, decay, systDir)
 
 #----------------------------------------
@@ -105,7 +105,7 @@ w_fsr = 1.
 w_btag="Weight_btag"
 w_pho ="Weight_pho[0]"
 w_ttag="Weight_ttag"
-histDirInFile = "%s/%s/Base"%(sample, region)
+histDirInFile = "%s/%s/JetBase"%(sample, region)
 sample_ = sample
 if "data" in sample or "QCD" in sample:
     sample_ = "%s%s"%(sample, channel)
@@ -113,7 +113,7 @@ if "data" in sample or "QCD" in sample:
 #-----------------------------------------
 #For Systematics
 #----------------------------------------
-if not syst=="Base":
+if not syst=="JetBase":
     histDirInFile = "%s/%s/%s"%(sample, region, syst) 
     print("Running for systematics: ", syst)
     if "Weight_pu"  in syst: w_pu = syst 
@@ -158,6 +158,7 @@ for var in vars.keys():
 #-----------------------------------------
 if "u" in channel: 
     selStr = "e.Event_pass_presel_mu && %s"%Regions[region]
+   # selStr = "e.Event_pass_presel_mu && e.Jet_b_size >=1"
 else:
     selStr = "e.Event_pass_presel_ele && %s"%Regions[region]
 selStr = selStr.replace("&&", "and")
@@ -180,6 +181,8 @@ def evalTree(sList, i):
     outputFile = ROOT.TFile(outFileFullPath, "RECREATE")
     print("The histogram directory inside the root file is", histDirInFile) 
     for ievt, e in enumerate(tree):
+        #if ievt > 1000000:
+         #   break
         eventSel = int(eval(selStr))
         #print(ievt, eventSel)
         if eventSel>0:
@@ -229,7 +232,8 @@ def evalTree(sList, i):
     if not outputFile.GetDirectory(histDirInFile):
         outputFile.mkdir(histDirInFile)
     outputFile.cd(histDirInFile)
-    print("Integral of Histogram =  %s"%dictHist["Disc"].Integral())
+    print("Entry of Reco_mass_T =  %s"%dictHist["Reco_mass_T"].GetEntries())
+    print("Integral of Histogram =  %s"%dictHist["Reco_mass_T"].Integral())
     for h in dictHist.values():
         if h.GetName()=="Disc" or h.GetName()=="Reco_mass_T":
             outputFile.cd(histDirInFile)
@@ -241,6 +245,7 @@ def evalTree(sList, i):
 # Create a list to store the processes or threads
 processes = []
 fMulti = split_list(allSamples[sample_], nMulti)
+#fMulti = [["Data_SingleMu_b_Ntuple_1of1.root"]]
 haddIn_ = []
 for i, s_ in enumerate(fMulti):
     process = multiprocessing.Process(target=evalTree, args=(s_,i,))

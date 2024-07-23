@@ -8,6 +8,7 @@
 #include<TFile.h>
 #include<TTree.h>
 #include<TH1F.h>
+#include<TProfile.h>
 #include<TDirectory.h>
 #include<TObject.h>
 #include<TCanvas.h>
@@ -49,10 +50,13 @@ int main(int argc, char* argv[]){
         cout<<e.what()<<endl;
         std::abort();
     }
-
+    //TProfile Bin
+    double vx[] = {15, 20, 25, 30, 35, 40, 50, 60, 75, 90, 110, 130, 175, 230, 300, 400, 500, 600, 700, 850, 1000, 1200, 1450, 1750, 2100, 2500, 3000};
+    const int nx = sizeof(vx)/sizeof(vx[0])-1;
+    
     std::string year = "2017";
     std::string decay = "Semilep";
-    std::string channel = "Mu";
+    std::string channel = "Ele";
     std::string sample = "SignalSpin32_M800";
     std::string region = "ttyg_Enriched_SR_Resolved";
     std::string syst = "JetBase";
@@ -99,7 +103,6 @@ int main(int argc, char* argv[]){
                 exit(EXIT_FAILURE);
         }
     }
-
     std::cout << "Year: " << year << std::endl;
     std::cout << "Decay: " << decay << std::endl;
     std::cout << "Channel: " << channel << std::endl;
@@ -113,8 +116,16 @@ int main(int argc, char* argv[]){
 	// Copy the xml weight file 
 	//----------------------------------------
 	std::string package = "TMVA";
+//std::string dirMVA = "/store/user/lhasa/Output/cms-TT-run2/MVA_Ntuple/C/";
+    std::string dirMVA = "/store/user/lhasa/Output/cms-TT-run2/MVA_Ntuple/C/";
+    std::string dirClass = dirMVA + "Disc_Ntuple/DiscMain";
 	std::string inFileName = package + "_Classification_" + method + ".weights.xml";
-    std::string inFileDir = "./" + year + "/" + decay + "/" + channel + "/" + method + "/" + "SR" + "/weights";
+    std::string xmlRegion = region;
+    if (region.find("ttyg_Enriched_CR_Resolved") != std::string::npos)
+        xmlRegion = "ttyg_Enriched_SR_Resolved";
+    if (region.find("ttyg_Enriched_CR_Boosted") != std::string::npos)
+        xmlRegion = "ttyg_Enriched_SR_Boosted";
+    std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights";
     std::string outFileDir = "./discs/Reader/" + year + "/" + decay + "/" + channel + "/" + method;
 
     system(("mkdir -p " + outFileDir).c_str());
@@ -122,9 +133,9 @@ int main(int argc, char* argv[]){
     std::cout << outFileDir << std::endl;
 
     // Assuming method is defined elsewhere
-    //system(("xrdcp -rf root://cmseos.fnal.gov/" + inFileDir + "/" + inFileName + " " + outFileDir).c_str());
-    //std::string weightFile = outFileDir + "/" + inFileName;
-    std::string weightFile = "TMVA_Classification_BDTA.weights.xml"; 
+    system(("xrdcp -rf root://cmseos.fnal.gov/" + inFileDir + "/" + inFileName + " " + outFileDir).c_str());
+    std::string weightFile = outFileDir + "/" + inFileName;
+    //std::string weightFile = "TMVA_Classification_BDTA.weights.xml"; 
 
 	//-----------------------------------------
 	//TMVA specific
@@ -139,18 +150,31 @@ int main(int argc, char* argv[]){
     //--------------------------------
     // Read input files
     //--------------------------------
-    TString oName = "2023_Data.root";
     vector<string>fileNames; 	
-    //fileNames.push_back("SignalSpin32_M800_Ntuple_1of1.root");
+    //fileNames.push_back("Data_SingleMu_f_Ntuple_1of2.root");
     string dirNtuple="/store/group/phys_b2g/lhasa/Output/cms-TT-run2/Ntuple_Skim";
     string inDirNtuple = "root://eoscms.cern.ch/"+dirNtuple+"/"+year+"/"+decay+"/JetBase/";
     if (syst.find("JE") != std::string::npos){
         inDirNtuple = "root://eoscms.cern.ch/"+dirNtuple+"/"+year+"/"+decay+"/"+syst+"/";
     }
-    string sKey = "Semilep_"+syst+"__"+sample+"_FileList_"+year;
-    //Semilep_JetBase__SignalSpin12_M800_FileList_2017
+    string sKey;
+    if (syst.find("JE") != std::string::npos){
+        sKey = "Semilep_"+syst+"__"+sample+"_FileList_"+year;
+        if ((sample.find("QCD") != std::string::npos) || (sample.find("data") != std::string::npos)){    
+            sKey = "Semilep_"+syst+"__"+sample+channel+"_FileList_"+year;
+        }
+    }
+    else {
+        sKey = "Semilep_JetBase__"+sample+"_FileList_"+year;
+        if ((sample.find("QCD") != std::string::npos) || (sample.find("data") != std::string::npos)){    
+            sKey = "Semilep_JetBase__"+sample+channel+"_FileList_"+year;
+        }
+    }
     try{
         js.at(sKey).get_to(fileNames);
+        for (const auto& fileName : fileNames) {
+            std::cout << fileName << std::endl;
+        }
     }catch (const std::exception & e){
         cout<<"\nEXCEPTION: Check the sKey: "<<sKey<<endl;
         cout<<e.what()<<endl;
@@ -160,48 +184,6 @@ int main(int argc, char* argv[]){
         }
         std::abort();
     }
-
-    NtupleTree *tree = new NtupleTree(inDirNtuple, fileNames);
-
-    reader.AddVariable("Reco_mass_T", &tree->Reco_mass_T);
-    reader.AddVariable("Reco_mass_lgamma[0]", &tree->Reco_mass_lgamma0);
-    reader.AddVariable("Reco_mass_trans_w", &tree->Reco_mass_trans_w);
-    reader.AddVariable("Reco_st", &tree->Reco_stF);
-    reader.AddVariable("Reco_mass_TT_diff", &tree->Reco_mass_TT_diff);
-    reader.AddVariable("Jet_deep_b[0]", &tree->Jet_deep_b0);
-    reader.AddVariable("Jet_deep_b[1]", &tree->Jet_deep_b1);
-    reader.AddVariable("Reco_angle_lepton_met", &tree->Reco_angle_lepton_met);
-    reader.AddVariable("Reco_angle_leadJet_met", &tree->Reco_angle_leadJet_met);
-    reader.AddVariable("Reco_angle_leadBjet_met", &tree->Reco_angle_leadBjet_met);
-    reader.AddVariable("Reco_chi2", &tree->Reco_chi2);
-    reader.AddVariable("Jet_size", &tree->Jet_sizeF);
-    reader.AddVariable("Jet_qgl[0]", &tree->Jet_qgl0);
-    reader.AddVariable("Jet_qgl[1]", &tree->Jet_qgl1);
-    reader.AddVariable("Reco_dr_pho_tstarHad", &tree->Reco_dr_pho_tstarHad);
-    reader.AddVariable("Reco_dr_pho_tHad", &tree->Reco_dr_pho_tHad);
-    reader.AddVariable("Reco_dr_pho_tstarLep", &tree->Reco_dr_pho_tstarLep);
-    reader.AddVariable("Reco_dr_pho_tLep", &tree->Reco_dr_pho_tLep);
-    reader.AddVariable("Reco_dr_pho_gluon", &tree->Reco_dr_pho_gluon);
-    reader.AddVariable("Reco_dr_pho_bLep", &tree->Reco_dr_pho_bLep);
-    reader.AddVariable("Reco_dr_pho_lep", &tree->Reco_dr_pho_lep);
-    reader.AddVariable("Reco_dr_pho_nu", &tree->Reco_dr_pho_nu);
-    reader.AddVariable("Reco_dr_gluon_tstarHad", &tree->Reco_dr_gluon_tstarHad);
-    reader.AddVariable("Reco_dr_gluon_tHad", &tree->Reco_dr_gluon_tHad);
-    reader.AddVariable("Reco_dr_gluon_tstarLep", &tree->Reco_dr_gluon_tstarLep);
-    reader.AddVariable("Reco_dr_gluon_tLep", &tree->Reco_dr_gluon_tLep);
-    reader.AddVariable("Reco_dr_tHad_tstarHad", &tree->Reco_dr_tHad_tstarHad);
-    reader.AddVariable("Reco_dr_tLep_tstarLep", &tree->Reco_dr_tLep_tstarLep);
-    reader.AddVariable("Reco_dr_tstarHad_tstarLep", &tree->Reco_dr_tstarHad_tstarLep);
-
-	if (region.find("Boosted") != std::string::npos) {
-		reader.AddVariable("FatJet_pt[0]", &tree->FatJet_pt0);
-		reader.AddVariable("FatJet_msoftdrop[0]", &tree->FatJet_msoftdrop0);
-	}
-    //reader.AddSpectator("Weight_lumi", &tree->Weight_lumi);
-
-
-    reader.BookMVA(method, weightFile.c_str()); // Assuming method and weightFile are defined elsewhere
-
 
 	//-----------------------------------------
 	//Define histogram
@@ -239,7 +221,63 @@ int main(int argc, char* argv[]){
 	TH1F* hReco_dr_tstarHad_tstarLep = new TH1F("Reco_dr_tstarHad_tstarLep", "Reco_dr_tstarHad_tstarLep", 20, 0, 10); 
 	TH1F* hFatJet_pt = new TH1F("FatJet_pt", "FatJet_pt", 9000, -50, 8950);
 	TH1F* FatJet_msoftdrop = new TH1F("FatJet_msoftdrop", "FatJet_msoftdrop", 9000, -50, 8950);
+    //Define TProfile
+    TProfile *pWeight_lumi = new TProfile("pWeight_lumi", "pWeight_lumi", nx, vx);
+    TProfile *pWeight_pu = new TProfile("pWeight_pu", "pWeight_pu", nx, vx);
+    TProfile *pWeight_mu = new TProfile("pWeight_mu", "pWeight_mu", nx, vx);
+    TProfile *pWeight_ele = new TProfile("pWeight_ele", "pWeight_ele", nx, vx);
+    TProfile *pWeight_q2 = new TProfile("pWeight_q2", "pWeight_q2", nx, vx);
+    TProfile *pWeight_pdf = new TProfile("pWeight_pdf", "pWeight_pdf", nx, vx);
+    TProfile *pWeight_prefire = new TProfile("pWeight_prefire", "pWeight_prefire", nx, vx);
+    TProfile *pWeight_isr = new TProfile("pWeight_isr", "pWeight_isr", nx, vx);
+    TProfile *pWeight_fsr = new TProfile("pWeight_fsr", "pWeight_fsr", nx, vx);
+    TProfile *pWeight_btag = new TProfile("pWeight_btag", "pWeight_btag", nx, vx);
+    TProfile *pWeight_pho = new TProfile("pWeight_pho", "pWeight_pho", nx, vx);
+    TProfile *pWeight_ttag = new TProfile("pWeight_ttag", "pWeight_ttag", nx, vx);
 
+    NtupleTree *tree = new NtupleTree(inDirNtuple, fileNames);
+
+    reader.AddVariable("Reco_mass_T", &tree->Reco_mass_T);
+  //  reader.AddVariable("Reco_mass_lgamma[0]", &tree->Reco_mass_lgamma0);
+    reader.AddVariable("Reco_mass_trans_w", &tree->Reco_mass_trans_w);
+    reader.AddVariable("Reco_st", &tree->Reco_stF);
+    reader.AddVariable("Reco_mass_TT_diff", &tree->Reco_mass_TT_diff);
+  //  reader.AddVariable("Jet_deep_b[0]", &tree->Jet_deep_b0);
+  //  reader.AddVariable("Jet_deep_b[1]", &tree->Jet_deep_b1);
+    reader.AddVariable("Reco_angle_lepton_met", &tree->Reco_angle_lepton_met);
+    reader.AddVariable("Reco_angle_leadJet_met", &tree->Reco_angle_leadJet_met);
+    reader.AddVariable("Reco_angle_leadBjet_met", &tree->Reco_angle_leadBjet_met);
+    reader.AddVariable("Reco_chi2", &tree->Reco_chi2);
+    reader.AddVariable("Jet_size", &tree->Jet_sizeF);
+//reader.AddVariable("Jet_qgl[0]", &tree->Jet_qgl0);
+//    reader.AddVariable("Jet_qgl[1]", &tree->Jet_qgl1);
+    reader.AddVariable("Reco_dr_pho_tstarHad", &tree->Reco_dr_pho_tstarHad);
+    reader.AddVariable("Reco_dr_pho_tHad", &tree->Reco_dr_pho_tHad);
+    reader.AddVariable("Reco_dr_pho_tstarLep", &tree->Reco_dr_pho_tstarLep);
+    reader.AddVariable("Reco_dr_pho_tLep", &tree->Reco_dr_pho_tLep);
+    reader.AddVariable("Reco_dr_pho_gluon", &tree->Reco_dr_pho_gluon);
+    reader.AddVariable("Reco_dr_pho_bLep", &tree->Reco_dr_pho_bLep);
+    reader.AddVariable("Reco_dr_pho_lep", &tree->Reco_dr_pho_lep);
+    reader.AddVariable("Reco_dr_pho_nu", &tree->Reco_dr_pho_nu);
+    reader.AddVariable("Reco_dr_gluon_tstarHad", &tree->Reco_dr_gluon_tstarHad);
+    reader.AddVariable("Reco_dr_gluon_tHad", &tree->Reco_dr_gluon_tHad);
+    reader.AddVariable("Reco_dr_gluon_tstarLep", &tree->Reco_dr_gluon_tstarLep);
+    reader.AddVariable("Reco_dr_gluon_tLep", &tree->Reco_dr_gluon_tLep);
+    reader.AddVariable("Reco_dr_tHad_tstarHad", &tree->Reco_dr_tHad_tstarHad);
+    reader.AddVariable("Reco_dr_tLep_tstarLep", &tree->Reco_dr_tLep_tstarLep);
+    reader.AddVariable("Reco_dr_tstarHad_tstarLep", &tree->Reco_dr_tstarHad_tstarLep);
+
+//	if (region.find("Boosted") != std::string::npos) {
+//		reader.AddVariable("FatJet_pt[0]", &tree->FatJet_pt0);
+//		reader.AddVariable("FatJet_msoftdrop[0]", &tree->FatJet_msoftdrop0);
+//	}
+    //reader.AddSpectator("Weight_lumi", &tree->Weight_lumi);
+
+
+    reader.BookMVA(method, weightFile.c_str()); // Assuming method and weightFile are defined elsewhere
+
+
+    
 	Float_t w_lumi 	= 1.0;
 	Float_t w_pu 	= 1.0;
 	Float_t w_mu 	= 1.0;
@@ -271,8 +309,6 @@ int main(int argc, char* argv[]){
     }
     string outFileName = sample+"_"+region+"_"+str+".root";
     string outPath = outDir+"/"+outFileName; 
-	TFile* outFile = TFile::Open(outPath.c_str() ,"RECREATE");
-    outFile->cd();
 	Long64_t nEntr = tree->GetEntries();
 
 	int startEntry = 0;
@@ -290,15 +326,20 @@ int main(int argc, char* argv[]){
     double totalTime = 0.0;
 	auto startClock = std::chrono::high_resolution_clock::now();
     bool passTrig = false;
-	for(Long64_t entry= startEntry; entry < endEntry; entry++){
-		if(endEntry > 100  && entry%(eventsPerJob/100) == 0){// print after every 1% of events
+    TH1F* hEvents = new TH1F("hEvents", "hEvents", 5, -1.5, 3.5);
+
+	for(Long64_t i= startEntry; i < endEntry; i++){
+        //if(i < 2587700)
+        //    continue;
+		if(endEntry > 100  && i%(eventsPerJob/100) == 0){// print after every 1% of events
             totalTime+= std::chrono::duration<double>(std::chrono::high_resolution_clock::now()-startClock).count();
             int sec = (int)(totalTime)%60;
             int min = (int)(totalTime)/60;
-	        std::cout<<setw(10)<<100*entry/endEntry<<" %"<<setw(10)<<min<<"m "<<sec<<"s"<<std::endl;
+	        std::cout<<setw(10)<<100*i/endEntry<<" %"<<setw(10)<<min<<"m "<<sec<<"s"<<std::endl;
 			startClock = std::chrono::high_resolution_clock::now();
 		}
-        
+        hEvents->Fill(0);
+        Long64_t entry = tree->LoadTree(i);
         //Channel selection	
         if(channel.find("Mu") != std::string::npos){
             tree->b_Event_pass_presel_mu->GetEntry(entry);
@@ -309,14 +350,15 @@ int main(int argc, char* argv[]){
             tree->b_Event_pass_presel_ele->GetEntry(entry);
             if(!tree->Event_pass_presel_ele) continue;
         }
+        
         //photon selection
         tree->b_Photon_size->GetEntry(entry);
         if(tree->Photon_size !=1) continue;
-
+        
         //b-jet selection
         tree->b_Jet_b_size->GetEntry(entry);
         if(tree->Jet_b_size < 1) continue;
-    
+        
         //Region selection
         if(region.find("Resolved") != std::string::npos) {
             //jet selection
@@ -346,7 +388,8 @@ int main(int argc, char* argv[]){
         }
         
         Float_t combWt = 1.0;
-        if(!(sample.find("Data") != std::string::npos)){
+
+        if(!(sample.find("data") != std::string::npos)){
             // Read weight branches now
             tree->b_Weight_lumi->GetEntry(entry);
             tree->b_Weight_pu->GetEntry(entry);
@@ -498,10 +541,28 @@ int main(int argc, char* argv[]){
                     combWt    = combWt*sf; 
                 }
             }
-        }//for loop not Data        
-		tree->b_Reco_mass_T->GetEntry(entry);
+        }//for loop not Data 
+             
+	    tree->b_Reco_mass_T->GetEntry(entry);
         hReco_mass_T->Fill(tree->Reco_mass_T, combWt);
-        
+        //Fill TProfile for JetBase only
+        if(syst.find("JetBase") != std::string::npos){
+            pWeight_lumi->Fill(tree->Reco_mass_T, w_lumi);
+            if(tree->Reco_mass_T>445 && tree->Reco_mass_T<565){ 
+            cout<<"W_lumi: "<< w_lumi <<endl;}
+            pWeight_pu->Fill(tree->Reco_mass_T, w_pu);
+            pWeight_mu->Fill(tree->Reco_mass_T, w_mu);
+            pWeight_ele->Fill(tree->Reco_mass_T, w_ele);
+            pWeight_q2->Fill(tree->Reco_mass_T, w_q2);
+            pWeight_pdf->Fill(tree->Reco_mass_T, w_pdf);
+            pWeight_prefire->Fill(tree->Reco_mass_T, w_prefire);
+            pWeight_isr->Fill(tree->Reco_mass_T, w_isr);
+            pWeight_fsr->Fill(tree->Reco_mass_T, w_fsr);
+            pWeight_btag->Fill(tree->Reco_mass_T, w_btag);
+            pWeight_pho->Fill(tree->Reco_mass_T, w_pho);
+            pWeight_ttag->Fill(tree->Reco_mass_T, w_ttag);
+        }
+      /*  
         //Evaluate MVA now
         tree->b_Jet_deep_b->GetEntry(entry);
         if (tree->Jet_deep_b->size()>1){
@@ -517,16 +578,69 @@ int main(int argc, char* argv[]){
         //tree->Jet_deep_b1 = tree->Jet_deep_b->at(1);
         tree->Jet_qgl0 = tree->Jet_qgl->at(0);
         tree->Jet_qgl0 = tree->Jet_qgl->at(1);
+        */
+        //cout<<"Entry: "<< entry;
+        //tree->GetEntry(entry);
+        
+        tree->b_Reco_mass_trans_w->GetEntry(entry);
+        tree->b_Reco_st->GetEntry(entry);
+        tree->b_Reco_mass_TT_diff->GetEntry(entry);
+        tree->b_Reco_angle_lepton_met->GetEntry(entry);
+        tree->b_Reco_angle_leadJet_met->GetEntry(entry);
+        tree->b_Reco_angle_leadBjet_met->GetEntry(entry);
+        tree->b_Reco_chi2->GetEntry(entry);
+        //tree->b_Jet_size->GetEntry(entry);
+        tree->b_Reco_dr_pho_tstarHad->GetEntry(entry);
+        tree->b_Reco_dr_pho_tHad->GetEntry(entry);
+        tree->b_Reco_dr_pho_tstarLep->GetEntry(entry);
+        tree->b_Reco_dr_pho_tLep->GetEntry(entry);
+        tree->b_Reco_dr_pho_gluon->GetEntry(entry);
+        tree->b_Reco_dr_pho_bLep->GetEntry(entry);
+        tree->b_Reco_dr_pho_lep->GetEntry(entry);
+        tree->b_Reco_dr_pho_nu->GetEntry(entry);
+        tree->b_Reco_dr_gluon_tstarHad->GetEntry(entry);
+        tree->b_Reco_dr_gluon_tHad->GetEntry(entry);
+        tree->b_Reco_dr_gluon_tstarLep->GetEntry(entry);
+        tree->b_Reco_dr_gluon_tLep->GetEntry(entry);
+        tree->b_Reco_dr_tHad_tstarHad->GetEntry(entry);
+        tree->b_Reco_dr_tLep_tstarLep->GetEntry(entry);
+        tree->b_Reco_dr_tstarHad_tstarLep->GetEntry(entry);
+       /* 
+	    if (region.find("Boosted") != std::string::npos) {
+            tree->b_FatJet_pt->GetEntry(entry);
+            tree->FatJet_pt0 = tree->FatJet_pt->at(0);
+            tree->b_FatJet_msoftdrop->GetEntry(entry);
+            tree->FatJet_msoftdrop0 = tree->FatJet_msoftdrop->at(0);
+        }*/
         auto disc = reader.EvaluateMVA(method);  
-        hDisc->Fill(disc, combWt);
+//hDisc->Fill(disc, combWt);
+        hDisc->Fill(disc);
+        
 	}
+    
     cout<<"Entry of Reco_mass_T = "<<hReco_mass_T->GetEntries()<<endl;
     cout<<"Integral of Reco_mass_T = "<<hReco_mass_T->Integral()<<endl;
     string outDirInFile = sample+"/"+region+"/"+str+"/";
+	TFile* outFile = TFile::Open(outPath.c_str() ,"RECREATE");
+    outFile->cd();
     outFile->mkdir(outDirInFile.c_str());
     outFile->cd(outDirInFile.c_str());
 	hReco_mass_T->Write();
     hDisc->Write();
+    hEvents->Write();
+    pWeight_lumi->Write();
+    pWeight_pu->Write();
+    pWeight_mu->Write();
+    pWeight_ele->Write();
+    pWeight_q2->Write();
+    pWeight_pdf->Write();
+    pWeight_prefire->Write();
+    pWeight_isr->Write();
+    pWeight_fsr->Write();
+    pWeight_btag->Write();
+    pWeight_pho->Write();
+    pWeight_ttag->Write();
+    cout<<"Output File ="<<outFile->GetName()<<endl;
 	outFile->Close();
 	return 0;
 }
