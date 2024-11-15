@@ -45,25 +45,25 @@ def GetVarInfo(region, channel):
              #"Electron_eta_sc"      : ["Electron_eta_sc[0]" , [12,-2.88,2.88], True],
             }
     varFatJet = {
-             "FatJet_pt"               : ["FatJet_pt[0]"              , [9000,-50,8950], True],
+             "FatJet_pt_0"               : ["FatJet_pt_0"              , [9000,-50,8950], True],
              #"FatJet_eta"              : ["FatJet_eta[0]"             , [12,-2.88,2.88], True],
-             "FatJet_msoftdrop"        : ["FatJet_msoftdrop[0]"       , [9000,-50,8950], True],
+             "FatJet_msoftdrop_0"        : ["FatJet_msoftdrop_0"       , [9000,-50,8950], True],
             }
     varBase = {
              "Reco_mass_T"          : ["Reco_mass_T", [6000,-50,5950], True],
-             #"Reco_mass_lgamma"     : ["Reco_mass_lgamma[0]", [2000,-50,1950], True],
+             "Reco_mass_lgamma_0"     : ["Reco_mass_lgamma_0", [2000,-50,1950], True],
              "Reco_mass_trans_w"    : ["Reco_mass_trans_w", [2000,-50,1950], True],
              "Reco_st"              : ["Reco_st"        , [9000,-50,8950], True],
              "Reco_mass_TT_diff"          : ["Reco_mass_TT_diff", [4000,-2000,2000], True],
-            # "Jet_deep_b0"               : ["Jet_deep_b[0]", [20,0,1], True],
-            # "Jet_deep_b1"               : ["Jet_deep_b[1]", [20,0,1], True],
+             "Jet_deep_b0"               : ["Jet_deep_b0", [20,0,1], True],
+             "Jet_deep_b1"               : ["Jet_deep_b1", [20,0,1], True],
              "Reco_angle_lepton_met"        : ["Reco_angle_lepton_met", [20,0,5], True],
              "Reco_angle_leadJet_met"       : ["Reco_angle_leadJet_met", [20,0,5], True],
              "Reco_angle_leadBjet_met"      : ["Reco_angle_leadBjet_met", [20,0,5], True],
              "Reco_chi2"            : ["Reco_chi2", [1000,0,1000], True],
              "Jet_size"             : ["Jet_size"     , [16,-0.5,15.5], True],
-             #"Jet_qgl_0"      : ["Jet_qgl[0]"    , [20,-0.5,1.5], True],
-             #"Jet_qgl_1"      : ["Jet_qgl[1]"    , [20,-0.5,1.5], True],
+             "Jet_qgl_0"      : ["Jet_qgl_0"    , [20,-0.5,1.5], True],
+             "Jet_qgl_1"      : ["Jet_qgl_1"    , [20,-0.5,1.5], True],
              "Reco_dr_pho_tstarHad"                 : ["Reco_dr_pho_tstarHad"     , [20,0,10], True],
              "Reco_dr_pho_tHad"                     : ["Reco_dr_pho_tHad"         , [20,0,10], True],
              "Reco_dr_pho_tstarLep"                 : ["Reco_dr_pho_tstarLep"     , [20,0,10], True],
@@ -81,8 +81,8 @@ def GetVarInfo(region, channel):
              "Reco_dr_tstarHad_tstarLep"            : ["Reco_dr_tstarHad_tstarLep", [20,0,10], True],
              }
     if "Boosted" in region: 
-        pass
-       # varBase.update(varFatJet)
+        #pass
+        varBase.update(varFatJet)
     if "u" in channel:
         varBase.update(varMu)
     else:

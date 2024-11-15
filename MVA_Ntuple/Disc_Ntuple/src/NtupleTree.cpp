@@ -62,18 +62,26 @@ NtupleTree::NtupleTree(string dir, vector<string>fileNames){
     Photon_hadronic_photon = 0;
     Photon_hadronic_fake = 0;
     Jet_deep_b = 0;
+    Jet_deep_b0 = 0;
+    Jet_deep_b1 = 0;
     Jet_pt = 0;
     Jet_qgl = 0;
+    Jet_qgl_0 = 0;
+    Jet_qgl_1 = 0;
     Jet_eta = 0;
     Jet_phi = 0;
     Jet_mass = 0;
     Jet_res = 0;
     FatJet_pt = 0;
+    FatJet_pt_0 = 0;
     FatJet_eta = 0;
+    //FatJet_eta_0 = 0;
     FatJet_phi = 0;
     FatJet_mass = 0;
     FatJet_msoftdrop = 0;
+    FatJet_msoftdrop_0 = 0;
     Reco_mass_lgamma = 0;
+    Reco_mass_lgamma_0 = 0;
     Reco_mass_photon_lepton = 0;
 
     std::cout << "Begin" << std::endl;
@@ -184,8 +192,12 @@ NtupleTree::NtupleTree(string dir, vector<string>fileNames){
     fChain->SetBranchAddress("Jet_size", &Jet_size, &b_Jet_size);
     fChain->SetBranchAddress("Jet_b_size", &Jet_b_size, &b_Jet_b_size);
     fChain->SetBranchAddress("Jet_deep_b", &Jet_deep_b, &b_Jet_deep_b);
+    fChain->SetBranchAddress("Jet_deep_b0", &Jet_deep_b0, &b_Jet_deep_b0);
+    fChain->SetBranchAddress("Jet_deep_b1", &Jet_deep_b1, &b_Jet_deep_b1);
     fChain->SetBranchAddress("Jet_pt", &Jet_pt, &b_Jet_pt);
     fChain->SetBranchAddress("Jet_qgl", &Jet_qgl, &b_Jet_qgl);
+    fChain->SetBranchAddress("Jet_qgl_0", &Jet_qgl_0, &b_Jet_qgl_0);
+    fChain->SetBranchAddress("Jet_qgl_1", &Jet_qgl_1, &b_Jet_qgl_1);
     fChain->SetBranchAddress("Jet_eta", &Jet_eta, &b_Jet_eta);
     fChain->SetBranchAddress("Jet_phi", &Jet_phi, &b_Jet_phi);
     fChain->SetBranchAddress("Jet_mass", &Jet_mass, &b_Jet_mass);
@@ -193,11 +205,13 @@ NtupleTree::NtupleTree(string dir, vector<string>fileNames){
     fChain->SetBranchAddress("FatJet_size", &FatJet_size, &b_FatJet_size);
     //PROB
     fChain->SetBranchAddress("FatJet_pt", &FatJet_pt, &b_FatJet_pt);
+    fChain->SetBranchAddress("FatJet_pt_0", &FatJet_pt_0, &b_FatJet_pt_0);
     fChain->SetBranchAddress("FatJet_eta", &FatJet_eta, &b_FatJet_eta);
     fChain->SetBranchAddress("FatJet_phi", &FatJet_phi, &b_FatJet_phi);
     fChain->SetBranchAddress("FatJet_mass", &FatJet_mass, &b_FatJet_mass);
     //PROB
     fChain->SetBranchAddress("FatJet_msoftdrop", &FatJet_msoftdrop, &b_FatJet_msoftdrop);
+    fChain->SetBranchAddress("FatJet_msoftdrop_0", &FatJet_msoftdrop_0, &b_FatJet_msoftdrop_0);
     fChain->SetBranchAddress("Reco_met", &Reco_met, &b_Reco_met);
     fChain->SetBranchAddress("Reco_met_phi", &Reco_met_phi, &b_Reco_met_phi);
     fChain->SetBranchAddress("Reco_mass_trans_w", &Reco_mass_trans_w, &b_Reco_mass_trans_w);
@@ -246,6 +260,7 @@ NtupleTree::NtupleTree(string dir, vector<string>fileNames){
     fChain->SetBranchAddress("Reco_angle_leadBjet_met", &Reco_angle_leadBjet_met, &b_Reco_angle_leadBjet_met);
     //PROB
     fChain->SetBranchAddress("Reco_mass_lgamma", &Reco_mass_lgamma, &b_Reco_mass_lgamma);
+    fChain->SetBranchAddress("Reco_mass_lgamma_0", &Reco_mass_lgamma_0, &b_Reco_mass_lgamma_0);
     fChain->SetBranchAddress("Reco_mass_photon_lepton", &Reco_mass_photon_lepton, &b_Reco_mass_photon_lepton);
     
 

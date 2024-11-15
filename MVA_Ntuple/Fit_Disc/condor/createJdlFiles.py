@@ -11,7 +11,7 @@ condorLogDir = "log"
 os.system("mkdir -p %s/%s"%(tmpDir, condorLogDir))
 tarFile = "tmpSub/Fit_Disc.tar.gz"
 exDir = '../../Fit_Disc'
-ex = '--exclude=%s/output --exclude=%s/condor'%(exDir, exDir)
+ex = '--exclude=%s/*output* --exclude=%s/condor'%(exDir, exDir)
 os.system("tar %s -zcvf %s ../../Fit_Disc"%(ex, tarFile))
 os.system("cp runPerformFit.sh %s"%tmpDir)
 os.system("cp /uscms_data/d3/rverma/codes/limitTools/CMSSW_12_6_0.tar.gz %s"%tmpDir)
@@ -26,8 +26,8 @@ Error  = %s/log_$(cluster)_$(process).stderr\n\
 Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
 
 discDict = {}
-#discDict["Disc"] = methodDict.keys()
-discDict["Reco_mass_T"] = methodDict.keys()
+discDict["Disc"] = methodDict.keys()
+#discDict["Reco_mass_T"] = methodDict.keys()
 #for hist in histList:
 #    discDict[hist] = ["BDTA"]
 

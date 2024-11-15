@@ -103,12 +103,12 @@ cb.cp().process(allMC).AddSyst(cb, "Weight_mu",     "shape",ch.SystMap("era") ([
 cb.cp().process(allMC).AddSyst(cb, "Weight_pho",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_btag_b", "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_q2",     "shape",ch.SystMap("era") (["13TeV"], 1.0))
-#for jme in JME_dic[year]:
+for jme in JME_dic[year]:
     #if not "JEC_HF" in jme:
      #   continue
-#    cb.cp().process(allMC).AddSyst(cb, "%s"%jme,    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+    cb.cp().process(allMC).AddSyst(cb, "%s"%jme,    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 #    print(jme)
-cb.cp().process(allMC).AddSyst(cb, "JEC_Total",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
+#cb.cp().process(allMC).AddSyst(cb, "JEC_Total",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "JER_%s"%year,    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_pdf",    "shape",ch.SystMap("era") (["13TeV"], 1.0))
 cb.cp().process(allMC).AddSyst(cb, "Weight_ttag",    "shape",ch.SystMap("era") (["13TeV"], 1.0))

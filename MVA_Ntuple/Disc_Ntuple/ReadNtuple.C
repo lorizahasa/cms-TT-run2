@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
     
     std::string year = "2017";
     std::string decay = "Semilep";
-    std::string channel = "Ele";
+    std::string channel = "Mu";
     std::string sample = "SignalSpin32_M800";
     std::string region = "ttyg_Enriched_SR_Resolved";
     std::string syst = "JetBase";
@@ -192,6 +192,7 @@ int main(int argc, char* argv[]){
 	//
     TH1F* hReco_mass_T = new TH1F("Reco_mass_T", "Reco_mass_T", 6000, -50, 5950);
 	TH1F* hReco_mass_lgamma = new TH1F("Reco_mass_lgamma", "Reco_mass_lgamma", 2000, -50, 1950);
+	TH1F* hReco_mass_lgamma_0 = new TH1F("Reco_mass_lgamma_0", "Reco_mass_lgamma_0", 2000, -50, 1950);
 	TH1F* hReco_mass_trans_w = new TH1F("Reco_mass_trans_w", "Reco_mass_trans_w", 2000, -50, 1950);
 	TH1F* hReco_st = new TH1F("Reco_st", "Reco_st", 9000, -50, 8950);
 	TH1F* hReco_mass_TT_diff = new TH1F("Reco_mass_TT_diff", "Reco_mass_TT_diff", 4000, -2000, 2000);
@@ -219,8 +220,8 @@ int main(int argc, char* argv[]){
 	TH1F* hReco_dr_tHad_tstarHad = new TH1F("Reco_dr_tHad_tstarHad", "Reco_dr_tHad_tstarHad", 20, 0, 10);
 	TH1F* hReco_dr_tLep_tstarLep = new TH1F("Reco_dr_tLep_tstarLep", "Reco_dr_tLep_tstarLep", 20, 0, 10);
 	TH1F* hReco_dr_tstarHad_tstarLep = new TH1F("Reco_dr_tstarHad_tstarLep", "Reco_dr_tstarHad_tstarLep", 20, 0, 10); 
-	TH1F* hFatJet_pt = new TH1F("FatJet_pt", "FatJet_pt", 9000, -50, 8950);
-	TH1F* FatJet_msoftdrop = new TH1F("FatJet_msoftdrop", "FatJet_msoftdrop", 9000, -50, 8950);
+	TH1F* hFatJet_pt = new TH1F("FatJet_pt_0", "FatJet_pt_0", 9000, -50, 8950);
+	TH1F* FatJet_msoftdrop = new TH1F("FatJet_msoftdrop_0", "FatJet_msoftdrop_0", 9000, -50, 8950);
     //Define TProfile
     TProfile *pWeight_lumi = new TProfile("pWeight_lumi", "pWeight_lumi", nx, vx);
     TProfile *pWeight_pu = new TProfile("pWeight_pu", "pWeight_pu", nx, vx);
@@ -238,19 +239,19 @@ int main(int argc, char* argv[]){
     NtupleTree *tree = new NtupleTree(inDirNtuple, fileNames);
 
     reader.AddVariable("Reco_mass_T", &tree->Reco_mass_T);
-  //  reader.AddVariable("Reco_mass_lgamma[0]", &tree->Reco_mass_lgamma0);
+    reader.AddVariable("Reco_mass_lgamma_0", &tree->Reco_mass_lgamma_0);
     reader.AddVariable("Reco_mass_trans_w", &tree->Reco_mass_trans_w);
     reader.AddVariable("Reco_st", &tree->Reco_stF);
     reader.AddVariable("Reco_mass_TT_diff", &tree->Reco_mass_TT_diff);
-  //  reader.AddVariable("Jet_deep_b[0]", &tree->Jet_deep_b0);
-  //  reader.AddVariable("Jet_deep_b[1]", &tree->Jet_deep_b1);
+    reader.AddVariable("Jet_deep_b0", &tree->Jet_deep_b0);
+    reader.AddVariable("Jet_deep_b1", &tree->Jet_deep_b1);
     reader.AddVariable("Reco_angle_lepton_met", &tree->Reco_angle_lepton_met);
     reader.AddVariable("Reco_angle_leadJet_met", &tree->Reco_angle_leadJet_met);
     reader.AddVariable("Reco_angle_leadBjet_met", &tree->Reco_angle_leadBjet_met);
     reader.AddVariable("Reco_chi2", &tree->Reco_chi2);
     reader.AddVariable("Jet_size", &tree->Jet_sizeF);
-//reader.AddVariable("Jet_qgl[0]", &tree->Jet_qgl0);
-//    reader.AddVariable("Jet_qgl[1]", &tree->Jet_qgl1);
+    reader.AddVariable("Jet_qgl_0", &tree->Jet_qgl_0);
+    reader.AddVariable("Jet_qgl_1", &tree->Jet_qgl_1);
     reader.AddVariable("Reco_dr_pho_tstarHad", &tree->Reco_dr_pho_tstarHad);
     reader.AddVariable("Reco_dr_pho_tHad", &tree->Reco_dr_pho_tHad);
     reader.AddVariable("Reco_dr_pho_tstarLep", &tree->Reco_dr_pho_tstarLep);
@@ -267,10 +268,10 @@ int main(int argc, char* argv[]){
     reader.AddVariable("Reco_dr_tLep_tstarLep", &tree->Reco_dr_tLep_tstarLep);
     reader.AddVariable("Reco_dr_tstarHad_tstarLep", &tree->Reco_dr_tstarHad_tstarLep);
 
-//	if (region.find("Boosted") != std::string::npos) {
-//		reader.AddVariable("FatJet_pt[0]", &tree->FatJet_pt0);
-//		reader.AddVariable("FatJet_msoftdrop[0]", &tree->FatJet_msoftdrop0);
-//	}
+	if (region.find("Boosted") != std::string::npos) {
+		reader.AddVariable("FatJet_pt_0", &tree->FatJet_pt_0);
+		reader.AddVariable("FatJet_msoftdrop_0", &tree->FatJet_msoftdrop_0);
+	}
     //reader.AddSpectator("Weight_lumi", &tree->Weight_lumi);
 
 
@@ -562,23 +563,25 @@ int main(int argc, char* argv[]){
             pWeight_pho->Fill(tree->Reco_mass_T, w_pho);
             pWeight_ttag->Fill(tree->Reco_mass_T, w_ttag);
         }
-      /*  
+        
         //Evaluate MVA now
+        /*
         tree->b_Jet_deep_b->GetEntry(entry);
         if (tree->Jet_deep_b->size()>1){
-            tree->Jet_deep_b0 = tree->Jet_deep_b->at(0);
-            tree->Jet_deep_b1 = tree->Jet_deep_b->at(1);
+            tree->Jet_deep_b0 = tree->Jet_deep_b0;
+            tree->Jet_deep_b1 = tree->Jet_deep_b1;
         }
         else{//FIX this in future
-            tree->Jet_deep_b0 = tree->Jet_deep_b->at(0);
-            tree->Jet_deep_b1 = tree->Jet_deep_b->at(0);
-        }
-        tree->b_Jet_qgl->GetEntry(entry);
-        //tree->Jet_deep_b0 = tree->Jet_deep_b->at(0);
-        //tree->Jet_deep_b1 = tree->Jet_deep_b->at(1);
-        tree->Jet_qgl0 = tree->Jet_qgl->at(0);
-        tree->Jet_qgl0 = tree->Jet_qgl->at(1);
-        */
+            tree->Jet_deep_b0 = tree->Jet_deep_b0;
+            tree->Jet_deep_b1 = tree->Jet_deep_b0;
+        }*/
+
+        //tree->b_Jet_qgl->GetEntry(entry);
+        tree->Jet_deep_b0 = tree->Jet_deep_b0;
+        tree->Jet_deep_b1 = tree->Jet_deep_b1;
+        tree->Jet_qgl_0 = tree->Jet_qgl_0;
+        tree->Jet_qgl_1 = tree->Jet_qgl_1;
+        
         //cout<<"Entry: "<< entry;
         //tree->GetEntry(entry);
         
@@ -605,13 +608,13 @@ int main(int argc, char* argv[]){
         tree->b_Reco_dr_tHad_tstarHad->GetEntry(entry);
         tree->b_Reco_dr_tLep_tstarLep->GetEntry(entry);
         tree->b_Reco_dr_tstarHad_tstarLep->GetEntry(entry);
-       /* 
+        
 	    if (region.find("Boosted") != std::string::npos) {
-            tree->b_FatJet_pt->GetEntry(entry);
-            tree->FatJet_pt0 = tree->FatJet_pt->at(0);
-            tree->b_FatJet_msoftdrop->GetEntry(entry);
-            tree->FatJet_msoftdrop0 = tree->FatJet_msoftdrop->at(0);
-        }*/
+           // tree->b_FatJet_pt->GetEntry(entry);
+            tree->FatJet_pt_0 = tree->FatJet_pt_0;
+           // tree->b_FatJet_msoftdrop->GetEntry(entry);
+            tree->FatJet_msoftdrop_0 = tree->FatJet_msoftdrop_0;
+        }
         auto disc = reader.EvaluateMVA(method);  
 //hDisc->Fill(disc, combWt);
         hDisc->Fill(disc);

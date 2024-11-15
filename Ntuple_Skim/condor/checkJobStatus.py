@@ -51,6 +51,7 @@ should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
 Transfer_Input_Files = Ntuple_Skim.tar.gz, runMakeNtuple.sh\n\
 use_x509userproxy = true\n\
+request_memory= 4096 \n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\
 Log    = %s/log_$(cluster)_$(process).condor\n\n'%(logDirResub, logDirResub, logDirResub)

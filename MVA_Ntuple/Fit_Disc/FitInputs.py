@@ -6,42 +6,43 @@ dirFit = "/eos/uscms%s/Fit_Disc/FitMain"%condorOutDir
 dirTwiki= "/eos/uscms/store/user/lhasa/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
 Year = []
-Year.append("2016Pre")
-Year.append("2016Post")
-Year.append("2017")
-Year.append("2018")
+#Year.append("2016Pre")
+#Year.append("2016Post")
+#Year.append("2017")
+#Year.append("2018")
 Year.append("2016Pre__2016Post__2017__2018")
 
 Channel = []
-Channel.append("Mu")
-Channel.append("Ele")
+#Channel.append("Mu")
+#Channel.append("Ele")
 Channel.append("Mu__Ele")
 
 Decay 	  =	["Semilep"]
 
 
 histList = []
-histList.append("Reco_mass_T")
-histList.append("Reco_st")
+#histList.append("Reco_mass_T")
+histList.append("Disc")
+#histList.append("Reco_st")
 
 xss = {}
 xss["700.0"]   = 0.03*0.97*2*4.686
 xss["800.0"]   = 0.03*0.97*2*1.624
 xss["900.0"]   = 0.03*0.97*2*0.619
 #xss["1000.0"]  = 0.03*0.97*2*0.262
-xss["1100.0"]  = 0.03*0.97*2*0.113
+xss["1100.0"]  = 0.03*0.97*2*0.11
 xss["1200.0"]  = 0.03*0.97*2*0.0525
 #xss["1300.0"]  = 0.03*0.97*2*0.0261
 #xss["1400.0"]  = 0.03*0.97*2*0.0131
 xss["1500.0"]  = 0.03*0.97*2*0.0065
 #xss["1600.0"]  = 0.03*0.97*2*0.00359
-xss["2750.0"]  = 0.03*0.97*2*0.000006
+#xss["2750.0"]  = 0.03*0.97*2*0.000006
 xss = OrderedDict(sorted(xss.items(), key=lambda t: t[1]))
 
 rDict = {}
 #rDict["ttyg_Enriched_SR"] = "Inclusive"
-rDict["ttyg_Enriched_SR_Boosted"] = "SR, Boosted"
-rDict["ttyg_Enriched_SR_Resolved"]= "SR, Resolved"
+#rDict["ttyg_Enriched_SR_Boosted"] = "SR, Boosted"
+#rDict["ttyg_Enriched_SR_Resolved"]= "SR, Resolved"
 rDict["ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved"]="SR, Boosted+Resolved"
 #rDict["ttyg_Enriched_CR_Boosted"] = "CR, Boosted"
 #rDict["ttyg_Enriched_CR_Resolved"]= "CR, Resolved"

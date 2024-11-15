@@ -1,5 +1,5 @@
 import ROOT
-
+from ROOT import TString
 import os
 import sys
 sys.dont_write_bytecode = True
@@ -76,7 +76,7 @@ for s in allSamples.keys():
             for bkgF in bkgs:
                 bkgList.append(bkgF)
 if isCheck:
-    bkgList = ["TTGamma_SingleLept_Ntuple_1of1.root"]
+    bkgList = ["TTGamma_Dilepton_Ntuple_1of1.root"]
     sigList = ["SignalSpin32_M800_Ntuple_1of1.root"]
 #-----------------------------------------
 #Add trees in the TChain
@@ -96,7 +96,6 @@ for b in bkgList:
     bkgTree.Add("%s/%s/%s"%(dirNtuple, dirFile, b))
 print("Total files from all bkgs = %s, Entries = %s "%(len(bkgList), bkgTree.GetEntries()))
 print("Total files from all sigs = %s, Entries = %s "%(len(sigList), sigTree.GetEntries()))
-
 #-----------------------------------------
 #Load variables and apply event weights
 #----------------------------------------
@@ -111,7 +110,7 @@ print("\nTotal vars = %s \n"%len(varDict.keys()))
 for var in varDict.keys():
     print(varDict[var][0])
     loader.AddVariable(varDict[var][0], 'F')
-
+   
 evtWeights_sig = "Weight_pu*Weight_mu*Weight_ele*Weight_prefire*Weight_btag*Weight_pho[0]"
 evtWeights_bkg = "Weight_lumi*%s"%evtWeights_sig
 loader.SetSignalWeightExpression(evtWeights_sig)

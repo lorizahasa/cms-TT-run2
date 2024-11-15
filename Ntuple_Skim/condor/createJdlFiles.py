@@ -44,9 +44,17 @@ for year in Years:
     for decay in Decays:
         for syst in get_syst_List(year, decay):
             outDir = "%s/%s/%s/%s"%(outNtupleDir, year, decay, syst)
-            if os.path.exists("/eos/uscms/%s"%outDir):
-                print("Deleted out dir: %s"%outDir)
-                #os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
+            outDirPath = "/eos/cms/%s" % outDir
+            check_cmd = "eos root://eoscms.cern.ch ls %s > /dev/null 2>&1" % outDirPath
+
+            # Check if directory exists on EOS
+            if os.system(check_cmd) == 0:  # if the ls command succeeds
+                print("Deleted out dir: %s" % outDirPath)
+                os.system("eos root://eoscms.cern.ch rm -r %s" % outDirPath)
+
+            #if os.path.exists("/eos/cms/%s"%outDir):
+            #    print("Deleted out dir: %s"%outDir)
+            #    os.system("eos root://eoscms.cern.ch rm -r %s"%outDir) 
             #os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
             os.system("eos root://eoscms.cern.ch mkdir -p %s"%outDir)
             print("Created out dir: %s"%outDir)
@@ -55,7 +63,7 @@ for year in Years:
                 if "Data" in sampleName and "_" in syst: continue
                # if "Data" in sampleName: continue
                 if "Dilep" in decay and "Signal" in sampleName and "700" not in sampleName: continue
-                if not "Total" in syst: continue
+               # if not "Total" in syst: continue
                # if "Spin32" in sampleName: continue
                # if "Spin12" in sampleName and "M800" not in sampleName: continue
                 nJob = reducedJob(fEvt[0], sampleName)

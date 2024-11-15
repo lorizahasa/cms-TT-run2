@@ -143,6 +143,8 @@ class EventTree{
     UInt_t          nJet_;
     Float_t         jetPt_[200];
     Float_t         jetQGL_[200];
+    Float_t         jetQGL0_;
+    Float_t         jetQGL1_;
     Float_t         jetEta_[200];
     Float_t         jetPhi_[200];
     Float_t         jetMass_[200];
@@ -152,6 +154,8 @@ class EventTree{
     Float_t         jetArea_[200];
     Float_t         fatJetArea_[200];
     Float_t         jetBtagDeepB_[200];
+    Float_t         jetBtagDeepB0_;
+    Float_t         jetBtagDeepB1_;
     Float_t         jetchEmEF_[200];
     Float_t         jetneEmEF_[200];
     Float_t         jetmuEF_[200];
@@ -161,10 +165,13 @@ class EventTree{
     //fat jets
     UInt_t          nFatJet_;
     Float_t         fatJetPt_[200];
+    Float_t         fatJetPt0_;
     Float_t         fatJetEta_[200];
+    Float_t         fatJetEta0_;
     Float_t         fatJetPhi_[200];
     Float_t         fatJetMass_[200];
     Float_t         fatJetMassSoftDrop_[200];
+    Float_t         fatJetMassSoftDrop0_;
     Int_t           fatJetID_[200];
     Float_t         fatJetDeepTagT_[200];
     Float_t         fatJetDeepTagW_[200];

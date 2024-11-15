@@ -240,11 +240,13 @@ makeNtuple::makeNtuple(int ac, char** av)
     //Taken from W' analysis
     //https://indico.cern.ch/event/1146225/contributions/4835158/attachments/2429997/4160813/HLTSFsWprime%20.pdf
     std::map<std::string, string> eTrigFiles;
-    string comEleTrig = "weight/EleSF/egammaEffi.txt_TrigSFTightID_";
+    string comEleTrig = "weight/EleSF/ElecTriggerSF"; //Derived SFs
+   // string comEleTrig = "weight/EleSF/egammaEffi.txt_TrigSFTightID_";
     eTrigFiles["2016Pre"]  = comEleTrig+"2016Pre.root";
     eTrigFiles["2016Post"] = comEleTrig+"2016Post.root";
     eTrigFiles["2017"]        = comEleTrig+"2017.root";
     eTrigFiles["2018"]        = comEleTrig+"2018.root";
+   
     //Initiate the electron SF reader
 	eleSF = new ElectronSF(eIDFiles[year], eRecoFiles[year], eTrigFiles[year]);
 
@@ -979,7 +981,7 @@ void makeNtuple::FillEvent(std::string year){
         _evtWeight       = _lumiWeight * _genWeight;
         //std::cout<<_evtWeight<<std::endl;
         if(_inHEMVeto){
-            _evtWeight = _evtWeight*0.3518;
+            _evtWeight = _evtWeight*(1-0.3518);
         }
     }
     else{
@@ -1164,7 +1166,14 @@ void makeNtuple::FillEvent(std::string year){
         }//isMC
         _MPhotonLepton.push_back((phoVector+lepVector).M());
     }//phoLoop
-    
+   
+    if (_phoMassLepGamma.size()>0){ 
+        _phoMassLepGamma0 = _phoMassLepGamma[0];
+    }
+    if (_phoEt.size()>0){
+        _phoEt0 = _phoEt[0];
+    }
+
     for (int i_pho = 0; i_pho <_nLoosePho; i_pho++){
         int phoInd = selector->LoosePhotons.at(i_pho);
         phoVector.SetPtEtaPhiM(tree->phoEt_[phoInd],
@@ -1220,6 +1229,17 @@ void makeNtuple::FillEvent(std::string year){
     _TopWeight_Do = ttagW_down; 
     _TopWeight    = ttagW;
     _TopWeight_Up = ttagW_up;
+
+    if (_fatJetPt.size() > 0) {
+        _fatJetPt0 = _fatJetPt[0];
+    }
+    if (_fatJetEta.size() > 0) {                                                                                                   
+        _fatJetEta0 = _fatJetEta[0];
+    }
+    if (_fatJetMassSoftDrop.size() > 0) {                                                                                         
+        _fatJetMassSoftDrop0 = _fatJetMassSoftDrop[0];
+    }
+
     for (int i_jet = 0; i_jet <_nJet; i_jet++){
         int jetInd = selector->Jets.at(i_jet);
         _jetPt.push_back(tree->jetPt_[jetInd]);
@@ -1253,6 +1273,21 @@ void makeNtuple::FillEvent(std::string year){
             ljetResVectors.push_back(resolution);
         }
     }	
+    // Assign values if jets are available
+    if (_jetQGL.size() > 0) {
+        _jetQGL0 = _jetQGL[0];
+    }
+    if (_jetQGL.size() > 1) {
+        _jetQGL1 = _jetQGL[1];
+    }
+
+    if (_jetDeepB.size() > 0) {
+        _jetDeepB0 = _jetDeepB[0];
+    }
+    if (_jetDeepB.size() > 1) {
+        _jetDeepB1 = _jetDeepB[1];
+    }
+
     // // // Calculate MET z
      metZ.SetLepton(lepVector);
     METVector.SetPtEtaPhiM(tree->MET_pt_,

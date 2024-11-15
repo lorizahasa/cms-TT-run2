@@ -95,14 +95,15 @@ def DrawAxisHists(pads, axis_hists, def_pad=None):
 #Path of the I/O histrograms/plots
 #----------------------------------------
 fPath = open("%s/plotLimit.txt"%dirFit, 'w')
-#hName = 'Disc'
-hName = 'Reco_mass_T'
+hName = 'Disc'
+dirFit2 ="/uscms/home/lhasa/nobackup/TTPrime/CMSSW_14_0_0/src/cms-TT-run2/MVA_Ntuple/Fit_Disc/output/Fit_Disc/FitMain"
+#hName = 'Reco_mass_T'
 for decay, region, channel, year in itertools.product(Decay, regionList, Channel, Year):
     limits = "tex/allLimits.json"
     gDict = {}
     limDict={}
     ydc = "%s/%s/%s"%(year, decay, channel)
-    path = "%s/%s"%(dirFit, ydc) 
+    path = "%s/%s"%(dirFit2, ydc) 
     outPath = "%s/%s"%(path, region)
     os.system('mkdir -p %s'%outPath)
     jsonRaw = "%s/limits.json"%outPath

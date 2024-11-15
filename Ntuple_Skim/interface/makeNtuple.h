@@ -232,6 +232,8 @@ class makeNtuple {
     std::vector<float>   _phoPhi;
     std::vector<float>   _phoPFRelIso;
     std::vector<float>   _phoMassLepGamma;
+    Float_t _phoMassLepGamma0;
+    Float_t _phoEt0;
 
     std::vector<bool>    _phoTightID;
     std::vector<bool>    _phoMediumID;
@@ -282,6 +284,8 @@ class makeNtuple {
     Int_t  _nBJet;
     std::vector<float>   _jetPt;
     std::vector<float>   _jetQGL;
+    Float_t _jetQGL0;
+    Float_t _jetQGL1;
     std::vector<float>   _jetEta;
     std::vector<float>   _jetPhi;
     std::vector<float>   _jetMass;
@@ -290,6 +294,8 @@ class makeNtuple {
     std::vector<float>   _jesWeight;
 
     std::vector<float>   _jetDeepB;
+    Float_t _jetDeepB0;
+    Float_t _jetDeepB1;
     std::vector<Int_t>   _jetGenJetIdx;
 
     Int_t  _nFatJet;
@@ -298,6 +304,9 @@ class makeNtuple {
     std::vector<float>   _fatJetPhi;
     std::vector<float>   _fatJetMass;
     std::vector<float>   _fatJetMassSoftDrop;
+    Float_t _fatJetPt0;
+    Float_t _fatJetEta0;
+    Float_t _fatJetMassSoftDrop0;
 
     double _HT;
     double _ST;
@@ -460,6 +469,7 @@ void makeNtuple::InitBranches(){
     //photons
     outputTree->Branch("Photon_size"  , &_nPho ); 
     outputTree->Branch("Photon_et" , &_phoEt );
+    outputTree->Branch("Photon_et_leading" , &_phoEt0 );
     outputTree->Branch("Photon_eta", &_phoEta );
     outputTree->Branch("Photon_phi", &_phoPhi ); 
     outputTree->Branch("Photon_iso"   , &_phoPFRelIso ); 
@@ -474,8 +484,12 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Jet_size"   , &_nJet ); 
     outputTree->Branch("Jet_b_size"  , &_nBJet ); 
 	outputTree->Branch("Jet_deep_b"  , &_jetDeepB );
+	outputTree->Branch("Jet_deep_b0"  , &_jetDeepB0 );
+	outputTree->Branch("Jet_deep_b1"  , &_jetDeepB1 );
     outputTree->Branch("Jet_pt"  , &_jetPt );
     outputTree->Branch("Jet_qgl"  , &_jetQGL );
+    outputTree->Branch("Jet_qgl_0"  , &_jetQGL0 );
+    outputTree->Branch("Jet_qgl_1"  , &_jetQGL1 );
     outputTree->Branch("Jet_eta" , &_jetEta); 
     outputTree->Branch("Jet_phi" , &_jetPhi); 
     outputTree->Branch("Jet_mass", &_jetMass );
@@ -483,10 +497,13 @@ void makeNtuple::InitBranches(){
     //fat jets 
     outputTree->Branch("FatJet_size", &_nFatJet);
     outputTree->Branch("FatJet_pt", &_fatJetPt);
+    outputTree->Branch("FatJet_pt_0", &_fatJetPt0);
     outputTree->Branch("FatJet_eta", &_fatJetEta);
+    outputTree->Branch("FatJet_eta_0", &_fatJetEta0);
     outputTree->Branch("FatJet_phi", &_fatJetPhi);
     outputTree->Branch("FatJet_mass", &_fatJetMass);
     outputTree->Branch("FatJet_msoftdrop", &_fatJetMassSoftDrop);
+    outputTree->Branch("FatJet_msoftdrop_0", &_fatJetMassSoftDrop0);
     //Recondtructed variables
     outputTree->Branch("Reco_met" , &_pfMET );
     outputTree->Branch("Reco_met_phi"     , &_pfMETPhi ); 
@@ -537,6 +554,7 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Reco_angle_leadJet_met"   , &_Reco_angle_leadJet_met      ); 
     outputTree->Branch("Reco_angle_leadBjet_met"   , &_Reco_angle_leadBjet_met     ); 
     outputTree->Branch("Reco_mass_lgamma"   , &_phoMassLepGamma ); 
+    outputTree->Branch("Reco_mass_lgamma_0"   , &_phoMassLepGamma0 ); 
     outputTree->Branch("Reco_mass_photon_lepton" , &_MPhotonLepton );
 }
 
@@ -676,6 +694,9 @@ void makeNtuple::InitVariables()
     _chi2   = -9.;
 
     _nPho		 = -9;
+    _phoMassLepGamma0 = -9;
+    _phoEt0 =-9;
+
     _phoEt.clear();
     _phoEta.clear();
     _phoPhi.clear();
@@ -723,7 +744,13 @@ void makeNtuple::InitVariables()
     _muTkRelIso.clear();
 
     _nJet     = -9;  
-    _nBJet    = -9;    
+    _nBJet    = -9;  
+
+    _jetQGL0 = -1;  
+    _jetQGL1 = -1;
+    _jetDeepB0 = -1;
+    _jetDeepB1 = -1;
+
     _jetPt.clear();
     _jetQGL.clear();
     _jetEta.clear();
@@ -736,6 +763,11 @@ void makeNtuple::InitVariables()
     _jetDeepB.clear();
 
     _nFatJet  =-9;  
+    
+    _fatJetPt0 =-9;
+    _fatJetEta0 =-9;
+    _fatJetMassSoftDrop0 =-9;
+
     _fatJetPt.clear();
     _fatJetEta.clear();
     _fatJetPhi.clear();

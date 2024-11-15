@@ -136,20 +136,20 @@ class NtupleTree{
     Float_t  Jet_deep_b1;
     vector<float>   *Jet_pt;
     vector<float>   *Jet_qgl;
-    Float_t  Jet_qgl0;
-    Float_t  Jet_qgl1;
+    Float_t  Jet_qgl_0;
+    Float_t  Jet_qgl_1;
     vector<float>   *Jet_eta;
     vector<float>   *Jet_phi;
     vector<float>   *Jet_mass;
     vector<float>   *Jet_res;
     Int_t           FatJet_size;
     vector<float>   *FatJet_pt;
-    Float_t FatJet_pt0;
+    Float_t FatJet_pt_0;
     vector<float>   *FatJet_eta;
     vector<float>   *FatJet_phi;
     vector<float>   *FatJet_mass;
     vector<float>   *FatJet_msoftdrop;
-    Float_t FatJet_msoftdrop0;
+    Float_t FatJet_msoftdrop_0;
     Float_t         Reco_met;
     Float_t         Reco_met_phi;
     Float_t         Reco_mass_trans_w;
@@ -198,7 +198,7 @@ class NtupleTree{
     Float_t         Reco_angle_leadJet_met;
     Float_t         Reco_angle_leadBjet_met;
     vector<float>   *Reco_mass_lgamma;
-    Float_t  Reco_mass_lgamma0;
+    Float_t  Reco_mass_lgamma_0;
     vector<float>   *Reco_mass_photon_lepton;
 
     // List of branches
@@ -309,18 +309,24 @@ class NtupleTree{
     TBranch        *b_Jet_size;   //!
     TBranch        *b_Jet_b_size;   //!
     TBranch        *b_Jet_deep_b;   //!
+    TBranch        *b_Jet_deep_b0;   //!
+    TBranch        *b_Jet_deep_b1;   //!
     TBranch        *b_Jet_pt;   //!
     TBranch        *b_Jet_qgl;   //!
+    TBranch        *b_Jet_qgl_0;   //!
+    TBranch        *b_Jet_qgl_1;   //!
     TBranch        *b_Jet_eta;   //!
     TBranch        *b_Jet_phi;   //!
     TBranch        *b_Jet_mass;   //!
     TBranch        *b_Jet_res;   //!
     TBranch        *b_FatJet_size;   //!
     TBranch        *b_FatJet_pt;   //!
+    TBranch        *b_FatJet_pt_0;   //!
     TBranch        *b_FatJet_eta;   //!
     TBranch        *b_FatJet_phi;   //!
     TBranch        *b_FatJet_mass;   //!
     TBranch        *b_FatJet_msoftdrop;   //!
+    TBranch        *b_FatJet_msoftdrop_0;   //!
     TBranch        *b_Reco_met;   //!
     TBranch        *b_Reco_met_phi;   //!
     TBranch        *b_Reco_mass_trans_w;   //!
@@ -368,6 +374,7 @@ class NtupleTree{
     TBranch        *b_Reco_angle_leadJet_met;   //!
     TBranch        *b_Reco_angle_leadBjet_met;   //!
     TBranch        *b_Reco_mass_lgamma;   //!
+    TBranch        *b_Reco_mass_lgamma_0;   //!
     TBranch        *b_Reco_mass_photon_lepton;   //!
 
     std::vector<std::vector<std::string>> splitVector(const std::vector<std::string>& strings, int n);
