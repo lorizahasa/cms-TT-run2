@@ -23,6 +23,8 @@ parser.add_option("--method", "--method", dest="method", default="BDTA",type='st
                      help="Specify MVA method")
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
+parser.add_option("-p", "--spin", dest="spin", default="Spin32",type='str', 
+                     help="Specify which signal spin Spin32 or Spin12? default Spin32")
 parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
                      help="which control selection and region"), 
 parser.add_option("--isQCDMC","--qcdMC",dest="isQCDMC", default=False, action="store_true",
@@ -34,6 +36,7 @@ channel         = options.channel
 mass            = options.mass
 method            = options.method
 hName           = options.hName
+spin            =options.spin
 region          = options.region
 isQCDMC         = options.isQCDMC
 
@@ -43,7 +46,7 @@ isQCDMC         = options.isQCDMC
 #inFile = "AllInc_forMain.root"
 inFile = "AllInc.root"
 inFileDir = "%s/Disc_Ntuple/DiscMain/ForMain/%s/%s/%s/CombMass/%s"%(condorOutDir, year, decayMode, channel, method)
-outFileDir      = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method, region, hName)
+outFileDir      = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, spin, channel, mass, method, region, hName)
 os.system("mkdir -p %s"%outFileDir)
 inFileName = "%s/%s"%(outFileDir, inFile)
 print(inFileDir)

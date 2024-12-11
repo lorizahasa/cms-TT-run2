@@ -28,6 +28,7 @@ MVA_Ntuple/Disc_Ntuple/runReadNtuple
 MVA_Ntuple/Disc_Ntuple/Class.C
 MVA_Ntuple/Disc_Ntuple/read_xml.py
 MVA_Ntuple/Disc_Ntuple/condor_read/alphaForMain.py
+MVA_Ntuple/Disc_Ntuple/condor_read/validateNAN.py
 MVA_Ntuple/Disc_Ntuple/CheckTree.py
 
 MVA_Ntuple/*.txt

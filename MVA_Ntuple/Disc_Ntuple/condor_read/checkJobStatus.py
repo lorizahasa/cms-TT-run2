@@ -119,14 +119,14 @@ dicJson["jobs"] = []
 if is_firstRun:
     localFile = open("tmpSub/localResubmitJobs.txt",'w')
     resubJobs = 0
-    for year, decay, ch in itertools.product(Years, Decays, Channels):
+    for year, decay, spin, ch in itertools.product(Years, Decays, Spin, Channels):
         print("\n+++++++++++++++++++++++++++++++++++++++++++")
-        print(colored("Running for: %s, %s, %s"%(year, decay, ch), 'green'))
+        print(colored("Running for: %s, %s, %s, %s"%(year, decay, spin, ch), 'green'))
         print("+++++++++++++++++++++++++++++++++++++++++++")
         #-----------------------------------------
         #Path of the output histrograms
         #----------------------------------------
-        outDir="%s/Reader/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, ch)
+        outDir="%s/Reader/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, spin, ch)
 
         #----------------------------------------
         #Get all submitted jobs
@@ -190,9 +190,9 @@ if is_firstRun:
                 syst = fName_[2].replace(".root", "")
                 if "JE" in syst:
                     syst=syst.replace("Up","_up").replace("Down","_down")
-                jdlFile.write('Arguments  = %s %s %s %s %s %s %s \nQueue 1\n\n' %(year, decay, ch, reg, samp, syst, dirRead))
-                dicJson["jobs"].append([year, decay, ch, reg, samp, syst, dirRead])
-                localFile.write('python reader.py -y %s -d %s -c %s -r %s -s %s --syst %s \n' %(year, decay, ch, reg, samp, syst))
+                jdlFile.write('Arguments  = %s %s %s %s %s %s %s %s \nQueue 1\n\n' %(year, decay, spin, ch, reg, samp, syst, dirRead))
+                dicJson["jobs"].append([year, decay, spin, ch, reg, samp, syst, dirRead])
+                localFile.write('python reader.py -y %s -d %s -p %s -c %s -r %s -s %s --syst %s \n' %(year, decay, spin, ch, reg, samp, syst))
         print(dirRead)
     os.system("mkdir -p tmpSub/%s"%logDirResub)
     jsonFile = open("tmpSub/resubmitJobs.json",'w')
@@ -211,17 +211,17 @@ else:
     subD2 ={}
     print(colored("(2): Checking corrupted files ... ", "red")) 
     for r in loadedFile["jobs"]:
-        if "JE" in r[5] or "Weight" in r[5]:
-            syst=r[5].replace("_up", "Up").replace("_down", "Down")
-        fileName = "%s_%s_%s.root"%(r[4],r[3],syst)
-        subD2[fileName]="%s__%s__%s.root"%(r[4],r[3],syst)
+        if "JE" in r[6] or "Weight" in r[6]:
+            syst=r[6].replace("_up", "Up").replace("_down", "Down")
+        fileName = "%s_%s_%s.root"%(r[5],r[4],syst)
+        subD2[fileName]="%s__%s__%s.root"%(r[5],r[4],syst)
         resubList = []
         resubList.append(fileName)
-        outDir="%s/Reader/%s/%s/%s/CombMass/BDTA"%(dirRead, r[0], r[1], r[2])
+        outDir="%s/Reader/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, r[0], r[1], r[2], r[3])
         corrList = checkFiles(outDir, resubList, subD2)
         if len(corrList)>0:
             newDJson["jobs"].append(r)
-            jdlFile.write('Arguments  = %s %s %s %s %s %s %s \nQueue 1\n\n' %(r[0], r[1], r[2], r[3], r[4], r[5], r[6]))
+            jdlFile.write('Arguments  = %s %s %s %s %s %s %s %s \nQueue 1\n\n' %(r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7]))
             print(corrList)
     js.dump(newDJson, newJson, indent=4)
     #jdlFile.close()

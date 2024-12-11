@@ -21,6 +21,8 @@ parser.add_option("-r", "--regions", dest="regions", default="ttyg_Enriched_SR_R
                      help="which control selection and regions"), 
 parser.add_option("--hist", "--hist", dest="hName", default="Reco_mass_T",type='str', 
                      help="which histogram to be used for making datacard")
+parser.add_option("-p", "--spin", dest="spin", default="Spin32",type='str', 
+                     help="Specify which signal spin Spin32 or Spin12? default Spin32")
 parser.add_option("--isT2W","--isT2W",dest="isT2W", default=False, action="store_true",
 		  help="create text2workspace datacards")
 parser.add_option("--isFD","--isFD",dest="isFD", default=False, action="store_true",
@@ -39,6 +41,7 @@ mass            = options.mass
 method            = options.method
 regions          = options.regions
 hName           = options.hName
+spin            = options.spin
 
 isT2W 			= options.isT2W
 isFD            = options.isFD
@@ -56,9 +59,9 @@ def runCmd(cmd):
 #For separate datacards
 #----------------------------------------
 def getDataCard(year, decayMode, channel, region, hName):
-    args = "-y %s -d %s -c %s -m %s -r %s --hist %s --method %s"%(year, decayMode, channel, mass, region, hName, method)
+    args = "-y %s -d %s -p %s -c %s -m %s -r %s --hist %s --method %s"%(year, decayMode, spin, channel, mass, region, hName, method)
     runCmd("python3 makeDataCard.py  %s "%args)
-    inDirDC = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method, region, hName)
+    inDirDC = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, spin, channel, mass, method, region, hName)
     name = "%s/Datacard_Alone.txt"%inDirDC
     return name
 #-----------------------------------------
@@ -71,7 +74,7 @@ for y in years.split("__"):
             pathDC = getDataCard(y, decayMode, ch, r, hName)
             dcList.append(pathDC)
 combDCText = ' '.join(dcList)
-dirDC = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s"%(years, decayMode, channels, mass, method, regions, hName)
+dirDC = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s/%s"%(years, decayMode, spin, channels, mass, method, regions, hName)
 if not os.path.exists(dirDC):
     os.makedirs(dirDC)
 pathDC  = "%s/Datacard.txt"%(dirDC)

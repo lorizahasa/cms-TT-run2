@@ -34,6 +34,7 @@ NtupleTree::NtupleTree(string dir, vector<string>fileNames){
     Weight_pho_id = 0;
     Weight_pho_ps = 0;
     Weight_pho_cs = 0;
+    Weight_pho_leading = 0;
     Weight_jer = 0;
     Weight_jes = 0;
     Weight_phoUp = 0;
@@ -54,6 +55,7 @@ NtupleTree::NtupleTree(string dir, vector<string>fileNames){
     Electron_eta_sc = 0;
     Electron_iso = 0;
     Photon_et = 0;
+    Photon_et_leading = 0;
     Photon_eta = 0;
     Photon_phi = 0;
     Photon_iso = 0;
@@ -106,6 +108,7 @@ NtupleTree::NtupleTree(string dir, vector<string>fileNames){
     fChain->SetBranchAddress("Weight_ele_reco", &Weight_ele_reco, &b_Weight_ele_reco);
     fChain->SetBranchAddress("Weight_ele_trig", &Weight_ele_trig, &b_Weight_ele_trig);
     fChain->SetBranchAddress("Weight_pho", &Weight_pho, &b_Weight_pho);
+    fChain->SetBranchAddress("Weight_pho_leading", &Weight_pho_leading, &b_Weight_pho_leading);
     fChain->SetBranchAddress("Weight_pho_id", &Weight_pho_id, &b_Weight_pho_id);
     fChain->SetBranchAddress("Weight_pho_ps", &Weight_pho_ps, &b_Weight_pho_ps);
     fChain->SetBranchAddress("Weight_pho_cs", &Weight_pho_cs, &b_Weight_pho_cs);
@@ -181,6 +184,7 @@ NtupleTree::NtupleTree(string dir, vector<string>fileNames){
     fChain->SetBranchAddress("Photon_size", &Photon_size, &b_Photon_size);
     //PROB
     fChain->SetBranchAddress("Photon_et", &Photon_et, &b_Photon_et);
+    fChain->SetBranchAddress("Photon_et_leading", &Photon_et_leading, &b_Photon_et_leading);
     fChain->SetBranchAddress("Photon_eta", &Photon_eta, &b_Photon_eta);
     fChain->SetBranchAddress("Photon_phi", &Photon_phi, &b_Photon_phi);
     fChain->SetBranchAddress("Photon_iso", &Photon_iso, &b_Photon_iso);

@@ -28,28 +28,28 @@ Error  = %s/log_$(cluster)_$(process).stderr\n\n'%(condorLogDir, condorLogDir)
 #----------------------------------------
 subFile = open('%s/condorSubmit.sh'%tmpDir,'w')
 
-for year, decay, channel in itertools.product(Years, Decays, Channels):
+for year, decay, spin, channel in itertools.product(Years, Decays, Spin, Channels):
     outDir  = "%s/"
-    dirRead_ = "%s/Reader/%s/%s/%s"%(dirRead, year, decay, channel)
-    print("Deleting %s"%dirRead_)
-    os.system("eos root://cmseos.fnal.gov rm -r %s"%dirRead_)
+    dirRead_ = "%s/Reader/%s/%s/%s/%s"%(dirRead, year, decay, spin, channel)
+    #print("Deleting %s"%dirRead_)
+    #os.system("eos root://cmseos.fnal.gov rm -r %s"%dirRead_)
     #os.system("eos root://eoscms.cern.ch/ rm -r %s"%dirRead_)
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%dirRead_)
     #os.system("eos root://eoscms.cern.ch/ mkdir -p %s"%dirRead_)
     print("Created  %s"%dirRead_)
-    jdlName = 'submitJobs_%s%s%s.jdl'%(year, decay, channel)
+    jdlName = 'submitJobs_%s%s%s%s.jdl'%(year, decay, spin, channel)
     jdlFile = open('%s/%s'%(tmpDir, jdlName),'w')
     jdlFile.write('Executable =  runReader.sh \n')
     jdlFile.write(common_command)
     #Create for Base
     for method, r, samp in itertools.product(methodDict.keys(), Regions.keys(), SampDict.keys()):
-        args =  'Arguments  = %s %s %s %s %s %s JetBase %s\n' %(year, decay, channel, samp, method, r, dirRead)
+        args =  'Arguments  = %s %s %s %s %s %s %s JetBase %s\n' %(year, decay, spin, channel, samp, method, r, dirRead)
         args += 'Queue 1\n\n'
         jdlFile.write(args)
         for sv in systVar_by_year[year]: 
             if "data_obs" in SampDict[samp]:
                 continue
-            args =  'Arguments  = %s %s %s %s %s %s %s %s\n' %(year, decay, channel, samp, method, r, sv, dirRead)
+            args =  'Arguments  = %s %s %s %s %s %s %s %s %s\n' %(year, decay, spin ,channel, samp, method, r, sv, dirRead)
             args += 'Queue 1\n\n'
             jdlFile.write(args)
             subFile.write("condor_submit %s\n"%jdlName)

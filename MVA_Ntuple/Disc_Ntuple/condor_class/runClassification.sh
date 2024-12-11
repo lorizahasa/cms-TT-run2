@@ -14,8 +14,8 @@ else
     echo ${_CONDOR_SCRATCH_DIR}
     source /cvmfs/cms.cern.ch/cmsset_default.sh
     #export SCRAM_ARCH=slc7_amd64_gcc700
-    scramv1 project CMSSW CMSSW_14_0_0
-    cd CMSSW_14_0_0/src
+    scramv1 project CMSSW CMSSW_14_1_0
+    cd CMSSW_14_1_0/src
     eval `scramv1 runtime -sh`
 	cd ../..
 	tar --strip-components=1 -xvf Disc_Ntuple.tar.gz
@@ -24,18 +24,18 @@ fi
 #Run for Base, Signal region
 echo "All arguements: "$@
 echo "Number of arguements: "$#
-if [ $# -eq 6 ] 
+if [ $# -eq 7 ] 
 then
-    python3 runClass.py -y $1 -d $2 -c $3 --method $4 -r $5
-    outDir=$6
-elif [ $# -eq 8 ] 
+    python3 runClass.py -y $1 -d $2 -p $3 -c $4 --method $5 -r $6
+    outDir=$7
+elif [ $# -eq 9 ] 
 then
-    python3 runClass.py -y $1 -d $2 -c $3 --method $4 -r $5 --syst $6 --level $7 
-    outDir=$8
+    python3 runClass.py -y $1 -d $2 -p $3 -c $4 --method $5 -r $6 --syst $7 --level $8 
+    outDir=$9
 
 #For over/under flow of arguments
 else
-    echo "The number of command line areguments should be 5 or 7" 
+    echo "The number of command line areguments should be 7 or 9" 
 fi
 printf "Done Histogramming at "; /bin/date
 

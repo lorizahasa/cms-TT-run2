@@ -134,6 +134,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     isMC = true;
     if (sampleType.find("Data") != std::string::npos){
 	isMC = false;
+    isSystematicRun =false;
     }
 
     std::string year(av[1]);
@@ -546,6 +547,7 @@ makeNtuple::makeNtuple(int ac, char** av)
     cout << outputDirectory<<"/"<<outputFileName << endl;
     TFile *outputFile = new TFile(outputFileName.c_str(),"recreate");
     outputTree = new TTree("AnalysisTree","AnalysisTree");
+    outputTree->SetCacheSize(50*1024*1024);
     cout << "HERE" << endl;
     tree->GetEntry(0);
     std::cout << "isMC: " << isMC << endl;
@@ -1173,6 +1175,9 @@ void makeNtuple::FillEvent(std::string year){
     if (_phoEt.size()>0){
         _phoEt0 = _phoEt[0];
     }
+    if (_phoEffWeight.size()>0){
+        _phoEffWeight0 = _phoEffWeight[0];    
+            }
 
     for (int i_pho = 0; i_pho <_nLoosePho; i_pho++){
         int phoInd = selector->LoosePhotons.at(i_pho);

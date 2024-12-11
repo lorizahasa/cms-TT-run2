@@ -180,11 +180,11 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Jet_qgl", 1);
     chain->SetBranchAddress("Jet_qgl", &jetQGL_);
 
-    chain->SetBranchStatus("Jet_qgl_0", 1);                                                                                                                          
-    chain->SetBranchAddress("Jet_qgl_0", &jetQGL0_);
+    //chain->SetBranchStatus("Jet_qgl_0", 1);                                                                                                                          
+    //chain->SetBranchAddress("Jet_qgl_0", &jetQGL0_);
 
-    chain->SetBranchStatus("Jet_qgl_1", 1);                                                                                                                          
-    chain->SetBranchAddress("Jet_qgl_1", &jetQGL1_);
+    //chain->SetBranchStatus("Jet_qgl_1", 1);                                                                                                                          
+    //chain->SetBranchAddress("Jet_qgl_1", &jetQGL1_);
 
     chain->SetBranchStatus("Jet_rawFactor",1);
     chain->SetBranchAddress("Jet_rawFactor", &jetRawFactor_);
@@ -213,11 +213,11 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("Jet_btagDeepB",1);
     chain->SetBranchAddress("Jet_btagDeepB", &jetBtagDeepB_);
  
-    chain->SetBranchStatus("Jet_btagDeepB0",1);
-    chain->SetBranchAddress("Jet_btagDeepB0", &jetBtagDeepB0_);
+   // chain->SetBranchStatus("Jet_btagDeepB0",1);
+   // chain->SetBranchAddress("Jet_btagDeepB0", &jetBtagDeepB0_);
 
-    chain->SetBranchStatus("Jet_btagDeepB1",1);
-    chain->SetBranchAddress("Jet_btagDeepB1", &jetBtagDeepB1_);
+    //chain->SetBranchStatus("Jet_btagDeepB1",1);
+    //chain->SetBranchAddress("Jet_btagDeepB1", &jetBtagDeepB1_);
 
     if (!isData_){
 	chain->SetBranchStatus("Jet_hadronFlavour",1);
@@ -233,14 +233,14 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("FatJet_pt",1);
     chain->SetBranchAddress("FatJet_pt", &fatJetPt_);
 
-    chain->SetBranchStatus("FatJet_pt_0",1);
-    chain->SetBranchAddress("FatJet_pt_0", &fatJetPt0_);
+    //chain->SetBranchStatus("FatJet_pt_0",1);
+    //chain->SetBranchAddress("FatJet_pt_0", &fatJetPt0_);
 
     chain->SetBranchStatus("FatJet_eta",1);
     chain->SetBranchAddress("FatJet_eta", &fatJetEta_);
     
-    chain->SetBranchStatus("FatJet_eta_0",1);
-    chain->SetBranchAddress("FatJet_eta_0", &fatJetEta0_);
+    //chain->SetBranchStatus("FatJet_eta_0",1);
+    //chain->SetBranchAddress("FatJet_eta_0", &fatJetEta0_);
 
     chain->SetBranchStatus("FatJet_phi",1);
     chain->SetBranchAddress("FatJet_phi", &fatJetPhi_);
@@ -254,8 +254,8 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchStatus("FatJet_msoftdrop",1);
     chain->SetBranchAddress("FatJet_msoftdrop", &fatJetMassSoftDrop_);
 
-    chain->SetBranchStatus("FatJet_msoftdrop_0",1);
-    chain->SetBranchAddress("FatJet_msoftdrop_0", &fatJetMassSoftDrop0_);
+    //chain->SetBranchStatus("FatJet_msoftdrop_0",1);
+    //chain->SetBranchAddress("FatJet_msoftdrop_0", &fatJetMassSoftDrop0_);
 
     chain->SetBranchStatus("FatJet_jetId",1);
     chain->SetBranchAddress("FatJet_jetId", &fatJetID_);

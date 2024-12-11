@@ -56,6 +56,7 @@ int main(int argc, char* argv[]){
     
     std::string year = "2017";
     std::string decay = "Semilep";
+    std::string spin = "Spin32";
     std::string channel = "Mu";
     std::string sample = "SignalSpin32_M800";
     std::string region = "ttyg_Enriched_SR_Resolved";
@@ -64,7 +65,7 @@ int main(int argc, char* argv[]){
     bool isCut = false;
 
     int opt;
-    while ((opt = getopt(argc, argv, "y:d:c:s:r:z:m:i:h")) != -1) {
+    while ((opt = getopt(argc, argv, "y:d:p:c:s:r:z:m:i:h")) != -1) {
         switch (opt) {
             case 'y':
                 year = optarg;
@@ -72,6 +73,9 @@ int main(int argc, char* argv[]){
             case 'd':
                 decay = optarg;
                 break;
+            case 'p':
+                spin = optarg;
+                break;    
             case 'c':
                 channel = optarg;
                 break;
@@ -99,12 +103,13 @@ int main(int argc, char* argv[]){
                 }
             return 0;
             default:
-                std::cerr << "Usage: " << argv[0] << " [-y year] [-d decay] [-c channel] [-s sample] [-r region] [--syst systematic] [--method method] [--isCut]" << std::endl;
+                std::cerr << "Usage: " << argv[0] << " [-y year] [-d decay] [-p spin] [-c channel] [-s sample] [-r region] [--syst systematic] [--method method] [--isCut]" << std::endl;
                 exit(EXIT_FAILURE);
         }
     }
     std::cout << "Year: " << year << std::endl;
     std::cout << "Decay: " << decay << std::endl;
+    std::cout << "Spin: " << spin << std::endl;
     std::cout << "Channel: " << channel << std::endl;
     std::cout << "Sample: " << sample << std::endl;
     std::cout << "Region: " << region << std::endl;
@@ -125,8 +130,8 @@ int main(int argc, char* argv[]){
         xmlRegion = "ttyg_Enriched_SR_Resolved";
     if (region.find("ttyg_Enriched_CR_Boosted") != std::string::npos)
         xmlRegion = "ttyg_Enriched_SR_Boosted";
-    std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights";
-    std::string outFileDir = "./discs/Reader/" + year + "/" + decay + "/" + channel + "/" + method;
+    std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + spin + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights";
+    std::string outFileDir = "./discs/Reader/" + year + "/" + decay + "/" + spin + "/"+ channel + "/" + method;
 
     system(("mkdir -p " + outFileDir).c_str());
     std::cout << inFileDir << std::endl;
@@ -220,8 +225,8 @@ int main(int argc, char* argv[]){
 	TH1F* hReco_dr_tHad_tstarHad = new TH1F("Reco_dr_tHad_tstarHad", "Reco_dr_tHad_tstarHad", 20, 0, 10);
 	TH1F* hReco_dr_tLep_tstarLep = new TH1F("Reco_dr_tLep_tstarLep", "Reco_dr_tLep_tstarLep", 20, 0, 10);
 	TH1F* hReco_dr_tstarHad_tstarLep = new TH1F("Reco_dr_tstarHad_tstarLep", "Reco_dr_tstarHad_tstarLep", 20, 0, 10); 
-	TH1F* hFatJet_pt = new TH1F("FatJet_pt_0", "FatJet_pt_0", 9000, -50, 8950);
-	TH1F* FatJet_msoftdrop = new TH1F("FatJet_msoftdrop_0", "FatJet_msoftdrop_0", 9000, -50, 8950);
+	TH1F* hFatJet_pt_0 = new TH1F("FatJet_pt_0", "FatJet_pt_0", 9000, -50, 8950);
+	TH1F* FatJet_msoftdrop_0 = new TH1F("FatJet_msoftdrop_0", "FatJet_msoftdrop_0", 9000, -50, 8950);
     //Define TProfile
     TProfile *pWeight_lumi = new TProfile("pWeight_lumi", "pWeight_lumi", nx, vx);
     TProfile *pWeight_pu = new TProfile("pWeight_pu", "pWeight_pu", nx, vx);
@@ -292,7 +297,7 @@ int main(int argc, char* argv[]){
 	Float_t w_pho   = 1.0;
 	Float_t w_ttag  = 1.0;
 
-	std::string outDir = "output/Reader/"+year+"/Semilep/"+channel+"/CombMass/BDTA";
+	std::string outDir = "output/Reader/"+year+"/Semilep/"+ spin + "/"+channel+"/CombMass/BDTA";
     std::filesystem::create_directories(outDir);
     
 //mkdir(outDir.c_str(), S_IRWXU);
@@ -380,12 +385,14 @@ int main(int argc, char* argv[]){
             if(tree->FatJet_size <1) continue;
         }
         if(region.find("SR") != std::string::npos){
-            tree->b_Photon_et->GetEntry(entry);
-            if(tree->Photon_et->at(0) <100) continue;
+            tree->b_Photon_et_leading->GetEntry(entry);
+            // if(tree->Photon_et->at(0) <100) continue;
+            if(tree->Photon_et_leading <100) continue;
         }
         if(region.find("CR") != std::string::npos){
-            tree->b_Photon_et->GetEntry(entry);
-            if(tree->Photon_et->at(0) >100) continue;
+            tree->b_Photon_et_leading->GetEntry(entry);
+            //if(tree->Photon_et->at(0) >100) continue;
+            if(tree->Photon_et_leading >100) continue;
         }
         
         Float_t combWt = 1.0;
@@ -576,11 +583,14 @@ int main(int argc, char* argv[]){
             tree->Jet_deep_b1 = tree->Jet_deep_b0;
         }*/
 
-        //tree->b_Jet_qgl->GetEntry(entry);
-        tree->Jet_deep_b0 = tree->Jet_deep_b0;
-        tree->Jet_deep_b1 = tree->Jet_deep_b1;
-        tree->Jet_qgl_0 = tree->Jet_qgl_0;
-        tree->Jet_qgl_1 = tree->Jet_qgl_1;
+        tree->b_Jet_qgl_0->GetEntry(entry);
+        tree->b_Jet_qgl_1->GetEntry(entry);
+        tree->b_Jet_deep_b0->GetEntry(entry);
+        tree->b_Jet_deep_b1->GetEntry(entry);
+        //tree->Jet_deep_b0 = tree->Jet_deep_b0;
+        //tree->Jet_deep_b1 = tree->Jet_deep_b1;
+       // tree->Jet_qgl_0 = tree->Jet_qgl_0;
+        //tree->Jet_qgl_1 = tree->Jet_qgl_1;
         
         //cout<<"Entry: "<< entry;
         //tree->GetEntry(entry);
@@ -592,7 +602,7 @@ int main(int argc, char* argv[]){
         tree->b_Reco_angle_leadJet_met->GetEntry(entry);
         tree->b_Reco_angle_leadBjet_met->GetEntry(entry);
         tree->b_Reco_chi2->GetEntry(entry);
-        //tree->b_Jet_size->GetEntry(entry);
+        tree->b_Jet_size->GetEntry(entry);
         tree->b_Reco_dr_pho_tstarHad->GetEntry(entry);
         tree->b_Reco_dr_pho_tHad->GetEntry(entry);
         tree->b_Reco_dr_pho_tstarLep->GetEntry(entry);
@@ -610,19 +620,21 @@ int main(int argc, char* argv[]){
         tree->b_Reco_dr_tstarHad_tstarLep->GetEntry(entry);
         
 	    if (region.find("Boosted") != std::string::npos) {
-           // tree->b_FatJet_pt->GetEntry(entry);
-            tree->FatJet_pt_0 = tree->FatJet_pt_0;
-           // tree->b_FatJet_msoftdrop->GetEntry(entry);
-            tree->FatJet_msoftdrop_0 = tree->FatJet_msoftdrop_0;
+            tree->b_FatJet_pt_0->GetEntry(entry);
+           // tree->FatJet_pt_0 = tree->FatJet_pt_0;
+            tree->b_FatJet_msoftdrop_0->GetEntry(entry);
+           // tree->FatJet_msoftdrop_0 = tree->FatJet_msoftdrop_0;
         }
         auto disc = reader.EvaluateMVA(method);  
-//hDisc->Fill(disc, combWt);
-        hDisc->Fill(disc);
+        hDisc->Fill(disc, combWt);
+//hDisc->Fill(disc);
         
 	}
     
     cout<<"Entry of Reco_mass_T = "<<hReco_mass_T->GetEntries()<<endl;
+    cout<<"Entry of Disc = "<<hDisc->GetEntries()<<endl;
     cout<<"Integral of Reco_mass_T = "<<hReco_mass_T->Integral()<<endl;
+    cout<<"Integral of Disc = "<<hDisc->Integral()<<endl;
     string outDirInFile = sample+"/"+region+"/"+str+"/";
 	TFile* outFile = TFile::Open(outPath.c_str() ,"RECREATE");
     outFile->cd();
@@ -631,18 +643,18 @@ int main(int argc, char* argv[]){
 	hReco_mass_T->Write();
     hDisc->Write();
     hEvents->Write();
-    pWeight_lumi->Write();
-    pWeight_pu->Write();
-    pWeight_mu->Write();
-    pWeight_ele->Write();
-    pWeight_q2->Write();
-    pWeight_pdf->Write();
-    pWeight_prefire->Write();
-    pWeight_isr->Write();
-    pWeight_fsr->Write();
-    pWeight_btag->Write();
-    pWeight_pho->Write();
-    pWeight_ttag->Write();
+   // pWeight_lumi->Write();
+   // pWeight_pu->Write();
+   // pWeight_mu->Write();
+   // pWeight_ele->Write();
+   // pWeight_q2->Write();
+   // pWeight_pdf->Write();
+   // pWeight_prefire->Write();
+   // pWeight_isr->Write();
+   // pWeight_fsr->Write();
+   // pWeight_btag->Write();
+   // pWeight_pho->Write();
+   // pWeight_ttag->Write();
     cout<<"Output File ="<<outFile->GetName()<<endl;
 	outFile->Close();
 	return 0;

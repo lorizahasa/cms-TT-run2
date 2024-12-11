@@ -2,7 +2,7 @@
 #outNtupleDir = "/store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 outNtupleDir = "/store/group/phys_b2g/lhasa/Output/cms-TT-run2/Ntuple_Skim"
 #-----------------------------------------------------------------
-#Years   =  ['2016Pre', '2016Post', '2017', '2018']
+#Years   =  ['2016Pre', '2016Post', '2018']
 Years 	      =	["2017"]
 #Decays 	      =	["Semilep", "Dilep"]
 Decays 	      =	["Semilep"]

@@ -65,7 +65,7 @@ class makeNtuple {
 
     int eventNum = -1;
 
-    bool isSystematicRun;
+    bool isSystematicRun = true;
 
     bool useGenWeightScaling;
 
@@ -243,7 +243,8 @@ class makeNtuple {
     std::vector<int>  _photonIsMisIDEle;
     std::vector<int>  _photonIsHadronicPhoton;
     std::vector<int>  _photonIsHadronicFake;
-
+    
+    Float_t               _phoEffWeight0;
     std::vector<float>    _phoEffWeight;
     std::vector<float>    _phoEffWeight_Up;
     std::vector<float>    _phoEffWeight_Do;
@@ -389,6 +390,7 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Weight_ele_reco" , &_eleEffWeight_Reco );
     outputTree->Branch("Weight_ele_trig", &_eleEffWeight_Trig );
     outputTree->Branch("Weight_pho"     , &_phoEffWeight );
+    outputTree->Branch("Weight_pho_leading"     , &_phoEffWeight0 );
     outputTree->Branch("Weight_pho_id"  , &_phoEffWeight_Id );
     outputTree->Branch("Weight_pho_ps", &_phoEffWeight_PS );
     outputTree->Branch("Weight_pho_cs", &_phoEffWeight_CS );
@@ -400,7 +402,7 @@ void makeNtuple::InitBranches(){
 	outputTree->Branch("Weight_isr"         , &_ISRweight );
 	outputTree->Branch("Weight_fsr"         , &_FSRweight );
     //Weights: up/down
-    if (!isSystematicRun){
+    if (isSystematicRun){
 	    outputTree->Branch("Weight_puUp"       , &_PUweight_Up );
 	    outputTree->Branch("Weight_puDown"     , &_PUweight_Do );
 	    outputTree->Branch("Weight_ttagUp"     , &_TopWeight_Up );
@@ -696,6 +698,7 @@ void makeNtuple::InitVariables()
     _nPho		 = -9;
     _phoMassLepGamma0 = -9;
     _phoEt0 =-9;
+    _phoEffWeight0 =-9;
 
     _phoEt.clear();
     _phoEta.clear();

@@ -17,6 +17,8 @@ parser.add_option("-y", "--year", dest="year", default="2017",type='str',
                      help="Specifyi the year of the data taking" )
 parser.add_option("-d", "--decay", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
+parser.add_option("-p", "--spin", dest="spin", default="Spin12",type='str',
+                     help="Specify which signal spin Spin32 or Spin12? default is Spin12")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
                      help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
@@ -34,6 +36,7 @@ parser.add_option("--isSep", "--isSep", dest="isSep", action="store_true", defau
 (options, args) = parser.parse_args()
 year        = options.year
 decayMode   = options.decayMode
+spin        = options.spin
 channel     = options.channel
 region      = options.region
 syst        = options.systematic
@@ -54,16 +57,16 @@ allSamples = getSamples(year, decayMode, syst)
 #print(allSamples)
 
 if isSep:
-    outDir = "discs/Class/Classification/%s/%s/%s/%s/%s/%s"%(year, decayMode, channel, mass, method,region)
+    outDir = "discs/Class/Classification/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, spin, channel, mass, method,region)
 else:
-    outDir = "discs/Class/Classification/%s/%s/%s/CombMass/%s/%s"%(year, decayMode, channel, method, region)
+    outDir = "discs/Class/Classification/%s/%s/%s/%s/CombMass/%s/%s"%(year, decayMode, spin, channel, method, region)
 
 os.system("mkdir -p %s"%outDir)
 os.system("mkdir -p %s/plots"%outDir)
 sigList = []
 bkgList = []
 for s in allSamples.keys():
-    if 'Signal' in s:
+    if 'SignalSpin12' in s:
     #if 'Signal' and 'M%s'%mass in s:
         sigs = allSamples[s]
         for sigF in sigs:
@@ -77,7 +80,7 @@ for s in allSamples.keys():
                 bkgList.append(bkgF)
 if isCheck:
     bkgList = ["TTGamma_Dilepton_Ntuple_1of1.root"]
-    sigList = ["SignalSpin32_M800_Ntuple_1of1.root"]
+    sigList = ["SignalSpin12_M800_Ntuple_1of1.root"]
 #-----------------------------------------
 #Add trees in the TChain
 #----------------------------------------
@@ -111,7 +114,7 @@ for var in varDict.keys():
     print(varDict[var][0])
     loader.AddVariable(varDict[var][0], 'F')
    
-evtWeights_sig = "Weight_pu*Weight_mu*Weight_ele*Weight_prefire*Weight_btag*Weight_pho[0]"
+evtWeights_sig = "Weight_pu*Weight_mu*Weight_ele*Weight_prefire*Weight_btag*Weight_pho_leading"
 evtWeights_bkg = "Weight_lumi*%s"%evtWeights_sig
 loader.SetSignalWeightExpression(evtWeights_sig)
 loader.SetBackgroundWeightExpression(evtWeights_bkg)
@@ -153,8 +156,8 @@ ROOT.gROOT.SetBatch(True)
 roc = factory.GetROCCurve(loader)
 roc.Write()
 auc = factory.GetROCIntegral(loader, m)
-auc_ = "Year = %s\nDecay = %s\nChannel = %s\nRegion = %s\nMethod = %s\nAUC = %s"%(year, decayMode, channel, region, m, auc)
-print("RESULT:%s,%s,%s,%s,%s,%s"%(year, decayMode, channel, region, m, auc))
+auc_ = "Year = %s\nDecay = %s\nSpin =%s\nChannel = %s\nRegion = %s\nMethod = %s\nAUC = %s"%(year, decayMode, spin, channel, region, m, auc)
+print("RESULT:%s,%s,%s,%s,%s,%s,%s"%(year, decayMode, spin, channel, region, m, auc))
 aucFile = open("./%s/AUC.txt"%outDir, "w")
 aucFile.write(auc_)
 aucFile.close()

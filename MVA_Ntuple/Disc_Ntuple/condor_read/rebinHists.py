@@ -78,12 +78,29 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
     else:
         print("Error: hist_ is null. Skipping deletion")
     #print("%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, CR, sysType, hist_.GetName()))
+    # Function to fill empty regular bins with 1e-8
+
+    def fillEmptyBins(hist, fill_value=1e-9):
+        # Iterate over regular bins only (from 1 to N)
+        for bin in range(0, hist.GetNbinsX() + 1):
+            content = hist.GetBinContent(bin)
+            if content <= 0: #Fill bin if 0 or negative
+                hist.SetBinContent(bin, fill_value)
+                print(f"Replaced bin {bin} in histogram {hist.GetName()} with {fill_value} (original content: {content})")
+                      # if hist.GetBinContent(bin) == 0:
+           #     hist.SetBinContent(bin, fill_value)
+           #     print(f"Filled bin {bin} in histogram {hist.GetName()} with {fill_value}")
+
     if hName in dictRebin.keys():
         hNew = hist_.Rebin(len(dictRebin[hName])-1, hist_.GetName(), dictRebin[hName]) 
+        # Check and fill empty regular bins in the rebinned histogram
+        fillEmptyBins(hNew, fill_value=1e-9)
         hNew.Write()
         #print(hName)
         #print(dictRebin[hName])
     else:
+        # If not rebinned, check and fill empty regular bins in the original histogram
+        fillEmptyBins(hist_, fill_value=1e-9)
         hist_.Write()
     outputFile.cd()
 

@@ -66,6 +66,7 @@ regionList = list(rDict.keys())
 if args.isCheck:
     Year  = [Year[0]]
     Decay = [Decay[0]]
+    Spin = [Spin[0]]
     Channel = [Channel[0]]
     regionList  = [regionList[0]]
 if not args.isCheck and not args.isSep:
@@ -96,14 +97,14 @@ def DrawAxisHists(pads, axis_hists, def_pad=None):
 #----------------------------------------
 fPath = open("%s/plotLimit.txt"%dirFit, 'w')
 hName = 'Disc'
-dirFit2 ="/uscms/home/lhasa/nobackup/TTPrime/CMSSW_14_0_0/src/cms-TT-run2/MVA_Ntuple/Fit_Disc/output/Fit_Disc/FitMain"
+#dirFit2 ="/uscms/home/lhasa/nobackup/TTPrime/CMSSW_14_0_0/src/cms-TT-run2/MVA_Ntuple/Fit_Disc/output/Fit_Disc/FitMain"
 #hName = 'Reco_mass_T'
-for decay, region, channel, year in itertools.product(Decay, regionList, Channel, Year):
+for decay, region, spin, channel, year in itertools.product(Decay, regionList, Spin, Channel, Year):
     limits = "tex/allLimits.json"
     gDict = {}
     limDict={}
-    ydc = "%s/%s/%s"%(year, decay, channel)
-    path = "%s/%s"%(dirFit2, ydc) 
+    ydsc = "%s/%s/%s/%s"%(year, decay, spin, channel)
+    path = "%s/%s"%(dirFit, ydsc) 
     outPath = "%s/%s"%(path, region)
     os.system('mkdir -p %s'%outPath)
     jsonRaw = "%s/limits.json"%outPath

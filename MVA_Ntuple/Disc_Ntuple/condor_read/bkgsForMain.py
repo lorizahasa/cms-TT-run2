@@ -98,11 +98,11 @@ def writeHist(outFile, hPath, hist):
 # Do the rebining here
 #----------------------------------------
 for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList):
-    inDir = "%s/Rebin/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
+    inDir = "%s/AdjustForMain/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
     #inDir = "%s/Merged/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
 
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
-    outDir = inDir.replace("Rebin", "ForMain")
+    outDir = inDir.replace("AdjustForMain", "ForMain")
    # outDir = inDir.replace("Merged", "ForMain")
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")

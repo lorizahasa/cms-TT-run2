@@ -45,6 +45,7 @@ class NtupleTree{
     Float_t         Weight_ele_id;
     Float_t         Weight_ele_reco;
     Float_t         Weight_ele_trig;
+    Float_t         Weight_pho_leading;
     vector<float>   *Weight_pho;
     vector<float>   *Weight_pho_id;
     vector<float>   *Weight_pho_ps;
@@ -119,6 +120,7 @@ class NtupleTree{
     vector<float>   *Electron_eta_sc;
     vector<float>   *Electron_iso;
     Int_t           Photon_size;
+    Float_t         Photon_et_leading;
     vector<float>   *Photon_et;
     vector<float>   *Photon_eta;
     vector<float>   *Photon_phi;
@@ -262,6 +264,7 @@ class NtupleTree{
     TBranch        *b_Weight_ele_recoDown;   //!
     TBranch        *b_Weight_ele_trigUp;   //!
     TBranch        *b_Weight_ele_trigDown;   //!
+    TBranch        *b_Weight_pho_leading;   //!
     TBranch        *b_Weight_phoUp;   //!
     TBranch        *b_Weight_phoDown;   //!
     TBranch        *b_Weight_pho_idUp;   //!
@@ -298,6 +301,7 @@ class NtupleTree{
     TBranch        *b_Electron_iso;   //!
     TBranch        *b_Photon_size;   //!
     TBranch        *b_Photon_et;   //!
+    TBranch        *b_Photon_et_leading;   //!
     TBranch        *b_Photon_eta;   //!
     TBranch        *b_Photon_phi;   //!
     TBranch        *b_Photon_iso;   //!

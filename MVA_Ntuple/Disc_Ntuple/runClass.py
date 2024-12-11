@@ -10,6 +10,8 @@ parser.add_option("-y", "--year", dest="year", default="2017",type='str',
                      help="Specifyi the year of the data taking" )
 parser.add_option("-d", "--decay", dest="decay", default="Semilep",type='str',
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
+parser.add_option("-p", "--spin", dest="spin", default="Spin12",type='str',
+                     help="Specify which signal spin Spin32 or Spin12? default is Spin12")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
                      help="Specify which channel Mu or Ele? default is Mu" )
 parser.add_option("-r", "--region", dest="region", default="ttyg_Enriched_SR_Resolved",type='str', 
@@ -23,6 +25,7 @@ parser.add_option("--syst", "--systematic", dest="systematic", default="JetBase"
 (options, args) = parser.parse_args()
 year = options.year
 decay = options.decay
+spin = options.decay
 channel = options.channel
 method = options.method
 region  = options.region
@@ -30,8 +33,8 @@ level =options.level
 syst = options.systematic
 
 if level=="":
-    args = "-y %s -d %s -c %s --method %s -r %s "%(year, decay, channel, method, region)
+    args = "-y %s -d %s -p %s -c %s --method %s -r %s "%(year, decay, spin,  channel, method, region)
 else:
-    args = "-y %s -d %s -c %s --method %s -r %s --syst %s --level %s "%(year, decay, channel, method, region, syst, level)
+    args = "-y %s -d %s -p $s -c %s --method %s -r %s --syst %s --level %s "%(year, decay, spin, channel, method, region, syst, level)
 print(args)
 os.system("python3 classification.py %s"%args)

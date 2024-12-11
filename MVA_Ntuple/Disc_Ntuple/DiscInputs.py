@@ -9,14 +9,16 @@ dirClass  = "%s/Disc_Ntuple/DiscMain"%dirMVA2
 dirRead   = "%s/Disc_Ntuple/DiscMain"%dirMVA2
 nMulti    = 1
 #-----------------------------------------------------------------
-#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-#Years 	      =	["2016Pre", "2016Post", "2018"]
-Years         =	["2017"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years 	      =	["2016Pre", "2016Post", "2017"]
+#Years         =	["2017"]
 Channels 	  =	["Mu", "Ele"]
 #Channels      =	["Mu"]
 Decays        =	["Semilep"]
-#Mass          = ["800", "1600"]
-Mass      = ["700", "800", "900", "1100", "1200", "1300", "1500", "2750"]
+#Mass         = ["2750"]
+Mass          = ["700","800", "900","1000", "1100", "1200", "1300", "1400","1500", "1600", "1700", "1800", "1900", "2000", "2250", "2500","2750", "3000"]
+#Mass      = ["700", "800", "900", "1100", "1200", "1300", "1500", "2750"]
+Spin       =["Spin12"]
 
 #Years and channels to be combined
 Years_         = ["2016Pre__2016Post__2017__2018"]
@@ -24,6 +26,36 @@ Years_         = ["2016Pre__2016Post__2017__2018"]
 Channels_      = ["Mu__Ele"]
 
 S1 = []
+S1.append("SignalSpin32_M1000")
+S1.append("SignalSpin32_M1400")
+S1.append("SignalSpin32_M1600")
+S1.append("SignalSpin32_M1700")
+S1.append("SignalSpin32_M1800")
+S1.append("SignalSpin32_M1900")
+S1.append("SignalSpin32_M2000")
+S1.append("SignalSpin32_M2250")
+S1.append("SignalSpin32_M2500")
+S1.append("SignalSpin32_M3000")
+
+#S1.append("SignalSpin12_M700")
+#S1.append("SignalSpin12_M800")
+#S1.append("SignalSpin12_M900")
+#S1.append("SignalSpin12_M1000")
+#S1.append("SignalSpin12_M1100")
+#S1.append("SignalSpin12_M1200")
+#S1.append("SignalSpin12_M1300")
+#S1.append("SignalSpin12_M1400")
+#S1.append("SignalSpin12_M1500")
+#S1.append("SignalSpin12_M1600")
+#S1.append("SignalSpin12_M1700")
+#S1.append("SignalSpin12_M1800")
+#S1.append("SignalSpin12_M1900")
+#S1.append("SignalSpin12_M2000")
+#S1.append("SignalSpin12_M2250")
+#S1.append("SignalSpin12_M2500")
+#S1.append("SignalSpin12_M2750")
+#S1.append("SignalSpin12_M3000")
+
 S1.append("SignalSpin32_M700")
 S1.append("SignalSpin32_M800")
 S1.append("SignalSpin32_M900")
@@ -46,6 +78,7 @@ S3 = []
 S3.append("data_obs")
 
 Samples  = S1+S2+S3
+#Samples  = S1
 
 SampDict = {}
 SampDict["S1"] = S1

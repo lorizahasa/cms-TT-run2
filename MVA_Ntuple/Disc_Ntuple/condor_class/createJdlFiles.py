@@ -28,24 +28,24 @@ Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, c
 #----------------------------------------
 os.system("mkdir -p /eos/uscms/%s"%dirClass)
 subFile = open('%s/condorSubmit.sh'%tmpDir,'w')
-for year, decay, channel, in itertools.product(Years, Decays, Channels):
-    jdlName = 'submitJobs_%s%s%s.jdl'%(year, decay, channel)
+for year, decay, spin, channel, in itertools.product(Years, Decays, Spin, Channels):
+    jdlName = 'submitJobs_%s%s%s%s.jdl'%(year, decay,spin, channel)
     jdlFile = open('%s/%s'%(tmpDir, jdlName),'w')
     jdlFile.write('Executable =  runClassification.sh \n')
     jdlFile.write(common_command)
     #Create for Base, Control region
     for method, r in itertools.product(methodDict.keys(), Regions.keys()):
         run_command =  \
-		'arguments  = %s %s %s %s %s %s\n\
-queue 1\n\n' %(year, decay, channel, method, r, dirClass)
+		'arguments  = %s %s %s %s %s %s %s\n\
+queue 1\n\n' %(year, decay, spin, channel, method, r, dirClass)
         print(run_command)
         if "SR" in r:
             jdlFile.write(run_command)
     #Create for Syst, Control region
     for method, r, syst, level in itertools.product(methodDict.keys(), Regions.keys(), Systematics, SystLevels):
         run_command =  \
-		'arguments  = %s %s %s %s %s %s %s %s\n\
-queue 1\n\n' %(year, decay, channel, method, r, syst, level, dirClass)
+		'arguments  = %s %s %s %s %s %s %s %s %s\n\
+queue 1\n\n' %(year, decay, spin,  channel, method, r, syst, level, dirClass)
         #jdlFile.write(run_command)
 	#print("condor_submit jdl/%s"%jdlFile)
     subFile.write("condor_submit %s\n"%jdlName)
