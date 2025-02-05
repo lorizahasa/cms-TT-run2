@@ -6,16 +6,16 @@ dirFit = "/eos/uscms/%s/Fit_Disc/FitMain"%condorOutDir
 dirTwiki= "/eos/uscms/store/user/lhasa/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
 Year = []
-Year.append("2016Pre")
-Year.append("2016Post")
-Year.append("2017")
-Year.append("2018")
-#Year.append("2016Pre__2016Post__2017__2018")
+#Year.append("2016Pre")
+#Year.append("2016Post")
+#Year.append("2017")
+#Year.append("2018")
+Year.append("2016Pre__2016Post__2017__2018")
 
 Channel = []
-Channel.append("Mu")
-Channel.append("Ele")
-#Channel.append("Mu__Ele")
+#Channel.append("Mu")
+#Channel.append("Ele")
+Channel.append("Mu__Ele")
 
 Decay 	  =	["Semilep"]
 Spin     = ["Spin32"]
@@ -23,7 +23,7 @@ Spin     = ["Spin32"]
 
 histList = []
 histList.append("Reco_mass_T")
-histList.append("Disc")
+#histList.append("Disc")
 #histList.append("Reco_st")
 
 xss = {}
@@ -40,6 +40,7 @@ xss["1300.0"]  = 0.03*0.97*2*0.0253
 xss["1400.0"]  = 0.03*0.97*2*0.0126
 xss["1500.0"]  = 0.03*0.97*2*0.0065
 #xss["1600.0"]  = 0.03*0.97*2*0.00359
+
 xss["1600.0"]  = 0.03*0.97*2*0.00342
 xss["1700.0"]  = 0.03*0.97*2*0.00185
 xss["1800.0"]  = 0.03*0.97*2*0.00101
@@ -48,15 +49,15 @@ xss["2000.0"]  = 0.03*0.97*2*0.00032
 xss["2250.0"]  = 0.03*0.97*2*0.000078
 xss["2500.0"]  = 0.03*0.97*2*0.000021
 xss["2750.0"]  = 0.03*0.97*2*0.000006
-xss["3000.0"]  = 0.03*0.97*2*0.000002
+#xss["3000.0"]  = 0.03*0.97*2*0.000002
 xss = OrderedDict(sorted(xss.items(), key=lambda t: t[1]))
 
 rDict = {}
 #
 #Dict["ttyg_Enriched_SR"] = "Inclusive"
 #rDict["ttyg_Enriched_SR_Boosted"] = "SR, Boosted"
-rDict["ttyg_Enriched_SR_Resolved"]= "SR, Resolved"
-#rDict["ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved"]="SR, Boosted+Resolved"
+#rDict["ttyg_Enriched_SR_Resolved"]= "SR, Resolved"
+rDict["ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved"]="SR, Boosted+Resolved"
 #rDict["ttyg_Enriched_CR_Boosted"] = "CR, Boosted"
 #rDict["ttyg_Enriched_CR_Resolved"]= "CR, Resolved"
 #rDict["ttyg_Enriched_CR_Boosted__ttyg_Enriched_CR_Resolved"]="CR, Boosted+Resolved"

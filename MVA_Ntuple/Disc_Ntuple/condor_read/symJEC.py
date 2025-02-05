@@ -153,8 +153,8 @@ def symmetrize_histograms(input_filename, output_filename):
     output_file.Close()
 
 
-for year, decay, channel in itertools.product(Years, Decays, Channels):
-    input_dir = f"{input_dirs}/Rebin/{year}/{decay}/{channel}/CombMass/BDTA"
+for year, decay, spin, channel in itertools.product(Years, Decays, Spin, Channels):
+    input_dir = f"{input_dirs}/Rebin/{year}/{decay}/{spin}/{channel}/CombMass/BDTA"
     output_dir = input_dir.replace("Rebin", "AdjustForMain")
 
     # Create the output directory if it doesn't exist

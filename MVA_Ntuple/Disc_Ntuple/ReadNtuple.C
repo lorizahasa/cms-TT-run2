@@ -58,7 +58,7 @@ int main(int argc, char* argv[]){
     std::string decay = "Semilep";
     std::string spin = "Spin32";
     std::string channel = "Mu";
-    std::string sample = "SignalSpin32_M800";
+    std::string sample = "SignalSpin32_M2750";
     std::string region = "ttyg_Enriched_SR_Resolved";
     std::string syst = "JetBase";
     std::string method = "BDTA";
@@ -130,7 +130,7 @@ int main(int argc, char* argv[]){
         xmlRegion = "ttyg_Enriched_SR_Resolved";
     if (region.find("ttyg_Enriched_CR_Boosted") != std::string::npos)
         xmlRegion = "ttyg_Enriched_SR_Boosted";
-    std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + spin + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights";
+    std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights";
     std::string outFileDir = "./discs/Reader/" + year + "/" + decay + "/" + spin + "/"+ channel + "/" + method;
 
     system(("mkdir -p " + outFileDir).c_str());
@@ -408,7 +408,11 @@ int main(int argc, char* argv[]){
             tree->b_Weight_ttag->GetEntry(entry);
             tree->b_Weight_pho->GetEntry(entry);
 
+            
             w_lumi      = tree->Weight_lumi;
+            if(sample.find("Signal") != std::string::npos){
+                w_lumi  = 1.0;
+            }
             w_pu        = tree->Weight_pu;
             w_mu        = tree->Weight_mu;
             w_ele       = tree->Weight_ele;
@@ -525,10 +529,26 @@ int main(int argc, char* argv[]){
             		* w_prefire 
             		* w_isr 
             		* w_fsr 
-            		* w_btag 
+            		//* w_btag 
             		* w_pho 
             		* w_ttag;
-        
+
+            if(combWt<0){
+                std::cout<<"Combine Weight = "<< combWt <<std::endl;
+                std::cout<<"Lumi Weight = "<< w_lumi <<std::endl;
+                std::cout<<"PU Weight = "<< w_pu <<std::endl;
+                std::cout<<"Mu Weight = "<< w_mu <<std::endl;
+                std::cout<<"Ele Weight = "<< w_ele <<std::endl;
+                std::cout<<"Q2 Weight = "<< w_q2 <<std::endl;
+                std::cout<<"PDF Weight = "<< w_pdf <<std::endl;
+                std::cout<<"Prefire Weight = "<< w_prefire <<std::endl;
+                std::cout<<"ISR Weight = "<< w_isr <<std::endl;
+                std::cout<<"fsr Weight = "<< w_fsr <<std::endl;
+                std::cout<<"Btag Weight = "<< w_btag <<std::endl;
+                std::cout<<"Photon Weight = "<< w_pho <<std::endl;
+                std::cout<<"Ttag Weight = "<< w_ttag <<std::endl;
+            }
+
             if(sample.find("DYJets") != std::string::npos){
                 double sf = dictSFs[year][0];
                 combWt    = combWt*sf; 
@@ -556,8 +576,8 @@ int main(int argc, char* argv[]){
         //Fill TProfile for JetBase only
         if(syst.find("JetBase") != std::string::npos){
             pWeight_lumi->Fill(tree->Reco_mass_T, w_lumi);
-            if(tree->Reco_mass_T>445 && tree->Reco_mass_T<565){ 
-            cout<<"W_lumi: "<< w_lumi <<endl;}
+           // if(tree->Reco_mass_T>445 && tree->Reco_mass_T<565){ 
+            //cout<<"W_lumi: "<< w_lumi <<endl;}
             pWeight_pu->Fill(tree->Reco_mass_T, w_pu);
             pWeight_mu->Fill(tree->Reco_mass_T, w_mu);
             pWeight_ele->Fill(tree->Reco_mass_T, w_ele);
@@ -635,6 +655,16 @@ int main(int argc, char* argv[]){
     cout<<"Entry of Disc = "<<hDisc->GetEntries()<<endl;
     cout<<"Integral of Reco_mass_T = "<<hReco_mass_T->Integral()<<endl;
     cout<<"Integral of Disc = "<<hDisc->Integral()<<endl;
+   // cout<<"Weight Pho = "<<w_pho<<endl;
+   // cout<<"Weight fsr = "<<w_fsr<<endl;
+   // cout<<"Weight q2 = "<<w_q2<<endl;
+   // cout<<"Weight btag = "<<w_btag<<endl;
+   // cout<<"Weight ttag = "<<w_ttag<<endl;
+   // cout<<"Weight isr = "<<w_isr<<endl;
+   // cout<<"Weight pdf = "<<w_pdf<<endl;
+   // cout<<"Weight mu = "<<w_mu<<endl;
+   // cout<<"Weight ele = "<<w_ele<<endl;
+   // cout<<"Weight prefire = "<<w_prefire<<endl;
     string outDirInFile = sample+"/"+region+"/"+str+"/";
 	TFile* outFile = TFile::Open(outPath.c_str() ,"RECREATE");
     outFile->cd();

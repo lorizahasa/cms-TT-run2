@@ -24,6 +24,7 @@ if isCheck:
     isComb = False
     Years  = [Years[0]]
     Decays = [Decays[0]]
+    Spin  = [Spin[0]]
     Channels = [Channels[0]]
     Samples  = [Samples[0]]
 if isSep: 
@@ -80,8 +81,8 @@ def hadd_files(input_files, output_file):
         
 #-----------------------------------------
 if isSep:
-    for y, d, c in itertools.product(Years, Decays, Channels):
-        histDir  = "%s/Reader/%s/%s/%s/CombMass/BDTA"%(dirRead, y, d, c)
+    for y, d, p, c in itertools.product(Years, Decays, Spin,  Channels):
+        histDir  = "%s/Reader/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, y, d, p, c)
         mergeDir = histDir.replace("Reader", "Merged")
         #if os.path.exists("/eos/uscms/%s"%mergeDir):
         runCmd("eos root://cmseos.fnal.gov rm -r %s"%mergeDir)

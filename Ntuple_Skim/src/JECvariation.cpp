@@ -19,14 +19,21 @@ void JECvariation::applyJEC(EventTree* tree, correction::CompoundCorrection::Ref
         //correction = SF
         double rawPt = tree->jetPt_[jetInd] * (1.-tree->jetRawFactor_[jetInd]);
         auto corr = jesRefSF->evaluate({tree->jetArea_[jetInd], tree->jetEta_[jetInd], rawPt, tree->rho_});
-
+        //std::cout<<"Corr = "<< corr <<std::endl;
 		TLorentzVector tjet;
 		tjet.SetPtEtaPhiM(tree->jetPt_[jetInd], tree->jetEta_[jetInd], tree->jetPhi_[jetInd], 0.0);
 		tMET+=tjet;
         //Uncertanity
         auto unc=jesRefUnc->evaluate({tree->jetEta_[jetInd], tree->jetPt_[jetInd]});
-		if(systVar=="down") corr-=unc;
-		if(systVar=="up")   corr+=unc;
+        //std::cout<<"Unc = " << unc <<std::endl;
+		if(systVar=="down"){ 
+            corr-=unc;
+           // std::cout<<"Corr down = "<< corr <<std::endl;
+        }
+		if(systVar=="up"){
+            corr+=unc;
+           // std::cout<<" Corr up = "<< corr <<std::endl;
+        }
         double jes = (1.-tree->jetRawFactor_[jetInd]) * corr;
 		
 		tree->jetPt_[jetInd] = tree->jetPt_[jetInd] * jes; 

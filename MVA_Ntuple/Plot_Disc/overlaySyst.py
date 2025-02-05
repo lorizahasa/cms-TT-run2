@@ -43,6 +43,7 @@ if isCheck:
     isComb = False
     Years  = [Years[0]]
     Decays = [Decays[0]]
+    Spin   = [Spin[0]]
     Channels = [Channels[0]]
     rList  = [rList[0]]
     Systematics   = [Systematics[0]]
@@ -70,10 +71,10 @@ dir_ = "ForMain"
 os.system("mkdir -p %s"%dirPlot)
 fPath = open("%s/overlaySyst_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
-for decay, region, channel, year, samp in itertools.product(Decays, rList, Channels, Years, SampleSyst):
+for decay, region, spin, channel, year, samp in itertools.product(Decays, rList, Spin, Channels, Years, SampleSyst):
     hInfo = GetVarInfo(region, channel)
     #hList = list(hInfo.keys()) + ['Disc']
-    hList = ["Disc"]
+    hList = ["Reco_mass_T"]
     if isCheck:
         hList = ["Disc"]
         pass
@@ -95,9 +96,9 @@ for decay, region, channel, year, samp in itertools.product(Decays, rList, Chann
             continue
         if "lgamma" in hName:
             isLog = False
-        ydc = "%s/%s/%s"%(year, decay, channel)
-        inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydc)
-        outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydc)
+        ydsc = "%s/%s/%s/%s"%(year, decay, spin, channel)
+        inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydsc)
+        outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydsc)
         os.system("mkdir -p %s"%outPlotDir)
         inFile = TFile("%s/AllInc.root"%(inHistDir), "read")
         #inFile = TFile("%s/Alpha.root"%(inHistDir), "read")

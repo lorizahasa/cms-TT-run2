@@ -180,7 +180,7 @@ if is_firstRun:
         #Create jdl files
         #----------------------------------------
         if len(unFinishedList) ==0 and len(corruptedList)==0:
-            print("Noting to be resubmitted")
+            print("Nothing to be resubmitted")
         else:
             for f in totResubJobs :
                 fName = submittedDict2[f]

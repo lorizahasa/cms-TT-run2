@@ -6,10 +6,11 @@ dirPlot = "%s/Plot_Disc/PlotMain"%dirCBA
 dirTwiki= "/eos/uscms/store/user/lhasa/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
 #Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-Years 	      =	["2017"]
+Years      =	["2017"]
 #Channels 	  =	["Mu", "Ele"]
-Channels 	  =	["Mu"]
-Decays 	      =	["Semilep"]
+Channels  =	["Mu"]
+Decays      =	["Semilep"]
+Spin          = ["Spin32"]
 
 #Years and channels to be commbined
 Years_         = ["2016Pre__2016Post__2017__2018"]

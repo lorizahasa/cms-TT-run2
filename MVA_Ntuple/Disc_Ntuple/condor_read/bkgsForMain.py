@@ -35,6 +35,7 @@ if isCheck:
     isComb = False
     Years  = [Years[0]]
     Decays = [Decays[0]]
+    Spin  = [Spin[0]]
     Channels = [Channels[0]]
     rList   = [rList[0]]
     sysList = [sysList[0], 'Weight_pdfUp', 'JERUp']
@@ -97,8 +98,8 @@ def writeHist(outFile, hPath, hist):
 #-----------------------------------------
 # Do the rebining here
 #----------------------------------------
-for year, decay, channel, r in itertools.product(Years, Decays, Channels, rList):
-    inDir = "%s/AdjustForMain/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
+for year, decay, spin,  channel, r in itertools.product(Years, Decays, Spin, Channels, rList):
+    inDir = "%s/AdjustForMain/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, spin, channel)
     #inDir = "%s/Merged/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
 
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")

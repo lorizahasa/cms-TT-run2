@@ -11,7 +11,7 @@ from FitInputs import *
 #INPUT command-line arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--year", dest="year", default="2016Pre",type='str',
+parser.add_option("-y", "--year", dest="year", default="2017",type='str',
                      help="Specify the year of the data taking" )
 parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
@@ -45,7 +45,7 @@ isQCDMC         = options.isQCDMC
 #----------------------------------------
 #inFile = "AllInc_forMain.root"
 inFile = "AllInc.root"
-inFileDir = "%s/Disc_Ntuple/DiscMain/ForMain/%s/%s/%s/CombMass/%s"%(condorOutDir, year, decayMode, channel, method)
+inFileDir = "%s/Disc_Ntuple/DiscMain/ForMain/%s/%s/%s/%s/CombMass/%s"%(condorOutDir, year, decayMode, spin, channel, method)
 outFileDir      = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, spin, channel, mass, method, region, hName)
 os.system("mkdir -p %s"%outFileDir)
 inFileName = "%s/%s"%(outFileDir, inFile)

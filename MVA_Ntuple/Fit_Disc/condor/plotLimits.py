@@ -104,6 +104,7 @@ for decay, region, spin, channel, year in itertools.product(Decay, regionList, S
     gDict = {}
     limDict={}
     ydsc = "%s/%s/%s/%s"%(year, decay, spin, channel)
+    #ydsc = "%s/%s/%s/%s"%(year, decay, spin, channel)
     path = "%s/%s"%(dirFit, ydsc) 
     outPath = "%s/%s"%(path, region)
     os.system('mkdir -p %s'%outPath)
@@ -114,15 +115,18 @@ for decay, region, spin, channel, year in itertools.product(Decay, regionList, S
     args.title_left  = getChLabel(decay, channel)
     args.cms_sub     = getRegLabel(region) 
 
-    allFiles = "%s/*/BDTA/%s/%s/higgsCombine_TT_run2.AsymptoticLimits.mH*.root"%(path, region, hName)
+    allFiles = "%s/*/BDTA/%s/%s/higgsCombine_TT_run2.AsymptoticLimits.mH*.root"%(path, region, hName) 
     os.system("combineTool.py -M CollectLimits %s -o %s"%(allFiles, jsonRaw))
     with open(jsonRaw) as old_limit:
         new_limit = json.load(old_limit)
+       # if '3000.0' in new_limit:
+       #     del new_limit['3000.0']
         if args.isCheck:
             print("OLD: ", new_limit)
         for mass in list(xss.keys()):
             for limit in new_limit[mass]:
-                new_limit[mass][limit] = xss[mass]*new_limit[mass][limit] 
+                pass
+                #new_limit[mass][limit] = xss[mass]*new_limit[mass][limit] 
     with open (jsonScaled, 'w') as newLimitFile:
         if args.isCheck:
             print("\nNEW: ", new_limit)

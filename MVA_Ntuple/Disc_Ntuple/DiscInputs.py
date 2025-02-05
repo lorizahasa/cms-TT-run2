@@ -9,16 +9,16 @@ dirClass  = "%s/Disc_Ntuple/DiscMain"%dirMVA2
 dirRead   = "%s/Disc_Ntuple/DiscMain"%dirMVA2
 nMulti    = 1
 #-----------------------------------------------------------------
-Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
 #Years 	      =	["2016Pre", "2016Post", "2017"]
-#Years         =	["2017"]
+Years         =	["2016Post"]
 Channels 	  =	["Mu", "Ele"]
-#Channels      =	["Mu"]
+#Channels      =	["Ele"]
 Decays        =	["Semilep"]
 #Mass         = ["2750"]
 Mass          = ["700","800", "900","1000", "1100", "1200", "1300", "1400","1500", "1600", "1700", "1800", "1900", "2000", "2250", "2500","2750", "3000"]
-#Mass      = ["700", "800", "900", "1100", "1200", "1300", "1500", "2750"]
-Spin       =["Spin12"]
+#Mass      = ["2250", "2500", "2750", "3000"]
+Spin       =["Spin32"]
 
 #Years and channels to be combined
 Years_         = ["2016Pre__2016Post__2017__2018"]

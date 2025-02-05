@@ -34,7 +34,7 @@ if isCheck:
     Years  = [Years[0]]
     Decays = [Decays[0]]
     Channels = [Channels[0]]
-    #Samples = [Samples[0]]
+    Spin = [Spin[0]]
     Samples = ["TTGamma"]
     rList   = [rList[0]]
     sysList = [sysList[0]]
@@ -86,6 +86,7 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
             content = hist.GetBinContent(bin)
             if content <= 0: #Fill bin if 0 or negative
                 hist.SetBinContent(bin, fill_value)
+                hist.SetBinError(bin, fill_value)
                 print(f"Replaced bin {bin} in histogram {hist.GetName()} with {fill_value} (original content: {content})")
                       # if hist.GetBinContent(bin) == 0:
            #     hist.SetBinContent(bin, fill_value)
@@ -94,21 +95,21 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
     if hName in dictRebin.keys():
         hNew = hist_.Rebin(len(dictRebin[hName])-1, hist_.GetName(), dictRebin[hName]) 
         # Check and fill empty regular bins in the rebinned histogram
-        fillEmptyBins(hNew, fill_value=1e-9)
+        #fillEmptyBins(hNew, fill_value=1e-9)
         hNew.Write()
         #print(hName)
         #print(dictRebin[hName])
     else:
         # If not rebinned, check and fill empty regular bins in the original histogram
-        fillEmptyBins(hist_, fill_value=1e-9)
+        #fillEmptyBins(hist_, fill_value=1e-9)
         hist_.Write()
     outputFile.cd()
 
 #-----------------------------------------
 # Do the rebining here
 #----------------------------------------
-for year, decay, channel  in itertools.product(Years, Decays, Channels):
-    inDir = "%s/Merged/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, channel)
+for year, decay, spin, channel  in itertools.product(Years, Decays, Spin, Channels):
+    inDir = "%s/Merged/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, spin, channel)
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
     outDir = inDir.replace("Merged", "Rebin")
     print(outDir)

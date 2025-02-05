@@ -7,7 +7,7 @@ from FitInputs import *
 #INPUT command-line arguments 
 #----------------------------------------
 parser = OptionParser()
-parser.add_option("-y", "--years", dest="years", default="2016Pre",type='str',
+parser.add_option("-y", "--years", dest="years", default="2017",type='str',
                      help="Specify the years of the data taking" )
 parser.add_option("-d", "--decayMode", dest="decayMode", default="Semilep",type='str',
                      help="Specify which decayMode moded of ttbar Semilep or Dilep? default is Semilep")
@@ -115,8 +115,10 @@ if isFD:
 #Impacts of Systematics
 #----------------------------------------
 if isImpact:
+   # runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --redefineSignalPOIs %s --doInitialFit %s"%(pathT2W, params, toInject[regShort])) 
     runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --redefineSignalPOIs %s --setParameterRanges r=-10,10 --doInitialFit %s"%(pathT2W, params, toInject[regShort])) 
     runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --redefineSignalPOIs %s --setParameterRanges r=-10,10 --doFits  --parallel 10 %s "%(pathT2W, params, toInject[regShort]))
+    #runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --redefineSignalPOIs %s --doFits  --parallel 10 %s "%(pathT2W, params, toInject[regShort]))
     runCmd("combineTool.py -M Impacts -d %s -m 125 -o %s/nuisImpact.json --redefineSignalPOIs %s "%(pathT2W, dirDC, params))
     runCmd("python3 script/plotImpacts.py --cms-label \"   Internal\" -i %s/nuisImpact.json -o %s/nuisImpact.pdf"%(dirDC, dirDC))
     runCmd("python3 script/plotImpacts.py --cms-label \"   Internal\" -i %s/nuisImpact.json -o %s/nuisImpact.pdf %s"%(dirDC, dirDC, myTit))
