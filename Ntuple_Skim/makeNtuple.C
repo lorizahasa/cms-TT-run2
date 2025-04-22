@@ -1006,6 +1006,7 @@ void makeNtuple::FillEvent(std::string year){
         if(_evtWeight< 0){
             std::cout<<"Negative Weight:"<<_evtWeight<<std::endl;
             std::cout<<"Gen Weight: "<<_genWeight<<std::endl;
+            std::cout << "tree->genWeight_: " << tree->genWeight_ << std::endl;
             std::cout<<"Lumi Weight: "<<_lumiWeight<<std::endl;
         }
         if(_inHEMVeto){
@@ -1596,10 +1597,11 @@ void makeNtuple::FillEvent(std::string year){
         if (pdfMean==0) pdfMean=1;
     float _pdfuncer = 0.;
 	_pdfuncer = sqrt(pdfVariance/_pdfSystWeight.size())/pdfMean;
-//_pdfweight_Up = (1. + _pdfuncer);
-    _pdfweight_Up = (1. + _pdfuncer);
-//	_pdfweight_Do = (1. - _pdfuncer);
-	_pdfweight_Do = (1. - _pdfuncer);
+    //Do log-norm SF
+    _pdfweight_Up = std::exp(+_pdfuncer);
+    //_pdfweight_Up = (1. + _pdfuncer);
+	_pdfweight_Do = std::exp(-_pdfuncer);
+	//_pdfweight_Do = (1. - _pdfuncer);
 
     if(_pdfweight_Do <0){
         std::cout<<"PDF Down Weight: "<<_pdfweight_Do<<std::endl;
@@ -1607,12 +1609,13 @@ void makeNtuple::FillEvent(std::string year){
         std::cout << "PDF weights: ";
         std::cout<<" Exp PDF Weights: Up= "<<std::exp(_pdfuncer)<<"Down= "<<std::exp(-_pdfuncer)<<std::endl;
     for (int j = 0; j < tree->nLHEPdfWeight_; ++j) {
-        std::cout <<"j="<<j<< tree->LHEPdfWeight_[j] << " ";
+        std::cout <<"j="<<j<<" "<< tree->LHEPdfWeight_[j] << " ";
     }
     std::cout << std::endl;
        // std::cout<<"PDF Var: "<<pdfVariance<<std::endl;
         std::cout<<"PDF Mean: "<<pdfMean<<std::endl;
     }
+
 	if (tree->nPSWeight_==4){
             if (tree->genWeight_ != 0){
                 double scaleWeight=tree->PSWeight_[4];
