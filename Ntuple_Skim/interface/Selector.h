@@ -1,26 +1,24 @@
 #ifndef SELECTOR_H
 #define SELECTOR_H
 
-#include<vector>
-#include<iostream>
+#include <vector>
+#include <iostream>
 #include <iomanip>
-#include<algorithm>
-#include<TH1F.h>
-#include<TMath.h>
-#include<TLorentzVector.h>
-#include"EventTree.h"
-#include"Utils.h"
-#include"TRandom3.h"
-#include<bitset>
-
-#include "correction.h"
-typedef correction::Correction::Ref cRef; 
+#include <algorithm>
+#include <string>
+#include <TH1F.h>
+#include <TMath.h>
+#include <TLorentzVector.h>
+#include "EventTree.h"
+#include "Utils.h"
+#include "TRandom3.h"
+#include <bitset>
 #include <random>
 
+#include "correction.h"
+typedef correction::Correction::Ref cRef;
 
-// https://twiki.cern.ch/twiki/bin/viewauth/CMS/CutBasedPhotonID2012
-// photon ID is not going to be changed every time this code runs
-// barrel/endcap, Loose/Medium/Tight
+// Global constants for photon ID and effective areas (not changed here)
 const int    photonID_IsConv[2][3]                = { {0, 0, 0} ,             {0, 0, 0}             };
 const double photonID_HoverE[2][3]                = { {0.05, 0.05, 0.05} ,    {0.05, 0.05, 0.05}    };
 const double photonID_SigmaIEtaIEta[2][3]         = { {0.012, 0.011, 0.011} , {0.034, 0.033, 0.031} };
@@ -31,93 +29,111 @@ const double photonID_RhoCorrR03PhoIso_0[2][3]    = { {1.3, 0.7, 0.5} ,       {9
 const double photonID_RhoCorrR03PhoIso_1[2][3]    = { {0.005, 0.005, 0.005} , {0.005, 0.005, 0.005} };
 
 // Effective areas for photon rho correction
-// First index is the egammaRegion (from above) second is whether it isChHad, NeuHad, or Pho 
-///                                   chhadEA, nhadEA, photEA
-///https://indico.cern.ch/event/491548/contributions/2384977/attachments/1377936/2117789/CutBasedPhotonID_25-11-2016.pdf
-static const double photonEA[7][3] = {{0.0360, 0.0597, 0.1210},
-									  {0.0377, 0.0807, 0.1107},
-									  {0.0306, 0.0629, 0.0699},
-									  {0.0283, 0.0197, 0.1056},
-									  {0.0254, 0.0184, 0.1457},
-									  {0.0217, 0.0284, 0.1719},
-									  {0.0167, 0.0591, 0.1998}};
-class Selector{
+// First index is the egammaRegion, second is whether it is ChHad, NeuHad, or Pho 
+// (chhadEA, nhadEA, photEA)
+// See: https://indico.cern.ch/event/491548/contributions/2384977/attachments/1377936/2117789/CutBasedPhotonID_25-11-2016.pdf
+static const double photonEA[7][3] = {
+    {0.0360, 0.0597, 0.1210},
+    {0.0377, 0.0807, 0.1107},
+    {0.0306, 0.0629, 0.0699},
+    {0.0283, 0.0197, 0.1056},
+    {0.0254, 0.0184, 0.1457},
+    {0.0217, 0.0284, 0.1719},
+    {0.0167, 0.0591, 0.1998}
+};
+
+class Selector {
 public:
-	Selector();
-	~Selector();
-	void process_objects(EventTree* inp_tree);
-	std::vector<int> Muons;
-	std::vector<int> MuonsLoose;
+    Selector();
+    ~Selector();
 
-	std::vector<int> Electrons;
-	std::vector<int> ElectronsLoose;
+    /// Process objects from the given event tree.
+    void processObjects(EventTree* inpTree);
 
-	std::vector<int> Photons;
-	std::vector<bool> PhoPassChHadIso;
-	std::vector<bool> PhoPassPhoIso;
-	std::vector<bool> PhoPassSih;
-	std::vector<int> LoosePhotons;
-	std::vector<int> PhotonsNoID;
-	std::vector<double> PhoChHadIso_corr;
-	std::vector<double> PhoNeuHadIso_corr;
-	std::vector<double> PhoPhoIso_corr;
-	std::vector<std::vector<float>> PhoRandConeChHadIso_corr;
+    // Selected physics objects (indices into the EventTree arrays)
+    std::vector<int> muons;
+    std::vector<int> muonsLoose;
 
-	std::vector<int> Jets;
-	std::vector<int> bJets;
-    std::vector<int> FatJets;
-	std::vector<double> jet_resolution;
-	std::vector<double> jet_smear;
-	std::vector<bool>   jet_isTagged;
+    std::vector<int> electrons;
+    std::vector<int> electronsLoose;
 
-    std::vector<double>dR_pho_mu;
-    std::vector<double>dR_pho_ele;
-    std::vector<double>dR_jet_mu;
-    std::vector<double>dR_jet_ele;
-    std::vector<double>dR_jet_pho;
-    std::vector<double>dR_jet_AK8;
-	
-	double btag_cut;
-    double topTagWP;
-	string systVariation; 
-	bool   smearJetPt;
-	bool scaleEle;
-	bool smearEle;
-	bool scalePho;
-	bool smearPho;
-	bool   looseJetID;
-	bool   QCDselect;
+    std::vector<int> photons;
+    std::vector<bool> phoPassChHadIso;
+    std::vector<bool> phoPassPhoIso;
+    std::vector<bool> phoPassSih;
+    std::vector<int> loosePhotons;
+    std::vector<int> photonsNoId;
+    std::vector<double> phoChHadIsoCorr;
+    std::vector<double> phoNeuHadIsoCorr;
+    std::vector<double> phoPhoIsoCorr;
+    std::vector<std::vector<float>> phoRandConeChHadIsoCorr;
+
+    std::vector<int> jets;
+    std::vector<int> bJets;
+    std::vector<int> fatJets;
+    std::vector<double> jetResolution;
+    std::vector<double> jetSmear;
+    std::vector<bool> jetIsTagged;
+
+    std::vector<double> dRPhoMu;
+    std::vector<double> dRPhoEle;
+    std::vector<double> dRJetMu;
+    std::vector<double> dRJetEle;
+    std::vector<double> dRJetPho;
+    std::vector<double> dRJetAK8;
+
+    // Configuration parameters
+    double btagCut;
+    double topTagWp;
+    std::string systVariation;
+    bool smearJetPt;
+    bool scaleEle;
+    bool smearEle;
+    bool scalePho;
+    bool smearPho;
+    bool looseJetId;
+    bool qcdSelect;
     bool isSignal;
     bool isQCD;
     bool sampForTopPt;
-    bool skipAK4AK8dr;
+    bool skipAk4Ak8Dr;
 
-	std::string year;
-	int printEvent;
-	void clear_vectors();
-	void init_JER(cRef jerRefSF, cRef jerRefSF8, cRef jerRefReso, cRef jerRefReso8);
+    std::string year;
+    int printEvent;
+
+    /// Clear all object vectors (to be called at the start of each event).
+    void clearVectors();
+
+    /// Initialize the jet energy resolution (JER) corrections.
+    void initJER(cRef jerRefSF, cRef jerRefSF8, cRef jerRefReso, cRef jerRefReso8);
 
 private:
-	EventTree* tree;
-	void filter_photons();
-	void filter_electrons();
-	void filter_muons();
-	void filter_jets();
-    void filter_fatjets();
-	// effective areas, see Selector.cpp for more information
-	double eleEffArea03(double SCEta);
-	double muEffArea04(double muEta);
-	double phoEffArea03ChHad(double phoSCEta);
-	double phoEffArea03NeuHad(double phoSCEta);
-	double phoEffArea03Pho(double phoSCEta);
-	int egammaRegion(double absEta);
+    // Pointer to the event tree (set in processObjects)
+    EventTree* tree;
 
-	bool passPhoMediumID(int phoInd, bool cutHoverE, bool cutSIEIE, bool cutIso);
+    // Object filters
+    void filterPhotons();
+    void filterElectrons();
+    void filterMuons();
+    void filterJets();
+    void filterFatJets();
 
-    cRef jerRefSF_;
-    cRef jerRefSF8_;
+    // Effective area functions (for electrons, muons, and photons)
+    double eleEffArea03(double scEta);
+    double muEffArea04(double muEta);
+    double phoEffArea03ChHad(double phoScEta);
+    double phoEffArea03NeuHad(double phoScEta);
+    double phoEffArea03Pho(double phoScEta);
+    int getEgammaRegion(double absEta);
+
+    bool passPhoMediumId(int phoInd, bool cutHoverE, bool cutSIEIE, bool cutIso);
+
+    // JER correction references
+    cRef jerRefSf_;
+    cRef jerRefSf8_;
     cRef jerRefReso_;
     cRef jerRefReso8_;
-
 };
-#endif
+
+#endif // SELECTOR_H
+

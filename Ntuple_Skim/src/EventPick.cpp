@@ -1,145 +1,137 @@
-#include"../interface/EventPick.h"
+#include "../interface/EventPick.h"
 #include <TLorentzVector.h>
 #include <iostream>
 #include <iomanip>
 
-EventPick::EventPick(std::string titleIn){
-    title = titleIn;
-    year = "2016";
-    printEvent = -1;
-
-    // Cut levels
-    MET_cut = 20.0;
-    Nlep_eq = 1;
-    Njet_ge = 3;
-    NBjet_ge = 1;
-    Nmu_eq = 1;
-    Nele_eq = 1;
-    Npho_eq = 1;
-    
-    NlooseMuVeto_le = 0;
-    NlooseEleVeto_le = 0;
-
-
+EventPick::EventPick(const std::string& titleIn)
+    : title(titleIn)
+{
+    // Other members are already initialized in-class.
 }
 
-EventPick::~EventPick(){
-}
-
-void EventPick::process_event(EventTree* tree, Selector* selector){
-    passPreselMu  = true;
-    passPreselEle = true;
-    selector->process_objects(tree);
-
-    //Trigger and PV cuts
-    if(!(passPreselMu  && tree->passTrigMu_  && tree->nGoodVtx_))  passPreselMu = false;
-    if(!(passPreselEle && tree->passTrigEle_ && tree->nGoodVtx_))  passPreselEle = false;
-    
-    if(passPreselMu || passPreselEle){
-        selector->process_objects(tree);
-    }
-    else {
+void EventPick::processEvent(EventTree* tree, Selector* selector) {
+    // Check for valid pointers.
+    if (!tree || !selector) {
+        std::cerr << "Error: Null pointer passed to EventPick::processEvent." << std::endl;
         return;
     }
-	
-    if (tree->event_==printEvent){
-	cout << "Muons     "<< selector->Muons.size() << endl;
-	cout << "  Loose   "<< selector->MuonsLoose.size() << endl;
-	cout << "Electrons "<< selector->Electrons.size() << endl;
-	cout << "  Loose   "<< selector->ElectronsLoose.size() << endl;
-	cout << "Jets      "<< selector->Jets.size() << endl;
-	cout << "BJets     "<< selector->bJets.size() << endl;
-	cout << "Photons   "<< selector->Photons.size() << endl;
-	cout << "  Loose   "<< selector->LoosePhotons.size() << endl;
-	cout << "-------------------"<< endl;
+
+    // Initialize selection flags.
+    passPreselMu  = true;
+    passPreselEle = true;
+
+    // Process physics objects (this fills the vectors in selector).
+    selector->processObjects(tree);
+
+    // Apply trigger and primary vertex cuts.
+    passPreselMu  = passPreselMu  && tree->passTrigMu_  && tree->nGoodVtx_;
+    passPreselEle = passPreselEle && tree->passTrigEle_ && tree->nGoodVtx_;
+
+    // If neither channel passes these basic cuts, exit early.
+    if (!passPreselMu && !passPreselEle) {
+        return;
     }
 
-    //check if an event has a tight muon
-	if( passPreselMu && selector->Muons.size() == Nmu_eq){
-	    if (Nmu_eq==2) {
-		    int idx_mu1 = selector->Muons.at(0);
-		    int idx_mu2 = selector->Muons.at(1);
-		    if(tree->muCharge_[idx_mu1]*tree->muCharge_[idx_mu2] ==1){
-		        passPreselMu = false;
-		    }
-		    TLorentzVector mu1;
-		    TLorentzVector mu2;
-		    mu1.SetPtEtaPhiM(tree->muPt_[idx_mu1],
-				 tree->muEta_[idx_mu1],
-				 tree->muPhi_[idx_mu1],
-				 tree->muMass_[idx_mu1]);
-		    mu2.SetPtEtaPhiM(tree->muPt_[idx_mu2],
-				 tree->muEta_[idx_mu2],
-				 tree->muPhi_[idx_mu2],
-				 tree->muMass_[idx_mu2]);
-		    if (tree->event_==printEvent){
-		        cout << "DilepMass:    " << (mu1 + mu2).M() << endl;
-		        cout << "Lep 1 Charge: " << tree->muCharge_[idx_mu1] << endl;
-		        cout << "Lep 2 Charge: " << tree->muCharge_[idx_mu2] << endl;
-		        cout << "-------------------"<< endl;
-		    }
-		    if ( abs((mu1 + mu2).M() - 91.1876) > 10 ){
-		        passPreselMu = false;
-		    }
-	    }
-	}
-	else { 
-        passPreselMu = false;
-    }
-    //Next make sure that the event does not have 2nd loose muon or tight electron	
-    if( passPreselMu && selector->MuonsLoose.size() >  NlooseMuVeto_le ){
-        passPreselMu = false;
-    }
-	if( passPreselMu && (selector->ElectronsLoose.size() + selector->Electrons.size()) > NlooseEleVeto_le){ 
-	    passPreselMu = false;
+    // Debug printing if this event matches the requested event number.
+    if (tree->event_ == printEvent) {
+        std::cout << "Muons     " << selector->muons.size() << "\n"
+                  << "  Loose   " << selector->muonsLoose.size() << "\n"
+                  << "Electrons " << selector->electrons.size() << "\n"
+                  << "  Loose   " << selector->electronsLoose.size() << "\n"
+                  << "Jets      " << selector->jets.size() << "\n"
+                  << "BJets     " << selector->bJets.size() << "\n"
+                  << "Photons   " << selector->photons.size() << "\n"
+                  << "  Loose   " << selector->loosePhotons.size() << "\n"
+                  << "-------------------" << std::endl;
     }
 
-    //Similarly check if an event has a tight electron
-    if( passPreselEle && selector->Electrons.size() == Nele_eq) {
-	    if (Nele_eq==2) {
-		    int idx_ele1 = selector->Electrons.at(0);
-		    int idx_ele2 = selector->Electrons.at(1);
-		    if((tree->eleCharge_[idx_ele1])*(tree->eleCharge_[idx_ele2]) == 1){
-		        passPreselEle = false;
-		    }
-		    TLorentzVector ele1;
-		    TLorentzVector ele2;
-		    ele1.SetPtEtaPhiM(tree->elePt_[idx_ele1],
-				  tree->eleEta_[idx_ele1],
-				  tree->elePhi_[idx_ele1],
-				  tree->eleMass_[idx_ele1]);
-		    ele2.SetPtEtaPhiM(tree->elePt_[idx_ele2],
-				  tree->eleEta_[idx_ele2],
-				  tree->elePhi_[idx_ele2],
-				  tree->eleMass_[idx_ele2]);
-		    if (tree->event_==printEvent){
-		        cout << "DilepMass:    " << (ele1 + ele2).M() << endl;
-		        cout << "Lep 1 Charge: " << tree->eleCharge_[idx_ele1] << endl;
-		        cout << "Lep 2 Charge: " << tree->eleCharge_[idx_ele2] << endl;
-		        cout << "-------------------"<< endl;
-		    }
-		    if ( abs((ele1 + ele2).M() - 91.1876) > 10 ){
-		        passPreselEle = false;
-		    }
-	    }
+    // ----- Tight Muon Selection -----
+    // Require exactly nMuEq tight muons.
+    if (passPreselMu) {
+        if (selector->muons.size() != static_cast<size_t>(nMuEq)) {
+            passPreselMu = false;
+        } else if (nMuEq == 2) {
+            // For dilepton events, require opposite charge and that the invariant mass
+            // is within 10 GeV of the Z boson mass (91.1876 GeV).
+            int idxMu1 = selector->muons.at(0);
+            int idxMu2 = selector->muons.at(1);
+            if (tree->muCharge_[idxMu1] * tree->muCharge_[idxMu2] > 0) {
+                passPreselMu = false;
+            }
+            TLorentzVector mu1, mu2;
+            mu1.SetPtEtaPhiM(tree->muPt_[idxMu1],
+                             tree->muEta_[idxMu1],
+                             tree->muPhi_[idxMu1],
+                             tree->muMass_[idxMu1]);
+            mu2.SetPtEtaPhiM(tree->muPt_[idxMu2],
+                             tree->muEta_[idxMu2],
+                             tree->muPhi_[idxMu2],
+                             tree->muMass_[idxMu2]);
+            if (tree->event_ == printEvent) {
+                std::cout << "DilepMass:    " << (mu1 + mu2).M() << "\n"
+                          << "Lep 1 Charge: " << tree->muCharge_[idxMu1] << "\n"
+                          << "Lep 2 Charge: " << tree->muCharge_[idxMu2] << "\n"
+                          << "-------------------" << std::endl;
+            }
+            if (std::abs((mu1 + mu2).M() - 91.1876) > 10) {
+                passPreselMu = false;
+            }
+        }
     }
-    else { 
-        passPreselEle = false;
+
+    // Veto events that have extra loose muons or electrons (if applicable).
+    if (passPreselMu) {
+        if (selector->muonsLoose.size() > static_cast<size_t>(nLooseMuVetoLe) ||
+            (selector->electronsLoose.size() + selector->electrons.size()) > static_cast<size_t>(nLooseEleVetoLe)) {
+            passPreselMu = false;
+        }
     }
-    //Next make sure that the event does not have 2nd loose electron or tight muon	
-	if( passPreselEle && selector->ElectronsLoose.size() >  NlooseEleVeto_le ){ 
-	    passPreselEle = false;
+
+    // ----- Tight Electron Selection -----
+    // Require exactly nEleEq tight electrons.
+    if (passPreselEle) {
+        if (selector->electrons.size() != static_cast<size_t>(nEleEq)) {
+            passPreselEle = false;
+        } else if (nEleEq == 2) {
+            int idxEle1 = selector->electrons.at(0);
+            int idxEle2 = selector->electrons.at(1);
+            if (tree->eleCharge_[idxEle1] * tree->eleCharge_[idxEle2] > 0) {
+                passPreselEle = false;
+            }
+            TLorentzVector ele1, ele2;
+            ele1.SetPtEtaPhiM(tree->elePt_[idxEle1],
+                              tree->eleEta_[idxEle1],
+                              tree->elePhi_[idxEle1],
+                              tree->eleMass_[idxEle1]);
+            ele2.SetPtEtaPhiM(tree->elePt_[idxEle2],
+                              tree->eleEta_[idxEle2],
+                              tree->elePhi_[idxEle2],
+                              tree->eleMass_[idxEle2]);
+            if (tree->event_ == printEvent) {
+                std::cout << "DilepMass:    " << (ele1 + ele2).M() << "\n"
+                          << "Lep 1 Charge: " << tree->eleCharge_[idxEle1] << "\n"
+                          << "Lep 2 Charge: " << tree->eleCharge_[idxEle2] << "\n"
+                          << "-------------------" << std::endl;
+            }
+            if (std::abs((ele1 + ele2).M() - 91.1876) > 10) {
+                passPreselEle = false;
+            }
+        }
     }
-	if( passPreselEle && (selector->MuonsLoose.size() + selector->Muons.size()) >  NlooseMuVeto_le ) { 
-	    passPreselEle = false;
+
+    // Veto events that have extra loose electrons or muons.
+    if (passPreselEle) {
+        if (selector->electronsLoose.size() > static_cast<size_t>(nLooseEleVetoLe) ||
+            (selector->muonsLoose.size() + selector->muons.size()) > static_cast<size_t>(nLooseMuVetoLe)) {
+            passPreselEle = false;
+        }
     }
-    
-    // MET cut for muons
-    if(passPreselMu && tree->MET_pt_ < MET_cut) { 
+
+    // ----- MET Cut -----
+    if (passPreselMu && tree->MET_pt_ < metCut) {
         passPreselMu = false;
     }
-    // MET cut for electrons
-    if(passPreselEle && tree->MET_pt_ < MET_cut) { 
+    if (passPreselEle && tree->MET_pt_ < metCut) {
         passPreselEle = false;
     }
 }

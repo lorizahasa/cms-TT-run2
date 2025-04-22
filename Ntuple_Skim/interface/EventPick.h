@@ -1,46 +1,53 @@
 #ifndef EVENTPICK_H
 #define EVENTPICK_H
 
-#include<vector>
-#include<string>
-#include<set>
-#include<iostream>
-#include<fstream>
-#include<TH1F.h>
-#include<TH1D.h>
+#include <vector>
+#include <string>
+#include <set>
+#include <iostream>
+#include <fstream>
+#include <TH1F.h>
+#include <TH1D.h>
+#include <cmath>  // for std::abs
 
-#include"EventTree.h"
-#include"Selector.h"
+#include "EventTree.h"
+#include "Selector.h"
 
-class EventPick{
+class EventPick {
 public:
-	EventPick(std::string titleIn);
-	~EventPick();
-	
-	void process_event(EventTree* tree, Selector* selector);
-	std::string title;
-	std::string year;
+    /// \brief Constructor taking the event pick title.
+    explicit EventPick(const std::string& titleIn);
+    ~EventPick() = default;  // no special cleanup needed
 
-	int printEvent;
+    /// \brief Process an event using the given tree and selector.
+    void processEvent(EventTree* tree, Selector* selector);
 
-	// cuts as parameters, to modify easily
-	double MET_cut;
-	int Nlep_eq;
-	int Njet_ge;
-	int NBjet_ge;
-	int Nmu_eq;
-	int Nele_eq;
-	int Npho_eq;
+    // Basic event info (modifiable as needed)
+    std::string title;
+    std::string year{"2016"};
 
-	int NlooseMuVeto_le;
-	int NlooseEleVeto_le;
-	
-	// variables showing passing or failing selections
-    bool passPreselMu;
-    bool passPreselEle;
+    /// If tree->event_ equals printEvent, detailed information is printed.
+    int printEvent{-1};
+
+    // Selection cut parameters (modify these to change the event selection)
+    double metCut{20.0};
+    int nLepEq{1};
+    int nJetGe{3};
+    int nBJetGe{1};
+    int nMuEq{1};
+    int nEleEq{1};
+    int nPhoEq{1};
+
+    int nLooseMuVetoLe{0};
+    int nLooseEleVetoLe{0};
+
+    // Flags indicating if the event passed the muon or electron pre-selection
+    bool passPreselMu{false};
+    bool passPreselEle{false};
 
 private:
-	EventTree* tree;
-	Selector* selector;
+    // (Optionally, you could store pointers to tree/selector here if needed.)
 };
-#endif
+
+#endif // EVENTPICK_H
+

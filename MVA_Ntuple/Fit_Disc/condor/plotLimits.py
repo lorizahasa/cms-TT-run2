@@ -96,9 +96,9 @@ def DrawAxisHists(pads, axis_hists, def_pad=None):
 #Path of the I/O histrograms/plots
 #----------------------------------------
 fPath = open("%s/plotLimit.txt"%dirFit, 'w')
-hName = 'Disc'
+#hName = 'Disc'
 #dirFit2 ="/uscms/home/lhasa/nobackup/TTPrime/CMSSW_14_0_0/src/cms-TT-run2/MVA_Ntuple/Fit_Disc/output/Fit_Disc/FitMain"
-#hName = 'Reco_mass_T'
+hName = 'Reco_mass_T'
 for decay, region, spin, channel, year in itertools.product(Decay, regionList, Spin, Channel, Year):
     limits = "tex/allLimits.json"
     gDict = {}
@@ -119,14 +119,20 @@ for decay, region, spin, channel, year in itertools.product(Decay, regionList, S
     os.system("combineTool.py -M CollectLimits %s -o %s"%(allFiles, jsonRaw))
     with open(jsonRaw) as old_limit:
         new_limit = json.load(old_limit)
-       # if '3000.0' in new_limit:
-       #     del new_limit['3000.0']
+        if '1100.0' in new_limit:
+            del new_limit['1100.0']
+        #if '1600.0' in new_limit:
+           # del new_limit['1600.0']
+        #if '1700.0' in new_limit:
+           # del new_limit['1700.0']
+        if '1400.0' in new_limit:
+            del new_limit['1400.0']
         if args.isCheck:
             print("OLD: ", new_limit)
         for mass in list(xss.keys()):
             for limit in new_limit[mass]:
                 pass
-                #new_limit[mass][limit] = xss[mass]*new_limit[mass][limit] 
+                #new_limit[mass][limit] = xss[mass]*new_limit[mass][limit]
     with open (jsonScaled, 'w') as newLimitFile:
         if args.isCheck:
             print("\nNEW: ", new_limit)
@@ -163,6 +169,8 @@ for decay, region, spin, channel, year in itertools.product(Decay, regionList, S
     plot.Set(legend, NColumns=2)
 
     axis = None
+    limegreen = ROOT.TColor.GetColor("#32CD32")  # limegreen
+    gold      = ROOT.TColor.GetColor("#FFD700")  # gold
 
     defcols = [
         ROOT.kGreen+3, ROOT.kRed, ROOT.kBlue, ROOT.kBlack, ROOT.kYellow+2,
@@ -283,7 +291,7 @@ for decay, region, spin, channel, year in itertools.product(Decay, regionList, S
 
     legend.Draw()
 
-    plot.DrawCMSLogo(pads[0], 'CMS, Prelim.', args.cms_sub, 11, 0.045, 0.035, 1.2, '', 0.8)
+    plot.DrawCMSLogo(pads[0], 'CMS, Prelim.', args.cms_sub, 11, 0.2, 0.035, 1.2, '', 0.8)
     plot.DrawTitle(pads[0], args.title_right, 3)
     plot.DrawTitle(pads[0], args.title_left, 1)
 

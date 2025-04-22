@@ -126,7 +126,7 @@ cb.cp().process(allMC).AddSyst(cb, "Weight_ttag",    "shape",ch.SystMap("era") (
 #------------------
 #Add autoMCStat
 #------------------
-cb.SetAutoMCStats(cb, 0, True, 1)
+cb.SetAutoMCStats(cb, 0, False, 1)
 #------------------
 #Get shape hists
 #------------------

@@ -13,7 +13,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 {
     startClock = std::chrono::high_resolution_clock::now();
     std::string eventStr = "-1";
-
+    bool debug = false;
     if(ac < 5){
 	std::cout << "usage: ./makeNtuple year sampleName outputFileDir inputFile[s]" << std::endl;
 	return;
@@ -36,7 +36,8 @@ makeNtuple::makeNtuple(int ac, char** av)
     */
     if (std::string(av[1])=="event"){
 	std::string tempEventStr(av[2]);
-	eventNum = std::stoi(tempEventStr);
+//eventNum = std::stoi(tempEventStr);
+	eventNum = 6;
 	for (int i = 1; i < ac-2; i++){
 	    av[i] = av[i+2];
 	    //cout << av[i] << " ";
@@ -94,7 +95,9 @@ makeNtuple::makeNtuple(int ac, char** av)
         cout << "Using QCD Control Region Selection" << endl;
         cout << "----------------------------------" << endl;
     }
-
+    if(debug){
+        std::cout<<"DEBUG: "<<std::endl;
+    }
     //check if NofM type format is before output name (for splitting jobs)
     int nJob = -1;
     int totJob = -1;
@@ -380,6 +383,10 @@ makeNtuple::makeNtuple(int ac, char** av)
     correction::Correction::Ref jerRefReso, jerRefReso8;
     jerRefReso  = jmeFF->at(jerUL[year]+"_PtResolution_"+"AK4PFchs");
     jerRefReso8 = jmeFF->at(jerUL[year]+"_PtResolution_"+"AK4PFchs");
+    try{cout<<" Here jer SF" << jerUL[year]+"_PtResolution_"+"AK4PFchs"<<endl;}
+    catch (const std::exception& e) {
+    cout<<"\nEXCEPTION: in jerRefSF: "<<e.what()<<endl;
+    std::abort();}
 
     //std::unique_ptr<correction::CorrectionSet> cseta = 0x0, csetb = 0x0, cset = 0x0;
     //cset = correction::CorrectionSet::from_file( Form("%s/weightUL/JetSF/PUJetID/SF/%d_UL/UL%d_jmar.json",fBasePath.Data(), fYear, (fYear%2000)) );
@@ -426,11 +433,11 @@ makeNtuple::makeNtuple(int ac, char** av)
     evtPick->year = year;
     selector->printEvent = eventNum;
     evtPick->printEvent = eventNum;
-    evtPick->Njet_ge = 2;
-    evtPick->NBjet_ge = 0;
+    evtPick->nJetGe = 2;
+    evtPick->nBJetGe = 0;
 
     bool applyHemVeto=true; 
-    selector->looseJetID = false;
+    selector->looseJetId = false;
     if (sampleType.find("Signal") != std::string::npos){
 	selector->isSignal = true;
     }
@@ -443,19 +450,20 @@ makeNtuple::makeNtuple(int ac, char** av)
     bool isE5 = sampleType.find("TTGamma_Hadronic_Pt200") != std::string::npos;//ISR, FSR too large
     selector->isQCD = isE0 || isE1 || isE2 || isE3 || isE4 || isE5; 
 
-    selector->topTagWP = topTagWPs[year];
+    selector->topTagWp = topTagWPs[year];
     if (isMC){
-    	selector->init_JER(jerRefSF, jerRefSF8, jerRefReso, jerRefReso8);
+    	selector->initJER(jerRefSF, jerRefSF8, jerRefReso, jerRefReso8);
+        cout << "After selector jerRefSF"<< jerRefSF<<endl;
     }
     selector->systVariation = systVar;
-    selector->btag_cut = deepJetWPs[year]; 
+    selector->btagCut = deepJetWPs[year]; 
     //top pt Reweighting is applied only for ttgamma, ttbar and signal samples
     selector->sampForTopPt = checkStr(sampleType, "TTGamma") || 
         checkStr(sampleType, "TTbar") ||
         checkStr(sampleType, "Signal");
     cout<<"HERE-3"<<endl;
 	loadBtagEff(sampleType,year);
-    topEvent.SetBtagThresh(selector->btag_cut);
+    topEvent.SetBtagThresh(selector->btagCut);
     if (tree == 0) {
 	std::cout <<"Tree not recognized" << endl;
     }
@@ -524,11 +532,11 @@ makeNtuple::makeNtuple(int ac, char** av)
     if (ttgamma_pos != std::string::npos){
 	isTTGamma = true;
     }
-    if(dilepSel)     {evtPick->Nmu_eq=2; evtPick->Nele_eq=2;}
+    if(dilepSel)     {evtPick->nMuEq=2; evtPick->nEleEq=2;}
     std::cout << "Dilepton Sample :" << dilepSel << std::endl;
     if (dilepSel){
-	evtPick->Njet_ge = 2;
-	evtPick->NBjet_ge = 0;
+	evtPick->nJetGe = 2;
+	evtPick->nBJetGe = 0;
     }
 
     if (runSystJES || runSystJER){
@@ -571,6 +579,8 @@ makeNtuple::makeNtuple(int ac, char** av)
 	    nMC_total=1;
     }
     _lumiWeight = getEvtWeight(sampleType, lumiValues[year], nMC_total);
+    if(_lumiWeight < 0){
+        cout<< "Negative Lumi Weight: "<<_lumiWeight<<endl;}
     Long64_t nEntr = tree->GetEntries();
 
     cout<<"---: Histograms from Skim :-----"<<endl;
@@ -810,9 +820,10 @@ makeNtuple::makeNtuple(int ac, char** av)
         if( isMC && runSystJES ){
         	jecvar->applyJEC(tree, jesRefSF, jesRefUnc, systVar); 
         }
-        selector->clear_vectors();
-        evtPick->process_event(tree, selector);
+        selector->clearVectors();
+        evtPick->processEvent(tree, selector);
         if (tree->event_==eventNum){
+        //if (debug){
             cout << "EventSelection:" << endl;
             cout << "  PassPresel e " << evtPick->passPreselEle << endl;
             cout << "  PassPresel mu" << evtPick->passPreselMu<< endl;
@@ -831,17 +842,28 @@ makeNtuple::makeNtuple(int ac, char** av)
                 _PUweight       = puRef->evaluate({tree->nPUTrue_, "nominal"}); 
                 _PUweight_Up    = puRef->evaluate({tree->nPUTrue_, "up"}); 
         
-                _btagWeight_1a      = getBtagSF_1a("central", tree->event_==eventNum);
+                _btagWeight_1a      = getBtagSF_1a("central", false);
                 _btagWeight_1a_b_Up = getBtagSF_1a("b_up"   );
                 _btagWeight_1a_b_Do = getBtagSF_1a("b_down" );
                 _btagWeight_1a_l_Up = getBtagSF_1a("l_up"   );
                 _btagWeight_1a_l_Do = getBtagSF_1a("l_down" );
+                if(_btagWeight_1a < 0){
+                    cout<<"Btag Weight nominal:"<<_btagWeight_1a<<endl;
+                    getBtagSF_1a("central", true);}
+                if(_btagWeight_1a_b_Up < 0){
+                    cout<<"Weight Btag_b up: "<<_btagWeight_1a_b_Up<<endl;}
+                if(_btagWeight_1a_b_Do < 0){
+                    cout<<"Weight Btag_b down: "<<_btagWeight_1a_b_Do<<endl;}
+                if(_btagWeight_1a_l_Up < 0){
+                    cout<<"Weight Btag_l up: "<<_btagWeight_1a_l_Up<<endl;}
+                if(_btagWeight_1a_l_Do < 0){
+                    cout<<"Weight Btag_l down: "<<_btagWeight_1a_l_Do<<endl;}
                 if (evtPick->passPreselMu) {
                     vector<double> muWeights;
                     vector<double> muWeights_Do;
                     vector<double> muWeights_Up;    
-                    int muInd_ = selector->Muons.at(0);
-                    muWeights    = muSF->getMuSFs(tree->muEta_[muInd_],tree->muPt_[muInd_],1, tree->event_==eventNum);
+                    int muInd_ = selector->muons.at(0);
+                    muWeights    = muSF->getMuSFs(tree->muEta_[muInd_],tree->muPt_[muInd_],1, debug);
                 	muWeights_Do = muSF->getMuSFs(tree->muEta_[muInd_],tree->muPt_[muInd_],0);
                 	muWeights_Up = muSF->getMuSFs(tree->muEta_[muInd_],tree->muPt_[muInd_],2);
                     _muEffWeight    = muWeights.at(0);
@@ -861,7 +883,7 @@ makeNtuple::makeNtuple(int ac, char** av)
                     _muEffWeight_Trig_Do = muWeights_Do.at(3);
                 }
                 if (evtPick->passPreselEle) {
-                    int eleInd_ = selector->Electrons.at(0);
+                    int eleInd_ = selector->electrons.at(0);
                     vector<double> eleWeights    = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],1, tree->event_==eventNum);
                     vector<double> eleWeights_Do = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],0);
                     vector<double> eleWeights_Up = eleSF->getEleSFs(tree->elePt_[eleInd_],tree->eleEta_[eleInd_] + tree->eleDeltaEtaSC_[eleInd_],2);
@@ -981,7 +1003,11 @@ void makeNtuple::FillEvent(std::string year){
     if (isMC){
 	    _genWeight       = tree->genWeight_/abs(tree->genWeight_); 
         _evtWeight       = _lumiWeight * _genWeight;
-        //std::cout<<_evtWeight<<std::endl;
+        if(_evtWeight< 0){
+            std::cout<<"Negative Weight:"<<_evtWeight<<std::endl;
+            std::cout<<"Gen Weight: "<<_genWeight<<std::endl;
+            std::cout<<"Lumi Weight: "<<_lumiWeight<<std::endl;
+        }
         if(_inHEMVeto){
             _evtWeight = _evtWeight*(1-0.3518);
         }
@@ -992,16 +1018,16 @@ void makeNtuple::FillEvent(std::string year){
 
     _pfMET		     = tree->MET_pt_;
     _pfMETPhi    	 = tree->MET_phi_;
-    _nPho		     = selector->Photons.size();
-    _nLoosePho	     = selector->LoosePhotons.size();
-    _nPhoNoID	     = selector->PhotonsNoID.size();
-    _nEle		     = selector->Electrons.size();
-    _nEleLoose       = selector->ElectronsLoose.size();
-    _nMu		     = selector->Muons.size();
-    _nMuLoose        = selector->MuonsLoose.size();
+    _nPho		     = selector->photons.size();
+    _nLoosePho	     = selector->loosePhotons.size();
+    _nPhoNoID	     = selector->photonsNoId.size();
+    _nEle		     = selector->electrons.size();
+    _nEleLoose       = selector->electronsLoose.size();
+    _nMu		     = selector->muons.size();
+    _nMuLoose        = selector->muonsLoose.size();
     
-    _nJet            = selector->Jets.size();
-    _nFatJet         = selector->FatJets.size();
+    _nJet            = selector->jets.size();
+    _nFatJet         = selector->fatJets.size();
     _nBJet           = selector->bJets.size();
 
     double ht = 0.0;
@@ -1012,7 +1038,7 @@ void makeNtuple::FillEvent(std::string year){
 
     double lt = 0.0;
     for (int i_ele = 0; i_ele <_nEle; i_ele++){
-        int eleInd = selector->Electrons.at(i_ele);
+        int eleInd = selector->electrons.at(i_ele);
         _elePt.push_back(tree->elePt_[eleInd]);
         _elePhi.push_back(tree->elePhi_[eleInd]);
         _eleEta.push_back(tree->eleEta_[eleInd]);
@@ -1027,7 +1053,7 @@ void makeNtuple::FillEvent(std::string year){
     }
 
     for (int i_mu = 0; i_mu <_nMu; i_mu++){
-        int muInd = selector->Muons.at(i_mu);
+        int muInd = selector->muons.at(i_mu);
         _muPt.push_back(tree->muPt_[muInd]);
         _muPhi.push_back(tree->muPhi_[muInd]);
         _muEta.push_back(tree->muEta_[muInd]);
@@ -1044,8 +1070,8 @@ void makeNtuple::FillEvent(std::string year){
 	
     if (dilepSel){
 	if (_nMu==2) {
-	    int muInd1 = selector->Muons.at(0);
-	    int muInd2 = selector->Muons.at(1);
+	    int muInd1 = selector->muons.at(0);
+	    int muInd2 = selector->muons.at(1);
 
 	    lepVector.SetPtEtaPhiM(tree->muPt_[muInd1],
 				   tree->muEta_[muInd1],
@@ -1061,8 +1087,8 @@ void makeNtuple::FillEvent(std::string year){
 	
 	
 	if (_nEle==2){
-	    int eleInd1 = selector->Electrons.at(0);
-	    int eleInd2 = selector->Electrons.at(1);
+	    int eleInd1 = selector->electrons.at(0);
+	    int eleInd2 = selector->electrons.at(1);
 	    
 	    lepVector.SetPtEtaPhiM(tree->elePt_[eleInd1],
 				   tree->eleEta_[eleInd1],
@@ -1080,8 +1106,8 @@ void makeNtuple::FillEvent(std::string year){
     //dipho Mass
     if (_nPho>1){
         //	std::cout<<_nPho<<std::endl;
-        int phoInd1 = selector->Photons.at(0);
-        int phoInd2 = selector->Photons.at(1);
+        int phoInd1 = selector->photons.at(0);
+        int phoInd2 = selector->photons.at(1);
         
         phoVector1.SetPtEtaPhiM(tree->phoEt_[phoInd1],
         			tree->phoEta_[phoInd1],
@@ -1102,7 +1128,7 @@ void makeNtuple::FillEvent(std::string year){
 	cout <<"Photon Info" << endl; 
     }
     for (int i_pho = 0; i_pho <_nPho; i_pho++){
-        int phoInd = selector->Photons.at(i_pho);
+        int phoInd = selector->photons.at(i_pho);
         _ST += tree->phoEt_[phoInd];
         phoVector.SetPtEtaPhiM(tree->phoEt_[phoInd],
         		       tree->phoEta_[phoInd],
@@ -1180,7 +1206,7 @@ void makeNtuple::FillEvent(std::string year){
             }
 
     for (int i_pho = 0; i_pho <_nLoosePho; i_pho++){
-        int phoInd = selector->LoosePhotons.at(i_pho);
+        int phoInd = selector->loosePhotons.at(i_pho);
         phoVector.SetPtEtaPhiM(tree->phoEt_[phoInd],
         		       tree->phoEta_[phoInd],
         		       tree->phoPhi_[phoInd],
@@ -1193,7 +1219,7 @@ void makeNtuple::FillEvent(std::string year){
     }
 
     for (int i_pho = 0; i_pho <_nPhoNoID; i_pho++){
-        int phoInd = selector->PhotonsNoID.at(i_pho);
+        int phoInd = selector->photonsNoId.at(i_pho);
         phoVector.SetPtEtaPhiM(tree->phoEt_[phoInd],
         		       tree->phoEta_[phoInd],
         		       tree->phoPhi_[phoInd],
@@ -1209,8 +1235,8 @@ void makeNtuple::FillEvent(std::string year){
     double ttagW = 1.0;
     double ttagW_up = 1.0;
     for (int i_fatJet = 0; i_fatJet <_nFatJet; i_fatJet++){
-        int fatJetInd = selector->FatJets.at(i_fatJet);
-        int topSFInd = selector->FatJets.at(0);
+        int fatJetInd = selector->fatJets.at(i_fatJet);
+        int topSFInd = selector->fatJets.at(0);
         auto tPt  = tree->fatJetPt_[fatJetInd];
         auto tEta = tree->fatJetEta_[fatJetInd];
         //std::cout<<tree->fatJetPt_[fatJetInd]<<std::endl;
@@ -1246,7 +1272,7 @@ void makeNtuple::FillEvent(std::string year){
     }
 
     for (int i_jet = 0; i_jet <_nJet; i_jet++){
-        int jetInd = selector->Jets.at(i_jet);
+        int jetInd = selector->jets.at(i_jet);
         _jetPt.push_back(tree->jetPt_[jetInd]);
         _jetEta.push_back(tree->jetEta_[jetInd]);
         _jetPhi.push_back(tree->jetPhi_[jetInd]);
@@ -1254,9 +1280,9 @@ void makeNtuple::FillEvent(std::string year){
         _jetQGL.push_back(tree->jetQGL_[jetInd]);
         _jetDeepB.push_back(tree->jetBtagDeepB_[jetInd]);
         _jetGenJetIdx.push_back(tree->jetGenJetIdx_[jetInd]);
-        double resolution = selector->jet_resolution.at(i_jet);
+        double resolution = selector->jetResolution.at(i_jet);
         _jetRes.push_back(resolution);
-        _jerWeight.push_back(selector->jet_smear.at(i_jet));
+        _jerWeight.push_back(selector->jetSmear.at(i_jet));
 	    if (runSystJES){
             _jesWeight.push_back(tree->jetmuEF_[jetInd]);
         }
@@ -1270,7 +1296,7 @@ void makeNtuple::FillEvent(std::string year){
                 tree->jetPhi_[jetInd], 
                 tree->jetMass_[jetInd]);
         jetVectors.push_back(jetVector);
-        if (selector->jet_isTagged.at(i_jet)){
+        if (selector->jetIsTagged.at(i_jet)){
             bjetVectors.push_back(jetVector);
             bjetResVectors.push_back(resolution);
         } else {
@@ -1556,13 +1582,13 @@ void makeNtuple::FillEvent(std::string year){
 
 	double pdfMean = 0.;
     std::vector<float> _pdfSystWeight;
-	for (int j=0; j < tree->nLHEPdfWeight_; j++ ){
+	for (int j=1; j < tree->nLHEPdfWeight_; j++ ){
 	    _pdfSystWeight.push_back(tree->LHEPdfWeight_[j]);
         //std::cout<<tree->LHEPdfWeight_[j]<<std::endl;
 	    pdfMean += tree->LHEPdfWeight_[j];
 	}
 	pdfMean = pdfMean/_pdfSystWeight.size();
-	    
+	
 	double pdfVariance = 0.;
 	for (int j=0; j < _pdfSystWeight.size(); j++){
 	    pdfVariance += pow((_pdfSystWeight[j]-pdfMean),2.);
@@ -1570,8 +1596,23 @@ void makeNtuple::FillEvent(std::string year){
         if (pdfMean==0) pdfMean=1;
     float _pdfuncer = 0.;
 	_pdfuncer = sqrt(pdfVariance/_pdfSystWeight.size())/pdfMean;
-	_pdfweight_Up = (1. + _pdfuncer);
+//_pdfweight_Up = (1. + _pdfuncer);
+    _pdfweight_Up = (1. + _pdfuncer);
+//	_pdfweight_Do = (1. - _pdfuncer);
 	_pdfweight_Do = (1. - _pdfuncer);
+
+    if(_pdfweight_Do <0){
+        std::cout<<"PDF Down Weight: "<<_pdfweight_Do<<std::endl;
+        std::cout<<"PDF Down Weight Uncert: "<<_pdfuncer<<std::endl;
+        std::cout << "PDF weights: ";
+        std::cout<<" Exp PDF Weights: Up= "<<std::exp(_pdfuncer)<<"Down= "<<std::exp(-_pdfuncer)<<std::endl;
+    for (int j = 0; j < tree->nLHEPdfWeight_; ++j) {
+        std::cout <<"j="<<j<< tree->LHEPdfWeight_[j] << " ";
+    }
+    std::cout << std::endl;
+       // std::cout<<"PDF Var: "<<pdfVariance<<std::endl;
+        std::cout<<"PDF Mean: "<<pdfMean<<std::endl;
+    }
 	if (tree->nPSWeight_==4){
             if (tree->genWeight_ != 0){
                 double scaleWeight=tree->PSWeight_[4];
@@ -1672,9 +1713,11 @@ float makeNtuple::getBtagSF_1a(string sysType, bool verbose){
 	cout << "Btagging Scale Factors"<<endl;
     }
 
-    for(std::vector<int>::const_iterator jetInd = selector->Jets.begin(); jetInd != selector->Jets.end(); jetInd++){
+    for(std::vector<int>::const_iterator jetInd = selector->jets.begin(); jetInd != selector->jets.end(); jetInd++){
 
 	jetPt = tree->jetPt_[*jetInd];
+    if (jetPt > 1000){
+        jetPt = 1000;}
 	jetEta = fabs(tree->jetEta_[*jetInd]);
 	jetFlavor = abs(tree->jetHadFlvr_[*jetInd]);
 	jetBtag = tree->jetBtagDeepB_[*jetInd];
@@ -1697,7 +1740,7 @@ float makeNtuple::getBtagSF_1a(string sysType, bool verbose){
 	    int ybin = l_eff->GetYaxis()->FindBin(abs(jetEta));
 	    Eff = l_eff->GetBinContent(xbin,ybin);
 	}
-	if (jetBtag>selector->btag_cut){
+	if (jetBtag>selector->btagCut){
 	    pMC *= Eff;
 	    pData *= Eff*SFb;
 	} else {
@@ -1705,7 +1748,7 @@ float makeNtuple::getBtagSF_1a(string sysType, bool verbose){
 	    pData *= 1. - (Eff*SFb);
 	}
 	if (verbose){
-	    cout << "    jetPt="<<jetPt<<"  jetEta="<<jetEta<<"  jetFlavor="<<jetFlavor<<"  jetBtag="<<jetBtag<<"  Tagged="<<(jetBtag>selector->btag_cut)<<"  Eff="<<Eff<<"  SF="<<SFb<<endl;
+	    cout << "    jetPt="<<jetPt<<"  jetEta="<<jetEta<<"  jetFlavor="<<jetFlavor<<"  jetBtag="<<jetBtag<<"  Tagged="<<(jetBtag>selector->btagCut)<<"  Eff="<<Eff<<"  SF="<<SFb<<endl;
 	    cout << "          --p(MC)="<<pMC<<"  --p(Data)="<<pData << endl;
 	}
     }

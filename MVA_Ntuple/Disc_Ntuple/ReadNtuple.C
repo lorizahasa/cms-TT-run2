@@ -407,19 +407,86 @@ int main(int argc, char* argv[]){
             tree->b_Weight_btag->GetEntry(entry);
             tree->b_Weight_ttag->GetEntry(entry);
             tree->b_Weight_pho->GetEntry(entry);
+            tree->b_Weight_pdf->GetEntry(entry);
 
             
             w_lumi      = tree->Weight_lumi;
-            if(sample.find("Signal") != std::string::npos){
-                w_lumi  = 1.0;
+            if(sample.find("SignalSpin32_M700") != std::string::npos){
+                w_lumi = w_lumi/(0.03*0.97*2*4.686);
+            }
+            if(sample.find("SignalSpin32_M800") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*1.624);
+            }
+            if(sample.find("SignalSpin32_M900") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.619);
+            }
+            if(sample.find("SignalSpin32_M1000") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.257);
+            }
+            if(sample.find("SignalSpin32_M1100") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.113);
+            }
+            if(sample.find("SignalSpin32_M1200") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.0525);
+            }
+            if(sample.find("SignalSpin32_M1300") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.0253);
+            }
+            if(sample.find("SignalSpin32_M1400") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.0126);
+            }
+            if(sample.find("SignalSpin32_M1500") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.0065);
+            }
+            if(sample.find("SignalSpin32_M1600") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.00342);
+            }
+            if(sample.find("SignalSpin32_M1700") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.00185);
+            }
+            if(sample.find("SignalSpin32_M1800") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.00101);
+            }
+            if(sample.find("SignalSpin32_M1900") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.00056);
+            }
+            if(sample.find("SignalSpin32_M2000") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.00032);
+            }
+            if(sample.find("SignalSpin32_M2250") != std::string::npos){
+                 w_lumi = w_lumi/( 0.03*0.97*2*0.000078);
+            }
+            if(sample.find("SignalSpin32_M2500") != std::string::npos){
+                 w_lumi = w_lumi/(0.03*0.97*2*0.000021);
+            }
+
+            if(sample.find("SignalSpin32_M2750") != std::string::npos){
+                //if(w_lumi<0){
+                //    std::cout<<"Signal lumi weight"<<w_lumi<<std::endl;
+               // }
+                w_lumi = w_lumi/(0.03*0.97*2*0.000005602932);
+            
+            }
+            if(sample.find("SignalSpin32_M3000") != std::string::npos){
+                w_lumi = w_lumi/(0.03*0.97*2*0.000001585532);
+            }
+            
+            if(sample.find("Others") != std::string::npos){
+                if(w_lumi<0){
+                    //std::cout<<"Others lumi weight: "<<w_lumi<<std::endl;
+                    w_lumi = abs(w_lumi);}
             }
             w_pu        = tree->Weight_pu;
             w_mu        = tree->Weight_mu;
             w_ele       = tree->Weight_ele;
             w_prefire   = tree->Weight_prefire;
             w_btag 	    = tree->Weight_btag;
+            if(w_btag<0){
+                w_btag = abs(w_btag);
+            }
             w_ttag 	    = tree->Weight_ttag;
             w_pho 	    = tree->Weight_pho->at(0);
+            w_pdf       = tree->Weight_pdf;
 
             //Systematics
             if(syst.find("puUp") != std::string::npos){
@@ -529,7 +596,7 @@ int main(int argc, char* argv[]){
             		* w_prefire 
             		* w_isr 
             		* w_fsr 
-            		//* w_btag 
+            		* w_btag 
             		* w_pho 
             		* w_ttag;
 

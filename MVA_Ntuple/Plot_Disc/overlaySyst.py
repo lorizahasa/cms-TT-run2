@@ -74,7 +74,8 @@ fPath = open("%s/overlaySyst_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 for decay, region, spin, channel, year, samp in itertools.product(Decays, rList, Spin, Channels, Years, SampleSyst):
     hInfo = GetVarInfo(region, channel)
     #hList = list(hInfo.keys()) + ['Disc']
-    hList = ["Reco_mass_T"]
+    #hList = ["Reco_mass_T"]
+    hList = ["Disc"]
     if isCheck:
         hList = ["Disc"]
         pass
@@ -132,13 +133,14 @@ for decay, region, spin, channel, year, samp in itertools.product(Decays, rList,
             hPathBase   = "%s/%s/JetBase/%s"%(sample, region, hName)
             hPathUp     = "%s/%s/%sUp/%s"%(sample, region, syst, hName)
             hPathDown   = "%s/%s/%sDown/%s"%(sample, region, syst, hName)
-            #print(hPathBase)
+            print(hPathBase)
             #print(hPathUp)
             if isCheck:
                 print(hPathBase)
             #hBase = inFile.Get(hPathBase).Clone("Base_")
             hBase = inFile.Get(hPathBase).Clone("JetBase_")
-            hUp   = inFile.Get(hPathUp).Clone("%sUp_"%syst) 
+            hUp   = inFile.Get(hPathUp).Clone("%sUp_"%syst)
+            #print("Hist Up:",hPathUp)
             hDown = inFile.Get(hPathDown).Clone("%sDown_"%syst) 
             xTitle = hName
             yTitle = "Events"
