@@ -85,8 +85,6 @@ CBA_Ntuple/*/*/*.json
 CBA_Ntuple/*/*/*/*.json
 
 MVA_Ntuple/*/*.json
-MVA_Ntuple/*/*/*.json
-MVA_Ntuple/*/*/*/*.json
 
 *.o
 */*.o
