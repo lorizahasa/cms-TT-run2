@@ -9,9 +9,9 @@ dirClass  = "%s/Disc_Ntuple/DiscMain"%dirMVA2
 dirRead   = "%s/Disc_Ntuple/DiscMain"%dirMVA2
 nMulti    = 1
 #-----------------------------------------------------------------
-Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
 #Years 	      =	["2016Pre", "2016Post", "2017"]
-#Years         =	["2018"]
+Years         =	["2018"]
 Channels 	  =	["Mu", "Ele"]
 #Channels      =	["Mu"]
 Decays        =	["Semilep"]
@@ -64,6 +64,7 @@ S1.append("SignalSpin32_M1200")
 S1.append("SignalSpin32_M1300")
 S1.append("SignalSpin32_M1500")
 S1.append("SignalSpin32_M2750")
+
 S1.append("TTGamma")
 S1.append("WJets")
 S1.append("DYJets")

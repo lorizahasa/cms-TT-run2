@@ -111,8 +111,16 @@ def makePlotOverlay(inFile, hName, region, samples, syst, year, decay, spin, cha
     #                                    SampleB -> dashed lines
     # But you can also use distinct colors if you prefer.
     #color_list = [myRed, myBlue, myGreen+2, myOrange+1]  # pick some colors
-    color_list = [ROOT.kRed, ROOT.kBlue, ROOT.kGreen+2, ROOT.kMagenta, ROOT.kCyan, ROOT.kYellow]
-    line_styles = [1, 2, 3]  # 1 = solid, 2 = dashed, etc.
+    color_list = [ROOT.kRed+1,        # 0 – bright red
+    ROOT.kBlue+1,       # 1 – strong blue
+    ROOT.kGreen+2,      # 2 – vivid green
+    ROOT.kMagenta+1,    # 3 – pink/magenta
+    ROOT.kOrange+2,     # 4 – orange
+    ROOT.kCyan+2,       # 5 – teal / light blue
+    ROOT.kViolet+1,     # 6 – purple
+    ROOT.kYellow+2      # 7 – golden yellow (use sparingly; thin lines only)
+]
+    line_styles = [1, 2, 4]  # 1 = solid, 2 = dashed, etc.
 
     for i, sample in enumerate(samples):
         # Build the paths
@@ -125,17 +133,17 @@ def makePlotOverlay(inFile, hName, region, samples, syst, year, decay, spin, cha
         hDown = inFile.Get(hPathDown).Clone(f"{syst}Down_{sample}")
 
         # Set style
-        hBase.SetLineColor(color_list[(2*i) % len(color_list)])
-        hUp.SetLineColor(color_list[(2*i+1) % len(color_list)])
-        hDown.SetLineColor(color_list[(2*i+1) % len(color_list)])
-        #base_color = color_list[i % len(color_list)]  # use a distinct color for each sample
-        #hBase.SetLineColor(base_color)
-        #hUp.SetLineColor(base_color)
-        #hDown.SetLineColor(base_color)
+        #hBase.SetLineColor(color_list[(2*i) % len(color_list)])
+        #hUp.SetLineColor(color_list[(2*i+1) % len(color_list)])
+        #hDown.SetLineColor(color_list[(2*i+1) % len(color_list)])
+        base_color = color_list[i % len(color_list)]  # use a distinct color for each sample
+        hBase.SetLineColor(base_color)
+        hUp.SetLineColor(base_color+1)
+        hDown.SetLineColor(base_color-1)
         # Optionally set line styles distinct for second sample, etc.
         hBase.SetLineStyle(1)
         hUp.SetLineStyle(2)
-        hDown.SetLineStyle(3)
+        hDown.SetLineStyle(4)
 
         # We draw in "same" mode if not the first sample
         drawopt = "HIST" if i == 0 else "HIST SAME"
@@ -248,7 +256,7 @@ def makePlotOverlay(inFile, hName, region, samples, syst, year, decay, spin, cha
 for decay, region, spin, channel, year, samp in itertools.product(Decays, rList, Spin, Channels, Years, SampleSyst):
 
     hInfo = GetVarInfo(region, channel)
-    hList = ["Reco_mass_T"]  # or your variables of interest
+    hList = ["Disc"]  # or your variables of interest
 
     if isCheck:
         hList = ["Disc"]

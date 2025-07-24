@@ -100,15 +100,15 @@ if isSep:
 #Merge combining years and channels
 #-----------------------------------------
 if isComb:
-    for year, d, ch in itertools.product(Years_, Decays, Channels_): 
+    for year, d, ch, p in itertools.product(Years_, Decays, Channels_, Spin): 
         hists = []
         for y in year.split("__"):
             for c in ch.split("__"):
-                iSubDir = "%s/Merged/%s/%s/%s/CombMass/BDTA/AllInc.root"%(dirRead, y, d, c)
+                iSubDir = "%s/Merged/%s/%s/%s/%s/CombMass/BDTA/AllInc.root"%(dirRead, y, d,p, c)
                 iFullDir = "root://cmseosmgm01.fnal.gov:1094/%s"%iSubDir
                 hists.append(iFullDir)
         haddIn = ' '.join(str(h) for h in hists)
-        mergeDir = "%s/Merged/%s/%s/%s/CombMass/BDTA"%(dirRead, year, d, ch)
+        mergeDir = "%s/Merged/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, year, d, p, ch)
         runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%mergeDir)
         haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(mergeDir)
         runCmd("eos root://cmseos.fnal.gov rm -r %s"%mergeDir)

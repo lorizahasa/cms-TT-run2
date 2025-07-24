@@ -10,45 +10,84 @@ void initCrossSections(){
     //xss for spin 3/2: p p > t* t* > tytg
     //generated using MG_aMC_v2.7.3 with CMSSW_12_4_8 with slc7_amd64_gcc700
     //https://cms-project-generators.web.cern.ch/cms-project-generators/top32.tgz
-    double br_tytg = 0.03*0.97*2;
-    crossSections["SignalSpin32_M700"]   =  {br_tytg*4.686152e+00};
-    crossSections["SignalSpin32_M800"]   =  {br_tytg*1.623764e+00};
-    crossSections["SignalSpin32_M900"]   =  {br_tytg*6.192314e-01};
-    crossSections["SignalSpin32_M1000"]  =  {br_tytg*2.573151e-01};
-    crossSections["SignalSpin32_M1100"]  =  {br_tytg*1.133120e-01};
-    crossSections["SignalSpin32_M1200"]  =  {br_tytg*5.251545e-02};
-    crossSections["SignalSpin32_M1300"]  =  {br_tytg*2.527675e-02};
-    crossSections["SignalSpin32_M1400"]  =  {br_tytg*1.262786e-02};
-    crossSections["SignalSpin32_M1500"]  =  {br_tytg*6.498742e-03};
-    crossSections["SignalSpin32_M1600"]  =  {br_tytg*3.424087e-03};
-    crossSections["SignalSpin32_M1700"]  =  {br_tytg*1.846422e-03};
-    crossSections["SignalSpin32_M1800"]  =  {br_tytg*1.009361e-03};
-    crossSections["SignalSpin32_M1900"]  =  {br_tytg*5.607416e-04};
-    crossSections["SignalSpin32_M2000"]  =  {br_tytg*3.155604e-04};
-    crossSections["SignalSpin32_M2250"]  =  {br_tytg*7.825815e-05};
-    crossSections["SignalSpin32_M2500"]  =  {br_tytg*2.051170e-05};
-    crossSections["SignalSpin32_M2750"]  =  {br_tytg*5.602932e-06};
-    crossSections["SignalSpin32_M3000"]  =  {br_tytg*1.585532e-06};
+    //double br_tytg = 0.03*0.97*2;
+    //crossSections["SignalSpin32_M700"]   =  {br_tytg*4.686152e+00};
+    //crossSections["SignalSpin32_M800"]   =  {br_tytg*1.623764e+00};
+    //crossSections["SignalSpin32_M900"]   =  {br_tytg*6.192314e-01};
+    //crossSections["SignalSpin32_M1000"]  =  {br_tytg*2.573151e-01};
+    //crossSections["SignalSpin32_M1100"]  =  {br_tytg*1.133120e-01};
+    //crossSections["SignalSpin32_M1200"]  =  {br_tytg*5.251545e-02};
+    //crossSections["SignalSpin32_M1300"]  =  {br_tytg*2.527675e-02};
+    //crossSections["SignalSpin32_M1400"]  =  {br_tytg*1.262786e-02};
+    //crossSections["SignalSpin32_M1500"]  =  {br_tytg*6.498742e-03};
+    //crossSections["SignalSpin32_M1600"]  =  {br_tytg*3.424087e-03};
+    //crossSections["SignalSpin32_M1700"]  =  {br_tytg*1.846422e-03};
+    //crossSections["SignalSpin32_M1800"]  =  {br_tytg*1.009361e-03};
+    //crossSections["SignalSpin32_M1900"]  =  {br_tytg*5.607416e-04};
+    //crossSections["SignalSpin32_M2000"]  =  {br_tytg*3.155604e-04};
+    //crossSections["SignalSpin32_M2250"]  =  {br_tytg*7.825815e-05};
+    //crossSections["SignalSpin32_M2500"]  =  {br_tytg*2.051170e-05};
+    //crossSections["SignalSpin32_M2750"]  =  {br_tytg*5.602932e-06};
+    //crossSections["SignalSpin32_M3000"]  =  {br_tytg*1.585532e-06};
+
+    //Fixed cross section to 1 pb
+    crossSections["SignalSpin32_M3000"]  =  {1};
+    crossSections["SignalSpin32_M2750"]  =  {1};
+    crossSections["SignalSpin32_M2500"]  =  {1};
+    crossSections["SignalSpin32_M2250"]  =  {1};
+    crossSections["SignalSpin32_M2000"]  =  {1};
+    crossSections["SignalSpin32_M1900"]  =  {1};
+    crossSections["SignalSpin32_M1800"]  =  {1};
+    crossSections["SignalSpin32_M1700"]  =  {1};
+    crossSections["SignalSpin32_M1600"]  =  {1};
+    crossSections["SignalSpin32_M1500"]  =  {1};
+    crossSections["SignalSpin32_M1400"]  =  {1};
+    crossSections["SignalSpin32_M1300"]  =  {1};
+    crossSections["SignalSpin32_M1200"]  =  {1};
+    crossSections["SignalSpin32_M1100"]  =  {1};
+    crossSections["SignalSpin32_M1000"]  =  {1};
+    crossSections["SignalSpin32_M900"]  =  {1};
+    crossSections["SignalSpin32_M800"]  =  {1};
+    crossSections["SignalSpin32_M700"]  =  {1};
+
+    crossSections["SignalSpin12_M700"]  =  {1};
+    crossSections["SignalSpin12_M800"]  =  {1};
+    crossSections["SignalSpin12_M900"]  =  {1};
+    crossSections["SignalSpin12_M1000"]  =  {1};
+    crossSections["SignalSpin12_M1100"]  =  {1};
+    crossSections["SignalSpin12_M1200"]  =  {1};
+    crossSections["SignalSpin12_M1300"]  =  {1};
+    crossSections["SignalSpin12_M1400"]  =  {1};
+    crossSections["SignalSpin12_M1500"]  =  {1};
+    crossSections["SignalSpin12_M1600"]  =  {1};
+    crossSections["SignalSpin12_M1700"]  =  {1};
+    crossSections["SignalSpin12_M1800"]  =  {1};
+    crossSections["SignalSpin12_M1900"]  =  {1};
+    crossSections["SignalSpin12_M2000"]  =  {1};
+    crossSections["SignalSpin12_M2250"]  =  {1};
+    crossSections["SignalSpin12_M2500"]  =  {1};
+    crossSections["SignalSpin12_M2750"]  =  {1};
+    crossSections["SignalSpin12_M3000"]  =  {1};
 
     //xss for spin 1/2: p p > t* t* > tytg
-    crossSections["SignalSpin12_M700"]   =  {br_tytg*0.2659};
-    crossSections["SignalSpin12_M800"]   =  {br_tytg*0.1147};
-    crossSections["SignalSpin12_M900"]   =  {br_tytg*0.05318};
-    crossSections["SignalSpin12_M1000"]  =  {br_tytg*0.02590};
-    crossSections["SignalSpin12_M1100"]  =  {br_tytg*0.01322};
-    crossSections["SignalSpin12_M1200"]  =  {br_tytg*0.006897};
-    crossSections["SignalSpin12_M1300"]  =  {br_tytg*0.003732};
-    crossSections["SignalSpin12_M1400"]  =  {br_tytg*0.002061};
-    crossSections["SignalSpin12_M1500"]  =  {br_tytg*0.001165};
-    crossSections["SignalSpin12_M1600"]  =  {br_tytg*0.0006675};
-    crossSections["SignalSpin12_M1700"]  =  {br_tytg*0.0003911};
-    crossSections["SignalSpin12_M1800"]  =  {br_tytg*0.0002329};
-    crossSections["SignalSpin12_M1900"]  =  {br_tytg*0.0001404};
-    crossSections["SignalSpin12_M2000"]  =  {br_tytg*0.00008614};
-    crossSections["SignalSpin12_M2250"]  =  {br_tytg*0.00002748};
-    crossSections["SignalSpin12_M2500"]  =  {br_tytg*0.000009695};
-    crossSections["SignalSpin12_M2750"]  =  {br_tytg*0.000003746};
-    crossSections["SignalSpin12_M3000"]  =  {br_tytg*0.000001535};
+    //crossSections["SignalSpin12_M700"]   =  {br_tytg*0.2659};
+    //crossSections["SignalSpin12_M800"]   =  {br_tytg*0.1147};
+    //crossSections["SignalSpin12_M900"]   =  {br_tytg*0.05318};
+    //crossSections["SignalSpin12_M1000"]  =  {br_tytg*0.02590};
+    //crossSections["SignalSpin12_M1100"]  =  {br_tytg*0.01322};
+    //crossSections["SignalSpin12_M1200"]  =  {br_tytg*0.006897};
+    //crossSections["SignalSpin12_M1300"]  =  {br_tytg*0.003732};
+    //crossSections["SignalSpin12_M1400"]  =  {br_tytg*0.002061};
+    //crossSections["SignalSpin12_M1500"]  =  {br_tytg*0.001165};
+    //crossSections["SignalSpin12_M1600"]  =  {br_tytg*0.0006675};
+    //crossSections["SignalSpin12_M1700"]  =  {br_tytg*0.0003911};
+    //crossSections["SignalSpin12_M1800"]  =  {br_tytg*0.0002329};
+    //crossSections["SignalSpin12_M1900"]  =  {br_tytg*0.0001404};
+    //crossSections["SignalSpin12_M2000"]  =  {br_tytg*0.00008614};
+    //crossSections["SignalSpin12_M2250"]  =  {br_tytg*0.00002748};
+    //crossSections["SignalSpin12_M2500"]  =  {br_tytg*0.000009695};
+    //crossSections["SignalSpin12_M2750"]  =  {br_tytg*0.000003746};
+    //crossSections["SignalSpin12_M3000"]  =  {br_tytg*0.000001535};
 
     //--------------------------
     // tty samples

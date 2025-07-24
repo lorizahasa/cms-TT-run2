@@ -74,8 +74,8 @@ fPath = open("%s/overlaySyst_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 for decay, region, spin, channel, year, samp in itertools.product(Decays, rList, Spin, Channels, Years, SampleSyst):
     hInfo = GetVarInfo(region, channel)
     #hList = list(hInfo.keys()) + ['Disc']
-    #hList = ["Reco_mass_T"]
-    hList = ["Disc"]
+    hList = ["Reco_mass_T"]
+    #hList = ["Disc"]
     if isCheck:
         hList = ["Disc"]
         pass
@@ -133,7 +133,7 @@ for decay, region, spin, channel, year, samp in itertools.product(Decays, rList,
             hPathBase   = "%s/%s/JetBase/%s"%(sample, region, hName)
             hPathUp     = "%s/%s/%sUp/%s"%(sample, region, syst, hName)
             hPathDown   = "%s/%s/%sDown/%s"%(sample, region, syst, hName)
-            print(hPathBase)
+            #print(hPathBase)
             #print(hPathUp)
             if isCheck:
                 print(hPathBase)

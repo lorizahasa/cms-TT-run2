@@ -66,9 +66,10 @@ dir_ = "ForMain"
 os.system("mkdir -p %s"%dirPlot)
 fPath = open("%s/plotDisc_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
-for decay, region, channel, year in itertools.product(Decays, rList, Channels, Years):
+for decay, region, channel, year, spin in itertools.product(Decays, rList, Channels, Years, Spin):
     hInfo = GetVarInfo(region, channel)
-    hList = list(hInfo.keys()) + ['Disc']
+    #hList = list(hInfo.keys()) + ['Disc']
+    hList = ["Disc"]
     if isCheck:
         hList = ["Disc"]
         pass
@@ -95,9 +96,9 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
             isUnc   = False
         if "lgamma" in hName:
             isLog = False
-        ydc = "%s/%s/%s"%(year, decay, channel)
-        inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydc)
-        outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydc)
+        ydsc = "%s/%s/%s/%s"%(year, decay,spin, channel)
+        inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydsc)
+        outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydsc)
         os.system("mkdir -p %s"%outPlotDir)
         inFile = TFile("%s/AllInc.root"%(inHistDir), "read")
         if isCheck:
@@ -131,7 +132,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
             else:
                 canvas.cd()
             #Get nominal histograms
-            bkgHists = getHists(inFile, SampleBkg, region, "Base", hName)
+            bkgHists = getHists(inFile, SampleBkg, region, "JetBase", hName)
             #Stack nominal hists
             xTitle = hName
             #binWidth = (hInfo[hName][1][2] - hInfo[hName][1][1])/hInfo[hName][1][0]
@@ -150,17 +151,19 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
                 hStack.Add(h)
                 yDict[sampleName] = getYield(h)
             hStack.Draw("HIST")
+            hStack.GetXaxis().SetRangeUser(-1,1)
+            gPad.Modified(); gPad.Update()
             
             #Data hists
             if isData:
-                dataHist = getHist(inFile, "data_obs", region, "Base", hName)
+                dataHist = getHist(inFile, "data_obs", region, "JetBase", hName)
                 decoHist(dataHist, xTitle, yTitle, SampleData["data_obs"][0])
                 dataHist.SetMarkerStyle(20)
                 dataHist.Draw("EPsame")
             
             #Signal hists
             if isSig:
-                sigHists  = getHists(inFile, SampleSignal, region, "Base", hName)
+                sigHists  = getHists(inFile, SampleSignal, region, "JetBase", hName)
                 sortedSigHists = sortHists(sigHists, True)
                 for hSig in sigHists:
                     hSig.Draw("HISTsame")
@@ -264,7 +267,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
                 baseLine.SetLineColor(3);
                 baseLine.Draw("SAME");
                 hRatio.Draw("same")
-            pdf = "%s/plotDisc_%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region)
+            pdf = "%s/plotDisc_%s_%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region, spin)
             canvas.SaveAs(pdf)
             fPath.write("%s\n"%pdf)
             cap = "%s, %s, %s, %s"%(year, channel, region, hName)

@@ -6,19 +6,19 @@ dirFit = "/eos/uscms/%s/Fit_Disc/FitMain"%condorOutDir
 dirTwiki= "/eos/uscms/store/user/lhasa/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
 Year = []
-#Year.append("2016Pre")
-#Year.append("2016Post")
-#Year.append("2017")
+Year.append("2016Pre")
+Year.append("2016Post")
+Year.append("2017")
 Year.append("2018")
-#Year.append("2016Pre__2016Post__2017__2018")
+Year.append("2016Pre__2016Post__2017__2018")
 
 Channel = []
 Channel.append("Mu")
-#Channel.append("Ele")
+Channel.append("Ele")
 Channel.append("Mu__Ele")
 
 Decay 	  =	["Semilep"]
-Spin     = ["Spin32"]
+Spin     = ["Spin12"]
 
 
 histList = []
@@ -59,9 +59,9 @@ xss = OrderedDict(sorted(xss.items(), key=lambda t: t[1]))
 rDict = {}
 #
 #Dict["ttyg_Enriched_SR"] = "Inclusive"
-#rDict["ttyg_Enriched_SR_Boosted"] = "SR, Boosted"
+rDict["ttyg_Enriched_SR_Boosted"] = "SR, Boosted"
 rDict["ttyg_Enriched_SR_Resolved"]= "SR, Resolved"
-#rDict["ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved"]="SR, Boosted+Resolved"
+rDict["ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved"]="SR, Boosted+Resolved"
 #rDict["ttyg_Enriched_CR_Boosted"] = "CR, Boosted"
 #rDict["ttyg_Enriched_CR_Resolved"]= "CR, Resolved"
 #rDict["ttyg_Enriched_CR_Boosted__ttyg_Enriched_CR_Resolved"]="CR, Boosted+Resolved"

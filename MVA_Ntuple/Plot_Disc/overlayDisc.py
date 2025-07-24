@@ -66,13 +66,13 @@ os.system("mkdir -p %s"%dirPlot)
 fPath = open("%s/overlayDisc_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 
 hName = 'Reco_mass_T'
-for decay, region, channel, year in itertools.product(Decays, rList, Channels, Years):
+for decay, region, spin, channel, year in itertools.product(Decays, rList, Spin, Channels, Years):
     isLog    = False
     print("----------------------------------------------")
     print("%s, %s, %s, %s, %s"%(decay, hName, region, channel, year))
-    ydc = "%s/%s/%s"%(year, decay, channel)
-    inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydc)
-    outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydc)
+    ydsc = "%s/%s/%s/%s"%(year, decay, spin, channel)
+    inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydsc)
+    outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydsc)
     os.system("mkdir -p %s"%outPlotDir)
     inFile = TFile("%s/AllInc.root"%(inHistDir), "read")
     #inFile = TFile("%s/Alpha.root"%(inHistDir), "read")
@@ -124,7 +124,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
         if index==0 and not "data_obs" in s:
             print(s)
             pDict[s].SetMaximum(0.5)
-            pDict[s].GetXaxis().SetRangeUser(0, 2000)
+            pDict[s].GetXaxis().SetRangeUser(0, 3000)
             #pDict[s].SetMaximum(100*pDict["All Background"].GetMaximum())
             #pDict[s].SetMinimum(0.01)
             pDict[s].Draw("HIST")
@@ -147,7 +147,7 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     extraText   = "#splitline{Preliminary}{%s}"%chCRName
     lumi_13TeV = getLumiLabel(year)
     CMS_lumi(lumi_13TeV, canvas, iPeriod, iPosX, extraText)
-    pdf = "%s/overlayDisc_%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region)
+    pdf = "%s/overlayDisc_%s_%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region, spin)
     canvas.SaveAs(pdf)
     fPath.write("%s\n"%pdf)
 print(fPath)

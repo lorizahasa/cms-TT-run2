@@ -36,6 +36,7 @@ MVA_Ntuple/Disc_Ntuple/read_xml.py
 MVA_Ntuple/Disc_Ntuple/condor_read/alphaForMain.py
 MVA_Ntuple/Disc_Ntuple/condor_read/validateNAN.py
 MVA_Ntuple/Disc_Ntuple/CheckTree.py
+MVA_Ntuple/Fit_Disc/scan_datacards_to_text.py
 
 MVA_Ntuple/*.txt
 MVA_Ntuple/*/*.txt
@@ -57,6 +58,9 @@ MVA_Ntuple/Fit_Disc/checks.tar.gz
 MVA_Ntuple/Fit_Disc/output_old
 MVA_Ntuple/Fit_Disc/Impact.tex
 MVA_Ntuple/Fit_Disc/split_year.sh
+MVA_Ntuple/Fit_Disc/condor/make_impacts_tex.py
+MVA_Ntuple/Fit_Disc/condor/new_impact.py
+MVA_Ntuple/Fit_Disc/condor/*.tex
 
 *.pyc
 */*.pyc

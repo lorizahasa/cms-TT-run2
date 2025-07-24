@@ -96,9 +96,9 @@ def DrawAxisHists(pads, axis_hists, def_pad=None):
 #Path of the I/O histrograms/plots
 #----------------------------------------
 fPath = open("%s/plotLimit.txt"%dirFit, 'w')
-#hName = 'Disc'
+hName = 'Disc'
 #dirFit2 ="/uscms/home/lhasa/nobackup/TTPrime/CMSSW_14_0_0/src/cms-TT-run2/MVA_Ntuple/Fit_Disc/output/Fit_Disc/FitMain"
-hName = 'Reco_mass_T'
+#hName = 'Reco_mass_T'
 for decay, region, spin, channel, year in itertools.product(Decay, regionList, Spin, Channel, Year):
     limits = "tex/allLimits.json"
     gDict = {}
@@ -106,7 +106,7 @@ for decay, region, spin, channel, year in itertools.product(Decay, regionList, S
     ydsc = "%s/%s/%s/%s"%(year, decay, spin, channel)
     #ydsc = "%s/%s/%s/%s"%(year, decay, spin, channel)
     path = "%s/%s"%(dirFit, ydsc) 
-    outPath = "%s/%s"%(path, region)
+    outPath = "%s/%s/%s"%(path, region, hName)
     os.system('mkdir -p %s'%outPath)
     jsonRaw = "%s/limits.json"%outPath
     jsonScaled = "%s/scaled_limits.json"%outPath
@@ -119,14 +119,15 @@ for decay, region, spin, channel, year in itertools.product(Decay, regionList, S
     os.system("combineTool.py -M CollectLimits %s -o %s"%(allFiles, jsonRaw))
     with open(jsonRaw) as old_limit:
         new_limit = json.load(old_limit)
-        if '1100.0' in new_limit:
-            del new_limit['1100.0']
+        
+        #if '1100.0' in new_limit:
+         #   del new_limit['1100.0']
         #if '1600.0' in new_limit:
            # del new_limit['1600.0']
         #if '1700.0' in new_limit:
            # del new_limit['1700.0']
-        if '1400.0' in new_limit:
-            del new_limit['1400.0']
+        #if '1400.0' in new_limit:
+         #   del new_limit['1400.0']
         if args.isCheck:
             print("OLD: ", new_limit)
         for mass in list(xss.keys()):

@@ -116,8 +116,8 @@ if isFD:
 #----------------------------------------
 if isImpact:
    # runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --redefineSignalPOIs %s --doInitialFit %s"%(pathT2W, params, toInject[regShort])) 
-    runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --expectSignal=0 --redefineSignalPOIs %s --setParameterRanges r=-10,10 --doInitialFit %s"%(pathT2W, params, toInject[regShort])) 
-    runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --expectSignal=0 --redefineSignalPOIs %s --setParameterRanges r=-10,10 --doFits  --parallel 10 %s "%(pathT2W, params, toInject[regShort]))
+    runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --expectSignal=1 --redefineSignalPOIs %s --setParameterRanges r=-2,2 --doInitialFit %s"%(pathT2W, params, toInject[regShort])) 
+    runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --expectSignal=1 --redefineSignalPOIs %s --setParameterRanges r=-2,2 --doFits  --parallel 10 %s "%(pathT2W, params, toInject[regShort]))
     #runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --redefineSignalPOIs %s --doFits  --parallel 10 %s "%(pathT2W, params, toInject[regShort]))
     runCmd("combineTool.py -M Impacts -d %s -m 125 -o %s/nuisImpact.json --redefineSignalPOIs %s "%(pathT2W, dirDC, params))
     runCmd("python3 script/plotImpacts.py --cms-label \"   Internal\" -i %s/nuisImpact.json -o %s/nuisImpact.pdf"%(dirDC, dirDC))
@@ -138,7 +138,8 @@ if isGOF:
 if isLimit:
     #https://github.com/cms-analysis/CombineHarvester/blob/master/docs/Limits.md
     #runCmd("combine --rAbsAcc 0.000001 %s -M AsymptoticLimits --mass %s --name _TT_run2"%(pathT2W, mass))
-    runCmd("combineTool.py -d %s -M AsymptoticLimits  --expectSignal=0  --mass %s -n _TT_run2 --run blind --there --parallel 4 "%(pathT2W, mass))
+    runCmd("combineTool.py -d %s -M AsymptoticLimits  --expectSignal=1  --mass %s -n _TT_run2 --run blind -t -1 --rMin 1e-6 --rMax 1 --rAbsAcc 1e-4  --rRelAcc 5e-3 --there -v3 --parallel 4 "%(pathT2W, mass))
+    #runCmd("combineTool.py -d %s -M AsymptoticLimits  --expectSignal=1  --mass %s -n _TT_run2 --run blind -t -1 --there --parallel 4 "%(pathT2W, mass))
     nameLimitOut = "higgsCombine_TT_run2.AsymptoticLimits.mH%s.root"%(mass)
     runCmd("combineTool.py -M CollectLimits %s/%s -o %s/limits.json"%(dirDC, nameLimitOut, dirDC))
     print(dirDC)

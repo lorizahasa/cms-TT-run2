@@ -37,6 +37,9 @@ print(discDict)
 #----------------------------------------
 #Create jdl files
 #----------------------------------------
+#print("Deleting /eos/uscms/%s"%condorOutDir)
+#os.system("eos root://cmseos.fnal.gov rm -r %s"condorOutDir)
+print("Creating /eos/uscms/%s"%condorOutDir)
 os.system("mkdir -p /eos/uscms/%s"%condorOutDir)
 subFile = open('%s/condorSubmit.sh'%tmpDir,'w')
 for year, decay, spin, channel in itertools.product(Year, Decay, Spin, Channel):

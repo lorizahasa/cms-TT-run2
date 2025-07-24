@@ -130,10 +130,14 @@ int main(int argc, char* argv[]){
         xmlRegion = "ttyg_Enriched_SR_Resolved";
     if (region.find("ttyg_Enriched_CR_Boosted") != std::string::npos)
         xmlRegion = "ttyg_Enriched_SR_Boosted";
-    std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights";
+    std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights"; //For spin32
+    //std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + spin + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights"; //For spin12
     std::string outFileDir = "./discs/Reader/" + year + "/" + decay + "/" + spin + "/"+ channel + "/" + method;
-
+    std::string localFile  = outFileDir + "/" + inFileName;
     system(("mkdir -p " + outFileDir).c_str());
+    if ( std::filesystem::exists(localFile) ) {
+        std::filesystem::remove(localFile);
+    }
     std::cout << inFileDir << std::endl;
     std::cout << outFileDir << std::endl;
 
@@ -411,79 +415,11 @@ int main(int argc, char* argv[]){
 
             
             w_lumi      = tree->Weight_lumi;
-            if(sample.find("SignalSpin32_M700") != std::string::npos){
-                w_lumi = w_lumi/(0.03*0.97*2*4.686);
-            }
-            if(sample.find("SignalSpin32_M800") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*1.624);
-            }
-            if(sample.find("SignalSpin32_M900") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.619);
-            }
-            if(sample.find("SignalSpin32_M1000") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.257);
-            }
-            if(sample.find("SignalSpin32_M1100") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.113);
-            }
-            if(sample.find("SignalSpin32_M1200") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.0525);
-            }
-            if(sample.find("SignalSpin32_M1300") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.0253);
-            }
-            if(sample.find("SignalSpin32_M1400") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.0126);
-            }
-            if(sample.find("SignalSpin32_M1500") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.0065);
-            }
-            if(sample.find("SignalSpin32_M1600") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.00342);
-            }
-            if(sample.find("SignalSpin32_M1700") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.00185);
-            }
-            if(sample.find("SignalSpin32_M1800") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.00101);
-            }
-            if(sample.find("SignalSpin32_M1900") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.00056);
-            }
-            if(sample.find("SignalSpin32_M2000") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.00032);
-            }
-            if(sample.find("SignalSpin32_M2250") != std::string::npos){
-                 w_lumi = w_lumi/( 0.03*0.97*2*0.000078);
-            }
-            if(sample.find("SignalSpin32_M2500") != std::string::npos){
-                 w_lumi = w_lumi/(0.03*0.97*2*0.000021);
-            }
-
-            if(sample.find("SignalSpin32_M2750") != std::string::npos){
-                //if(w_lumi<0){
-                //    std::cout<<"Signal lumi weight"<<w_lumi<<std::endl;
-               // }
-                w_lumi = w_lumi/(0.03*0.97*2*0.000005602932);
-            
-            }
-            if(sample.find("SignalSpin32_M3000") != std::string::npos){
-                w_lumi = w_lumi/(0.03*0.97*2*0.000001585532);
-            }
-            
-            if(sample.find("Others") != std::string::npos){
-                if(w_lumi<0){
-                    //std::cout<<"Others lumi weight: "<<w_lumi<<std::endl;
-                    w_lumi = abs(w_lumi);}
-            }
             w_pu        = tree->Weight_pu;
             w_mu        = tree->Weight_mu;
             w_ele       = tree->Weight_ele;
             w_prefire   = tree->Weight_prefire;
             w_btag 	    = tree->Weight_btag;
-            if(w_btag<0){
-                w_btag = abs(w_btag);
-            }
             w_ttag 	    = tree->Weight_ttag;
             w_pho 	    = tree->Weight_pho->at(0);
             w_pdf       = tree->Weight_pdf;
@@ -638,8 +574,8 @@ int main(int argc, char* argv[]){
             }
         }//for loop not Data 
              
-	    tree->b_Reco_mass_T->GetEntry(entry);
-        hReco_mass_T->Fill(tree->Reco_mass_T, combWt);
+	    //tree->b_Reco_mass_T->GetEntry(entry);
+        //hReco_mass_T->Fill(tree->Reco_mass_T, combWt);
         //Fill TProfile for JetBase only
         if(syst.find("JetBase") != std::string::npos){
             pWeight_lumi->Fill(tree->Reco_mass_T, w_lumi);
@@ -659,37 +595,27 @@ int main(int argc, char* argv[]){
         }
         
         //Evaluate MVA now
-        /*
-        tree->b_Jet_deep_b->GetEntry(entry);
-        if (tree->Jet_deep_b->size()>1){
-            tree->Jet_deep_b0 = tree->Jet_deep_b0;
-            tree->Jet_deep_b1 = tree->Jet_deep_b1;
-        }
-        else{//FIX this in future
-            tree->Jet_deep_b0 = tree->Jet_deep_b0;
-            tree->Jet_deep_b1 = tree->Jet_deep_b0;
-        }*/
+        
 
-        tree->b_Jet_qgl_0->GetEntry(entry);
-        tree->b_Jet_qgl_1->GetEntry(entry);
-        tree->b_Jet_deep_b0->GetEntry(entry);
-        tree->b_Jet_deep_b1->GetEntry(entry);
-        //tree->Jet_deep_b0 = tree->Jet_deep_b0;
-        //tree->Jet_deep_b1 = tree->Jet_deep_b1;
-       // tree->Jet_qgl_0 = tree->Jet_qgl_0;
-        //tree->Jet_qgl_1 = tree->Jet_qgl_1;
         
         //cout<<"Entry: "<< entry;
         //tree->GetEntry(entry);
         
+	    tree->b_Reco_mass_T->GetEntry(entry);
+        hReco_mass_T->Fill(tree->Reco_mass_T, combWt);
+        tree->b_Reco_mass_lgamma_0->GetEntry(entry);
         tree->b_Reco_mass_trans_w->GetEntry(entry);
         tree->b_Reco_st->GetEntry(entry);
         tree->b_Reco_mass_TT_diff->GetEntry(entry);
+        tree->b_Jet_deep_b0->GetEntry(entry);
+        tree->b_Jet_deep_b1->GetEntry(entry);
         tree->b_Reco_angle_lepton_met->GetEntry(entry);
         tree->b_Reco_angle_leadJet_met->GetEntry(entry);
         tree->b_Reco_angle_leadBjet_met->GetEntry(entry);
         tree->b_Reco_chi2->GetEntry(entry);
-        tree->b_Jet_size->GetEntry(entry);
+        tree->b_Jet_size->GetEntry(entry); 
+        tree->b_Jet_qgl_0->GetEntry(entry);
+        tree->b_Jet_qgl_1->GetEntry(entry);
         tree->b_Reco_dr_pho_tstarHad->GetEntry(entry);
         tree->b_Reco_dr_pho_tHad->GetEntry(entry);
         tree->b_Reco_dr_pho_tstarLep->GetEntry(entry);
@@ -708,13 +634,16 @@ int main(int argc, char* argv[]){
         
 	    if (region.find("Boosted") != std::string::npos) {
             tree->b_FatJet_pt_0->GetEntry(entry);
-           // tree->FatJet_pt_0 = tree->FatJet_pt_0;
             tree->b_FatJet_msoftdrop_0->GetEntry(entry);
-           // tree->FatJet_msoftdrop_0 = tree->FatJet_msoftdrop_0;
         }
-        auto disc = reader.EvaluateMVA(method);  
+        auto disc = reader.EvaluateMVA(method); 
         hDisc->Fill(disc, combWt);
-//hDisc->Fill(disc);
+        std::cout
+        << " evt " << entry
+        << "  mva="      << disc
+        << std::endl;
+        //cout<<"Disc =" <<disc<<endl;
+        //hDisc->Fill(disc);
         
 	}
     
@@ -722,16 +651,6 @@ int main(int argc, char* argv[]){
     cout<<"Entry of Disc = "<<hDisc->GetEntries()<<endl;
     cout<<"Integral of Reco_mass_T = "<<hReco_mass_T->Integral()<<endl;
     cout<<"Integral of Disc = "<<hDisc->Integral()<<endl;
-   // cout<<"Weight Pho = "<<w_pho<<endl;
-   // cout<<"Weight fsr = "<<w_fsr<<endl;
-   // cout<<"Weight q2 = "<<w_q2<<endl;
-   // cout<<"Weight btag = "<<w_btag<<endl;
-   // cout<<"Weight ttag = "<<w_ttag<<endl;
-   // cout<<"Weight isr = "<<w_isr<<endl;
-   // cout<<"Weight pdf = "<<w_pdf<<endl;
-   // cout<<"Weight mu = "<<w_mu<<endl;
-   // cout<<"Weight ele = "<<w_ele<<endl;
-   // cout<<"Weight prefire = "<<w_prefire<<endl;
     string outDirInFile = sample+"/"+region+"/"+str+"/";
 	TFile* outFile = TFile::Open(outPath.c_str() ,"RECREATE");
     outFile->cd();

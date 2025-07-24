@@ -1,7 +1,8 @@
 import os
 import sys
 sys.path.insert(0, os.getcwd().replace("condor", ""))
-from HistInputs import *
+#from HistInputs import *
+from FitInputs import *
 import itertools
 from optparse import OptionParser
 
@@ -26,7 +27,7 @@ decay   = options.ttbarDecayMode
 #----------------------------------------
 inHistSubDir = "%s/%s/%s"%(year, decay, channel)
 #inHistFullDir = "/eos/uscms/%s/%s"%(condorHistDir, inHistSubDir)
-inHistFullDir = "%s/%s"%(condorHistDir, inHistSubDir)
+inHistFullDir = "%s/%s"%(condorOutDir, inHistSubDir)
 condorLogDir = "tmpSub/log"
 
 #----------------------------------------

@@ -76,7 +76,7 @@ cb = ch.CombineHarvester()
 #cb.SetVerbosity(4)
 #AllBkgs = ["TTGamma"]
 AllBkgs = ["TTGamma", "OtherBkgs"]
-Signal  = ["SignalSpin32_M%s"%mass]
+Signal  = ["SignalSpin12_M%s"%mass]
 allMC   = Signal + AllBkgs
 No_Other = Signal + ["TTGamma"]
 #------------------
@@ -126,7 +126,7 @@ cb.cp().process(allMC).AddSyst(cb, "Weight_ttag",    "shape",ch.SystMap("era") (
 #------------------
 #Add autoMCStat
 #------------------
-cb.SetAutoMCStats(cb, 0, False, 1)
+cb.SetAutoMCStats(cb, 0, True, 1)
 #------------------
 #Get shape hists
 #------------------

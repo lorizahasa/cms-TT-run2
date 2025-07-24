@@ -7,8 +7,8 @@ dirTwiki= "/eos/uscms/store/user/lhasa/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
 #Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
 Years      =	["2018"]
-#Channels 	  =	["Mu", "Ele"]
-Channels  =	["Mu"]
+Channels 	  =	["Mu", "Ele"]
+#Channels  =	["Mu"]
 Decays      =	["Semilep"]
 Spin          = ["Spin32"]
 
@@ -19,9 +19,9 @@ Channels_      = ["Mu__Ele"]
 #Channels_      = ["Mu__Ele"]
 
 JME_dic = {}
-JME_dic["2016Pre"] = ["JEC_Total", "JEC_Absolute","JEC_Absolute_2016","JEC_BBEC1", "JEC_BBEC1_2016","JEC_EC2","JEC_EC2_2016","JEC_HF","JEC_HF_2016","JEC_RelativeSample_2016","JEC_RelativeBal","JEC_FlavorQCD","JER"]
-#JME_dic["2016Pre"] = ["JEC_Total", "JEC_Absolute","JEC_Absolute_2016Post","JEC_BBEC1", "JEC_BBEC1_2016Post","JEC_EC2","JEC_EC2_2016Post","JEC_HF","JEC_HF_2016Post","JEC_RelativeSample_2016Post","JEC_RelativeBal","JEC_FlavorQCD","JER_2016Post"]
-JME_dic["2016Post"] = JME_dic["2016Pre"]
+JME_dic["2016Pre"] = ["JEC_Total", "JEC_Absolute","JEC_Absolute_2016Pre","JEC_BBEC1", "JEC_BBEC1_2016Pre","JEC_EC2","JEC_EC2_2016Pre","JEC_HF","JEC_HF_2016Pre","JEC_RelativeSample_2016Pre","JEC_RelativeBal","JEC_FlavorQCD","JER_2016Pre"]
+JME_dic["2016Post"] = ["JEC_Total", "JEC_Absolute","JEC_Absolute_2016Post","JEC_BBEC1", "JEC_BBEC1_2016Post","JEC_EC2","JEC_EC2_2016Post","JEC_HF","JEC_HF_2016Post","JEC_RelativeSample_2016Post","JEC_RelativeBal","JEC_FlavorQCD","JER_2016Post"]
+#JME_dic["2016Post"] = JME_dic["2016Pre"]
 JME_dic["2017"] =  ["JEC_Total", "JEC_Absolute","JEC_Absolute_2017","JEC_BBEC1", "JEC_BBEC1_2017","JEC_EC2","JEC_EC2_2017","JEC_HF","JEC_HF_2017","JEC_RelativeSample_2017","JEC_RelativeBal","JEC_FlavorQCD","JER_2017"]
 JME_dic["2018"]= ["JEC_Total", "JEC_Absolute","JEC_Absolute_2018","JEC_BBEC1", "JEC_BBEC1_2018","JEC_EC2","JEC_EC2_2018","JEC_HF","JEC_HF_2018","JEC_RelativeSample_2018","JEC_RelativeBal","JEC_FlavorQCD","JER_2018"]
 
@@ -57,7 +57,7 @@ SystLevels.append("Up")
 SystLevels.append("Down")
 
 SampleSignal = {
-        # "SignalSpin32_M800"    : [rt.kMagenta,  "m_{T} = 800"],
+         "SignalSpin32_M800"    : [rt.kMagenta,  "m_{T} = 800"],
          "SignalSpin32_M2750"   : [rt.kCyan,     "m_{T} = 2750"],
          "SignalSpin32_M3000"   : [rt.kPink,     "m_{T} = 3000"],
          }
@@ -82,11 +82,12 @@ SampleBkg = {
 SampleData = {
          "data_obs"   : [rt.kBlack, "Data"]
          }
-SampleWeight = ["TTGamma", "TTbar", "SignalSpin32_M800"]
+#SampleWeight = ["TTGamma", "TTbar", "SignalSpin32_M800"]
+SampleWeight = ["TTGamma", "SignalSpin32_M800"]
 SampleLumi = SampleBkg
 #SampleLumi.update(SampleSignal)
 #SampleSyst = ["SignalSpin32_M2750", "SignalSpin32_M3000"] 
-SampleSyst = ["TTGamma"] 
+SampleSyst = ["TTGamma", 'OtherBkgs', 'SignalSpin32_M800'] 
 #SampleSyst = SampleBkg.keys()
 Samples = {}
 Samples.update(SampleSignal)
@@ -96,4 +97,6 @@ Samples.update(SampleData)
 myCyan = rt.kCyan
 myRed = rt.kRed
 myBlue = rt.kBlue
+myGreen = rt.kGreen
+myOrange = rt.kOrange
 

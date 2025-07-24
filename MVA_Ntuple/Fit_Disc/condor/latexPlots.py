@@ -8,7 +8,7 @@ from FitInputs import dirFit, dirTwiki
 #fName = "compareLimit"
 #fName = "plotLimit"
 isLimit = False
-isImpact = True
+isImpact =True 
 fName = "plotLimits"
 if isImpact:
     fName = "FitDisc_nuisImpact"
