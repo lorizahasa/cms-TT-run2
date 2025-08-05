@@ -46,7 +46,7 @@ if isCheck:
     Years  = [Years[0]]
     Decays = [Decays[0]]
     Channels = [Channels[0]]
-    rList  = ["ttyg_Enriched_CR_Resolved"]
+    rList  = ["ttyg_Enriched_SR_Resolved"]
     #rList  = [rList[0]]
     #hList = [hList[0]]
 if isSep: 
@@ -89,17 +89,17 @@ fPath = open("%s/systRatioDisc_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 fPath_ = open("%s/systRatioDisc_%s_%s.py"%(dirPlot, dir_, outTxt), 'w')
 
 allBkgs = False
-sample  = "TTGamma"
+sample  = "SignalSpin32_M1600"
 hName = 'Disc'
 rangeDict = {}
-for decay, region, channel, year in itertools.product(Decays, rList, Channels, Years):
+for decay, region, spin, channel, year in itertools.product(Decays, rList, Spin, Channels, Years):
     print("----------------------------------------------")
     print("%s, %s, %s, %s, %s"%(decay, hName, region, channel, year))
     if "tt_" in region and ("gamma" in hName or "Pho" in hName): 
         continue 
-    ydc = "%s/%s/%s"%(year, decay, channel)
-    inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydc)
-    outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydc)
+    ydpc = "%s/%s/%s/%s"%(year, decay, spin, channel)
+    inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydpc)
+    outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydpc)
     os.system("mkdir -p %s"%outPlotDir)
     inFile = TFile("%s/AllInc.root"%(inHistDir), "read")
     if isCheck:
@@ -137,11 +137,11 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
     for index, syst in enumerate(Systematics):
         if allBkgs:
             for i, s in enumerate(samples):
-                hPathBase   = "%s/%s/Base/%s"%(s, region, hName)
+                hPathBase   = "%s/%s//JetBase/%s"%(s, region, hName)
                 hPathUp     = "%s/%s/%sUp/%s"%(s, region, syst, hName)
                 hPathDown   = "%s/%s/%sDown/%s"%(s, region, syst, hName)
                 if i==0:
-                    hBase = inFile.Get(hPathBase).Clone("Base_")
+                    hBase = inFile.Get(hPathBase).Clone("JetBase_")
                     hUp   = inFile.Get(hPathUp).Clone("%sUp_"%syst) 
                     hDown = inFile.Get(hPathDown).Clone("%sDown_"%syst)
                 else:
@@ -149,14 +149,14 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
                     hUp.Add(inFile.Get(hPathUp))
                     hDown.Add(inFile.Get(hPathDown))
         else:
-            hPathBase   = "%s/%s/Base/%s"%(sample, region, hName)
+            hPathBase   = "%s/%s/JetBase/%s"%(sample, region, hName)
             hPathUp     = "%s/%s/%sUp/%s"%(sample, region, syst, hName)
             hPathDown   = "%s/%s/%sDown/%s"%(sample, region, syst, hName)
             #print(hPathBase)
             #print(hPathUp)
             if isCheck:
                 print(hPathBase)
-            hBase = inFile.Get(hPathBase).Clone("Base_")
+            hBase = inFile.Get(hPathBase).Clone("JetBase_")
             hUp   = inFile.Get(hPathUp).Clone("%sUp_"%syst) 
             hDown = inFile.Get(hPathDown).Clone("%sDown_"%syst) 
         evtBase = hBase.Integral()
@@ -192,6 +192,18 @@ for decay, region, channel, year in itertools.product(Decays, rList, Channels, Y
             print("Some of the bins are nan")
             continue
         allSystPercentage[syst] = 100*max(abs(evtUp -evtBase),abs(evtBase-evtDown))/evtBase
+        # compute the maximum per-bin deviation from 1.0
+        #max_dev = 0.0
+        #nbins   = hUp.GetNbinsX()
+        #for ibin in range(1, nbins+1):
+            #d_up   = abs(hUp.GetBinContent(ibin)   - 1.0)
+            #d_down = abs(hDown.GetBinContent(ibin) - 1.0)
+            #max_dev = max(max_dev, d_up, d_down)
+
+        # store it as a percentage
+       # allSystPercentage[syst] = 100.0 * max_dev
+
+
         print("%10s" 
                "|%6.0f %8.0f %8.0f"
                "|%6.0f %8.0f %8.0f"

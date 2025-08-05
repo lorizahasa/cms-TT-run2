@@ -130,8 +130,8 @@ int main(int argc, char* argv[]){
         xmlRegion = "ttyg_Enriched_SR_Resolved";
     if (region.find("ttyg_Enriched_CR_Boosted") != std::string::npos)
         xmlRegion = "ttyg_Enriched_SR_Boosted";
-    std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights"; //For spin32
-    //std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + spin + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights"; //For spin12
+    //std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights"; //For spin32
+    std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + spin + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights"; //For spin12
     std::string outFileDir = "./discs/Reader/" + year + "/" + decay + "/" + spin + "/"+ channel + "/" + method;
     std::string localFile  = outFileDir + "/" + inFileName;
     system(("mkdir -p " + outFileDir).c_str());
@@ -606,6 +606,7 @@ int main(int argc, char* argv[]){
         tree->b_Reco_mass_lgamma_0->GetEntry(entry);
         tree->b_Reco_mass_trans_w->GetEntry(entry);
         tree->b_Reco_st->GetEntry(entry);
+        tree->Reco_stF = static_cast<Float_t>(tree->Reco_st); 
         tree->b_Reco_mass_TT_diff->GetEntry(entry);
         tree->b_Jet_deep_b0->GetEntry(entry);
         tree->b_Jet_deep_b1->GetEntry(entry);
@@ -613,7 +614,8 @@ int main(int argc, char* argv[]){
         tree->b_Reco_angle_leadJet_met->GetEntry(entry);
         tree->b_Reco_angle_leadBjet_met->GetEntry(entry);
         tree->b_Reco_chi2->GetEntry(entry);
-        tree->b_Jet_size->GetEntry(entry); 
+        tree->b_Jet_size->GetEntry(entry);
+        tree->Jet_sizeF = static_cast<Float_t>(tree->Jet_size); 
         tree->b_Jet_qgl_0->GetEntry(entry);
         tree->b_Jet_qgl_1->GetEntry(entry);
         tree->b_Reco_dr_pho_tstarHad->GetEntry(entry);
@@ -636,6 +638,36 @@ int main(int argc, char* argv[]){
             tree->b_FatJet_pt_0->GetEntry(entry);
             tree->b_FatJet_msoftdrop_0->GetEntry(entry);
         }
+        // Print all BDT input variables:
+std::cout << "Reco_mass_T: "              << tree->Reco_mass_T              << std::endl;
+std::cout << "Reco_mass_lgamma_0: "       << tree->Reco_mass_lgamma_0       << std::endl;
+std::cout << "Reco_mass_trans_w: "       << tree->Reco_mass_trans_w       << std::endl;
+std::cout << "Reco_st: "                  << tree->Reco_stF                 << std::endl;
+std::cout << "Reco_mass_TT_diff: "        << tree->Reco_mass_TT_diff        << std::endl;
+std::cout << "Jet_deep_b0: "              << tree->Jet_deep_b0              << std::endl;
+std::cout << "Jet_deep_b1: "              << tree->Jet_deep_b1              << std::endl;
+std::cout << "Reco_angle_lepton_met: "   << tree->Reco_angle_lepton_met   << std::endl;
+std::cout << "Reco_angle_leadJet_met: "   << tree->Reco_angle_leadJet_met   << std::endl;
+std::cout << "Reco_angle_leadBjet_met: "  << tree->Reco_angle_leadBjet_met  << std::endl;
+std::cout << "Reco_chi2: "                << tree->Reco_chi2                << std::endl;
+std::cout << "Jet_size: "                 << tree->Jet_sizeF                << std::endl;
+std::cout << "Jet_qgl_0: "                << tree->Jet_qgl_0                << std::endl;
+std::cout << "Jet_qgl_1: "                << tree->Jet_qgl_1                << std::endl;
+std::cout << "Reco_dr_pho_tstarHad: "    << tree->Reco_dr_pho_tstarHad    << std::endl;
+std::cout << "Reco_dr_pho_tHad: "        << tree->Reco_dr_pho_tHad        << std::endl;
+std::cout << "Reco_dr_pho_tstarLep: "    << tree->Reco_dr_pho_tstarLep    << std::endl;
+std::cout << "Reco_dr_pho_tLep: "        << tree->Reco_dr_pho_tLep        << std::endl;
+std::cout << "Reco_dr_pho_gluon: "       << tree->Reco_dr_pho_gluon       << std::endl;
+std::cout << "Reco_dr_pho_bLep: "        << tree->Reco_dr_pho_bLep        << std::endl;
+std::cout << "Reco_dr_pho_lep: "         << tree->Reco_dr_pho_lep         << std::endl;
+std::cout << "Reco_dr_pho_nu: "          << tree->Reco_dr_pho_nu          << std::endl;
+std::cout << "Reco_dr_gluon_tstarHad: "  << tree->Reco_dr_gluon_tstarHad  << std::endl;
+std::cout << "Reco_dr_gluon_tHad: "      << tree->Reco_dr_gluon_tHad      << std::endl;
+std::cout << "Reco_dr_gluon_tstarLep: "  << tree->Reco_dr_gluon_tstarLep  << std::endl;
+std::cout << "Reco_dr_gluon_tLep: "      << tree->Reco_dr_gluon_tLep      << std::endl;
+std::cout << "Reco_dr_tHad_tstarHad: "   << tree->Reco_dr_tHad_tstarHad   << std::endl;
+std::cout << "Reco_dr_tLep_tstarLep: "   << tree->Reco_dr_tLep_tstarLep   << std::endl;
+std::cout << "Reco_dr_tstarHad_tstarLep:" << tree->Reco_dr_tstarHad_tstarLep<< std::endl;
         auto disc = reader.EvaluateMVA(method); 
         hDisc->Fill(disc, combWt);
         std::cout

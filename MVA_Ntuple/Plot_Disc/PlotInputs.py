@@ -58,7 +58,7 @@ SystLevels.append("Down")
 
 SampleSignal = {
          "SignalSpin32_M800"    : [rt.kMagenta,  "m_{T} = 800"],
-         "SignalSpin32_M2750"   : [rt.kCyan,     "m_{T} = 2750"],
+         "SignalSpin32_M1600"   : [rt.kCyan,     "m_{T} = 1600"],
          "SignalSpin32_M3000"   : [rt.kPink,     "m_{T} = 3000"],
          }
 

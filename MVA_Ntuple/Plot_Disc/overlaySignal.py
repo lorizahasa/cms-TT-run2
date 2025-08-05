@@ -70,7 +70,7 @@ fPath = open("%s/overlaySyst_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 ###############################################################################
 # You can define the two samples to overlay here:
 ###############################################################################
-samples_to_overlay = ["SignalSpin32_M2750", "SignalSpin32_M3000"]  
+samples_to_overlay = ["SignalSpin32_M800", "SignalSpin32_M3000"]  
 
 def makePlotOverlay(inFile, hName, region, samples, syst, year, decay, spin, channel,
                     outPlotDir, isData=True, isRatio=True):

@@ -13,7 +13,7 @@ HT    = [-50.,200,500,700,900,1100,1300,1500,1700,1900,2200,2500,3000,5000,8950]
 #mTT   = [-50.0, 674.0, 735.0, 778.0, 821.0, 867.0, 933.0, 1008.0, 1118.0, 1259.0, 1497.0, 2397.0, 5949.0]#automatic
 #mTT   = [0.0,3600.0]#automatic
 #mTT   = [0.,400,500,600,700,800,900,1000,1200,1300,1500,1600,3600] #newest binning 
-mTT   = [-50.,100,200,300,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000,2100,2200,2300,2400,2500,2600,2700,2800,2900,3000] #equal binning 
+mTT   = [-50.,200,400,600,700,900,1000,1200,1300,1450,1600,1700,1800,1950,2100,2200,2450,2700,2950,3200] #equal binning needs tunning 
 #mTT   = [-50.,200,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1800,3600] #default, used previously 
 #mTT   = [-50.,200,400,500,600,700,800,900,1000,1100,1200,1300,1400,1500,1600,1800,2500,5950] #default
 #mTT   = [-50.0, 291.0, 325.0, 352.0, 377.0, 402.0, 426.0, 452.0, 482.0, 517.0, 557.0, 605.0, 679.0, 828.0, 5949.0]#40%
@@ -42,7 +42,8 @@ dictRebin["Reco_mass_trans_w"]                = np.array(mly)
 #disc = [-1.01, -0.89, -0.87, -0.85, -0.81, -0.73, -0.63, -0.51, -0.39, -0.25, -0.07, 0.27, 0.99]
 #disc = [-1.0, -0.9, -0.88, -0.86, -0.82, -0.74, -0.64, -0.52, -0.4, -0.26, -0.08, 0.26, 0.98] #40%
 #disc = [-1.0, -0.9, -0.8, -0.5]#%30 the latest used
-disc = [-1.0,-0.8,-0.6,-0.4,-0.2,0.0,0.2,0.4, 0.6,0.8,1.0]# new
+#disc = [-1.0,-0.8,-0.6,-0.4,-0.2,0.0,0.2,0.4, 0.6,0.8,1.0]# new
+disc = [-1.00,-0.80,-0.60,-0.40,-0.20, 0.20, 0.70,0.90]# new the fit fails for background only
 #disc = [-1.0, -0.9, -0.88, -0.86, -0.84, -0.82, -0.8, -0.78, -0.76, -0.74, -0.5]#%30 
 #disc = [-1.,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
 dictRebin["Disc"] = np.array(disc)
@@ -51,11 +52,13 @@ dictRebin["FatJet_msoftdrop"] = np.array(mly)
 
 if __name__=='__main__':
     from ROOT import TFile
-    inFile = TFile.Open("root://cmseos.fnal.gov//store/user/lhasa/Output/cms-TT-run2/MVA_Ntuple/C/Disc_Ntuple/DiscMain/Merged/2017/Semilep/Mu/CombMass/BDTA/AllInc.root")
+    inFile = TFile.Open("root://cmseos.fnal.gov//store/user/lhasa/Output/cms-TT-run2/MVA_Ntuple/C/Disc_Ntuple/DiscMain/Merged/2018/Semilep/Spin32/Mu/CombMass/BDTA/AllInc.root")
     #inFile = TFile.Open("root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistWeight/Merged/2018/Semilep/Mu/AllInc.root")
     #hist = inFile.Get("TTGamma/ttyg_Enriched_SR_Resolved/JetBase/Disc")
     #hist = inFile.Get("TTGamma/tty_Enriched_le4j_a1b_e1y/Uncorr/Reco_st")
-    hist = inFile.Get("SignalSpin32_M700/ttyg_Enriched_SR_Resolved/JetBase/Disc")
+    hist = inFile.Get("SignalSpin32_M800/ttyg_Enriched_SR_Resolved/JetBase/Disc")
+
+
 
     def getRebins(hist, uncThresh):
         bins = hist.GetNbinsX()
@@ -84,6 +87,7 @@ if __name__=='__main__':
         print("Bin unc(%) = \n", uncBins)
         return reBins
     getRebins(hist, 40)
-     
+
+
 
 

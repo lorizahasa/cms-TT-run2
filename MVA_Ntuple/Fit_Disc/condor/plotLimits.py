@@ -120,20 +120,20 @@ for decay, region, spin, channel, year in itertools.product(Decay, regionList, S
     with open(jsonRaw) as old_limit:
         new_limit = json.load(old_limit)
         
-        #if '1100.0' in new_limit:
-         #   del new_limit['1100.0']
-        #if '1600.0' in new_limit:
-           # del new_limit['1600.0']
+        #if '2500.0' in new_limit:
+        #    del new_limit['2500.0']
         #if '1700.0' in new_limit:
-           # del new_limit['1700.0']
-        #if '1400.0' in new_limit:
-         #   del new_limit['1400.0']
+        #    del new_limit['1700.0']
+        #if '1600.0' in new_limit:
+        #    del new_limit['1600.0']
+        #if '2750.0' in new_limit:
+        #    del new_limit['2750.0']
         if args.isCheck:
             print("OLD: ", new_limit)
         for mass in list(xss.keys()):
             for limit in new_limit[mass]:
                 pass
-                #new_limit[mass][limit] = xss[mass]*new_limit[mass][limit]
+               # new_limit[mass][limit] = xss[mass]*new_limit[mass][limit]
     with open (jsonScaled, 'w') as newLimitFile:
         if args.isCheck:
             print("\nNEW: ", new_limit)

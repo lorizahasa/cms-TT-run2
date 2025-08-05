@@ -29,8 +29,8 @@ if isComb:
     outTxt = "CombYears"
 
 #fName = "overlaySyst_%s_%s_%s"%(dir_, extra, outTxt)
-fName = "plotDisc_%s_%s_%s"%(dir_, extra, outTxt)
-#fName = "systRatioDisc_%s_%s"%(dir_, outTxt)
+#fName = "plotDisc_%s_%s_%s"%(dir_, extra, outTxt)
+fName = "systRatioDisc_%s_%s"%(dir_, outTxt)
 #fName = "overlayDisc_%s_%s"%(dir_, outTxt)
 txtFile = open("%s/%s.txt"%(dirPlot, fName.replace("_%s"%extra, "")), 'r')
 texFile = open("%s/%s.tex"%(dirPlot, fName), "w")

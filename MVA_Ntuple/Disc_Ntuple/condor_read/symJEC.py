@@ -65,7 +65,8 @@ def symmetrize_histograms(input_filename, output_filename):
                     sub_sub_dir_name = sub_sub_dir.GetName()
 
                     # Check for directories starting with "JEC_"
-                    if sub_sub_dir_name.startswith("JE"):
+                    if sub_sub_dir_name.endswith("Up") or sub_sub_dir_name.endswith("Down"):#include weights
+                    #if sub_sub_dir_name.startswith("JE"): for JEC
                         #print(f" Symmetrizing JEC directory: {sub_sub_dir_name}")
                         hist = sub_sub_dir.Get(hist_name)
                         if not hist:
@@ -78,7 +79,9 @@ def symmetrize_histograms(input_filename, output_filename):
                             syst_name = sub_sub_dir_name[:-4]
                             down_histograms[syst_name] = hist
 
-                    if not sub_sub_dir_name.startswith("JE") and sub_sub_dir_name != "JetBase":
+                    
+                    if not (sub_sub_dir_name.endswith("Up") or sub_sub_dir_name.endswith("Down") or sub_sub_dir_name == "JetBase"): #includes weights
+                    #if not sub_sub_dir_name.startswith("JE") and sub_sub_dir_name != "JetBase": #used for JEC sym
                         print(f"  Copying non-JEC sub-sub-directory: {sub_sub_dir_name}")
                         output_file.cd(f"{top_level_dir_name}/{sub_dir_name}")
                         output_dir = ROOT.gDirectory.GetDirectory(sub_sub_dir_name) or ROOT.gDirectory.mkdir(sub_sub_dir_name)
@@ -92,6 +95,9 @@ def symmetrize_histograms(input_filename, output_filename):
                     if syst_name not in down_histograms:
                         print(f" Missing Down histogram for {syst_name} in {top_level_dir_name}/{sub_dir_name}")
                         continue
+
+                    print(f"Symmetrizing: {syst_name} in {top_level_dir_name}/{sub_dir_name}")
+
                     up_hist = up_histograms[syst_name]
                     down_hist = down_histograms[syst_name]
 
