@@ -650,6 +650,17 @@ makeNtuple::makeNtuple(int ac, char** av)
     hCount->GetXaxis()->SetBinLabel(4, "nLumiMasked");
     hCount->GetXaxis()->SetBinLabel(5, "highPtRemoved");
 
+    TH1D* hCutflow = new TH1D("hCutflow", "Cumulative event cutflow", 8, 0.5, 8.5);
+    hCutflow->GetXaxis()->SetBinLabel(1, "Input");
+    hCutflow->GetXaxis()->SetBinLabel(2, "Overlap filter");
+    hCutflow->GetXaxis()->SetBinLabel(3, "HEM veto");
+    hCutflow->GetXaxis()->SetBinLabel(4, "Lumi mask");
+    hCutflow->GetXaxis()->SetBinLabel(5, "Trigger + PV");
+    hCutflow->GetXaxis()->SetBinLabel(6, "Tight lepton");
+    hCutflow->GetXaxis()->SetBinLabel(7, "Loose lepton veto");
+    hCutflow->GetXaxis()->SetBinLabel(8, "MET / selected");
+    hCutflow->Sumw2();
+
     cout << "Processing events "<<startEntry<< " to " << endEntry << endl;
     std::cout<<"nEvents_Skim = "<<endEntry<<endl;
     std::cout<<"---------------------------"<<std::endl;
@@ -659,6 +670,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 	TH1F* hEvents_ = new TH1F("nSkim", "nSkim", 5, -1.5, 3.5);
     for(Long64_t entry=startEntry; entry<endEntry; entry++){
         hCount->Fill(1);
+        hCutflow->Fill(1);
         hEvents_->Fill(0);
         //if(entry>10000) break;;
         //cout<<entry<<endl;
@@ -746,6 +758,7 @@ makeNtuple::makeNtuple(int ac, char** av)
             hCount->Fill(2);
         	continue;
         }
+        hCutflow->Fill(2);
         if( isMC && doOverlapInvert_TTG && lowPtTTGamma){
             // remove events with LHEPart photon with pt>100 
             //GeV to avoid double counting with high pt samples
@@ -801,6 +814,7 @@ makeNtuple::makeNtuple(int ac, char** av)
             count_HEM++;
             continue; 
         }
+        hCutflow->Fill(3);
 
         //--------------------------
         //Apply lumi Mask 
@@ -813,6 +827,7 @@ makeNtuple::makeNtuple(int ac, char** av)
                 continue;
             }
         }
+        hCutflow->Fill(4);
 
         //--------------------------
         //Process events
@@ -822,6 +837,11 @@ makeNtuple::makeNtuple(int ac, char** av)
         }
         selector->clearVectors();
         evtPick->processEvent(tree, selector);
+        for (size_t cut = 0; cut < evtPick->cutFlowMu.size(); ++cut) {
+            if (evtPick->cutFlowMu[cut] || evtPick->cutFlowEle[cut]) {
+                hCutflow->Fill(static_cast<double>(cut + 5));
+            }
+        }
         if (tree->event_==eventNum){
         //if (debug){
             cout << "EventSelection:" << endl;
@@ -979,6 +999,7 @@ makeNtuple::makeNtuple(int ac, char** av)
 	hPass   ->Write();
 	hPassE  ->Write();
     hCount->Write();
+    hCutflow->Write();
 
    /* 
     TNamed gitCommit("Git_Commit", VERSION);

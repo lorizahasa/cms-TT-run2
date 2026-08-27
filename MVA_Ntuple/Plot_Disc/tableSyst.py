@@ -1,6 +1,6 @@
 import os
 import sys
-systPath = '/eos/uscms/store/user/rverma/Output/cms-TT-run2/MVA_Ntuple/Plot_Disc/PlotMain'
+systPath = '/eos/uscms/store/user/lhasa/Output/cms-TT-run2/MVA_Ntuple/C/Plot_Disc/PlotMain'
 sys.path.insert(0, systPath) 
 from PlotInputs import *
 from systRatioDisc_ForMain_SepYears import systDict
@@ -18,13 +18,18 @@ def getRange(vals):
         newVals.append(abs(1-val))
     min_ = min(newVals)
     max_ = max(newVals)
-    min__ = int(round(100*min_, 1))
-    max__ = int(round(100*max_, 1))
-    return "%s--%s"%(min__, max__)
+    min__ = round(100*min_, 1) #wrap it in int() if you want whole number
+    max__ = round(100*max_, 1)
+    #return "%s--%s"%(min__, max__)
+    return f"{min__:.1f}--{max__:.1f}"
 
 sysDict_ = {}
 toSort   = {}
-for sys in Systematics:
+
+    #syst = SystList_by_year[year]
+for year in Years:
+    syst = Syst_w_JER[year]
+for sys in syst:
     yList = []
     yMax  = []
     for y in Years:
@@ -52,10 +57,23 @@ label["Weight_q2"] = 'Q2'
 label["Weight_pdf"] = 'PDF'
 label["Weight_isr"] = 'ISR'
 label["Weight_fsr"] = 'FSR'
-label["Weight_jes"] = 'JES'
-label["Weight_jer"] = 'JER'
+label["JEC_Total"] = 'JES'
+#label["JER_%s"%year] = 'JER'
 label["Weight_ttag"] = 't'
+#label["JEC_Absolute"] = 'JEC_Absolute'
+#label["JEC_BBEC1"] = 'JEC_BBEC1'
+#label["JEC_EC2"] = 'JEC_EC2'
+#label["JEC_HF"] = 'JEC_HF'
+#label["JEC_RelativeBal"] = 'JEC_RelativeBal'
+#label["JEC_FlavorQCD"] = 'JEC_FlavorQCD'
 
+for y in Years:
+    label[f"JER_{y}"] = f"JER-{y}"
+    #label[f"JEC_Absolute_{y}"] = f"JEC_Absolute_{y}"
+    #label[f"JEC_BBEC1_{y}"]    = f"JEC_BBEC1_{y}"
+    #label[f"JEC_EC2_{y}"]      = f"JEC_EC2_{y}"
+    #label[f"JEC_HF_{y}"]       = f"JEC_HF_{y}"
+    #label[f"JEC_RelativeSample_{y}"] = f"JEC_RelativeSample_{y}"
 col = "c|"
 nCol = 4*len(Years)
 for i in range(nCol):
@@ -75,7 +93,7 @@ tHead += "\\\\\n"
 table += tHead
 
 #second header line
-tHead = "Systematics"
+tHead = "Systematic Uncertainties on"
 for i in range(4):
     tHead += "& $\\mu_R$ & $e_R$ & $\\mu_B$ & $e_B$"
 tHead += "\\\\\n"

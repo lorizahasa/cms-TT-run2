@@ -71,8 +71,8 @@ for decay, region, spin, channel, year in itertools.product(Decays, rList, Spin,
     print("----------------------------------------------")
     print("%s, %s, %s, %s, %s"%(decay, hName, region, channel, year))
     ydsc = "%s/%s/%s/%s"%(year, decay, spin, channel)
-    inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydsc)
-    outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydsc)
+    inHistDir  = "%s/%s/%s/CR/CombMass/BDTA"%(dirDisc, dir_, ydsc) #added CR
+    outPlotDir = "%s/%s/%s/CR/CombMass/BDTA"%(dirPlot, dir_, ydsc) #added CR remove for SR
     os.system("mkdir -p %s"%outPlotDir)
     inFile = TFile("%s/AllInc.root"%(inHistDir), "read")
     #inFile = TFile("%s/Alpha.root"%(inHistDir), "read")
@@ -124,7 +124,7 @@ for decay, region, spin, channel, year in itertools.product(Decays, rList, Spin,
         if index==0 and not "data_obs" in s:
             print(s)
             pDict[s].SetMaximum(0.5)
-            pDict[s].GetXaxis().SetRangeUser(0, 3000)
+            pDict[s].GetXaxis().SetRangeUser(0, 3600)
             #pDict[s].SetMaximum(100*pDict["All Background"].GetMaximum())
             #pDict[s].SetMinimum(0.01)
             pDict[s].Draw("HIST")

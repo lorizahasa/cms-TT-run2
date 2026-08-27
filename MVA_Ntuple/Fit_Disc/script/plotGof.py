@@ -32,7 +32,7 @@ parser.add_argument(
 parser.add_argument(
     '--auto-style', nargs='?', const='', default=None, help="""Take line colors and styles from a pre-defined list""")
 parser.add_argument('--table_vals', help='Amount of values to be written in a table for different masses', default=10)
-parser.add_argument("--bins", default=100, type=int, help="Number of bins in histogram")
+parser.add_argument("--bins", default=100, type=int, help="Number of bins in histogram")#was 100
 parser.add_argument("--range", nargs=2, type=float, help="Range of histograms. Requires two arguments in the form of <min> <max>")
 args = parser.parse_args()
 
@@ -69,7 +69,8 @@ for padx in pads:
 graphs = []
 graph_sets = []
 
-legend = plot.PositionedLegend(0.45, 0.10, 3, 0.015)
+#legend = plot.PositionedLegend(0.45, 0.10, 3, 0.015)
+legend = plot.PositionedLegend(0.55, 0.10, 3, 0.015)
 plot.Set(legend, NColumns=2)
 
 axis = None
@@ -148,11 +149,28 @@ if args.statistic in ["AD","KS"]:
 
         legend.Draw()
 
-        plot.DrawCMSLogo(pads[0], 'CMS', args.cms_sub, 11, 0.045, 0.035, 1.2, '', 0.8)
+        #plot.DrawCMSLogo(pads[0], 'CMS', args.cms_sub, 11, 0.045, 0.035, 1.2, '', 0.8)
+        #plot.DrawCMSLogo(pads[0], 'CMS', args.cms_sub, 11, 0.099, 0.035, 1.2, '', 0.8)
+        
+        plot.DrawCMSLogo(pads[0], 'CMS', '', 11, 0.099, 0.035, 1.2, '', 0.8)
+
+        # 2) Draw the region text (args.cms_sub) flush-left under “CMS”
+        tx = ROOT.TLatex()
+        tx.SetNDC(True)
+        tx.SetTextFont(52)                 # CMS-style for extra text
+        tx.SetTextAlign(13)                # left-top
+        tx.SetTextSize(0.6 * ROOT.gStyle.GetPadTopMargin())  # match the CMS scale
+
+        x = pads[0].GetLeftMargin() + 0.030       # same relPosX as DrawCMSLogo
+        y_top = 1 - pads[0].GetTopMargin()
+        dy = 1.3 * ROOT.gStyle.GetPadTopMargin()  # same relExtraDY as DrawCMSLogo
+        tx.DrawLatex(x, y_top - dy, args.cms_sub) # e.g. "CR, Resolved"
+
+
         plot.DrawTitle(pads[0], args.title_right, 3)
         plot.DrawTitle(pads[0], title, 1)
 
-        textlabel = ROOT.TPaveText(0.68, 0.88, 0.80, 0.92, "NDC")
+        textlabel = ROOT.TPaveText(0.75, 0.88, 0.80, 0.92, "NDC")
         textlabel.SetBorderSize(   0 )
         textlabel.SetFillStyle (   0 )
         textlabel.SetTextAlign (  32 )
@@ -162,7 +180,7 @@ if args.statistic in ["AD","KS"]:
         textlabel.AddText(args.statistic+", %s Toys"%(toy_graph.GetN()))
         textlabel.Draw()
 
-        pvalue = ROOT.TPaveText(0.68, 0.83, 0.80, 0.87, "NDC")
+        pvalue = ROOT.TPaveText(0.75, 0.83, 0.80, 0.87, "NDC")
         pvalue.SetBorderSize(   0 )
         pvalue.SetFillStyle (   0 )
         pvalue.SetTextAlign (  32 )
@@ -219,12 +237,26 @@ else:
 
     legend.Draw()
 
-    plot.DrawCMSLogo(pads[0], 'CMS', args.cms_sub, 11, 0.045, 0.035, 1.2, '', 0.8)
+    #plot.DrawCMSLogo(pads[0], 'CMS', args.cms_sub, 11, 0.045, 0.035, 1.2, '', 0.8)
+    #plot.DrawCMSLogo(pads[0], 'CMS', args.cms_sub, 11, 0.099, 0.035, 1.2, '', 0.8)
+    plot.DrawCMSLogo(pads[0], 'CMS', '', 11, 0.099, 0.035, 1.2, '', 0.8)
+
+    # 2) Draw the region text (args.cms_sub) flush-left under “CMS”
+    tx = ROOT.TLatex()
+    tx.SetNDC(True)
+    tx.SetTextFont(52)                 # CMS-style for extra text
+    tx.SetTextAlign(13)                # left-top
+    tx.SetTextSize(0.6 * ROOT.gStyle.GetPadTopMargin())  # match the CMS scale
+
+    x = pads[0].GetLeftMargin() + 0.030       # same relPosX as DrawCMSLogo
+    y_top = 1 - pads[0].GetTopMargin()
+    dy = 1.3 * ROOT.gStyle.GetPadTopMargin()  # same relExtraDY as DrawCMSLogo
+    tx.DrawLatex(x, y_top - dy, args.cms_sub) # e.g. "CR, Resolved"
     plot.DrawTitle(pads[0], args.title_right, 3)
     plot.DrawTitle(pads[0], args.title_left, 1)
 
 
-    textlabel = ROOT.TPaveText(0.68, 0.88, 0.80, 0.92, "NDC")
+    textlabel = ROOT.TPaveText(0.75, 0.88, 0.80, 0.92, "NDC")
     textlabel.SetBorderSize(   0 )
     textlabel.SetFillStyle (   0 )
     textlabel.SetTextAlign (  32 )
@@ -234,7 +266,7 @@ else:
     textlabel.AddText(args.statistic+", %s Toys"%(toy_graph.GetN()))
     textlabel.Draw()
 
-    pvalue = ROOT.TPaveText(0.68, 0.83, 0.80, 0.87, "NDC")
+    pvalue = ROOT.TPaveText(0.75, 0.83, 0.80, 0.87, "NDC")
     pvalue.SetBorderSize(   0 )
     pvalue.SetFillStyle (   0 )
     pvalue.SetTextAlign (  32 )

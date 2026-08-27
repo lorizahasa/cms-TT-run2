@@ -21,6 +21,8 @@ isCR = options.isCR
 dir_ = "ForMain"
 #dir_ = "Merged"
 #dir_ = "AlphaForMain"
+#dir_ = "ForPaper"
+
 extra = "SR"
 if isCR:
     extra = 'CR'
@@ -28,9 +30,9 @@ outTxt = "SepYears"
 if isComb:
     outTxt = "CombYears"
 
-#fName = "overlaySyst_%s_%s_%s"%(dir_, extra, outTxt)
+fName = "overlaySyst_%s_%s_%s"%(dir_, extra, outTxt)
 #fName = "plotDisc_%s_%s_%s"%(dir_, extra, outTxt)
-fName = "systRatioDisc_%s_%s"%(dir_, outTxt)
+#fName = "systRatioDisc_%s_%s"%(dir_, outTxt)
 #fName = "overlayDisc_%s_%s"%(dir_, outTxt)
 txtFile = open("%s/%s.txt"%(dirPlot, fName.replace("_%s"%extra, "")), 'r')
 texFile = open("%s/%s.tex"%(dirPlot, fName), "w")
@@ -49,12 +51,12 @@ for line in txtFile:
     allPlotName.append(line.split("/")[-1])
 
 print(len(allPlotName))
-showPerFig = 9
-widthFor   = 3
+showPerFig = 12
+widthFor   = 4
 #figWidth = (1-0.05)/showPerFig#5% margin
 if isComb:
     showPerFig = 12
-    widthFor   = 3
+    widthFor   = 4
 figWidth = round((1-0.05)/widthFor, 2)#5% margin
 if len(allPlotPath) < showPerFig:
     showPerFig = len(allPlotPath)

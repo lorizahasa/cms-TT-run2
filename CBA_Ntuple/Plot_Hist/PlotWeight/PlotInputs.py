@@ -8,8 +8,8 @@ dirTwiki= "/eos/uscms/store/user/lhasa/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
 Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
 #Years 	      =	["2016Pre"]
-#Channels 	  =	["Mu", "Ele"]
-Channels 	  =	["Mu"]
+Channels 	  =	["Mu", "Ele"]
+#Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 
 #Years and channels to be commbined
@@ -39,7 +39,7 @@ hName  = "Reco_st"
 region = "tty_Enriched_le4j_a1b_e1y"
 
 sampSig = {
-         "SignalSpin32_M700"    : [rt.kGreen,  "m_{t*} = 700"],
+         "SignalSpin32_M800"    : [rt.kGreen,  "m_{T} = 800"],
          #"SignalSpin32_M1500"   : [rt.kGreen+2,     "m_{t*} = 1500"],
          #"SignalSpin32_M3000"   : [rt.kCyan,     "m_{t*} = 3000"],
          }
@@ -67,7 +67,7 @@ overlayEff = []
 #overlayEff.append("data_obs")
 overlayEff.append("TTbar")
 overlayEff.append("TTGamma")
-overlayEff.append("SignalSpin32_M700")
+overlayEff.append("SignalSpin32_M800")
 overlayEff.append("SignalSpin32_M1500")
 #overlayEff.append("SignalSpin32_M3000")
 

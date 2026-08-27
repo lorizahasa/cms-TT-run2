@@ -9,6 +9,25 @@ from DiscInputs import *
 
 input_dirs = dirRead
 
+def sanitize_hist(hist, eps=1e-9):
+    if not hist:
+        return
+    if hist.GetSumw2N() == 0:
+        hist.Sumw2()
+
+    n = hist.GetNbinsX()
+    for b in range(0, n + 2):
+        c = hist.GetBinContent(b)
+        e = hist.GetBinError(b)
+
+        if (not math.isfinite(c)) or (c <= 0.0):
+            c = eps
+            hist.SetBinContent(b, c)
+
+        if (not math.isfinite(e)) or (e <= 0.0):
+            e = max(eps, math.sqrt(c) * 1e-6)
+            hist.SetBinError(b, e)
+
 def symmetrize_histograms(input_filename, output_filename):
     # Open the input and output ROOT files
     input_file = ROOT.TFile.Open(input_filename, "READ")
@@ -107,6 +126,7 @@ def symmetrize_histograms(input_filename, output_filename):
 
                     # Perform symmetrization bin by bin
                     nbins = nominal_hist.GetNbinsX()
+                    eps = 1e-9
                     for i in range(1, nbins + 1):
                         N_i = nominal_hist.GetBinContent(i)
                         U_i = up_hist.GetBinContent(i)
@@ -114,24 +134,34 @@ def symmetrize_histograms(input_filename, output_filename):
                         E_U = up_hist.GetBinError(i)
                         E_D = down_hist.GetBinError(i)
 
+                        #eps = 1e-9
                         # Avoid division by zero
-                        if N_i != 0:
+                        #if N_i != 0:
+                        if N_i > 0:
                             deltaU_i = (U_i - N_i) / N_i
                             deltaD_i = (D_i - N_i) / N_i
                             avg_delta = (abs(deltaU_i) + abs(deltaD_i)) / 2.0
-                            deltaU_i_new = avg_delta
-                            deltaD_i_new = -avg_delta
-                            U_i_new = N_i * (1 + deltaU_i_new)
-                            D_i_new = N_i * (1 + deltaD_i_new)
+                            # prevent negative down variation
+                            avg_delta = min(avg_delta, 0.999)
+                            #deltaU_i_new = avg_delta
+                            #deltaD_i_new = -avg_delta
+                            U_i_new = N_i * (1 + avg_delta)
+                            D_i_new = N_i * (1 - avg_delta)
                         else:
-                            U_i_new = N_i
-                            D_i_new = N_i
+                            #U_i_new = N_i
+                            U_i_new = eps
+                            #D_i_new = N_i
+                            D_i_new = eps
 
                         # Set the new bin contents and errors
                         up_hist_sym.SetBinContent(i, U_i_new)
                         down_hist_sym.SetBinContent(i, D_i_new)
-                        up_hist_sym.SetBinError(i, E_U)
-                        down_hist_sym.SetBinError(i, E_D)
+                        up_hist_sym.SetBinError(i, max(E_U, eps))
+                        down_hist_sym.SetBinError(i, max(E_D, eps))
+
+                    # protect final histograms before writing
+                    sanitize_hist(up_hist_sym, eps=eps)
+                    sanitize_hist(down_hist_sym, eps=eps)
 
                     # Write the symmetrized histograms to the output file
                     output_file.cd(f"{top_level_dir_name}/{sub_dir_name}")
@@ -160,8 +190,10 @@ def symmetrize_histograms(input_filename, output_filename):
 
 
 for year, decay, spin, channel in itertools.product(Years, Decays, Spin, Channels):
-    input_dir = f"{input_dirs}/Rebin/{year}/{decay}/{spin}/{channel}/CombMass/BDTA"
-    output_dir = input_dir.replace("Rebin", "AdjustForMain")
+    input_dir = f"{input_dirs}/Rebin/{year}/{decay}/{spin}/{channel}/CombMass/BDTA" # add CR for control before Combass, Paper_Rebin for paper
+    #input_dir = f"{input_dirs}/Paper_Rebin/{year}/{decay}/{spin}/{channel}/CombMass/BDTA" # add CR for control before Combass, Paper_Rebin for paper
+    #output_dir = input_dir.replace("Rebin", "AdjustForMain_Paper") #remove Paper for normal
+    output_dir = input_dir.replace("Rebin", "AdjustForMain") #remove Paper for normal
 
     # Create the output directory if it doesn't exist
     os.system(f"eos root://cmseos.fnal.gov mkdir -p {output_dir}")

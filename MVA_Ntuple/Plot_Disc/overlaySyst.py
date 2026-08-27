@@ -207,8 +207,9 @@ for decay, region, spin, channel, year, samp in itertools.product(Decays, rList,
             split_year = year.split("__")
             syst_Comb = []
             for y in split_year:
-                syst_Comb.append(SystList_by_year[y])    
-            Systematics = list(np.unique(syst_Comb))            
+                syst_Comb.append(SystList_by_year[y])
+            Systematics = list(np.unique(syst_Comb))
+            #Systematics = SystList_by_year[year]
         for syst in Systematics:    
             makePlot(hName, region, samp, syst)
 print(fPath)

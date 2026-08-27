@@ -77,6 +77,22 @@ def getContent(h):
             continue
         ratio.append(h.GetBinContent(i))
     return(ratio)
+def max_percent_from_ratios(hBase, hUp, hDown):
+    """Return 100 * max_bin(|Up/Base - 1|, |Down/Base - 1|), skipping bins with Base<=0."""
+    nbins = hBase.GetNbinsX()
+    max_dev = 0.0
+    for ibin in range(1, nbins+1):  # real bins only
+        b = hBase.GetBinContent(ibin)
+        if b <= 0 or not math.isfinite(b):
+            continue
+        r_up = hUp.GetBinContent(ibin)   / b
+        r_dn = hDown.GetBinContent(ibin) / b
+        # guard against inf/nan
+        if math.isfinite(r_up):
+            max_dev = max(max_dev, abs(r_up - 1.0))
+        if math.isfinite(r_dn):
+            max_dev = max(max_dev, abs(r_dn - 1.0))
+    return 100.0 * max_dev
 
 #-----------------------------------------
 #Path of the I/O histrograms/plots
@@ -89,7 +105,8 @@ fPath = open("%s/systRatioDisc_%s_%s.txt"%(dirPlot, dir_, outTxt), 'w')
 fPath_ = open("%s/systRatioDisc_%s_%s.py"%(dirPlot, dir_, outTxt), 'w')
 
 allBkgs = False
-sample  = "SignalSpin32_M1600"
+#sample  = "SignalSpin32_M800"
+sample  = "TTGamma"
 hName = 'Disc'
 rangeDict = {}
 for decay, region, spin, channel, year in itertools.product(Decays, rList, Spin, Channels, Years):
@@ -135,6 +152,7 @@ for decay, region, spin, channel, year in itertools.product(Decays, rList, Spin,
     samples.append("Others")
     samples.append("QCD")
     for index, syst in enumerate(Systematics):
+    #for index, syst in enumerate(Syst_w_JER[year]):
         if allBkgs:
             for i, s in enumerate(samples):
                 hPathBase   = "%s/%s//JetBase/%s"%(s, region, hName)
@@ -191,17 +209,17 @@ for decay, region, spin, channel, year in itertools.product(Decays, rList, Spin,
         if checkNanInBins(hUp) or checkNanInBins(hBase) or checkNanInBins(hDown):
             print("Some of the bins are nan")
             continue
-        allSystPercentage[syst] = 100*max(abs(evtUp -evtBase),abs(evtBase-evtDown))/evtBase
+        #allSystPercentage[syst] = 100*max(abs(evtUp -evtBase),abs(evtBase-evtDown))/evtBase
         # compute the maximum per-bin deviation from 1.0
         #max_dev = 0.0
         #nbins   = hUp.GetNbinsX()
         #for ibin in range(1, nbins+1):
-            #d_up   = abs(hUp.GetBinContent(ibin)   - 1.0)
-            #d_down = abs(hDown.GetBinContent(ibin) - 1.0)
-            #max_dev = max(max_dev, d_up, d_down)
+        #    d_up   = abs(hUp.GetBinContent(ibin)   - 1.0)
+        #    d_down = abs(hDown.GetBinContent(ibin) - 1.0)
+        #    max_dev = max(max_dev, d_up, d_down)
 
         # store it as a percentage
-       # allSystPercentage[syst] = 100.0 * max_dev
+        allSystPercentage[syst] = max_percent_from_ratios(hBase, hUp, hDown)
 
 
         print("%10s" 
@@ -253,18 +271,41 @@ for decay, region, spin, channel, year in itertools.product(Decays, rList, Spin,
     leg = TLegend(0.83,0.15,0.93,0.90)
     decoLegend(leg, 5, 0.034)
     #leg.SetNColumns(3)
-    allHistUpSorted = sortHists(allHistUp, True)
+    #allHistUpSorted = sortHists(allHistUp, True)
+
+    # --- sort by descending % (float), and keep Down hists aligned ---
+    allHistUpSorted = sorted(
+        allHistUp,
+        key=lambda h: allSystPercentage[h.GetName()],
+        reverse=True
+    )
+    allHistDownSorted = [allHistDown[allHistUp.index(h)] for h in allHistUpSorted]
+
+
     maxRatio = []
     for h in allHistUpSorted:
         max_ = max(getContent(h))
         maxRatio.append(round(max_, 2))
     yMax = max(maxRatio)
     print(yMax)
-    for i, h in enumerate(allHistUpSorted):
+    #for i, h in enumerate(allHistUpSorted):
+    for i, (h, hDown) in enumerate(zip(allHistUpSorted, allHistDownSorted)):
         #h.GetYaxis().SetRangeUser(1-0.2*yMax, 1+0.2*yMax)
         h.GetYaxis().SetRangeUser(1-0.2, 1+0.4)
-        systPercentage = int(round(allSystPercentage[h.GetName()]))
-        legName = "%s%% %s"%(str(systPercentage), h.GetName().split("Weight_")[1])
+       # systPercentage = int(round(allSystPercentage[h.GetName()]))
+        perc = allSystPercentage[h.GetName()]
+        if "Weight_" in h.GetName():
+            systLabel = h.GetName().split("Weight_")[1]
+        elif "JEC_" in h.GetName():
+            #systLabel = h.GetName().split("JEC_")[1]
+            systLabel = "jes"
+        elif "JER_" in h.GetName():
+            systLabel = "jer"
+        else:
+            systLabel = h.GetName()
+        #legName = "%s%% %s"%(str(systPercentage), h.GetName().split("Weight_")[1])
+        #legName = "%s%% %s" % (systPercentage, systLabel)
+        legName = f"{perc:.1f}% {systLabel}"
         leg.AddEntry(h, legName, "L")
         if(i==0):
             h.Draw("hist")

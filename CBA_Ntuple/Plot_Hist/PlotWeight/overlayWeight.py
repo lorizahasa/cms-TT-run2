@@ -44,11 +44,11 @@ allCorrs = {**tuneSyst, **Corrs}
 systKeys = list(allCorrs.keys())
 outTxt = ""
 if isCheck:
-    Years  = [Years[0]]
+    Years  = [Years_[0]]
     Decays = [Decays[0]]
-    Channels = [Channels[0]]
-    #systKeys = ["JEC_FlavorQCD"]
-    systKeys = [systKeys[0]]
+    Channels = [Channels_[0]]
+    systKeys = ["Weight_pdf"]
+    #systKeys = [systKeys[0]]
 if isSep: 
     outTxt = "SepYears"
 if isComb:

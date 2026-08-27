@@ -4,15 +4,16 @@ import subprocess
 import itertools
 sys.dont_write_bytecode = True
 #-----------------------------------------------------------------
-condorNtupleDir = "root://cmseos.fnal.gov//store/user/lpctop/Output/cms-TT-run2/Ntuple_Skim"
+condorNtupleDir = "root://eoscms.cern.ch//store/group/phys_b2g/lhasa/Output/cms-TT-run2/Ntuple_Skim"
+#condorNtupleDir = "root://cmseos.fnal.gov//store/user/lpctop/Output/cms-TT-run2/Ntuple_Skim"
 #condorNtupleDir = "root://cmseos.fnal.gov//store/user/rverma/Output/cms-TT-run2/Ntuple_Skim"
 #-----------------------------------------------------------------
 outHistDir = "/store/user/lhasa/Output/cms-TT-run2/CBA_Ntuple/Hist_Ntuple/HistWeight"
 #-----------------------------------------------------------------
 Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
 #Years 	      =	["2016Pre"]
-#Channels 	  =	["Mu", "Ele"]
-Channels 	  =	["Mu"]
+Channels 	  =	["Mu", "Ele"]
+#Channels 	  =	["Mu"]
 Decays 	      =	["Semilep"]
 
 #Years and channels to be commbined
@@ -25,7 +26,7 @@ Samples = []
 #Samples.append("SignalSpin12_M700")
 #Samples.append("SignalSpin12_M1700")
 
-Samples.append("SignalSpin32_M700")
+Samples.append("SignalSpin32_M800")
 #Samples.append("SignalSpin32_M1700")
 
 #bkg and data
@@ -69,7 +70,7 @@ SepSyst = []
 SepSyst.append("Weight_btag_b")              
 SepSyst.append("Weight_btag_l")              
 
-JMEs    = ["JEC_Total", "JEC_SubTotalPileUp", "JEC_SubTotalRelative", "JEC_SubTotalAbsolute", "JEC_FlavorQCD", "JEC_TimePtEta", "JER"]
+JMEs    = ["JEC_Total", "JEC_Absolute", "JEC_HF", "JEC_BBEC1", "JEC_FlavorQCD", "JEC_EC2", "JEC_RelativeBal", "JER"]
 
 Corrs = {}
 uc = "Uncorr"

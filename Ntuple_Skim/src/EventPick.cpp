@@ -19,6 +19,8 @@ void EventPick::processEvent(EventTree* tree, Selector* selector) {
     // Initialize selection flags.
     passPreselMu  = true;
     passPreselEle = true;
+    cutFlowMu.fill(false);
+    cutFlowEle.fill(false);
 
     // Process physics objects (this fills the vectors in selector).
     selector->processObjects(tree);
@@ -26,6 +28,8 @@ void EventPick::processEvent(EventTree* tree, Selector* selector) {
     // Apply trigger and primary vertex cuts.
     passPreselMu  = passPreselMu  && tree->passTrigMu_  && tree->nGoodVtx_;
     passPreselEle = passPreselEle && tree->passTrigEle_ && tree->nGoodVtx_;
+    cutFlowMu[0] = passPreselMu;
+    cutFlowEle[0] = passPreselEle;
 
     // If neither channel passes these basic cuts, exit early.
     if (!passPreselMu && !passPreselEle) {
@@ -78,6 +82,7 @@ void EventPick::processEvent(EventTree* tree, Selector* selector) {
             }
         }
     }
+    cutFlowMu[1] = passPreselMu;
 
     // Veto events that have extra loose muons or electrons (if applicable).
     if (passPreselMu) {
@@ -86,6 +91,7 @@ void EventPick::processEvent(EventTree* tree, Selector* selector) {
             passPreselMu = false;
         }
     }
+    cutFlowMu[2] = passPreselMu;
 
     // ----- Tight Electron Selection -----
     // Require exactly nEleEq tight electrons.
@@ -118,6 +124,7 @@ void EventPick::processEvent(EventTree* tree, Selector* selector) {
             }
         }
     }
+    cutFlowEle[1] = passPreselEle;
 
     // Veto events that have extra loose electrons or muons.
     if (passPreselEle) {
@@ -126,6 +133,7 @@ void EventPick::processEvent(EventTree* tree, Selector* selector) {
             passPreselEle = false;
         }
     }
+    cutFlowEle[2] = passPreselEle;
 
     // ----- MET Cut -----
     if (passPreselMu && tree->MET_pt_ < metCut) {
@@ -134,5 +142,6 @@ void EventPick::processEvent(EventTree* tree, Selector* selector) {
     if (passPreselEle && tree->MET_pt_ < metCut) {
         passPreselEle = false;
     }
+    cutFlowMu[3] = passPreselMu;
+    cutFlowEle[3] = passPreselEle;
 }
-

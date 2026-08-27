@@ -9,13 +9,13 @@ dirClass  = "%s/Disc_Ntuple/DiscMain"%dirMVA2
 dirRead   = "%s/Disc_Ntuple/DiscMain"%dirMVA2
 nMulti    = 1
 #-----------------------------------------------------------------
-#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
 #Years 	      =	["2016Pre", "2016Post", "2017"]
-Years         =	["2018"]
+#Years         =	["2016Post"]
 Channels 	  =	["Mu", "Ele"]
-#Channels      =	["Mu"]
+#Channels      =	["Ele"]
 Decays        =	["Semilep"]
-#Mass         = ["2750"]
+#Mass         = ["1200"]
 Mass          = ["700","800", "900","1000", "1100", "1200", "1300", "1400","1500", "1600", "1700", "1800", "1900", "2000", "2250", "2500","2750", "3000"]
 #Mass      = ["2250", "2500", "2750", "3000"]
 Spin       =["Spin32"]
@@ -160,11 +160,11 @@ dictSFs['2016Pre__2016Post__2017__2018'] = [1.38, 1.40, 0.96, 1.22]
 #--------------------------------
 Regions = {}
 Regions['ttyg_Enriched_SR_Resolved'] = "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et_leading>100 && e.FatJet_size ==0"
-##Regions['ttyg_Enriched_CR_Resolved'] = "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size ==0"
+#Regions['ttyg_Enriched_CR_Resolved'] = "e.Jet_size >=5 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size ==0"
 #Regions['ttyg_Enriched_CRb_Resolved']= "e.Jet_size >=5 && e.Jet_b_size <1  && e.Photon_size==1 && e.Photon_et[0]>0   && e.FatJet_size ==0"
 
 Regions['ttyg_Enriched_SR_Boosted']  = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et_leading>100 && e.FatJet_size >=1"
-##Regions['ttyg_Enriched_CR_Boosted']  = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size >=1"
+#Regions['ttyg_Enriched_CR_Boosted']  = "e.Jet_size >=2 && e.Jet_b_size >=1 && e.Photon_size==1 && e.Photon_et[0]<75  && e.FatJet_size >=1"
 #Regions['ttyg_Enriched_CRb_Boosted'] = "e.Jet_size >=2 && e.Jet_b_size <1  && e.Photon_size==1 && e.Photon_et[0]>0   && e.FatJet_size >=1"
 
 #https://github.com/ViniciusMikuni/ttbb-analysis/blob/5d48e5e03bdd0ca162d3dd058f4ee02ef33a8460/python/MVA_cfg.py

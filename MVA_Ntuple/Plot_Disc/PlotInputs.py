@@ -5,8 +5,8 @@ dirDisc = "%s/Disc_Ntuple/DiscMain"%dirCBA
 dirPlot = "%s/Plot_Disc/PlotMain"%dirCBA
 dirTwiki= "/eos/uscms/store/user/lhasa/Output/cms-TT-run2/Twiki"
 #-----------------------------------------------------------------
-#Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
-Years      =	["2018"]
+Years 	      =	["2016Pre", "2016Post", "2017", "2018"]
+#Years      =	["2018"]
 Channels 	  =	["Mu", "Ele"]
 #Channels  =	["Mu"]
 Decays      =	["Semilep"]
@@ -26,7 +26,7 @@ JME_dic["2017"] =  ["JEC_Total", "JEC_Absolute","JEC_Absolute_2017","JEC_BBEC1",
 JME_dic["2018"]= ["JEC_Total", "JEC_Absolute","JEC_Absolute_2018","JEC_BBEC1", "JEC_BBEC1_2018","JEC_EC2","JEC_EC2_2018","JEC_HF","JEC_HF_2018","JEC_RelativeSample_2018","JEC_RelativeBal","JEC_FlavorQCD","JER_2018"]
 
 SystList_by_year = {year: [] for year in Years}
-
+Syst_w_JER = {year: [] for year in Years}
 
 Systematics   =	[]
 Systematics.append("Weight_pu")
@@ -41,6 +41,7 @@ Systematics.append("Weight_pdf")
 Systematics.append("Weight_isr")
 Systematics.append("Weight_fsr")
 Systematics.append("Weight_ttag")
+#Systematics.append("JEC_Total")
 
 
 #Systematics.append("Weight_btag_b")
@@ -48,6 +49,7 @@ Systematics.append("Weight_ttag")
 for year in Years:
     SystList_by_year[year] = Systematics + JME_dic[year]
     #SystList_by_year[year] = Systematics 
+    Syst_w_JER[year] = Systematics + ["JER_%s"%year]
 
 #print(SystList_by_year)
 
@@ -58,8 +60,8 @@ SystLevels.append("Down")
 
 SampleSignal = {
          "SignalSpin32_M800"    : [rt.kMagenta,  "m_{T} = 800"],
-         "SignalSpin32_M1600"   : [rt.kCyan,     "m_{T} = 1600"],
-         "SignalSpin32_M3000"   : [rt.kPink,     "m_{T} = 3000"],
+         "SignalSpin32_M1200"   : [rt.kCyan,     "m_{T} = 1200"],
+         "SignalSpin32_M1500"   : [rt.kBlack,     "m_{T} = 1500"],
          }
 
 SampleBkg = {
@@ -87,7 +89,7 @@ SampleWeight = ["TTGamma", "SignalSpin32_M800"]
 SampleLumi = SampleBkg
 #SampleLumi.update(SampleSignal)
 #SampleSyst = ["SignalSpin32_M2750", "SignalSpin32_M3000"] 
-SampleSyst = ["TTGamma", 'OtherBkgs', 'SignalSpin32_M800'] 
+SampleSyst = ["TTGamma", 'OtherBkgs'] 
 #SampleSyst = SampleBkg.keys()
 Samples = {}
 Samples.update(SampleSignal)

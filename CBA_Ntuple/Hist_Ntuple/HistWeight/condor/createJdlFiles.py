@@ -33,9 +33,9 @@ Error  = %s/log_$(cluster)_$(process).stderr\n\n'%(logDir, logDir)
 subFile = open('tmpSub/condorSubmit.sh','w')
 for year, decay, channel in itertools.product(Years, Decays, Channels):
     outDir = "%s/Raw/%s/%s/%s"%(outHistDir, year, decay, channel)
-    if os.path.exists("/eos/uscms/%s"%outDir):
-        print("Deleted out dir: %s"%outDir)
-        os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
+    #if os.path.exists("/eos/uscms/%s"%outDir):
+        #print("Deleted out dir: %s"%outDir)
+        #os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
     print("Created out dir: %s"%outDir)
     jdlName = 'submitJobs_%s%s%s.jdl'%(year, decay, channel)

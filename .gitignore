@@ -37,6 +37,11 @@ MVA_Ntuple/Disc_Ntuple/condor_read/alphaForMain.py
 MVA_Ntuple/Disc_Ntuple/condor_read/validateNAN.py
 MVA_Ntuple/Disc_Ntuple/CheckTree.py
 MVA_Ntuple/Fit_Disc/scan_datacards_to_text.py
+MVA_Ntuple/Plot_Disc/overlayReco_Paper.py
+MVA_Ntuple/Plot_Disc/plotDiscDOE.py
+MVA_Ntuple/Plot_Disc/main.aux
+MVA_Ntuple/Plot_Disc/main.tex
+
 
 MVA_Ntuple/*.txt
 MVA_Ntuple/*/*.txt

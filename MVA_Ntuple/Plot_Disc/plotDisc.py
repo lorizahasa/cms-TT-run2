@@ -43,8 +43,8 @@ if isCheck:
     Years  = [Years[0]]
     Decays = [Decays[0]]
     Channels = [Channels[0]]
-    #rList  = ["ttyg_Enriched_CR_Resolved"]
-    rList  = [rList[0]]
+    rList  = ["ttyg_Enriched_CR_Resolved"]
+    #rList  = [rList[0]]
 if isSep: 
     isComb = False
     outTxt = "SepYears"
@@ -70,6 +70,7 @@ for decay, region, channel, year, spin in itertools.product(Decays, rList, Chann
     hInfo = GetVarInfo(region, channel)
     #hList = list(hInfo.keys()) + ['Disc']
     hList = ["Disc"]
+    #hList = ["Reco_mass_T"]
     if isCheck:
         hList = ["Disc"]
         pass
@@ -97,8 +98,8 @@ for decay, region, channel, year, spin in itertools.product(Decays, rList, Chann
         if "lgamma" in hName:
             isLog = False
         ydsc = "%s/%s/%s/%s"%(year, decay,spin, channel)
-        inHistDir  = "%s/%s/%s/CombMass/BDTA"%(dirDisc, dir_, ydsc)
-        outPlotDir = "%s/%s/%s/CombMass/BDTA"%(dirPlot, dir_, ydsc)
+        inHistDir  = "%s/%s/%s/CR/CombMass/BDTA"%(dirDisc, dir_, ydsc)
+        outPlotDir = "%s/%s/%s/CR/CombMass/BDTA"%(dirPlot, dir_, ydsc)
         os.system("mkdir -p %s"%outPlotDir)
         inFile = TFile("%s/AllInc.root"%(inHistDir), "read")
         if isCheck:
@@ -151,8 +152,8 @@ for decay, region, channel, year, spin in itertools.product(Decays, rList, Chann
                 hStack.Add(h)
                 yDict[sampleName] = getYield(h)
             hStack.Draw("HIST")
-            hStack.GetXaxis().SetRangeUser(-1,1)
-            gPad.Modified(); gPad.Update()
+            #hStack.GetXaxis().SetRangeUser(-1,1)
+            #gPad.Modified(); gPad.Update()
             
             #Data hists
             if isData:
@@ -170,7 +171,16 @@ for decay, region, channel, year, spin in itertools.product(Decays, rList, Chann
             
             # Unc band
             if isUnc:
-                hSumBkgs, hUncUp, hUncDown = getHistSyst(inFile, SampleBkg, region, Systematics, hName)
+                #Syst = SystList_by_year[year]
+                if isComb:
+                    years = year.split("__")
+                    syst_Comb = []
+                    for y in years:
+                        syst_Comb.append(SystList_by_year[y])
+                    Syst = list(np.unique(syst_Comb))
+                else:
+                    Syst = SystList_by_year[year]
+                hSumBkgs, hUncUp, hUncDown = getHistSyst(inFile, SampleBkg, region, Syst, hName)
                 print("Nom, uncUp, uncDown:", hSumBkgs.Integral(), hUncUp.Integral(), hUncDown.Integral())
                 uncGraphTop  = getUncBand(hSumBkgs, hUncUp, hUncDown, False)
                 uncGraphTop.SetFillColor(2);
@@ -267,7 +277,7 @@ for decay, region, channel, year, spin in itertools.product(Decays, rList, Chann
                 baseLine.SetLineColor(3);
                 baseLine.Draw("SAME");
                 hRatio.Draw("same")
-            pdf = "%s/plotDisc_%s_%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region, spin)
+            pdf = "%s/plotDisc_new_%s_%s_%s_%s.pdf"%(outPlotDir, dir_, hName, region, spin)#new filled bin
             canvas.SaveAs(pdf)
             fPath.write("%s\n"%pdf)
             cap = "%s, %s, %s, %s"%(year, channel, region, hName)

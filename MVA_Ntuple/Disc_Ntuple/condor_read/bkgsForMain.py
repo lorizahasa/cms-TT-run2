@@ -45,6 +45,36 @@ if isComb:
     isSep = False
     Years = Years_
     Channels = Channels_
+
+#    split_year = year.split("__")
+    # union of systs over eras
+#    base = []
+#    for y in split_year:
+#        base.extend(systVar_by_year[y])
+
+    # expand per-era names for JER and JEC 2016*
+#    expanded = []
+#    for s in base:
+#        sN = s.replace("_up","Up").replace("_down","Down")
+
+#        if sN.startswith("JER"):
+            # JERUp -> JER_<era>Up for each era
+#            for y in split_year:
+#                expanded.append(sN.replace("JER", f"JER_{y}"))
+
+#        elif ("JE" in sN) and ("2016" in sN):
+            # Only 2016 eras get injected (Pre/Post)
+#            for y in split_year:
+#                if y.startswith("2016"):
+#                    expanded.append(sN.replace("2016", y))
+
+#        else:
+#            expanded.append(sN)
+
+    # de-dup while preserving order
+#    sysList = list(dict.fromkeys(expanded))
+#else:
+#    sysList = systVar_by_year[year]
 if not isCheck and not isSep and not isComb:
     print("Add either --isCheck or --isSep or --isComb in the command line")
     exit()
@@ -61,6 +91,7 @@ def addHist(histList, name):
         hist.Reset()
         for h in histList:
             hist.Add(h)
+        sanitize_hist(hist, eps=1e-9)    
         return hist
 
 def getHist(inFile, hPath, hName):
@@ -68,6 +99,7 @@ def getHist(inFile, hPath, hName):
     try:
         hist = inFile.Get(hPath_)
         hist = hist.Clone(hName)
+        sanitize_hist(hist, eps=1e-9)
     except Exception:
         print ("Error: Hist not found. \nFile: %s \nHistName: %s"%(inFile, hPath_))
         sys.exit()
@@ -86,6 +118,7 @@ def getHistOther(inFile, year, reg, syst, hName):
     return addHist(hList, hName)
 
 def writeHist(outFile, hPath, hist):
+    sanitize_hist(hist, eps=1e-9)
     if not outFile.GetDirectory(hPath):
         outFile.mkdir(hPath)
     outFile.cd(hPath)
@@ -94,16 +127,36 @@ def writeHist(outFile, hPath, hist):
         print("%60s, %20s, %10s"%(hPath, hist.GetName(), round(hist.Integral())))
     hist.Write()
 
+def sanitize_hist(hist, eps=1e-9):
+    if not hist:
+        return
+    if hist.GetSumw2N() == 0:
+        hist.Sumw2()
 
+    n = hist.GetNbinsX()
+    for b in range(0, n + 2):
+        c = hist.GetBinContent(b)
+        e = hist.GetBinError(b)
+
+        if (not math.isfinite(c)) or (c <= 0.0):
+            c = eps
+            hist.SetBinContent(b, c)
+
+        if (not math.isfinite(e)) or (e <= 0.0):
+            e = max(eps, math.sqrt(c) * 1e-6)
+            hist.SetBinError(b, e)
 #-----------------------------------------
 # Do the rebining here
 #----------------------------------------
 for year, decay, spin,  channel, r in itertools.product(Years, Decays, Spin, Channels, rList):
-    inDir = "%s/AdjustForMain/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, spin, channel)
+    #inDir = "%s/Paper_AdjustForMain_Paper/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, spin, channel) #SR remove Paper for normal
+    inDir = "%s/AdjustForMain/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, spin, channel) #SR remove Paper for normal
+    #inDir = "%s/AdjustForMain/%s/%s/%s/%s/CR/CombMass/BDTA"%(dirRead, year, decay, spin, channel) #CR
     #inDir = "%s/Rebin/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay,spin, channel)
 
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
-    outDir = inDir.replace("AdjustForMain", "ForMain")
+    outDir = inDir.replace("AdjustForMain", "ForMain")#Paper 
+    #outDir = inDir.replace("Paper_AdjustForMain_Paper", "ForMain_Paper")#Paper 
     #outDir = inDir.replace("Rebin", "ForMain")
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
     outFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
@@ -111,7 +164,7 @@ for year, decay, spin,  channel, r in itertools.product(Years, Decays, Spin, Cha
    # hList = list(GetVarInfo(r, channel).keys())
     hList = []
     hList.append('Disc')
-    hList.append('Reco_mass_T')
+    #hList.append('Reco_mass_T')
     if isCheck:
         print(inFile)
         hList = ['Disc']
@@ -120,8 +173,8 @@ for year, decay, spin,  channel, r in itertools.product(Years, Decays, Spin, Cha
         syst_Comb = []
         for y in split_year:
             syst_Comb.append(systVar_by_year[y]) 
-        sysList = list(np.unique(syst_Comb))            
-    else:    
+        sysList = list(np.unique(syst_Comb))
+    else:
         sysList = systVar_by_year[year]
     sysList.append("JetBase")
     for syst, hName in itertools.product(sysList, hList):
@@ -149,6 +202,7 @@ for year, decay, spin,  channel, r in itertools.product(Years, Decays, Spin, Cha
                         print(year, channel, sample, r, syst, sysInt)
                     else:
                         h.Scale(h_.Integral()/sysInt)
+                    sanitize_hist(h, eps=1e-9)    
                     writeHist(outFile,  hPath, h)
                 else:
                     h = getHist(inFile, hPath, hName)
@@ -167,6 +221,7 @@ for year, decay, spin,  channel, r in itertools.product(Years, Decays, Spin, Cha
                 print(year, channel, sample, r, syst, sysInt)
             else:
                 h.Scale(h_.Integral()/sysInt)
+            sanitize_hist(h, eps=1e-9)    
             writeHist(outFile,  hPath, h)
         else:
             #h = getHistOther(inFile, year, channel, r, syst, hName)

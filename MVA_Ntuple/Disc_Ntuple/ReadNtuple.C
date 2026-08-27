@@ -130,8 +130,8 @@ int main(int argc, char* argv[]){
         xmlRegion = "ttyg_Enriched_SR_Resolved";
     if (region.find("ttyg_Enriched_CR_Boosted") != std::string::npos)
         xmlRegion = "ttyg_Enriched_SR_Boosted";
-    //std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights"; //For spin32
-    std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + spin + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights"; //For spin12
+    std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights"; //For spin32
+    //std::string inFileDir = dirClass + "/Classification/" + year + "/" + decay + "/" + spin + "/" + channel + "/CombMass/" + method + "/" + xmlRegion + "/weights"; //For spin12
     std::string outFileDir = "./discs/Reader/" + year + "/" + decay + "/" + spin + "/"+ channel + "/" + method;
     std::string localFile  = outFileDir + "/" + inFileName;
     system(("mkdir -p " + outFileDir).c_str());

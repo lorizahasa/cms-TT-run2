@@ -22,7 +22,7 @@ Spin     = ["Spin32"]
 
 
 histList = []
-histList.append("Reco_mass_T")
+#histList.append("Reco_mass_T")
 histList.append("Disc")
 #histList.append("Reco_st")
 
@@ -58,9 +58,9 @@ rDict = {}
 rDict["ttyg_Enriched_SR_Boosted"] = "SR, Boosted"
 rDict["ttyg_Enriched_SR_Resolved"]= "SR, Resolved"
 rDict["ttyg_Enriched_SR_Boosted__ttyg_Enriched_SR_Resolved"]="SR, Boosted+Resolved"
-#rDict["ttyg_Enriched_CR_Boosted"] = "CR, Boosted"
-#rDict["ttyg_Enriched_CR_Resolved"]= "CR, Resolved"
-#rDict["ttyg_Enriched_CR_Boosted__ttyg_Enriched_CR_Resolved"]="CR, Boosted+Resolved"
+rDict["ttyg_Enriched_CR_Boosted"] = "CR, Boosted"
+rDict["ttyg_Enriched_CR_Resolved"]= "CR, Resolved"
+rDict["ttyg_Enriched_CR_Boosted__ttyg_Enriched_CR_Resolved"]="CR, Boosted+Resolved"
 
 dataType = {"SR": "Asimoy", "CR": "Real"}
 toInject = {}

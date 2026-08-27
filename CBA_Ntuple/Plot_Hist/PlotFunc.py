@@ -59,7 +59,7 @@ def absDiffHists(h1, h2):
 #Get histograms for systematics band
 #-----------------------------------------
 def getHistSyst(inFile, samples, region, systs, hName):
-    hBases   = getHists(inFile, samples, region, "Base", hName)#list
+    hBases   = getHists(inFile, samples, region, "JetBase", hName)#list
     hSumBase = addHists(hBases, "SumBases_%s_%s"%(region, hName))# single hist
     hAllDiffUp   = hSumBase.Clone()
     hAllDiffDown = hSumBase.Clone()

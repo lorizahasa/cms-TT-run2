@@ -41,7 +41,7 @@ def runCmd(cmd):
     print("\n\033[01;32m Excecuting: %s \033[00m"%cmd)
     os.system(cmd)
 
-print("In case of segmentation violation, cmsenv CMSSW_10_2_14")
+print("In case of segmentation violation, cmsenv CMSSW_14_1_0_pre4")
 #Merge separate years and channels
 
 def list_root_files(directory):
@@ -83,9 +83,10 @@ def hadd_files(input_files, output_file):
 if isSep:
     for y, d, p, c in itertools.product(Years, Decays, Spin,  Channels):
         histDir  = "%s/Reader/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, y, d, p, c)
-        mergeDir = histDir.replace("Reader", "Merged")
+        mergeDir  = "%s/Merged/%s/%s/%s/%s/CR/CombMass/BDTA"%(dirRead, y, d, p, c) #only for CR
+        #mergeDir = histDir.replace("Reader", "Merged") #normally
         #if os.path.exists("/eos/uscms/%s"%mergeDir):
-        runCmd("eos root://cmseos.fnal.gov rm -r %s"%mergeDir)
+        #runCmd("eos root://cmseos.fnal.gov rm -r %s"%mergeDir)
         runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%mergeDir)
         #Merge for all sample
         haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(mergeDir)
@@ -104,11 +105,11 @@ if isComb:
         hists = []
         for y in year.split("__"):
             for c in ch.split("__"):
-                iSubDir = "%s/Merged/%s/%s/%s/%s/CombMass/BDTA/AllInc.root"%(dirRead, y, d,p, c)
+                iSubDir = "%s/Merged/%s/%s/%s/%s/CR/CombMass/BDTA/AllInc.root"%(dirRead, y, d,p, c) #CR for control
                 iFullDir = "root://cmseosmgm01.fnal.gov:1094/%s"%iSubDir
                 hists.append(iFullDir)
         haddIn = ' '.join(str(h) for h in hists)
-        mergeDir = "%s/Merged/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, year, d, p, ch)
+        mergeDir = "%s/Merged/%s/%s/%s/%s/CR/CombMass/BDTA"%(dirRead, year, d, p, ch) #CR for control
         runCmd("eos root://cmseos.fnal.gov mkdir -p %s"%mergeDir)
         haddOut = "root://cmseos.fnal.gov/%s/AllInc.root"%(mergeDir)
         runCmd("eos root://cmseos.fnal.gov rm -r %s"%mergeDir)

@@ -45,7 +45,7 @@ isQCDMC         = options.isQCDMC
 #----------------------------------------
 #inFile = "AllInc_forMain.root"
 inFile = "AllInc.root"
-inFileDir = "%s/Disc_Ntuple/DiscMain/ForMain/%s/%s/%s/%s/CombMass/%s"%(condorOutDir, year, decayMode, spin, channel, method)
+inFileDir = "%s/Disc_Ntuple/DiscMain/ForMain/%s/%s/%s/%s/CombMass/%s"%(condorOutDir, year, decayMode, spin, channel, method)#add CR before Comb for CR
 outFileDir      = "./output/Fit_Disc/FitMain/%s/%s/%s/%s/%s/%s/%s/%s"%(year, decayMode, spin, channel, mass, method, region, hName)
 os.system("mkdir -p %s"%outFileDir)
 inFileName = "%s/%s"%(outFileDir, inFile)

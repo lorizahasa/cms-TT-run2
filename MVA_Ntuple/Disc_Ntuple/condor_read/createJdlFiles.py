@@ -30,7 +30,7 @@ subFile = open('%s/condorSubmit.sh'%tmpDir,'w')
 
 for year, decay, spin, channel in itertools.product(Years, Decays, Spin, Channels):
     outDir  = "%s/"
-    dirRead_ = "%s/Reader/%s/%s/%s/%s"%(dirRead, year, decay, spin, channel)
+    dirRead_ = "%s/Reader/%s/%s/%s/CR/%s"%(dirRead, year, decay, spin, channel)#added CR for control just now, delete for signal
     print("Deleting %s"%dirRead_)
     os.system("eos root://cmseos.fnal.gov rm -r %s"%dirRead_)
     #os.system("eos root://eoscms.cern.ch/ rm -r %s"%dirRead_)

@@ -2,6 +2,7 @@
 #define EVENTPICK_H
 
 #include <vector>
+#include <array>
 #include <string>
 #include <set>
 #include <iostream>
@@ -45,9 +46,14 @@ public:
     bool passPreselMu{false};
     bool passPreselEle{false};
 
+    // Per-event cumulative selection decisions used by the ntuple cutflow.
+    // Stages: trigger+PV, tight lepton (including dilepton charge/Z cuts),
+    // loose-lepton veto, and MET.
+    std::array<bool, 4> cutFlowMu{{false, false, false, false}};
+    std::array<bool, 4> cutFlowEle{{false, false, false, false}};
+
 private:
     // (Optionally, you could store pointers to tree/selector here if needed.)
 };
 
 #endif // EVENTPICK_H
-

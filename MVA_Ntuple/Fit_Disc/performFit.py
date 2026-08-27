@@ -33,6 +33,9 @@ parser.add_option("--isLimit","--isLimit",dest="isLimit", default=False, action=
 		  help="run impacts")
 parser.add_option("--isGOF","--isGOF",dest="isGOF", default=False, action="store_true",
 		  help="make plot of covariance matrix")
+parser.add_option("--isBias", "--isBias",dest="isBias", default=False, action="store_true", help="make bias pulls") 
+parser.add_option("--isGenerate", "--isGenerate",dest="isGenerate", default=False, action="store_true", help="generate Toys for bias")
+
 (options, args) = parser.parse_args()
 years           = options.years
 decayMode       = options.decayMode
@@ -43,11 +46,13 @@ regions          = options.regions
 hName           = options.hName
 spin            = options.spin
 
-isT2W 			= options.isT2W
+isT2W		   = options.isT2W
 isFD            = options.isFD
 isImpact        = options.isImpact
 isLimit         = options.isLimit
 isGOF            = options.isGOF
+isBias         = options.isBias
+isGenerate     = options.isGenerate
 #-----------------------------------------
 #Various functions
 #----------------------------------------
@@ -100,13 +105,14 @@ if isT2W:
 #----------------------------------------
 #Fit diagnostics
 #----------------------------------------
-rMin = 0
+rMin = -20
 rMax = 20
 #paramList = ["r", "WGammaSF", "ZGammaSF"]
 paramList = ["r"]
 params    = ','.join([str(param) for param in paramList])
 if isFD:
-    runCmd("combine -M FitDiagnostics  %s --out %s --robustHesse 1  --redefineSignalPOIs %s -v2 --cminDefaultMinimizerStrategy 0 --rMin=%s --rMax=%s --plots --saveShapes --saveWithUncertainties --saveNormalizations %s"%(pathT2W, dirDC, params, rMin, rMax, toInject[regShort]))
+    runCmd("combine -M FitDiagnostics  %s --out %s --robustFit=1 --robustHesse 1  --redefineSignalPOIs %s -v2 --cminDefaultMinimizerStrategy 0 --rMin=%s --rMax=%s --plots --saveShapes --saveWithUncertainties --saveNormalizations %s"%(pathT2W, dirDC, params, rMin, rMax, toInject[regShort]))
+    #runCmd("combine -M FitDiagnostics  %s --out %s --robustHesse 1  --redefineSignalPOIs %s -v2 --cminDefaultMinimizerStrategy 0 --rMin=%s --rMax=%s --plots --saveShapes --saveWithUncertainties --saveNormalizations %s"%(pathT2W, dirDC, params, rMin, rMax, toInject[regShort]))
     #runCmd("python3 script/diffNuisances.py --all %s/fitDiagnostics.root -g %s/diffNuisances.root"%(dirDC,dirDC))
     runCmd("python3 script/plotCM.py --dirDC %s %s"%(dirDC, myTit))
 
@@ -115,10 +121,12 @@ if isFD:
 #Impacts of Systematics
 #----------------------------------------
 if isImpact:
-    #runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --redefineSignalPOIs %s --doInitialFit %s"%(pathT2W, params, toInject[regShort])) 
-    runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --expectSignal=0  --redefineSignalPOIs %s --setParameterRanges r=-10,10 --doInitialFit %s"%(pathT2W, params, toInject[regShort])) 
-    runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --expectSignal=0  --redefineSignalPOIs %s --setParameterRanges r=-10,10 --doFits  --parallel 10 %s "%(pathT2W, params, toInject[regShort]))
-   # runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --redefineSignalPOIs %s --doFits  --parallel 10 %s "%(pathT2W, params, toInject[regShort]))
+    #runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --robustHesse 1 --cminDefaultMinimizerStrategy 0  --redefineSignalPOIs %s --doInitialFit %s"%(pathT2W, params, toInject[regShort])) 
+    #runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --expectSignal=0  --redefineSignalPOIs %s --setParameterRanges r=-5,5 --doInitialFit %s"%(pathT2W, params, toInject[regShort])) 
+    runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --cminDefaultMinimizerStrategy 0  --expectSignal=1 --redefineSignalPOIs %s --rMin -10 --rMax 10 --doInitialFit %s"%(pathT2W, params, toInject[regShort])) 
+    runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1  --cminDefaultMinimizerStrategy 0  --expectSignal=1 --redefineSignalPOIs %s --rMin -10 --rMax 10 --doFits  --parallel 10 %s "%(pathT2W, params, toInject[regShort]))
+   # runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1  --cminDefaultMinimizerStrategy 0  --expectSignal=0  --redefineSignalPOIs %s --setParameterRanges r=-5,5 --doFits  --parallel 10 %s "%(pathT2W, params, toInject[regShort]))
+   # runCmd("combineTool.py -M Impacts -d %s  -m 125 --robustFit 1 --robustHesse 1 --cminDefaultMinimizerStrategy 0  --redefineSignalPOIs %s --doFits  --parallel 10 %s "%(pathT2W, params, toInject[regShort]))
     runCmd("combineTool.py -M Impacts -d %s -m 125 -o %s/nuisImpact.json --redefineSignalPOIs %s "%(pathT2W, dirDC, params))
     runCmd("python3 script/plotImpacts.py --cms-label \"   Internal\" -i %s/nuisImpact.json -o %s/nuisImpact.pdf"%(dirDC, dirDC))
     runCmd("python3 script/plotImpacts.py --cms-label \"   Internal\" -i %s/nuisImpact.json -o %s/nuisImpact.pdf %s"%(dirDC, dirDC, myTit))
@@ -127,10 +135,10 @@ if isImpact:
 # Goodness of Fit 
 #----------------------------------------
 if isGOF:
-    runCmd("combine -d %s -M GoodnessOfFit --algo saturated "%pathT2W)
-    runCmd("combine -d %s -M GoodnessOfFit --algo saturated  -t 100 -s -1"%pathT2W)
+    runCmd("combine -d %s -M GoodnessOfFit --algo saturated --expectSignal=0 "%pathT2W)
+    runCmd("combine -d %s -M GoodnessOfFit --algo saturated  -t 1000 -s -1 --expectSignal=0"%pathT2W)
     runCmd("combineTool.py -M CollectGoodnessOfFit --input higgsCombineTest.GoodnessOfFit*.root -o %s/gof.json"%(dirDC))
-    runCmd("python3 script/plotGof.py %s/gof.json -o %s/gof --mass 120.0 %s"%(dirDC, dirDC, myTit))
+    runCmd("python3 script/plotGof.py %s/gof.json -o %s/gof --mass 120.0 --bins 25 %s"%(dirDC, dirDC, myTit))
 
 #----------------------------------------
 # 95% CL Limits
@@ -144,4 +152,48 @@ if isLimit:
     runCmd("combineTool.py -M CollectLimits %s/%s -o %s/limits.json"%(dirDC, nameLimitOut, dirDC))
     print(dirDC)
 
+#----------------------------------------------- 
+# Do intial Fit, generate Toys and do Bias Test 
+#-----------------------------------------------
+SEED = 123456
+if isGenerate: 
+    runCmd(f"combine -M MultiDimFit -d {pathT2W} -m 125 -v 1 -t 500 " \
+      f"--setParameters r=0  --rMin -1 --rMax 1 " \
+      f"--saveWorkspace --algo singles -n m{mass} " \
+      f"--cminDefaultMinimizerStrategy 0 --robustFit 1 --robustHesse 1 " \
+      #f"--cminDefaultMinimizerStrategy 0 --robustFit 1 " \
+      f"-s {SEED} > {dirDC}/InitialFit_{mass}.log")
+    #runCmd("combine -M GenerateOnly -d higgsCombinem%s.MultiDimFit.mH125.123456.root -m 125 --expectSignal 0.2 --rMin -10 --rMax 10 -t 500 --toysFrequentist --bypassFrequentistFit --saveToys --snapshotName MultiDimFit -n m%s >> GenerateToys_{mass}.log")%(mass,mass)
+    runCmd(f"combine -M GenerateOnly "
+        f"-d higgsCombinem{mass}.MultiDimFit.mH125.{SEED}.root "
+        f"-m 125 --expectSignal 0 --rMin -1 --rMax 1 "
+        f"-t 500 --toysFrequentist --bypassFrequentistFit --saveToys "
+        f"--snapshotName MultiDimFit "
+        f"-n m{mass} "
+        f"-s {SEED} "
+        f">> {dirDC}/GenerateToys_{mass}.log")
 
+if isBias: 
+    #runCmd("combine -M FitDiagnostics -d higgsCombinem%s.MultiDimFit.mH125.123456.root --toysFile higgsCombinem%s.GenerateOnly.mH125.123456.root -t 500 --toysFrequentist --bypassFrequentistFit --setParameters r=0.2 --rMin -10 --rMax 10 --saveWorkspace --noErrors --minos none -n m%s --cminDefaultMinimizerStrategy 0 --robustFit=1 --robustHesse 1 >> BiasTest_%s.log")%(mass,mass,mass) 
+    runCmd(
+    f"combine -M FitDiagnostics "
+    f"-d higgsCombinem{mass}.MultiDimFit.mH125.{SEED}.root "
+    f"--toysFile higgsCombinem{mass}.GenerateOnly.mH125.{SEED}.root "
+    f"-t 500 --toysFrequentist --bypassFrequentistFit "
+    f"--setParameters r=0  --rMin -1 --rMax 1 "
+    f"--saveWorkspace --noErrors --minos none "
+    f"-n m{mass} "
+    f"--out {dirDC} "
+    f"--cminDefaultMinimizerStrategy 0 "
+    f"--robustFit 1 --robustHesse 1 "
+    #f"--robustFit 1 "
+    f">> {dirDC}/BiasTest_{mass}.log 2>&1"
+)
+    label = f"Run 2, {channels} NEWLINE m(T) = {mass}_{spin}"
+    runCmd(
+        f'python3 script/plot_bias_pull.py '
+        f'-i {dirDC}/fitDiagnosticsm{mass}.root '
+        f'-t 500 -r 0 '
+        f'-o {dirDC}/Bias_m{mass}_r0 '
+        f'--label "{label}"'
+        )

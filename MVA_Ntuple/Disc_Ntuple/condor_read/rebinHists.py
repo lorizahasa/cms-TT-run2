@@ -9,6 +9,7 @@ from optparse import OptionParser
 from VarInfo import GetVarInfo
 from ROOT import TFile, TH1F, gDirectory
 import numpy as np
+import math
 
 #----------------------------------------
 #INPUT Command Line Arguments 
@@ -51,6 +52,11 @@ if not isCheck and not isSep and not isComb:
 #-----------------------------------------
 #Functions to read/write histograms
 #----------------------------------------
+SIGNAL_SCALE = 1e-3
+
+def isSignalSample(sample):
+    return sample.startswith("SignalSpin12") or sample.startswith("SignalSpin32")
+
 def addHist(histList, name):
     if len(histList) ==0:
         print("Hist list | %s, %s | is empty"%(histList, name))
@@ -66,6 +72,29 @@ def getHistDir(sample, CR, sysType):
     histDir = "%s/%s/%s"%(sample, CR, sysType)
     return histDir
 
+def sanitize_hist(hist, eps=1e-9):
+    """Replace bad bins in TH1: include under/overflow, ensure finite positive content & error."""
+    if not hist:
+        return
+    if hist.GetSumw2N() == 0:
+        hist.Sumw2()  # make sure error storage exists
+
+    n = hist.GetNbinsX()
+    # loop through underflow(0), all regular bins, and overflow(n+1)
+    for b in range(0, n + 2):
+        c = hist.GetBinContent(b)
+        e = hist.GetBinError(b)
+
+        # fix non-finite or non-positive content
+        if (not math.isfinite(c)) or (c <= 0.0):
+            c = eps
+            hist.SetBinContent(b, c)
+
+        # fix non-finite or non-positive error
+        if (not math.isfinite(e)) or (e <= 0.0):
+            # give a tiny, strictly positive error; scale with sqrt(c) to avoid zero-variance bins
+            e = max(eps, math.sqrt(c) * 1e-6)
+            hist.SetBinError(b, e)
 def writeHist(sample, CR, sysType, hist_, outputFile):
     outHistDir = getHistDir(sample, CR, sysType)
     if not outputFile.GetDirectory(outHistDir):
@@ -80,14 +109,14 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
     #print("%10s :/%s/%s/%s/%s"%(round(hist_.Integral(), 1), sample, CR, sysType, hist_.GetName()))
     # Function to fill empty regular bins with 1e-8
 
-    def fillEmptyBins(hist, fill_value=1e-9):
+    #def fillEmptyBins(hist, fill_value=1e-9):
         # Iterate over regular bins only (from 1 to N)
-        for bin in range(0, hist.GetNbinsX() + 1):
-            content = hist.GetBinContent(bin)
-            if content <= 0: #Fill bin if 0 or negative
-                hist.SetBinContent(bin, fill_value)
-                hist.SetBinError(bin, fill_value)
-                print(f"Replaced bin {bin} in histogram {hist.GetName()} with {fill_value} (original content: {content})")
+    #    for bin in range(0, hist.GetNbinsX() + 1):
+    #        content = hist.GetBinContent(bin)
+    #        if content <= 0: #Fill bin if 0 or negative
+    #            hist.SetBinContent(bin, fill_value)
+    #            hist.SetBinError(bin, fill_value)
+                #print(f"Replaced bin {bin} in histogram {hist.GetName()} with {fill_value} (original content: {content})")
                       # if hist.GetBinContent(bin) == 0:
            #     hist.SetBinContent(bin, fill_value)
            #     print(f"Filled bin {bin} in histogram {hist.GetName()} with {fill_value}")
@@ -95,13 +124,15 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
     if hName in dictRebin.keys():
         hNew = hist_.Rebin(len(dictRebin[hName])-1, hist_.GetName(), dictRebin[hName]) 
         # Check and fill empty regular bins in the rebinned histogram
-        #fillEmptyBins(hNew, fill_value=1e-9)
+       # fillEmptyBins(hNew, fill_value=1e-9)
+        sanitize_hist(hNew, eps=1e-9)
         hNew.Write()
         #print(hName)
         #print(dictRebin[hName])
     else:
         # If not rebinned, check and fill empty regular bins in the original histogram
         #fillEmptyBins(hist_, fill_value=1e-9)
+        sanitize_hist(hist_, eps=1e-9)
         hist_.Write()
     outputFile.cd()
 
@@ -109,29 +140,36 @@ def writeHist(sample, CR, sysType, hist_, outputFile):
 # Do the rebining here
 #----------------------------------------
 for year, decay, spin, channel  in itertools.product(Years, Decays, Spin, Channels):
-    inDir = "%s/Merged/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, spin, channel)
+    inDir = "%s/Merged/%s/%s/%s/%s/CombMass/BDTA"%(dirRead, year, decay, spin, channel) #CR for control
     inFile = TFile.Open("root://cmseos.fnal.gov/%s/AllInc.root"%inDir, "read")
-    outDir = inDir.replace("Merged", "Rebin")
+    #outDir = inDir.replace("Merged", "Paper_Rebin") #Rebin changed to Paper temporary
+    outDir = inDir.replace("Merged", "Rebin") #Rebin changed to Paper temporary
     print(outDir)
     #os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir)
     #os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir)
-    os.system("rm -r /eos/uscms/%s"%outDir)
+    #os.system("rm -r /eos/uscms/%s"%outDir)
     os.system("mkdir -p /eos/uscms/%s"%outDir)
     outputFile = TFile("/eos/uscms/%s/AllInc.root"%outDir,"update")
     for r in rList:
         print("==> %s, %s, %s, %s"%(year, decay, channel, r))
         hists = list(GetVarInfo(r, channel).keys())
-        hists.append('Disc')
+       # hists.append('Disc')
         if isCheck:
             print(inFile)
-        hists = ["Disc", "Reco_mass_T"]
+       # hists = ["Disc", "Reco_mass_T"]
+        hists = ["Disc"] #was Disc
         if isComb:
             split_year = year.split("__")
             syst_Comb = []
             for y in split_year:
-                syst_Comb.append(systVar_by_year[y])    
-            sysList = list(np.unique(syst_Comb))            
-        else:    
+                syst_Comb.append(systVar_by_year[y])
+            sysList = list(np.unique(syst_Comb))
+            #for s, y in itertools.product(sysList, split_year):
+               # if "2016" in s:
+               #     s = s.replace("2016", "%s"%y)
+               # if "JER" in s:
+               #     s = s.replace("JER", "JER_%s"%y)
+        else:
             sysList = systVar_by_year[year]
         sysList.append("JetBase")
         for s, h, syst, in itertools.product(Samples, hists, sysList):
@@ -145,11 +183,14 @@ for year, decay, spin, channel  in itertools.product(Years, Decays, Spin, Channe
             histDir = getHistDir(s, r, syst)
             print(histDir, h)
             h4 = inFile.Get("%s/%s"%(histDir, h))
+            if h4 and isSignalSample(s):
+                h4 = h4.Clone()
+                h4.Scale(SIGNAL_SCALE)
 
             if "2016" in syst:
                 syst = syst.replace("2016", "%s"%year)
             if "JER" in syst:
-                syst = syst.replace("JER", "JER_%s"%year)    
+                syst = syst.replace("JER", "JER_%s"%year)
 
             writeHist(s, r, syst, h4, outputFile)
             if "MisID_" in r and "mass_lgamma" in h:
@@ -158,6 +199,9 @@ for year, decay, spin, channel  in itertools.product(Years, Decays, Spin, Channe
                 for cat in phoCat.keys():
                     newName = "%s_%s"%(h, cat)
                     hNew = inFile.Get("%s/%s"%(histDir, newName))
+                    if hNew and isSignalSample(s):
+                        hNew = hNew.Clone()
+                        hNew.Scale(SIGNAL_SCALE)
                     writeHist(s, r, syst, hNew, outputFile)
     #print(outputFile.ls())
     outputFile.Close()

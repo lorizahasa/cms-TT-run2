@@ -19,7 +19,7 @@ parser.add_option("-d", "--decay", dest="decayMode", default="Semilep",type='str
                      help="Specify which decay moded of ttbar Semilep or Dilep? default is Semilep")
 parser.add_option("-c", "--channel", dest="channel", default="Mu",type='str',
                      help="Specify which channel Mu or Ele? default is Mu" )
-parser.add_option("-s", "--sample", dest="sample", default="Signal_M800",type='str',
+parser.add_option("-s", "--sample", dest="sample", default="SignalSpin32_M800",type='str',
                      help="Specify which sample to run on" )
 parser.add_option("-r", "--region", dest="region", default="tty_Enriched_le4j_a1b_e1y",type='str', 
                      help="which control selection and region"), 
@@ -76,9 +76,9 @@ outFileMainDir = "./hists"
 gROOT.SetBatch(True)
 isQCD = False
 
-histDirInFile = "%s/%s/Base"%(sample, region)
+histDirInFile = "%s/%s/JetBase"%(sample, region)
 if "Data" in sample:
-    histDirInFile = "data_obs/%s/Base"%(region)
+    histDirInFile = "data_obs/%s/JetBase"%(region)
 sample_ = sample
 if isData or "QCD" in sample:
     sample_ = "%s%s"%(sample, channel)
