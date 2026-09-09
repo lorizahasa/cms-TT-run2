@@ -77,6 +77,8 @@ class EventTree{
     Int_t    nGoodVtx_;
     Int_t   passTrigMu_;
     Int_t   passTrigEle_;
+    Int_t passTrigMuTable9_;
+    Int_t passTrigEleTable9_;
 
     // Electron
     UInt_t          nEle_;

@@ -429,6 +429,9 @@ makeNtuple::makeNtuple(int ac, char** av)
 
     selector = new Selector();
     evtPick = new EventPick("");
+    // Use the dedicated trigger OR documented in Table 9. The expanded
+    // skim trigger flags remain available for validation.
+    evtPick->useTable9Triggers = true;
     selector->year = year;
     evtPick->year = year;
     selector->printEvent = eventNum;
@@ -553,32 +556,104 @@ makeNtuple::makeNtuple(int ac, char** av)
     // char outputFileName[100];
     cout << av[3] << " " << sampleType << " " << systematicType << endl;
     cout << outputDirectory<<"/"<<outputFileName << endl;
-    TFile *outputFile = new TFile(outputFileName.c_str(),"recreate");
-    outputTree = new TTree("AnalysisTree","AnalysisTree");
-    outputTree->SetCacheSize(50*1024*1024);
     cout << "HERE" << endl;
     tree->GetEntry(0);
     std::cout << "isMC: " << isMC << endl;
 
-    InitBranches();
     JECvariation* jecvar;
     if (isMC && runSystJES) {
 	    cout << "Applying JEC uncertainty variations : " << systVar << endl;
 	    jecvar = new JECvariation();
     }
 
-    double nMC_total = 0.;
+    //double nMC_total = 0.;
+    double genEventCountTotal = 1.0;
+    double genEventSumwTotal = 1.0;
+    _normGenEventSumw = 1.0;
     char** fileNames = av+4;
-    for(int fileI=0; fileI<ac-4; fileI++){
-        cout << fileNames[fileI] << endl;
-        TFile *_file = TFile::Open(fileNames[fileI],"read");
-        TH1F *hEvents = (TH1F*) _file->Get("hEvents");
-        nMC_total += (hEvents->GetBinContent(2)); 
+    const bool needsMCNormalization =
+        isMC && sampleType != "Test" && sampleType != "TestAll" &&
+        sampleType != "TestFull";
+
+    if (needsMCNormalization){
+        genEventCountTotal = 0.0;
+        genEventSumwTotal = 0.0;
+    // Deliberately use every skim file passed to the full sample, not
+        // only fileList for this split ntuple job. Every split ntuple job
+        // must use the same full-sample normalization denominator.
+        for (int fileI = 0; fileI < ac-4; ++fileI){
+            cout << fileNames[fileI] << endl;
+            TFile* inputFile = TFile::Open(fileNames[fileI], "READ");
+
+            if (!inputFile || inputFile->IsZombie()){
+                cerr << "ERROR: cannot open skim file while reading "
+                     << "genEventSumw: " << fileNames[fileI] << endl;
+                if (inputFile) delete inputFile;
+                return;
+            }
+
+            TH1* hGenEventSumw = dynamic_cast<TH1*>(
+                inputFile->Get("hGenEventSumw")
+            );
+            TH1* hGenEventCount = dynamic_cast<TH1*>(
+                inputFile->Get("hGenEventCount")
+            );
+            if (!hGenEventSumw || !hGenEventCount){
+                cerr << "ERROR: hGenEventSumw or hGenEventCount is missing from "
+                     << fileNames[fileI] << endl;
+                inputFile->Close();
+                delete inputFile;
+                return;
+            }
+
+            genEventCountTotal += hGenEventCount->GetBinContent(1);
+            genEventSumwTotal += hGenEventSumw->GetBinContent(1);
+            inputFile->Close();
+            delete inputFile;
+        }
+
+        if (!std::isfinite(genEventCountTotal) ||
+            !std::isfinite(genEventSumwTotal) ||
+            genEventCountTotal <= 0.0 ||
+            std::abs(genEventSumwTotal) < 1.0e-12){
+            cerr << "ERROR: invalid full-sample generator metadata: "
+                 << "genEventCount=" << genEventCountTotal
+                 << ", genEventSumw=" << genEventSumwTotal << endl;
+            return;
+        }
+
+        // Average nominal generator weight for the full sample.
+        _normGenEventSumw = genEventSumwTotal / genEventCountTotal;
+
+        cout << std::setprecision(15)
+             << "Full-sample genEventCount = " << genEventCountTotal << endl
+             << "Full-sample genEventSumw  = " << genEventSumwTotal << endl
+             << "Average genWeight         = " << _normGenEventSumw << endl;
     }
-    if (nMC_total==0){
-	    nMC_total=1;
+
+    // Create the output only after all required normalization metadata has
+    // been validated, so a failed job cannot leave an empty/partial ntuple.
+    TFile* outputFile = TFile::Open(outputFileName.c_str(), "RECREATE");
+    if (!outputFile || outputFile->IsZombie()){
+        cerr << "ERROR: cannot create output file: "
+             << outputFileName << endl;
+        if (outputFile) delete outputFile;
+        return;
     }
-    _lumiWeight = getEvtWeight(sampleType, lumiValues[year], nMC_total);
+
+    outputTree = new TTree("AnalysisTree", "AnalysisTree");
+    outputTree->SetCacheSize(50*1024*1024);
+    InitBranches();
+
+   // if (nMC_total==0){
+	//    nMC_total=1;
+   // }
+   // _lumiWeight = getEvtWeight(sampleType, lumiValues[year], nMC_total);
+    _lumiWeight = getEvtWeight(
+        sampleType,
+        lumiValues[year],
+        genEventCountTotal
+    );
     if(_lumiWeight < 0){
         cout<< "Negative Lumi Weight: "<<_lumiWeight<<endl;}
     Long64_t nEntr = tree->GetEntries();
@@ -1022,7 +1097,10 @@ void makeNtuple::FillEvent(std::string year){
     _lumis           = tree->lumis_;
     _isData	         = !isMC;
     if (isMC){
-	    _genWeight       = tree->genWeight_/abs(tree->genWeight_); 
+        // Normalize the event-level generator weight by the full-sample
+        // average: genWeight / (genEventSumw / genEventCount).
+        _genWeight       = tree->genWeight_ / _normGenEventSumw;
+	    //_genWeight       = tree->genWeight_/abs(tree->genWeight_);
         _evtWeight       = _lumiWeight * _genWeight;
         if(_evtWeight< 0){
             std::cout<<"Negative Weight:"<<_evtWeight<<std::endl;
@@ -1031,11 +1109,12 @@ void makeNtuple::FillEvent(std::string year){
             std::cout<<"Lumi Weight: "<<_lumiWeight<<std::endl;
         }
         if(_inHEMVeto){
-            _evtWeight = _evtWeight*(1-0.3518);
+            _evtWeight = _evtWeight*0.3518; //this is fixed
         }
     }
     else{
 	    _evtWeight= 1.;
+        _genWeight= 1.;
     }
 
     _pfMET		     = tree->MET_pt_;

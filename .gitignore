@@ -8,11 +8,16 @@ Ntuple_Skim/tmp_120
 
 Ntuple_Skim/weight/EGM/
 Ntuple_Skim/weight/MUO/
+Ntuple_Skim/validation*
 
 Skim_NanoAOD/makeSkim
 Skim_NanoAOD/sample/tmp/
 Skim_NanoAOD/sample/FilesNano_cff.sh
 Skim_NanoAOD/sample/JobsNano_cff.py
+Skim_NanoAOD/*.csv
+Skim_NanoAOD/validat*
+Skim_NanoAOD/old*
+
 Ntuple_Skim/makeNtuple
 Ntuple_Skim/sample/FilesSkim_cff.sh
 Ntuple_Skim/check_all_root_files.py

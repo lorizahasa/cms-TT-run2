@@ -26,8 +26,19 @@ void EventPick::processEvent(EventTree* tree, Selector* selector) {
     selector->processObjects(tree);
 
     // Apply trigger and primary vertex cuts.
-    passPreselMu  = passPreselMu  && tree->passTrigMu_  && tree->nGoodVtx_;
-    passPreselEle = passPreselEle && tree->passTrigEle_ && tree->nGoodVtx_;
+   // passPreselMu  = passPreselMu  && tree->passTrigMu_  && tree->nGoodVtx_;
+   // passPreselEle = passPreselEle && tree->passTrigEle_ && tree->nGoodVtx_;
+    // Select either the Table 9 or expanded skim trigger decision.
+    const bool passMuTrigger = useTable9Triggers
+        ? static_cast<bool>(tree->passTrigMuTable9_)
+        : static_cast<bool>(tree->passTrigMu_);
+
+    const bool passEleTrigger = useTable9Triggers
+        ? static_cast<bool>(tree->passTrigEleTable9_)
+        : static_cast<bool>(tree->passTrigEle_);
+
+    passPreselMu = passPreselMu && passMuTrigger && tree->nGoodVtx_;
+    passPreselEle = passPreselEle && passEleTrigger && tree->nGoodVtx_;
     cutFlowMu[0] = passPreselMu;
     cutFlowEle[0] = passPreselEle;
 

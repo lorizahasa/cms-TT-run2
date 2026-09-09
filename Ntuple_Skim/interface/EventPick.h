@@ -39,6 +39,10 @@ public:
     int nEleEq{1};
     int nPhoEq{1};
 
+    // Select which trigger decision is used by the Ntuple preselection.
+    // The skim retains both definitions for validation.
+    bool useTable9Triggers{false};
+
     int nLooseMuVetoLe{0};
     int nLooseEleVetoLe{0};
 

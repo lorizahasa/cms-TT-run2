@@ -217,7 +217,7 @@ void initCrossSections(){
     return;
 }
 
-double getEvtWeight(string sampleType, double luminosity, double nEvents_MC){
+double getEvtWeight(string sampleType, double luminosity, double genEventCount){
     double evtWeight = -1.;
     if( sampleType.substr(0,4)=="Data") {evtWeight = 1.;}
     else if( sampleType=="Test") {evtWeight = 1.;}
@@ -226,7 +226,8 @@ double getEvtWeight(string sampleType, double luminosity, double nEvents_MC){
     else {
 	//	initCrossSections();
 	if (crossSections.find(sampleType) != crossSections.end()) {
-	    evtWeight = crossSections[sampleType][0] * luminosity / nEvents_MC;
+    //evtWeight = crossSections[sampleType][0] * luminosity / nEvents_MC;
+	    evtWeight = crossSections[sampleType][0] * luminosity / genEventCount;
 	}
 	else {
 	    cout << "-------------------------------------------------" << endl;
@@ -238,9 +239,9 @@ double getEvtWeight(string sampleType, double luminosity, double nEvents_MC){
 	}
     }
     cout << "Using event weight " << evtWeight << endl;
-    cout << "XS = " << evtWeight/luminosity*nEvents_MC << endl;
+    cout << "XS = " << evtWeight/luminosity*genEventCount<< endl;
     cout << "lumi = " << luminosity << endl;
-    cout << "nEvents_NanoAOD = " << nEvents_MC << endl;
+    cout << "genEventCount = " << genEventCount << endl;
     
     return evtWeight;
 }

@@ -33,6 +33,10 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     chain->SetBranchAddress("passTrigMu",&passTrigMu_);
     chain->SetBranchStatus("passTrigEle",1);
     chain->SetBranchAddress("passTrigEle",&passTrigEle_);
+    chain->SetBranchStatus("passTrigMuTable9", 1);
+    chain->SetBranchAddress("passTrigMuTable9",&passTrigMuTable9_);
+    chain->SetBranchStatus("passTrigEleTable9", 1);
+    chain->SetBranchAddress("passTrigEleTable9",&passTrigEleTable9_);
 
     if (!isData_){
 	chain->SetBranchStatus("Pileup_nPU",1);
@@ -402,7 +406,7 @@ EventTree::EventTree(int nFiles, bool xRootDAccess, string year, bool isData, ch
     im27    = "HLT_IsoMu27"   ;
     m50     = "HLT_Mu50"      ;
     tm50    = "HLT_TkMu50"    ;
-    m100    = "HLT_Mu100"     ;
+    m100    = "HLT_OldMu100"     ;
     tm100   = "HLT_TkMu100"   ;
     if (year.find("2016")!=std::string::npos){
         chain->SetBranchStatus(im24 , 1);

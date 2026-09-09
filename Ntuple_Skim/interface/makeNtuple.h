@@ -173,6 +173,7 @@ class makeNtuple {
 
     Float_t  _evtWeight;
     Float_t  _lumiWeight;
+    Double_t _normGenEventSumw;
 
     Float_t  _pfMET;
     Float_t  _pfMETPhi;

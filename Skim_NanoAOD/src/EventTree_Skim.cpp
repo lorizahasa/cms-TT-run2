@@ -1,4 +1,5 @@
 #include<iostream>
+#include <stdexcept>
 #include "../interface/EventTree_Skim.h"
 
 EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bool isMC){
@@ -24,25 +25,49 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
                 cout << singleFile << "  " << chain->GetEntries() << endl;
             }
             else{
-                TFile* fCheck = TFile::Open((dir+fName).c_str());
+                const string fullPath = dir + fName;
+                TFile* fCheck = TFile::Open((dir+fName).c_str(), "READ");
                 if(!fCheck || fCheck->IsZombie() || fCheck->GetSize()<100){
                     cout<<"fCheck: issue with file: "<<dir+fName<<endl;
+                    if (fCheck){
+                        delete fCheck;
+                        fCheck = nullptr;
+                    }
                     continue;
                 }
                 if(!fCheck->GetListOfKeys()->Contains("Events")){
                     cout<<"fCheck: issue with tree Events: "<<dir+fName<<endl;
+                    delete fCheck;
+                    fCheck = nullptr;
                     continue;
                 }
-                fCheck->Close();
-                chain->Add( (dir + fName).c_str());
-                cout << dir+fName << "  " << chain->GetEntries() << endl;
+                //fCheck->Close();
+                // Deleting TFile closes the remote file and removes the
+                // object from ROOT's list of open files.
+                delete fCheck;
+                fCheck = nullptr;
+
+                if (chain->Add(fullPath.c_str()) == 0){
+                    throw std::runtime_error( "ERROR: could not add file to TChain: " + fullPath);
+                }
+
+                cout << fullPath << "  " << chain->GetEntries() << endl;
+                //chain->Add( (dir + fName).c_str());
+                //cout << dir+fName << "  " << chain->GetEntries() << endl;
             }
         }
     }
     else{
         for(int fileI=0; fileI<nFiles; fileI++){
-            chain->Add(fileNames[fileI].c_str());
-            cout <<fileNames[fileI]<<endl;
+            const string& fullPath = fileNames[fileI];
+            if (chain->Add(fullPath.c_str()) == 0){
+                cout << "ERROR: could not add file to TChain: "
+                     << fullPath << endl;
+                continue;
+            }
+            cout << "Added file: " << fullPath << endl;
+            //chain->Add(fileNames[fileI].c_str());
+            //cout <<fileNames[fileI]<<endl;
         }
     }
     std::cout << "Begin" << std::endl;
@@ -245,18 +270,19 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
     //https://twiki.cern.ch/twiki/bin/view/CMS/MuonHLT2018
     std::cout << "Triggers" << std::endl;
     TString  im24, itm24, im27, m50, tm50, m100, tm100;
-    TString  e27, e32, e32D, e115, e45j200, e50j165, p175, p200;
+    TString  e27, e32, e32D, e35, e115, e45j200, e50j165, p175, p200;
     im24    = "HLT_IsoMu24"   ;
     itm24   = "HLT_IsoTkMu24" ;
     im27    = "HLT_IsoMu27"   ;
     m50     = "HLT_Mu50"      ;
     tm50    = "HLT_TkMu50"    ;
-    m100    = "HLT_Mu100"     ;
+    m100    = "HLT_OldMu100"     ;
     tm100   = "HLT_TkMu100"   ;
     
     e27     = "HLT_Ele27_WPTight_Gsf"                         ;
     e32     = "HLT_Ele32_WPTight_Gsf"                         ;
     e32D    = "HLT_Ele32_WPTight_Gsf_L1DoubleEG"              ;
+    e35     = "HLT_Ele35_WPTight_Gsf"                         ;
     e115    = "HLT_Ele115_CaloIdVT_GsfTrkIdT"                 ;
     e45j200 = "HLT_Ele45_CaloIdVT_GsfTrkIdT_PFJet200_PFJet50" ;
     e50j165 = "HLT_Ele50_CaloIdVT_GsfTrkIdT_PFJet165"         ;
@@ -290,6 +316,7 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
         chain->SetBranchStatus(m100 , 1);
         chain->SetBranchStatus(tm100, 1);
         chain->SetBranchStatus(e32D    , 1);
+        chain->SetBranchStatus(e35     , 1);
         chain->SetBranchStatus(e115    , 1);
         chain->SetBranchStatus(e50j165, 1);
         chain->SetBranchStatus(p200, 1);
@@ -299,6 +326,7 @@ EventTree::EventTree(bool xRootDAccess, string year, vector<string>fileNames, bo
         chain->SetBranchAddress(m100 , &m100_);
         chain->SetBranchAddress(tm100, &tm100_);
         chain->SetBranchAddress(e32D    , &e32_);
+        chain->SetBranchAddress(e35     , &e35_);
         chain->SetBranchAddress(e115    , &e115_);
         chain->SetBranchAddress(e50j165, &e50j165_);
         chain->SetBranchAddress(p200   , &p200_);
