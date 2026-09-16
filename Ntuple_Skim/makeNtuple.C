@@ -408,10 +408,10 @@ makeNtuple::makeNtuple(int ac, char** av)
    
     std::map<std::string, string> lumiJSON;
     string comJSON = "weight/LumiJSON/";
-    lumiJSON["2016Pre"]     = comJSON+"Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt";
-    lumiJSON["2016Post"]    = comJSON+"Cert_271036-284044_13TeV_ReReco_07Aug2017_Collisions16_JSON.txt";
-    lumiJSON["2017"]        = comJSON+"Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt";
-    lumiJSON["2018"]        = comJSON+"Cert_314472-325175_13TeV_17SeptEarlyReReco2018ABC_PromptEraD_Collisions18_JSON.txt";
+    lumiJSON["2016Pre"]     = comJSON+"Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt";
+    lumiJSON["2016Post"]    = comJSON+"Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt";
+    lumiJSON["2017"]        = comJSON+"Cert_294927-306462_13TeV_UL2017_Collisions17_GoldenJSON.txt";
+    lumiJSON["2018"]        = comJSON+"Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt";
 	lumiMask = new LumiMask(lumiJSON[year]);
 
     //--------------------------
@@ -441,7 +441,9 @@ makeNtuple::makeNtuple(int ac, char** av)
 
     bool applyHemVeto=true; 
     selector->looseJetId = false;
-    if (sampleType.find("Signal") != std::string::npos){
+    const bool isSignalSample = sampleType.find("Signal") != std::string::npos;
+    const bool makeChannelCutflow = isSignalSample && semilepSel;
+    if (isSignalSample){
 	selector->isSignal = true;
     }
     //FIXME//Use different UL samples for these
@@ -736,6 +738,30 @@ makeNtuple::makeNtuple(int ac, char** av)
     hCutflow->GetXaxis()->SetBinLabel(8, "MET / selected");
     hCutflow->Sumw2();
 
+    TH1D* hCutflowEle = nullptr;
+    TH1D* hCutflowMu = nullptr;
+    if (makeChannelCutflow){
+        hCutflowEle = new TH1D("hCutflowEle", "Cumulative Semilep electron-channel cutflow", 8, 0.5, 8.5);
+        hCutflowMu = new TH1D("hCutflowMu", "Cumulative Semilep muon-channel cutflow", 8, 0.5, 8.5);
+
+        const char* channelCutflowLabels[8] = {
+            "Input",
+            "Overlap filter",
+            "HEM veto",
+            "Lumi mask",
+            "Trigger + PV",
+            "Tight lepton",
+            "Loose lepton veto",
+            "MET / Ntuple selected"
+        };
+        for (int bin = 1; bin <= 8; ++bin){
+            hCutflowEle->GetXaxis()->SetBinLabel(bin, channelCutflowLabels[bin - 1]);
+            hCutflowMu->GetXaxis()->SetBinLabel(bin, channelCutflowLabels[bin - 1]);
+        }
+        hCutflowEle->Sumw2();
+        hCutflowMu->Sumw2();
+    }
+
     cout << "Processing events "<<startEntry<< " to " << endEntry << endl;
     std::cout<<"nEvents_Skim = "<<endEntry<<endl;
     std::cout<<"---------------------------"<<std::endl;
@@ -746,6 +772,10 @@ makeNtuple::makeNtuple(int ac, char** av)
     for(Long64_t entry=startEntry; entry<endEntry; entry++){
         hCount->Fill(1);
         hCutflow->Fill(1);
+        if (makeChannelCutflow){
+            hCutflowEle->Fill(1);
+            hCutflowMu->Fill(1);
+        }
         hEvents_->Fill(0);
         //if(entry>10000) break;;
         //cout<<entry<<endl;
@@ -834,14 +864,24 @@ makeNtuple::makeNtuple(int ac, char** av)
         	continue;
         }
         hCutflow->Fill(2);
+        if (makeChannelCutflow){
+            hCutflowEle->Fill(2);
+            hCutflowMu->Fill(2);
+        }
         if( isMC && doOverlapInvert_TTG && lowPtTTGamma){
-            // remove events with LHEPart photon with pt>100 
-            //GeV to avoid double counting with high pt samples
+            // Remove events with an LHE photon in the phase space covered by
+            // the high-pT samples to avoid double counting.
+            bool highPtPhoton = false;
             for (int lheind = 0; lheind < tree->nLHEPart_; lheind++){
-                if (tree->LHEPart_pdgId_[lheind]==22 && tree->LHEPart_pt_[lheind]>100.){
-                    hCount->Fill(5);
-                    continue;
+                if (tree->LHEPart_pdgId_[lheind] == 22 &&
+                    tree->LHEPart_pt_[lheind] >= 100.){
+                    highPtPhoton = true;
+                    break;
                 }
+            }
+            if (highPtPhoton){
+                hCount->Fill(5);
+                continue;
             }
         }
 
@@ -890,6 +930,10 @@ makeNtuple::makeNtuple(int ac, char** av)
             continue; 
         }
         hCutflow->Fill(3);
+        if (makeChannelCutflow){
+            hCutflowEle->Fill(3);
+            hCutflowMu->Fill(3);
+        }
 
         //--------------------------
         //Apply lumi Mask 
@@ -903,6 +947,10 @@ makeNtuple::makeNtuple(int ac, char** av)
             }
         }
         hCutflow->Fill(4);
+        if (makeChannelCutflow){
+            hCutflowEle->Fill(4);
+            hCutflowMu->Fill(4);
+        }
 
         //--------------------------
         //Process events
@@ -913,8 +961,17 @@ makeNtuple::makeNtuple(int ac, char** av)
         selector->clearVectors();
         evtPick->processEvent(tree, selector);
         for (size_t cut = 0; cut < evtPick->cutFlowMu.size(); ++cut) {
+            const double bin = static_cast<double>(cut + 5);
             if (evtPick->cutFlowMu[cut] || evtPick->cutFlowEle[cut]) {
-                hCutflow->Fill(static_cast<double>(cut + 5));
+                hCutflow->Fill(bin);
+            }
+            if (makeChannelCutflow){
+                if (evtPick->cutFlowEle[cut]){
+                    hCutflowEle->Fill(bin);
+                }
+                if (evtPick->cutFlowMu[cut]){
+                    hCutflowMu->Fill(bin);
+                }
             }
         }
         if (tree->event_==eventNum){
@@ -1075,6 +1132,10 @@ makeNtuple::makeNtuple(int ac, char** av)
 	hPassE  ->Write();
     hCount->Write();
     hCutflow->Write();
+    if (makeChannelCutflow){
+        hCutflowEle->Write();
+        hCutflowMu->Write();
+    }
 
    /* 
     TNamed gitCommit("Git_Commit", VERSION);
@@ -1096,7 +1157,9 @@ void makeNtuple::FillEvent(std::string year){
     _event           = tree->event_;
     _lumis           = tree->lumis_;
     _isData	         = !isMC;
+    _nGoodVtx        = tree->nGoodVtx_;
     if (isMC){
+        _nPUTrue         = tree->nPUTrue_;
         // Normalize the event-level generator weight by the full-sample
         // average: genWeight / (genEventSumw / genEventCount).
         _genWeight       = tree->genWeight_ / _normGenEventSumw;

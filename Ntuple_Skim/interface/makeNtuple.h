@@ -89,6 +89,8 @@ class makeNtuple {
     Long64_t _event;
     Int_t    _lumis;
     Bool_t   _isData;
+    Int_t    _nGoodVtx;
+    Float_t  _nPUTrue;
 
     Float_t  _PUweight;
     Float_t  _PUweight_Up;
@@ -371,6 +373,8 @@ void makeNtuple::InitBranches(){
     outputTree->Branch("Event_number"   , &_event );
     outputTree->Branch("Event_lumi"     , &_lumis );
     outputTree->Branch("Event_is_data"  , &_isData ); 
+    outputTree->Branch("PV_npvsGood"    , &_nGoodVtx );
+    outputTree->Branch("Pileup_nTrueInt", &_nPUTrue );
     outputTree->Branch("Event_pass_presel_ele", &_passPresel_Ele ); 
     outputTree->Branch("Event_pass_presel_mu" , &_passPresel_Mu);
     outputTree->Branch("Event_pass_hem_veto"  , &_inHEMVeto );
@@ -568,6 +572,8 @@ void makeNtuple::InitVariables()
     _event    = -9;
     _lumis	  = -9;
     _isData	   = false;
+    _nGoodVtx = -1;
+    _nPUTrue  = -1.;
     
     _PUweight = 1.;
     _PUweight_Up = 1.;
@@ -792,4 +798,3 @@ void makeNtuple::InitVariables()
 
 
 #endif
-

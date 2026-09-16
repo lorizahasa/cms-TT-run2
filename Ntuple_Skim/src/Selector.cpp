@@ -106,14 +106,14 @@ void Selector::filterMuons() {
         double pt  = tree->muPt_[m];
         // Loose muon selection
         bool looseMuonID = tree->muIsPFMuon_[m] && (tree->muIsTracker_[m] || tree->muIsGlobal_[m]);
-        bool passLoose   = (pt >= 15.0 &&
+        bool passLoose   = (pt >= 30.0 &&
                             std::abs(eta) <= 2.4 &&
                             looseMuonID &&
                             (int)tree->muTkIsoId_[m] == 1);
 
-        // Prompt (medium) muon selection for pt > 30 GeV
+        // Prompt (medium) muon selection for pt > 55 GeV
         bool passPrompt = false;
-        if (pt > 30.0) {
+        if (pt >= 55.0) {
             passPrompt = (std::abs(eta) <= 2.4 &&
                           (int)tree->muTkIsoId_[m] == 2 && // 2 for tight (medium)
                           tree->muHighPurity_[m] &&
