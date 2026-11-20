@@ -1,0 +1,14 @@
+# Local studies, archives, tests, and validation runs
+/archive/
+/local_runs/
+/studies/
+/tests/
+/validation*/
+
+# Generated outputs and build products
+/makeSkim
+*.root
+*.o
+*.log
+*.csv
+__pycache__/

@@ -63,7 +63,7 @@ if __name__=="__main__":
             if fileList=='':
                 print ("PROBLEM: %s \n"%sample)
                 continue
-            nFiles = len(fileList.split(" "))
+            nFiles = len(fileList.split())
             evt     = getEvents(sample)[0]
             evtStr  = getEvents(sample)[1]
             evtPerJob = 5e6 #5 million

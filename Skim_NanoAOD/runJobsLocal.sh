@@ -1,8 +1,13 @@
 #!/bin/bash
 source sample/FilesNano_cff.sh
 
-# Number of parallel jobs to run
-num_parallel=5
+# Each RDF skim uses four threads by default. Opt in to more concurrent skims
+# only when enough CPUs and memory are available.
+num_parallel=${SKIM_MAX_PARALLEL:-1}
+if [[ ! $num_parallel =~ ^[1-9][0-9]*$ ]]; then
+    echo "SKIM_MAX_PARALLEL must be a positive integer" >&2
+    exit 2
+fi
 
 # File containing the commands for each job
 commands_file="condor/tmpSub/localResubmitJobs.txt"

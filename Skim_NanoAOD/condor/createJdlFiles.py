@@ -1,6 +1,8 @@
 import os
 import sys
 import itertools
+from pathlib import Path
+import tarfile
 sys.dont_write_bytecode = True
 
 #IMPORT MODULES FROM OTHER DIR
@@ -16,14 +18,26 @@ os.system("mkdir -p tmpSub/log")
 print("Created dir: tmpSub")
 condorLogDir = "log"
 tarFile = "tmpSub/Skim_NanoAOD.tar.gz"
-os.system("tar -zcvf %s ../../Skim_NanoAOD --exclude condor"%tarFile)
+# Package only production inputs, never local ROOT outputs or archived studies.
+skim_dir = Path(__file__).resolve().parents[1]
+with tarfile.open(tarFile, "w:gz") as archive:
+    def production_member(member):
+        if "__pycache__" in Path(member.name).parts or member.name.endswith(".pyc"):
+            return None
+        return member
+    for name in ("makeSkim", "makeSkim.C", "Makefile", "SkimInputs.py",
+                 "interface/SkimBranchConfig.h", "sample"):
+        archive.add(str(skim_dir / name), arcname="Skim_NanoAOD/" + name,
+                    filter=production_member)
 os.system("cp runMakeSkims.sh tmpSub/")
 common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
 Transfer_Input_Files = Skim_NanoAOD.tar.gz, runMakeSkims.sh\n\
-x509userproxy        = /uscms/home/rverma/x509up_u56634\n\
+x509userproxy        = /uscms/home/lhasa/x509up_u54210\n\
+request_memory= 9216 \n\
+request_cpus= 4 \n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
 Error  = %s/log_$(cluster)_$(process).stderr\n\n'%(condorLogDir, condorLogDir)
 #use_x509userproxy = true\n\

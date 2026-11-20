@@ -1,9 +1,13 @@
-all: src/EventTree_Skim.o  makeSkim 
-makeSkim:   src/EventTree_Skim.o  makeSkim.C
-	g++ -o makeSkim `root-config --libs` -I `root-config --incdir` -std=c++17 src/EventTree_Skim.o  makeSkim.C 
+CXX = g++
+ROOT_CFLAGS := $(shell root-config --cflags)
+ROOT_LIBS := $(shell root-config --libs)
+CXXFLAGS ?= -O2 -Wall -Wextra
 
-src/EventTree_Skim.o: src/EventTree_Skim.cpp interface/EventTree_Skim.h
-	g++ -c -I `root-config --incdir` -std=c++17 src/EventTree_Skim.cpp -o src/EventTree_Skim.o
+.PHONY: all clean
+all: makeSkim
+
+makeSkim: makeSkim.C interface/SkimBranchConfig.h
+	$(CXX) $(ROOT_CFLAGS) $(CXXFLAGS) -std=c++17 $< -o $@ $(ROOT_LIBS)
 
 clean:
-	rm src/*.o 
+	rm -f makeSkim
