@@ -1,8 +1,10 @@
-# Skim NanoAOD changes
+# Skim NanoAOD RDF cleanup summary
 
 ## Clean Skim_NanoAOD production with RDataFrame
 
 Changes relative to `79fb8d0`:
+
+Implementation: [0f569e6](https://github.com/lorizahasa/cms-TT-run2/tree/0f569e693013d17442c7e91fd2023a1781759acd/Skim_NanoAOD).
 
 - Replace the manual event loop and reader with one RDataFrame skimmer,
   using four threads by default.
@@ -24,7 +26,7 @@ Validation: a fresh run on all 13 original files of the 2017 spin-1/2,
 Table 9 events, 127 retained branches, and generator counters matched the old
 output; the 2,023 events passing only the expanded trigger OR were removed.
 All 204,394,113 compared values matched. Test and validation artifacts remain
-local and are excluded from this commit.
+local and are excluded from Git.
 
 Compatibility: the current downstream ntuple reader still expects the removed
 expanded flags and trigger histograms. It needs a separate compatibility update

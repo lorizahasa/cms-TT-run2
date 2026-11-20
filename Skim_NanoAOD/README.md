@@ -83,4 +83,5 @@ skim files for ntuple production. Existing skim ROOT files are unchanged.
 
 This directory tracks production code and documentation. Tests, studies,
 archives, and generated local outputs are kept locally and excluded from Git.
-See [CHANGELOG.md](CHANGELOG.md) for the summary and validation result.
+See the [change summary](../commit/SKIM_NANOAOD_RDF_CLEANUP_SUMMARY.md) for the
+changes and validation result.
