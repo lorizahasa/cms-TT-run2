@@ -4,6 +4,8 @@
 /studies/
 /tests/
 /validation*/
+/normalization/
+/condor/tmpSub_*/
 
 # Generated outputs and build products
 /makeSkim
@@ -12,3 +14,4 @@
 *.log
 *.csv
 __pycache__/
+/sample/.getFiles.lock

@@ -3,12 +3,14 @@
 #include "interface/SkimBranchConfig.h"
 #include <TBranch.h>
 #include <TFile.h>
+#include <TFileMerger.h>
 #include <TH1D.h>
 #include <TH1F.h>
 #include <TLeaf.h>
 #include <TTree.h>
 
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <cmath>
 #include <filesystem>
@@ -121,9 +123,15 @@ bool matches(const std::string& name, const Strings& columns) {
     return std::find(columns.begin(), columns.end(), name) != columns.end();
 }
 
+struct InputGroup {
+    Strings files, triggers;
+    Long64_t events = 0;
+};
+
 struct Inputs {
     Strings columns;
     std::map<std::string, std::string> schema;
+    std::vector<InputGroup> groups;
     Long64_t events = 0, genCount = 0;
     double genSumw = 0.;
 };
@@ -131,6 +139,9 @@ struct Inputs {
 Inputs inspect(const Options& o) {
     Inputs result;
     const auto patterns = branchPatterns(o.mc, o.year);
+    const auto optionalTriggers = SkimBranchConfig::triggerBranches(o.year);
+    std::map<std::string, std::string> physicsSchema;
+    bool first = true;
     for (const auto& path : o.inputs) {
         std::unique_ptr<TFile> f(TFile::Open(path.c_str(), "READ"));
         if (!f || f->IsZombie() || f->TestBit(TFile::kRecovered))
@@ -167,9 +178,41 @@ Inputs inspect(const Options& o) {
             auto* branch = static_cast<TBranch*>(object);
             if (matches(branch->GetName(), patterns)) add(branch);
         }
-        if (result.schema.empty()) { result.schema = schema; result.columns = columns; }
-        else if (result.schema != schema)
-            throw std::runtime_error("Selected branch schema differs between assigned inputs: " + path);
+        auto physics = schema;
+        Strings presentTriggers;
+        for (const auto& name : optionalTriggers) {
+            if (schema.count(name)) {
+                auto* leaf = events->GetLeaf(name.c_str());
+                if (!leaf || std::string(leaf->GetTypeName()) != "Bool_t" ||
+                    leaf->GetLeafCount() || leaf->GetLenStatic() != 1)
+                    throw std::runtime_error("Expected a scalar Bool_t trigger " + name + " in " + path);
+                presentTriggers.push_back(name);
+            }
+            physics.erase(name);
+        }
+        if (first) {
+            result.schema = schema; result.columns = columns; physicsSchema = physics;
+            first = false;
+        } else {
+            if (physicsSchema != physics)
+                throw std::runtime_error("Selected physics branch schema differs between assigned inputs: " + path);
+            for (const auto& name : columns) {
+                if (!result.schema.count(name)) {
+                    result.schema[name] = schema.at(name);
+                    result.columns.push_back(name);
+                } else if (result.schema.at(name) != schema.at(name)) {
+                    throw std::runtime_error("Selected branch type differs for " + name + " in " + path);
+                }
+            }
+        }
+        auto group = std::find_if(result.groups.begin(), result.groups.end(),
+            [&](const InputGroup& g) { return g.triggers == presentTriggers; });
+        if (group == result.groups.end()) {
+            result.groups.push_back({{}, presentTriggers, 0});
+            group = result.groups.end()-1;
+        }
+        group->files.push_back(path);
+        group->events += events->GetEntries();
         for (const auto& flag : {"passTrigMu", "passTrigEle", "passTrigMuTable9", "passTrigEleTable9"})
             if (events->GetBranch(flag)) throw std::runtime_error("Input is already a skim (contains " + std::string(flag) + ")");
         result.events += events->GetEntries();
@@ -230,6 +273,15 @@ void restoreEmptySchema(TFile& output, const Options& options, const Inputs& inp
     std::unique_ptr<TTree> empty(original->CloneTree(0));
     if (!empty) throw std::runtime_error("Cannot clone the empty Events schema");
     Int_t flags[2] = {};
+    // A mixed-input output retains the union of available HLT columns. Its
+    // first input can lack a trigger that exists in another input group.
+    std::map<std::string, Bool_t> missingTriggers;
+    for (const auto& name : input.columns) {
+        if (name.rfind("HLT_", 0) == 0 && !original->GetBranch(name.c_str())) {
+            missingTriggers[name] = false;
+            empty->Branch(name.c_str(), &missingTriggers[name], (name+"/O").c_str());
+        }
+    }
     const Strings names = {"passTrigMuTable9", "passTrigEleTable9"};
     for (std::size_t i = 0; i < names.size(); ++i)
         empty->Branch(names[i].c_str(), &flags[i], (names[i]+"/I").c_str());
@@ -237,19 +289,22 @@ void restoreEmptySchema(TFile& output, const Options& options, const Inputs& inp
     empty->ResetBranchAddresses();
 }
 
-void run(const Options& o, const std::string& temporary) {
-    const auto start = std::chrono::steady_clock::now();
+struct Counts {
+    ULong64_t total = 0, afterMultiplicity = 0, afterFilters = 0, saved = 0;
+    std::array<ULong64_t, 5> rejected{};
+};
+
+Counts processGroup(const Options& o, const InputGroup& group, const Strings& columns,
+                    const std::string& output) {
     const auto ts = triggers(o.year);
-    auto input = inspect(o);
-    const auto prepared = std::chrono::steady_clock::now();
-    if (o.threads > 1) ROOT::EnableImplicitMT(o.threads);
-    ROOT::RDataFrame df("Events", o.inputs);
+    ROOT::RDataFrame df("Events", group.files);
     Node node(df);
     std::set<std::string> triggerColumns(ts.mu.begin(), ts.mu.end());
     triggerColumns.insert(ts.ele.begin(), ts.ele.end());
     for (const auto& t : triggerColumns) {
-        if (!input.schema.count(t)) {
-            std::cerr << "WARNING: missing HLT branch " << t << "; its decision is false" << std::endl;
+        if (!matches(t, group.triggers)) {
+            std::cerr << "WARNING: missing HLT branch " << t << " in input group beginning with "
+                      << group.files.front() << "; its decision is false" << std::endl;
             node = node.Define(t, [] { return false; });
         }
     }
@@ -271,8 +326,6 @@ void run(const Options& o, const std::string& temporary) {
     auto afterFilters = filtered.Count();
     auto selected = filtered.Filter("passTrigMuTable9 || passTrigEleTable9", "Table 9 trigger OR");
     auto saved = selected.Count();
-    for (const auto& name : {"passTrigMuTable9", "passTrigEleTable9"})
-        input.columns.push_back(name);
     ROOT::RDF::RSnapshotOptions snapshotOptions;
     // All counts are already booked. An immediate Snapshot runs them together
     // and avoids ROOT 6.30's false lazy-Snapshot warning after MT cleanup.
@@ -280,22 +333,80 @@ void run(const Options& o, const std::string& temporary) {
     // Match the original file's compression setting 207 (LZMA, level 7).
     snapshotOptions.fCompressionAlgorithm = ROOT::kLZMA;
     snapshotOptions.fCompressionLevel = 7;
-    std::cout << "Processing " << input.events << " events using " << o.threads << " thread(s)" << std::endl;
-    auto snapshot = selected.Snapshot("Events", temporary, input.columns, snapshotOptions);
+    auto snapshot = selected.Snapshot("Events", output, columns, snapshotOptions);
     snapshot.GetValue(); // Already ready; no additional event loop.
-    if (*total != static_cast<ULong64_t>(input.events)) throw std::runtime_error("Input entry count mismatch");
+    if (*total != static_cast<ULong64_t>(group.events)) throw std::runtime_error("Input entry count mismatch");
     if (df.GetNRuns() != 1) throw std::runtime_error("Internal error: more than one RDF event loop");
+    Counts result{*total, *afterMultiplicity, *afterFilters, *saved, {}};
+    for (std::size_t i = 0; i < rejected.size(); ++i) result.rejected[i] = *rejected[i];
+    return result;
+}
+
+struct TemporaryGroups {
+    Strings paths;
+    ~TemporaryGroups() {
+        for (const auto& path : paths) {
+            std::error_code ignored;
+            fs::remove(path, ignored);
+        }
+    }
+};
+
+void run(const Options& o, const std::string& temporary) {
+    const auto start = std::chrono::steady_clock::now();
+    auto input = inspect(o);
+    const auto prepared = std::chrono::steady_clock::now();
+    if (o.threads > 1) ROOT::EnableImplicitMT(o.threads);
+    for (const auto& name : {"passTrigMuTable9", "passTrigEleTable9"}) input.columns.push_back(name);
+    std::cout << "Processing " << input.events << " events using " << o.threads << " thread(s) in "
+              << input.groups.size() << " trigger-schema group(s)" << std::endl;
+    // ROOT 6.30 has no DefaultValueFor API for missing TChain columns. Process
+    // files with identical trigger availability together, define missing HLT
+    // decisions as false there, then merge their identically shaped snapshots.
+    // Every input event is processed once; uniform jobs keep their original path.
+    Counts counts;
+    TemporaryGroups scratch;
+    Strings nonempty;
+    for (std::size_t i = 0; i < input.groups.size(); ++i) {
+        const auto path = input.groups.size() == 1 ? temporary :
+            temporary + ".group" + std::to_string(i) + ".root";
+        if (path != temporary) {
+            if (fs::exists(path)) throw std::runtime_error("Temporary group output already exists: " + path);
+            scratch.paths.push_back(path);
+        }
+        const auto group = processGroup(o, input.groups[i], input.columns, path);
+        counts.total += group.total; counts.afterMultiplicity += group.afterMultiplicity;
+        counts.afterFilters += group.afterFilters; counts.saved += group.saved;
+        for (std::size_t j = 0; j < counts.rejected.size(); ++j) counts.rejected[j] += group.rejected[j];
+        if (group.saved) nonempty.push_back(path);
+    }
+    if (input.groups.size() > 1) {
+        if (nonempty.empty()) {
+            TFile empty(temporary.c_str(), "RECREATE", "", 207);
+            if (empty.IsZombie()) throw std::runtime_error("Cannot create empty merged output");
+        } else if (nonempty.size() == 1) {
+            fs::rename(nonempty.front(), temporary);
+        } else {
+            TFileMerger merger(false, false);
+            if (!merger.OutputFile(temporary.c_str(), "RECREATE", 207))
+                throw std::runtime_error("Cannot create merged snapshot output");
+            for (const auto& path : nonempty)
+                if (!merger.AddFile(path.c_str(), false)) throw std::runtime_error("Cannot add snapshot group: " + path);
+            if (!merger.Merge()) throw std::runtime_error("Cannot merge trigger-schema groups");
+        }
+    }
+    if (counts.total != static_cast<ULong64_t>(input.events)) throw std::runtime_error("Combined input entry count mismatch");
     {
         std::unique_ptr<TFile> f(TFile::Open(temporary.c_str(), "UPDATE"));
         if (!f || f->IsZombie()) throw std::runtime_error("Cannot update snapshot output");
         auto* tree = dynamic_cast<TTree*>(f->Get("Events"));
-        if (*saved == 0 && (!tree || tree->GetListOfBranches()->GetEntries() == 0)) {
+        if (counts.saved == 0 && (!tree || tree->GetListOfBranches()->GetEntries() == 0)) {
             restoreEmptySchema(*f, o, input);
             tree = dynamic_cast<TTree*>(f->Get("Events"));
         }
-        if (!tree || tree->GetEntries() != static_cast<Long64_t>(*saved))
+        if (!tree || tree->GetEntries() != static_cast<Long64_t>(counts.saved))
             throw std::runtime_error("Snapshot saved-entry count mismatch");
-        writeCounts("hEvents", "Cutflow", {0., double(*total), double(*afterFilters), double(*saved), 0.},
+        writeCounts("hEvents", "Cutflow", {0., double(counts.total), double(counts.afterFilters), double(counts.saved), 0.},
                     {"", "NanoAOD", "Filters", "MuonOREleTrig", ""}, -1.5, 3.5);
         TH1D sumw("hGenEventSumw", "Generator-weight sum before skimming", 1, .5, 1.5);
         sumw.SetDirectory(nullptr);
@@ -309,13 +420,14 @@ void run(const Options& o, const std::string& temporary) {
     if (fs::exists(o.output)) throw std::runtime_error("Output appeared while processing; refusing to replace it");
     fs::rename(temporary, o.output);
     const auto end = std::chrono::steady_clock::now();
-    std::cout << "Input events = " << *total << "\nAfter multiplicity veto = " << *afterMultiplicity
-              << "\nAfter filters = " << *afterFilters << "\nnEvents_Skim = " << *saved
-              << "\nBad Events = " << *total-*afterMultiplicity << std::endl;
+    std::cout << "Input events = " << counts.total << "\nAfter multiplicity veto = " << counts.afterMultiplicity
+              << "\nAfter filters = " << counts.afterFilters << "\nnEvents_Skim = " << counts.saved
+              << "\nBad Events = " << counts.total-counts.afterMultiplicity << std::endl;
+    const Strings multiplicities = {"nTrigObj", "nMuon", "nElectron", "nJet", "nPhoton"};
     for (std::size_t i = 0; i < multiplicities.size(); ++i)
-        std::cout << "  " << multiplicities[i] << " > 50: " << *rejected[i] << std::endl;
+        std::cout << "  " << multiplicities[i] << " > 50: " << counts.rejected[i] << std::endl;
     std::cout << std::setprecision(15) << "genEventCount = " << input.genCount << "\ngenEventSumw = " << input.genSumw
-              << "\nRDF event loops = " << df.GetNRuns()
+              << "\nRDF event loops = " << input.groups.size() << " (one per trigger-schema group)"
               << "\nInput preparation seconds = " << std::chrono::duration<double>(prepared-start).count()
               << "\nProcessing/writing seconds = " << std::chrono::duration<double>(end-prepared).count()
               << "\nOutput = " << o.output << std::endl;

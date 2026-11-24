@@ -25,8 +25,36 @@ For remote input, replace `local` with `xrootd` and supply LFNs or complete
 The positional arguments remain `YEAR JOBofTOTAL OUTPUT.root local|xrootd
 INPUT.root [...]`. Splitting is by contiguous groups of input files, including
 remainders. Existing output files are never overwritten. Missing Table 9 HLT
-branches are reported and treated as false; missing required event controls or
-generator metadata cause a nonzero exit.
+branches are reported and treated as false in each input file where they are
+absent. Missing required event controls or generator metadata, or incompatible
+physics branch schemas, cause a nonzero exit.
+
+## Generating input lists
+
+```bash
+python3 sample/getFiles.py
+```
+
+This uses `Years` from `SkimInputs.py`. `--years 2017 2018` can override the
+selection without editing that file. It works from any directory and writes
+`sample/FilesNano_cff.sh` and `sample/JobsNano_cff.py` by default.
+
+One DAS JSON query per distinct dataset provides the valid ROOT filenames and
+their individual event counts. The stored event total is their sum, so it
+corresponds to the exact inputs rather than a separate dataset-summary query.
+The default job target remains five million events, capped by the number of
+input files. Filenames are sorted for reproducible splitting.
+
+Queries have a 120-second timeout and one retry by default; use `--timeout`
+and `--retries` to adjust them. Failed, empty, duplicate, or malformed results
+stop generation. Both files are staged only after every selected sample
+passes; replacement errors trigger rollback. Unselected eras have empty job
+dictionaries, preserving existing Condor imports without adding jobs.
+
+`--dry-run` performs the metadata queries and validation without changing the
+configuration. `--output-dir` selects another destination. Catalog entries must
+be DAS NanoAOD dataset names; bare private EOS paths are rejected because
+their independent event-count metadata is unavailable through this query.
 
 ## Trigger selections
 
@@ -37,11 +65,19 @@ generator metadata cause a nonzero exit.
 | 2018 | `HLT_Mu50`, `HLT_TkMu100`, `HLT_OldMu100` | `HLT_Ele32_WPTight_Gsf`, `HLT_Ele115_CaloIdVT_GsfTrkIdT`, `HLT_Photon200` |
 
 The saved integer flags are `passTrigMuTable9` and `passTrigEleTable9`. Only
-Table 9 raw HLT decisions present in the input are saved. Expanded trigger ORs,
+Table 9 raw HLT decisions present in any assigned input are saved, with false
+values for files lacking that path. A path absent from every assigned input
+contributes false to the OR without adding a raw output branch. Expanded trigger ORs,
 2017 trigger-object matching tests, and their extra branches are removed.
 The explicit retained branch list is in `interface/SkimBranchConfig.h`.
 It preserves the PV/pileup inputs, generator weights, systematic inputs, and
 both `Jet_btagDeepB` and `Jet_btagDeepFlavB`.
+
+For ROOT 6.30, mixed HLT availability is handled by processing groups of files
+with the same available paths and merging their snapshots into one job output.
+Each input event is processed once, and bookkeeping sums over every group.
+Uniform inputs keep the original single-group execution. Physics branch types
+and availability must still agree across the assigned files.
 
 ## Output bookkeeping
 
@@ -70,10 +106,58 @@ The submission generator packages only production code, the executable, and
 sample configuration. It excludes local ROOT files, studies, and archives.
 Existing `condor/tmpSub` archives and submitted jobs are unchanged. Generate a
 fresh submission package when ready to deploy this version; the generator also
-replaces `tmpSub`, so preserve any historical submission logs first.
+refuses to replace an existing `tmpSub`, preserving its submission and checking
+history. Use a fresh directory for a new production.
 
-`runJobsLocal.sh` defaults to one concurrent skim (four threads).
-`SKIM_MAX_PARALLEL` can increase concurrency on a sufficiently large machine.
+`runJobsLocal.sh` uses `runJobsLocal.py` to run an explicitly selected sample
+or a retry list from the checker. It works from any directory. Initialize the
+CMS/ROOT environment and build `makeSkim` first. Preview a local run with:
+
+```bash
+bash runJobsLocal.sh 2017 SignalSpin12_M800 --dry-run
+```
+
+Run that sample, or just one file split, with:
+
+```bash
+bash runJobsLocal.sh 2017 SignalSpin12_M800 --output-dir local_runs/signal_2017
+bash runJobsLocal.sh 2017 SignalSpin12_M800 1 3 --output-dir local_runs/signal_split
+```
+
+The optional `JOB TOTAL` arguments use the same contiguous input-file splitting
+as Condor. Without them, the selected sample's full input list is processed.
+Outputs go to `OUTPUT_DIR/YEAR/`, keeping eras separate. Each job has stdout
+and stderr files in `OUTPUT_DIR/YEAR/logs/`; `run_summary.json` records results.
+Without `--output-dir`, a new directory is created under `local_runs/`.
+Existing ROOT outputs are never overwritten. Missing configuration and failed
+skims return a nonzero exit status.
+
+The defaults are one concurrent skim and four threads per skim. Use `--parallel`
+and `--threads`, or the environment variables `SKIM_MAX_PARALLEL` and
+`SKIM_THREADS`, to change these. Total requested concurrency is their product.
+`--dry-run` validates and prints the plan without processing or creating files.
+
+When a checker round produces `failed_jobs.json`, retry it locally with:
+
+```bash
+bash runJobsLocal.sh --failed-jobs condor/tmpSub/checks/run2_skims/round_001/failed_jobs.json --dry-run
+bash runJobsLocal.sh --failed-jobs condor/tmpSub/checks/run2_skims/round_001/failed_jobs.json --stage-out
+```
+
+Retries use the frozen executable and file lists from the original submission
+archive, checked against the production manifest. Keep that archive until the
+retries finish. Use `--years` and `--samples` to restrict the retry list.
+Without `--stage-out`, outputs stay local. With it, the launcher checks that
+the selected jobs are absent from the active Condor queue, copies successful
+outputs to their recorded EOS destinations, and removes each local ROOT copy
+only after its copy succeeds. A failed copy leaves its ROOT file and logs
+locally. Remaining failures are written to a new `failed_jobs.json` alongside
+the copied manifest, so that list can be used for another local retry.
+The old `localResubmitJobs.txt` shell-command format is no longer used.
+
+The [incremental job checker](condor/README.md) stores per-job status and
+prepares separate retry rounds, checking only unresolved outputs on later
+runs. It uses multiprocessing and never submits jobs automatically.
 
 ## Compatibility
 
@@ -83,5 +167,13 @@ skim files for ntuple production. Existing skim ROOT files are unchanged.
 
 This directory tracks production code and documentation. Tests, studies,
 archives, and generated local outputs are kept locally and excluded from Git.
-See the [change summary](../commit/SKIM_NANOAOD_RDF_CLEANUP_SUMMARY.md) for the
-changes and validation result.
+The separate `condor/finalizeNormalization.py` exports verified normalization
+metadata into `normalization/` after checks pass; see the Condor README for
+usage. Use `--years 2017`, `--years 2016Pre 2016Post`, or `--years all` to
+discover matching production records and generate one JSON for those eras.
+`--plan` previews the selection; explicit `--production-dir` overrides remain
+available. Exports are kept outside `tmpSub` and excluded from Git.
+See the [production-fix summary](../commit/SKIM_NANOAOD_PRODUCTION_FIXES_SUMMARY.md)
+for the latest changes and validation, and the
+[RDataFrame cleanup summary](../commit/SKIM_NANOAOD_RDF_CLEANUP_SUMMARY.md)
+for the earlier conversion.

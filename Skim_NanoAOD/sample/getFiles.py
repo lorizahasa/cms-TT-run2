@@ -1,85 +1,209 @@
+#!/usr/bin/env python3
+"""Generate validated NanoAOD input lists; preserve existing files on failure."""
+import argparse
+import fcntl
+import json
+import math
 import os
-import sys
+from pathlib import Path
+import re
 import subprocess
-import numpy as np
-sys.dont_write_bytecode = True
-from SamplesNano import sampleDict 
-sys.path.insert(0, os.getcwd().replace("sample",""))
-from SkimInputs import *
+import sys
+import tempfile
 
-#Function to fetch the name of all files in one string
-def getFileList(sample, isDAS=True):
-    if isDAS:
-        std_output, std_error = subprocess.Popen("dasgoclient --query='file dataset=%s status=valid'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
-    else:
-        std_output, std_error = subprocess.Popen("xrdfs root://cmseos.fnal.gov/ ls -u %s | grep '.root'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
-    names = std_output.decode("ascii").replace('\n',' ')
-    return names
+sys.dont_write_bytecode = True
+HERE = Path(__file__).resolve().parent
+sys.path[:0] = [str(HERE), str(HERE.parent)]
+from SamplesNano import sampleDict
+from SkimInputs import Years
+
+ERAS = ("2016Pre", "2016Post", "2017", "2018")
+
 
 def toM(num):
-    magnitude = 0
-    while abs(num) >= 1000:
-        magnitude += 1
-        num /= 1000.0
-    evtStr = '{}{}'.format('{:f}'.format(num).rstrip('0').rstrip('.'), ['', 'K', 'M', 'B', 'T'][magnitude])
-    unit = evtStr[-1]
-    formatStr = "%s%s"%(round(float(evtStr.replace(unit, '')), 1), unit)
-    return formatStr
+    """Display event counts; retained for makeEvtTable.py."""
+    value = float(num)
+    if not math.isfinite(value):
+        raise ValueError("Cannot format a nonfinite event count")
+    units, index = ("", "K", "M", "B", "T"), 0
+    while abs(value) >= 1000 and index < len(units) - 1:
+        value /= 1000
+        index += 1
+    return f"{value:.1f}{units[index]}" if index else f"{value:g}"
 
 
-#Function to print the total events in nice format 
+def dataset_metadata(dataset, timeout=120, retries=1):
+    """One checked DAS query supplies both the file list and exact input counts."""
+    if not re.fullmatch(r"/[^/\s]+/[^/\s]+/NANOAOD(?:SIM)?", dataset):
+        raise ValueError("Expected a DAS NanoAOD dataset, not a private storage path: " + dataset)
+    command = ["dasgoclient", "--query", f"file dataset={dataset} status=valid", "--json"]
+    for attempt in range(retries + 1):
+        try:
+            response = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                      text=True, timeout=timeout, check=True)
+            records = json.loads(response.stdout)
+            break
+        except (OSError, subprocess.SubprocessError, json.JSONDecodeError) as error:
+            detail = getattr(error, "stderr", None) or str(error)
+            if attempt == retries:
+                raise RuntimeError(f"DAS query failed for {dataset}: {detail[:1000]}") from error
+            print(f"Retrying DAS query for {dataset}: {detail[:300]}", file=sys.stderr, flush=True)
+    if not isinstance(records, list):
+        raise ValueError("DAS did not return a record list for " + dataset)
+    counts = {}
+    for row in records:
+        if not isinstance(row, dict) or "error" in row:
+            raise ValueError("DAS returned an error/invalid record for " + dataset)
+        entries = row.get("file", [])
+        if not isinstance(entries, list):
+            raise ValueError("Invalid DAS file records for " + dataset)
+        for entry in entries:
+            if not isinstance(entry, dict):
+                raise ValueError("Invalid DAS file entry for " + dataset)
+            name, count = entry.get("name"), entry.get("nevents")
+            if not isinstance(name, str) or not re.fullmatch(r"/store/[A-Za-z0-9_./-]+\.root", name):
+                raise ValueError("Invalid DAS ROOT filename for " + dataset)
+            parts = name.strip("/").split("/")
+            if (len(parts) < 8 or parts[1] not in ("mc", "data") or
+                    f"/{parts[3]}/{parts[2]}-{parts[5]}/{parts[4]}" != dataset):
+                raise ValueError("DAS returned a file from a different dataset: " + name)
+            if isinstance(count, bool) or not isinstance(count, int) or count < 0:
+                raise ValueError("Invalid/missing DAS nevents for " + name)
+            if name in counts:
+                raise ValueError("Duplicate DAS input file: " + name)
+            counts[name] = count
+    if not counts or sum(counts.values()) == 0:
+        raise ValueError("DAS returned no usable input events for " + dataset)
+    return dict(sorted(counts.items()))
+
+
+def getFileList(sample, isDAS=True):
+    if not isDAS:
+        raise ValueError("Private storage listings require verified event metadata; provide a DAS dataset")
+    return " ".join(dataset_metadata(sample))
+
+
 def getEvents(sample):
-    std_output, std_error = subprocess.Popen("dasgoclient --query='summary dataset=%s' | sed  's/null/None/g'"%sample,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE).communicate()
-    num = eval(std_output)[0]['nevents']
-    formatStr = toM(num)
-    return [num, formatStr] 
+    events = sum(dataset_metadata(sample).values())
+    return [events, toM(events)]
 
-if __name__=="__main__":
-    #Store the ouputs in two separate files
-    f1 = open("FilesNano_cff.sh", "w")
-    f2 = open("JobsNano_cff.py", "w")
 
-    allJobs = 0
-    for year in Years:
-    #for year in ['2017']: 
-        splitJobs = {}
-        print('---------------------------------------')
-        print(year)
-        print("nFiles\t  nJobs\t nEvents\t Samples")
-        print('---------------------------------------')
-        line = ""
-        jobs = 0
-        for sampleName, sample in sampleDict(year).items():
-            line += '%s_FileList_%s="'%(sampleName,year)
-            if '/store/user/' in sample:
-                fileList = getFileList(sample, False)
-                line += fileList
-                line += '"\n\n'
-            else:
-                line += "xrootd "
-                fileList = getFileList(sample, True)
-                line += fileList 
-                line += '"\n\n'
-            if fileList=='':
-                print ("PROBLEM: %s \n"%sample)
-                continue
-            nFiles = len(fileList.split())
-            evt     = getEvents(sample)[0]
-            evtStr  = getEvents(sample)[1]
-            evtPerJob = 5e6 #5 million
-            nJob = int(np.ceil(evt/evtPerJob))
-            if nFiles<nJob: 
-                nJob = nFiles
-            #evt = "NA" 
-            splitJobs[sampleName] = [nJob, evtStr, evt, nFiles]
-            jobs += nJob
-            print("%i\t %i\t %s\t %s"%(nFiles, nJob, evtStr, sampleName))
-        f1.write(line)
-        f2.write("Samples_%s = %s \n"%(str(year), str(splitJobs)))
-        f2.write("AllJobs_%s = %s \n"%(str(year), str(jobs)))
-        print('==================')
-        print("AllJobs_%s = %i"%(year, jobs))
-        print('==================')
-        allJobs += jobs
-    f2.write("AllJobs_AllYears = %s \n"%str(allJobs))
- 
+def generate(years, events_per_job=5_000_000, timeout=120, retries=1):
+    if not years or len(set(years)) != len(years) or any(y not in ERAS for y in years):
+        raise ValueError("Select unique supported eras")
+    if events_per_job < 1:
+        raise ValueError("events_per_job must be positive")
+    file_lines = ["# Generated by getFiles.py; selected eras: " + ", ".join(years)]
+    job_lines = ["# Event totals are sums over the exact valid DAS input files."]
+    metadata, all_jobs = {}, 0
+    for year in ERAS:
+        samples = sampleDict(year) if year in years else {}
+        if year in years and not samples:
+            raise ValueError("No configured samples for " + year)
+        jobs = {}
+        for sample, dataset in samples.items():
+            if not re.fullmatch(r"[A-Za-z_]\w*", sample, flags=re.ASCII):
+                raise ValueError("Invalid shell variable/sample name: " + sample)
+            if dataset not in metadata:
+                metadata[dataset] = dataset_metadata(dataset, timeout, retries)
+            files = metadata[dataset]
+            events = sum(files.values())
+            number = min(len(files), (events + events_per_job - 1) // events_per_job)
+            jobs[sample] = [number, toM(events), events, len(files)]
+            file_lines.append(f'{sample}_FileList_{year}="xrootd {" ".join(files)}"')
+            print(f"{year} {sample}: {len(files)} files, {number} jobs, {events} input events", flush=True)
+        # Empty dictionaries for unselected eras keep existing imports valid;
+        # they never create additional submissions or retain stale era entries.
+        job_lines.append(f"Samples_{year} = {jobs!r}")
+        job_lines.append(f"AllJobs_{year} = {sum(values[0] for values in jobs.values())}")
+        all_jobs += sum(values[0] for values in jobs.values())
+    job_lines.append(f"AllJobs_AllYears = {all_jobs}")
+    return {"FilesNano_cff.sh": "\n".join(file_lines) + "\n",
+            "JobsNano_cff.py": "\n".join(job_lines) + "\n"}
+
+
+def publish(contents, directory):
+    """Stage the complete pair before replacement; roll back rename errors.
+
+    Each rename is atomic. Two separate paths cannot be replaced in one atomic
+    filesystem operation; the lock serializes publishers and rollback handles
+    ordinary exceptions/interrupts between renames.
+    """
+    if set(contents) != {"FilesNano_cff.sh", "JobsNano_cff.py"}:
+        raise ValueError("Publish requires the complete pair of configuration files")
+    directory = Path(directory)
+    directory.mkdir(parents=True, exist_ok=True)
+    temporary, backups, replaced = {}, {}, []
+
+    def stage(data):
+        descriptor, name = tempfile.mkstemp(prefix=".getFiles_", suffix=".tmp", dir=directory)
+        path = Path(name)
+        temporary[path] = True
+        with os.fdopen(descriptor, "wb") as handle:
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        path.chmod(0o644)
+        return path
+
+    with (directory / ".getFiles.lock").open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            staged = {}
+            for name, text in contents.items():
+                target = directory / name
+                if target.is_symlink():
+                    raise ValueError("Refusing to replace a generated-file symlink: " + str(target))
+                backups[target] = stage(target.read_bytes()) if target.exists() else None
+                staged[target] = stage(text.encode())
+            for target, source in staged.items():
+                os.replace(source, target)
+                replaced.append(target)
+        except BaseException as error:
+            recovery = []
+            for target in reversed(replaced):
+                try:
+                    if backups[target] is None:
+                        target.unlink()
+                    else:
+                        os.replace(backups[target], target)
+                except OSError:
+                    if backups[target] is not None:
+                        temporary.pop(backups[target], None)
+                        recovery.append(str(backups[target]))
+                    else:
+                        recovery.append("remove newly created " + str(target))
+            if recovery:
+                raise RuntimeError("Rollback could not finish; retained originals/recovery steps: " + ", ".join(recovery)) from error
+            raise
+        finally:
+            for path in temporary:
+                path.unlink(missing_ok=True)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--years", nargs="+", choices=ERAS, default=Years)
+    parser.add_argument("--output-dir", type=Path, default=HERE)
+    parser.add_argument("--events-per-job", type=int, default=5_000_000)
+    parser.add_argument("--timeout", type=int, default=120, help="Seconds per DAS query attempt")
+    parser.add_argument("--retries", type=int, default=1, help="Additional attempts after a failed query")
+    parser.add_argument("--dry-run", action="store_true", help="Query and validate without writing the configuration")
+    args = parser.parse_args(argv)
+    if args.events_per_job < 1 or args.timeout < 1 or args.retries < 0:
+        parser.error("Job size and timeout must be positive; retries must be nonnegative")
+    contents = generate(args.years, args.events_per_job, args.timeout, args.retries)
+    if args.dry_run:
+        print("Validation complete; configuration files were not changed.")
+    else:
+        publish(contents, args.output_dir.resolve())
+        print("Updated input configuration in", args.output_dir.resolve())
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except (OSError, ValueError, RuntimeError, KeyboardInterrupt) as error:
+        print("ERROR:", error or "Interrupted", file=sys.stderr)
+        sys.exit(2)

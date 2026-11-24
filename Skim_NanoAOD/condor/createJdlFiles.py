@@ -12,8 +12,8 @@ from SkimInputs import *
 from JobsNano_cff import Samples_2016Pre, Samples_2016Post,  Samples_2017, Samples_2018 
 
 if os.path.exists("tmpSub"):
-    os.system("rm -r tmpSub")
-    print("Deleted dir: tmpSub")
+    raise SystemExit("tmpSub already exists. Preserve its jobs, logs, and checking history; "
+                     "choose a fresh submission directory before creating another production.")
 os.system("mkdir -p tmpSub/log")
 print("Created dir: tmpSub")
 condorLogDir = "log"
@@ -34,12 +34,14 @@ common_command = \
 'Universe   = vanilla\n\
 should_transfer_files = YES\n\
 when_to_transfer_output = ON_EXIT\n\
+transfer_output_files = ""\n\
 Transfer_Input_Files = Skim_NanoAOD.tar.gz, runMakeSkims.sh\n\
 x509userproxy        = /uscms/home/lhasa/x509up_u54210\n\
 request_memory= 9216 \n\
 request_cpus= 4 \n\
 Output = %s/log_$(cluster)_$(process).stdout\n\
-Error  = %s/log_$(cluster)_$(process).stderr\n\n'%(condorLogDir, condorLogDir)
+Error  = %s/log_$(cluster)_$(process).stderr\n\
+Log    = %s/log_$(cluster)_$(process).condor\n\n'%(condorLogDir, condorLogDir, condorLogDir)
 #use_x509userproxy = true\n\
 
 #----------------------------------------
@@ -54,7 +56,7 @@ for year in Years:
     jdlFile.write(common_command)
     outDir="%s/%s"%(outSkimDir, year)
     if os.path.exists("/eos/uscms/%s"%outDir):
-        print("Deleted out dir: %s"%outDir)
+        print("Using existing out dir: %s"%outDir)
         #os.system("eos root://cmseos.fnal.gov rm -r %s"%outDir) 
     os.system("eos root://cmseos.fnal.gov mkdir -p %s"%outDir) 
     print("Created out dir: %s"%outDir)
